@@ -1,147 +1,148 @@
-Return-Path: <linux-iio+bounces-27261-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-27262-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8833BCD34D3
-	for <lists+linux-iio@lfdr.de>; Sat, 20 Dec 2025 19:05:45 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0152CCD3D0A
+	for <lists+linux-iio@lfdr.de>; Sun, 21 Dec 2025 09:39:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 8DDFF3009C0B
-	for <lists+linux-iio@lfdr.de>; Sat, 20 Dec 2025 18:05:43 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id BA5B8300160D
+	for <lists+linux-iio@lfdr.de>; Sun, 21 Dec 2025 08:39:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27D662BE053;
-	Sat, 20 Dec 2025 18:05:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC18C274B37;
+	Sun, 21 Dec 2025 08:39:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="lOYHFivu"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="l9XpxzEb"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wr1-f53.google.com (mail-wr1-f53.google.com [209.85.221.53])
+Received: from mail-pf1-f194.google.com (mail-pf1-f194.google.com [209.85.210.194])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6159B2773F7
-	for <linux-iio@vger.kernel.org>; Sat, 20 Dec 2025 18:05:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F5C6273D77
+	for <linux-iio@vger.kernel.org>; Sun, 21 Dec 2025 08:39:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.194
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766253941; cv=none; b=a4UPrwPVtgrq4Z48Vm+QKeXPTAgUXxu8P+Q4Iaz+P2+mqvaT76LylgXq2ON7IxdsJi+y3L8SdtK4l8JMhnr/pMnYA1ElAB7k/rwI1Afj0QvfmvYDt7/S5pGtNSrhJIlpwhNh6qu1EO1vZgj+jfJCqbmgKc1xHaY8/B063BVzbgA=
+	t=1766306371; cv=none; b=gfDcsCug1b90mAYqay7Hg7Y7dIWlsUhU9IVOssrkSAVYpYZFzbbzyeYRira/nwLko3G1K2275Bn8hXXCksU1CsrmWcPJMuCt4lS+2AD9+dqNp6JMPfcmZc1ntgiElOpzUsniJV5yOn1E0qPPBUEiLzbXHaEUverZu+oGy/IX2ZE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766253941; c=relaxed/simple;
-	bh=ION7h3GiimdnrChMZfYJ4FJw5Q0+r+Pu4ixf/ze1IGg=;
-	h=From:Date:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=hEPAE3o5tQEiBVu4jZIrgCNG36JAHhmwP3hqJXeMPgrhWgVFtCC8wiJiXE+2k+d5fm1cK7vvT4zrVZqz0K8lRBc/tSHsNgLi6gtbNeu6IxZ2NnS2Xwo66mlnVx4vGqFbiypsPkq6Op34Il0vdPkQRPCjHCiiQqJddj4oTqsBSos=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=lOYHFivu; arc=none smtp.client-ip=209.85.221.53
+	s=arc-20240116; t=1766306371; c=relaxed/simple;
+	bh=lpb9/3DK7ALY+1M/QPt26J7EyO42orqOgUYOaDKIbU0=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=DLkCT6fI5GuGkoyMsoiuwGlP5j0yttrL4zDLULapdDyN6E4cCOmpmgHVL7jHUQGsEC3gu2dedV8yxk78be49HvthLtRjCDeI0k2qrsRGAvviy38HTtnQLbPLfngUAWvc+0vO/RLIkUhtAP66TFIiE6KJSH00LCEKedj5lrvE7yU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=l9XpxzEb; arc=none smtp.client-ip=209.85.210.194
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wr1-f53.google.com with SMTP id ffacd0b85a97d-42fb0fc5aa4so2316163f8f.1
-        for <linux-iio@vger.kernel.org>; Sat, 20 Dec 2025 10:05:40 -0800 (PST)
+Received: by mail-pf1-f194.google.com with SMTP id d2e1a72fcca58-7f216280242so1266298b3a.1
+        for <linux-iio@vger.kernel.org>; Sun, 21 Dec 2025 00:39:30 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1766253939; x=1766858739; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=ION7h3GiimdnrChMZfYJ4FJw5Q0+r+Pu4ixf/ze1IGg=;
-        b=lOYHFivuvy/kA+SQDrYDMUwxTuMvxgUOcbu7wjsTMR6tQ4hXDSszzWK2E4oTdoIhOC
-         vxQm+fv6SMp6xX9f8hcicy0lz7ud32UiqFxHX5dXUSCDaLP0Ef49a3ZYuZhur34opY40
-         fPnHuMWDrnAV4R+5QUv1md081Rm5oGzxVMbdxI155AD5nn4tZ8trdzENUkbTOmVFOgWH
-         023776+yDW16lg7T4yXHKks1taQnjO+cmlIM0oiZNJevQCAk4ixYBkiM5FMtlEUycI7W
-         rGVfLB3C1E6pckpziE7YebQ5muDyGxpPnKPsnDdbFccGDAdCAyCA/q3GO9/JNnqwpd5p
-         +i8w==
+        d=gmail.com; s=20230601; t=1766306369; x=1766911169; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=RJdCkCbfYuG1MRzNXkV+YupMxNU5tXNQgZDynoVb6bo=;
+        b=l9XpxzEbLlqsE7+L2lAqI9s68YtjlTHYppSGxUJ4eOI2iFJRHScEVJNqva0ur35v4D
+         pG0SU4IkhyInnMySn//R4AEXPSTEkqX2i5EdtPHcja4lwWM31FSXvPDK6GCaX4Ua+cmK
+         0E1M22eYcRusAjs71twZqEx3X+2TG3jI7C/MsDws8L+Ylbdv9q/UOAKLvpf5GAWqSoc/
+         vjlgLPiMxOWSC8IP1PLh8qGSVTNRewrbpPE0n16+q+LN/CkkFAELWmotyHHHrdbtnNji
+         74M7PFZVcRchv9V3IkuqZE5GFwuBZTCZSbvRQriAf3J1EG7joUd2RCh8/TazpkEIuMyk
+         YKDw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1766253939; x=1766858739;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:date:from:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=ION7h3GiimdnrChMZfYJ4FJw5Q0+r+Pu4ixf/ze1IGg=;
-        b=qaB7WfvG1x6NFy/pKjfAKlA1PNuP8q8G8buYvSHCwxLOawrWFlnK2GEwxBNz0gJ3oF
-         m4UPxvYpj1m1sLZ48mZcuePZ3YCKZZy4pp5ubhZCDYEl1zzwWMYoVrlzCXh/mdn1DyaH
-         ZI22q5rG7x3Xn1rnRCgTG3s8pSpFiJNXVbFUSF44chSvD2etOdBhFepkR3xc+5UCMaVU
-         qmfan+abEYuSJ9BjMHEmMUxNQAMtB5zmOzWsf7olaXfLl/lcKLPV75cmkgRnkC6OWvW5
-         G51BYdQbt3RvU+GJrfHU7g6b5QMCWaIQYTQ5dNF1E5zFwbkrTEg5XLgpFA6Sd0ZSY4Fr
-         63+w==
-X-Forwarded-Encrypted: i=1; AJvYcCVBOtzwzFYYPgKkak6Fl/s6HrAoKO3Yfb7FnMUrm6Mrd5IJAXCA/JLkJ0gsVowY7lmeE+dOpEwUtGo=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyNygwfu43oGmfaJzrPeuUNXOkaFWJ3pyNbh2mWTgQP9KDvYYUg
-	S3Ws8CPFsOZf9FT3iu/xrzK7/q9YxIzhpRttXZQfvtfFOCifIKZeyC8M
-X-Gm-Gg: AY/fxX41NqUFC1dm1jz7ISP1QYACZW0i5n03qiuCDZvJ3pv6n5LBRvIKwE/5JyOqvm3
-	DZVjL+g8eNfcMTLGgRCTkK0/RRcISNiMbukDsyI4ScRhCba3/xQHwoQ7WNhM8H/6QiVuYongL5U
-	9BoaETbDqV+k75D4rZg6GX2ZK7eSs+OwuzFvRjVrnMbJr0YJ6s1eI1e4NwSD4b6gRqEPY730dqa
-	Ib5f6JURk5/XsTyvFH8R8QZeuM7eya4rn35JBcjSjECZr71ZEjwbzxJ1AAauF51qeFsWxdl44lN
-	RIXgLCxy2RM/laXXdTaUpu2nqliiJ1r3EBLQIMJtp6hj4UWgxBhdXf3+OHWpc2M0JeE2CJvCnf5
-	AvXEuBZZ8/6dm1bwFQuLMwa+HIf3VwXfE8NQB6aBpt5ygLGyf8lQaKhrlXfT1C8GTkf/HWFI2c+
-	Ju28aWllcztDcLNE4huSceM4HwQI1xXR8txXEYfdTFbXVcDUp9oMVysh8W+lKQxFSb5g/olOlRk
-	3DEdUXFh2urNEk=
-X-Google-Smtp-Source: AGHT+IFdh7686Hic2EQT/ge0CqMXmqAJuelRm9kiOsqQ7eXjvB0HmW7I0JGYyXOswbWut1zyR+Yt7w==
-X-Received: by 2002:a05:6000:40db:b0:430:fa52:9eaf with SMTP id ffacd0b85a97d-4324e70ecf1mr7519861f8f.60.1766253938486;
-        Sat, 20 Dec 2025 10:05:38 -0800 (PST)
-Received: from RDEALENC-L01.ad.analog.com ([24.206.116.103])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4324ea82e9fsm12234440f8f.26.2025.12.20.10.05.36
+        d=1e100.net; s=20230601; t=1766306369; x=1766911169;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=RJdCkCbfYuG1MRzNXkV+YupMxNU5tXNQgZDynoVb6bo=;
+        b=nUKsraNSRPg6+641jVoGhc03RGS+LYG7BEwVaZJ6kG58EpTX4xPgp7JBENm6Jvsl4G
+         4BOZ4C2m4fbaOCPGQ+jr/LDPv0PVrEJOMgGMYwYGMQar0OvqMwuWjg6zOH56Jiagwm1I
+         Svd/OHLCM6wBAkTw2HA94hq+ueGeaurP9/h5JtLRzxscU7kOF80pTRhDilXxe5M7fAIl
+         uL/rJlHDWb/HePx1EM4neaaSCnugUjDPTCjj1NvQ8V06NKYkEr37h8pcayGHfs5XsrhR
+         mcH1o4ouuoeCZEFJXX5QNfBFBplej+8W3dQ1WE0ysmtMpwOT7tZmarkN63dstpCc96eA
+         Y98w==
+X-Forwarded-Encrypted: i=1; AJvYcCUhest4HRIarNeGY5KaGfqhQZSPbbIiqeqsaFSnE8u8fMGE4EUWFpx12UZDXxF+WRXeK5ZwthttTSE=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwiUT8nwo97a/a0NRmVieRDFZTk390TTMTEaTN9WAW6wHl62Y/D
+	kNznAHL2KwaB3cu7atKN2adfbOg0IgxqQepRSjnO3AnpUSj9wY7Pn0hU
+X-Gm-Gg: AY/fxX5YV6IkdGHTIp9j9GVpxaZLLiKHdQfLPaRdEwBUwKZamhiIvVci2D320oliIxe
+	gpAcwB2DRsmhJj5UMkcev/UrrAwxx4YWu2hNAg1RrCyK4Xg6J7huwZuNHzxunsiszkJs7Z/2I1/
+	Zxnl2RnaEkS+Fdq9o0kj3hU9RvEaVqBJbReRZgJxBqBjaUcKywQ38E9rQuK1wrkJxC8G8ym6jjP
+	SlLw3RbiKY3ja4LydccQPWiIQmj6QPwep1dHpGHyCHyQX/ztTa+hZEKu49F6NQAeYITUNvgfY95
+	ClFyb0+p1Vdy0VU5X90mLh21ft3I/BLQrQstap4rM1MBTQqwmsp1LxkHGqpvVPs5g/H61WXGtRH
+	7U8P//Pg3lYdXYQOZs0e2pL3KgRBfSYH3uzcrYDbGu+nZ5i03leRK1yGG8G3/7s+tOaQZcI/2jW
+	oseQSJlB9cUbPShw==
+X-Google-Smtp-Source: AGHT+IHXUQeCPQBqGmqZFoHhbNBLeMa9tKpuVdgrE/dzWGTwr6zB+0eGuvqwal9ABefR5JWG7Cqztw==
+X-Received: by 2002:aa7:930d:0:b0:781:1110:f175 with SMTP id d2e1a72fcca58-7ff5330cca8mr8545745b3a.14.1766306369511;
+        Sun, 21 Dec 2025 00:39:29 -0800 (PST)
+Received: from Ubuntu24.. ([103.187.64.31])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7ff7e48f258sm6932678b3a.47.2025.12.21.00.39.22
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 20 Dec 2025 10:05:37 -0800 (PST)
-From: 455.rodrigo.alencar@gmail.com
-X-Google-Original-From: rdealenc@rdealenc-l01.ad.analog.com
-Date: Sat, 20 Dec 2025 18:05:34 +0000
-To: Krzysztof Kozlowski <krzk@kernel.org>, 
-	Rodrigo Alencar <rodrigo.alencar@analog.com>
-Cc: linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org, 
-	devicetree@vger.kernel.org, linux-doc@vger.kernel.org, Jonathan Cameron <jic23@kernel.org>, 
-	David Lechner <dlechner@baylibre.com>, Andy Shevchenko <andy@kernel.org>, 
-	Lars-Peter Clausen <lars@metafoo.de>, Michael Hennerich <Michael.Hennerich@analog.com>, 
-	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
-	Conor Dooley <conor+dt@kernel.org>, Jonathan Corbet <corbet@lwn.net>
-Subject: Re: [PATCH v2 1/6] dt-bindings: iio: frequency: add adf41513
-Message-ID: <gz36kmewv4bhwqz6d3xqatcx65uzukqcgsvfbwhr7c3yhw225z@edeggfhjws2h>
-References: <20251219-adf41513-iio-driver-v2-0-be29a83d5793@analog.com>
- <20251219-adf41513-iio-driver-v2-1-be29a83d5793@analog.com>
- <20251220-bouncy-perky-tarantula-d9b3be@quoll>
+        Sun, 21 Dec 2025 00:39:28 -0800 (PST)
+From: Shrikant Raskar <raskar.shree97@gmail.com>
+To: jic23@kernel.org,
+	robh@kernel.org,
+	krzk+dt@kernel.org,
+	conor+dt@kernel.org
+Cc: dlechner@baylibre.com,
+	nuno.sa@analog.com,
+	andy@kernel.org,
+	heiko@sntech.de,
+	neil.armstrong@linaro.org,
+	skhan@linuxfoundation.org,
+	david.hunter.linux@gmail.com,
+	linux-iio@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Shrikant Raskar <raskar.shree97@gmail.com>
+Subject: [PATCH v3 0/4] iio: proximity: Add interrupt support for RFD77402
+Date: Sun, 21 Dec 2025 14:08:58 +0530
+Message-ID: <20251221083902.134098-1-raskar.shree97@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251220-bouncy-perky-tarantula-d9b3be@quoll>
+Content-Transfer-Encoding: 8bit
 
-Hi Krzystof,
+This patch series adds:
+ - Add RF Digital vendor prefix
+ - YAML binding for RFD77402
+ - Add OF device ID for enumeration via DT
+ - Use kernel helper for result polling
+ - Interrupt handling support
+ 
+These changes enable DT-based configuration and event-driven
+operation for the RFD77402 Time-of-Flight sensor.
 
-thanks for taking a look into this again. It was my first patch it didn't want
-to draw more attention or discussion to the V1 patch as it was declared not ready
-at its very first review.
+Changelog:
+Changes since v2:
+- Add 'Reviewed-by' tag to dt-binding patch.
+- Update commit message in OF device ID patch.
+- Update commit message in the third patch.
+- Replace rfd77402_result_polling() with read_poll_timeout().
+- Add 'struct rfd77402_data' details in kernel-doc format.
+- Arrange includes in order.
+- Add comment for completion timeout value.
+- Remove blank lines.
+- Indent the comments to code.
+- Convert mutex_init() to devm_mutex_init().
+- Remove 'IRQF_TRIGGER_FALLING' flag from devm_request_threaded_irq().
+- Drop the duplicate message.
+- Replace 'dev_info' with 'dev_dbg()'.
+- Update 'dev_id' to 'pdata' in rfd77402_interrupt_handler().
+- Drop 'interrupt mode' comment
+- Use 'if(ret)' instead of 'if(ret < 0) for consistency.
+- Use 'return i2c_smbus_write_byte_data()' in 'rfd77402_config_irq'.
 
-On 25/12/20 10:21AM, Krzysztof Kozlowski wrote:
-> On Fri, Dec 19, 2025 at 12:34:48PM +0000, Rodrigo Alencar wrote:
-> > dt-bindings for ADF41513, an ultralow noise PLL frequency synthesizer that
-> > can be used to implement local oscillators (LOs) as high as 26.5 GHz.
-> > Most properties refer to existing PLL driver properties (e.g. ADF4350).
->
-> What is "existing PLL driver"? I know about motor drivers, but can you
-> drive PLL?
->
-> And how is ADF4350 related to this binding. I do not see ADF4350
-> compatible here at all. Describe hardware, a real one.
+Shrikant Raskar (4):
+  dt-bindings: iio: proximity: Add RF Digital RFD77402 ToF sensor
+  iio: proximity: rfd77402: Add OF device ID for enumeration via DT
+  iio: proximity: rfd77402: Use kernel helper for result polling
+  iio: proximity: rfd77402: Add interrupt handling support
 
-ADF4350 is an older one, and its bindings can be found at:
-Documentation/devicetree/bindings/iio/frequency/adi,adf4350.yaml
-It is a similar part, but yet very different.
+ .../iio/proximity/rfdigital,rfd77402.yaml     |  53 +++++++
+ .../devicetree/bindings/vendor-prefixes.yaml  |   2 +
+ drivers/iio/proximity/rfd77402.c              | 149 +++++++++++++++---
+ 3 files changed, 183 insertions(+), 21 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/iio/proximity/rfdigital,rfd77402.yaml
 
->
-> Nothing improved.
->
-> You ignored comments, did not bother to respond to them and then sent
-> the same.
 
-Sorry for not responding on the V1 thread, but the previous patch had to be reviewed internally
-first. It is not true that nothing is improved, in fact, it has changed a lot, here are some notes:
-* adi,power-up-frequency is not carrying the -hz postfix because it forces to be a uint32 by
-the dt-bindings check. For that variable it needs to be uint64 as the part supports up to 26.5 GHz > 2^32
-* The properties related to the reference input signal path: reference-div-factor, reference-doubler-enable
-reference-div2-enable are declared here because they are constraints for the PFD frequency definition,
-which is the frequency that the output signal is updated, important for the loop-filter and VCO design.
-* added support for all different power supply regulators.
-* adi,lock-detect-precision and adi,lock-detect-bias-microamp: removed, now set
-with adf41513_set_ld_window() following datasheet recommendation
-* adi,fast-lock-enable: removed, faster lock detect clock is set depending on the lock-detect-count value
-* adi,phase-resync-enable, adi,12bit-clk-divider and adi,12bit-clk2-divider: removed, now set with
-adf41513_set_phase_resync(), based on the t_sync (from the datasheet: Phase Resync section)
-value determined by adi,phase-resync-period-ns, which is also bound to the loop filter design.
+base-commit: d8ba32c5a460837a5f0b9619dac99fafb6faef07
+-- 
+2.43.0
 
-kind regards,
-
-Rodrigo Alencar
 

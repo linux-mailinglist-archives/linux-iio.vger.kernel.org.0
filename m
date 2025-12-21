@@ -1,54 +1,62 @@
-Return-Path: <linux-iio+bounces-27266-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-27267-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0BDC3CD3FBC
-	for <lists+linux-iio@lfdr.de>; Sun, 21 Dec 2025 13:02:49 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E681CD3FC6
+	for <lists+linux-iio@lfdr.de>; Sun, 21 Dec 2025 13:04:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 101F1300A36A
-	for <lists+linux-iio@lfdr.de>; Sun, 21 Dec 2025 12:02:45 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D92B5300FE1D
+	for <lists+linux-iio@lfdr.de>; Sun, 21 Dec 2025 12:04:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E7AE22D8798;
-	Sun, 21 Dec 2025 12:02:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 144792F7475;
+	Sun, 21 Dec 2025 12:04:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="V5rnltEV"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kSjOlOk3"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3FB1274670
-	for <linux-iio@vger.kernel.org>; Sun, 21 Dec 2025 12:02:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B968E274670;
+	Sun, 21 Dec 2025 12:04:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766318563; cv=none; b=KOTA9H5OxrXeonJvz7dFDEErImmMoJR2duKvCcdwCtNlaxNfLImgRCsh/+3yFxxiGlV8qHdlD+ivFeMNg78UGvf09HnZR5dEX0zkIblUnSwtEdXNXXGLtqxX0M9pscvmnfaCeZPcXNoeYQp0VTNBqPBM4m5kUvNyJEXi2ZW+Rdc=
+	t=1766318665; cv=none; b=XTf3j6YT5kHNOQG4NOhWWUBWnqZx2179SmimAGi5qfleNvfkqSD46HCkZZRtMrLiReJ4g3aHFIhqrySLCV4BdTsJevo1s5Y0UMWbYcRvoQgqshptTh2aJ3mYh9oL32mnUysccmuvQUY2ftJSvannKSPVA4IQfXvwX7TOslmA334=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766318563; c=relaxed/simple;
-	bh=XhbmSh6rV5fqudd+NuBEkp6MU+n69tlOGucaLEiJC7U=;
+	s=arc-20240116; t=1766318665; c=relaxed/simple;
+	bh=vYJHXTF57S2uWIWZSnj37Cbd8d3rIPZwHikEoAhE4qM=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=TF+B3f3Sd+/hiiU8Idbb0cKEsGAff+O62OkrClZIOjcAsf5eiyLrE+8LJ7Uv+gbyTQ5a9IxKjiA2BYl+j4kj8Ih3+0jtaTIAIrHCb4GpzWmyMFNXA0FA0QsBYhFEXeaVo/tHctWzhS6Rtn9S3jYlpjzcGWmveIMGvsZbg+yB4l8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=V5rnltEV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C3D7C4CEFB;
-	Sun, 21 Dec 2025 12:02:40 +0000 (UTC)
+	 MIME-Version:Content-Type; b=DYmSHt1jjH2efD/31WBewGmP42JqTLRE/vmxrDibwgab8xTW/epCP53EzDK63ZJTeCe3YIJ1N7PCmL6RzTTG5Uk6MmJ8ZVu4ZhCRt8VtLaFXaVRpTnQwmfpEeokj8hZCRPFip6jzeH9vGaWcsCdfHfbXgETIcKD+6ZkVtXzMZBA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kSjOlOk3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9BBF7C4CEFB;
+	Sun, 21 Dec 2025 12:04:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1766318563;
-	bh=XhbmSh6rV5fqudd+NuBEkp6MU+n69tlOGucaLEiJC7U=;
+	s=k20201202; t=1766318665;
+	bh=vYJHXTF57S2uWIWZSnj37Cbd8d3rIPZwHikEoAhE4qM=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=V5rnltEVRFRBWDaTkzNrSiEea7GYLgGEVIm4d1uX0XkFAp1eBEsUBOA5ljF5EFMip
-	 XeVNmt5sGYFL9+4DjSUL59iT5SFgTHJoNFS++pXytkuD6K+GxssFaM0J1K2/I/NJ0V
-	 ojqIr/ehOV1vPwQCF6HAbNraGjA/C2g4OIH0x1Vg3V54LWqz6FuWqQRjYLVNERCNVn
-	 q9TDidk24x2/jhfCtooDZqYuVtpZiI22g1PNnOgJigj0aHhs5d679dX2QG8FQZPhR/
-	 c7rcGbB2VaBLBVS1oDIqIM5xiYbWBHWmngmbblUdxiDEG06KId4widECEig4GAX/kY
-	 uLQmflibiQkFw==
-Date: Sun, 21 Dec 2025 12:02:35 +0000
+	b=kSjOlOk3h9BEnPlVU+aF/hIoaQV4c+oE2pmS+dEjUHl1yr+qW1KFlR8WM8sJ2bVd4
+	 qG9vydCViH89KPRGzVk6N89j4gByJknCPPjmfXkB/xfnei0gPVtOQLaxmc2CEMYYAW
+	 4cO6SbQTlo0TdXY/UrnfGdQ/rPWYIR9bfyysAGRF8P8CKYk+83V7PnQN5jvsJZorgO
+	 gcY2l+ehX46+G4byGX25XLKjXZhj9K+AiEiiV7IJCP3myCkXSVy4Z4uhTxvXMDcOB3
+	 3hmzaUdRhhnfbZzIM5IbaNdiEk6GEPy41lgxBviQenD55MuAM07dW2xJJNV66itTvr
+	 GH0Ltqv4LgQ7A==
+Date: Sun, 21 Dec 2025 12:04:13 +0000
 From: Jonathan Cameron <jic23@kernel.org>
-To: Nuno =?UTF-8?B?U8Oh?= via B4 Relay
- <devnull+nuno.sa.analog.com@kernel.org>
-Cc: nuno.sa@analog.com, linux-iio@vger.kernel.org, David Lechner
- <dlechner@baylibre.com>, Andy Shevchenko <andy@kernel.org>
-Subject: Re: [PATCH v2 0/6] iio: buffer-dma: Minor cleanups and improvements
-Message-ID: <20251221120235.6457d80a@jic23-huawei>
-In-Reply-To: <20251219-iio-dmabuf-improvs-v2-0-caa76de6e873@analog.com>
-References: <20251219-iio-dmabuf-improvs-v2-0-caa76de6e873@analog.com>
+To: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
+Cc: David Lechner <dlechner@baylibre.com>, Nuno =?UTF-8?B?U8Oh?=
+ <nuno.sa@analog.com>, Andy Shevchenko <andy@kernel.org>, Joel Stanley
+ <joel@jms.id.au>, Andrew Jeffery <andrew@codeconstruct.com.au>, Krzysztof
+ Kozlowski <krzk@kernel.org>, Alim Akhtar <alim.akhtar@samsung.com>, Heiko
+ Stuebner <heiko@sntech.de>, Orson Zhai <orsonzhai@gmail.com>, Baolin Wang
+ <baolin.wang@linux.alibaba.com>, Chunyan Zhang <zhang.lyra@gmail.com>,
+ linux-iio@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ linux-aspeed@lists.ozlabs.org, linux-kernel@vger.kernel.org,
+ linux-samsung-soc@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+ linux-rockchip@lists.infradead.org
+Subject: Re: [PATCH 1/5] iio: adc: aspeed: Simplify with dev_err_probe
+Message-ID: <20251221120413.7f1fa877@jic23-huawei>
+In-Reply-To: <20251219-iio-dev-err-probe-v1-1-bd0fbc83c8a0@oss.qualcomm.com>
+References: <20251219-iio-dev-err-probe-v1-0-bd0fbc83c8a0@oss.qualcomm.com>
+	<20251219-iio-dev-err-probe-v1-1-bd0fbc83c8a0@oss.qualcomm.com>
 X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -56,63 +64,44 @@ List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Fri, 19 Dec 2025 15:28:11 +0000
-Nuno S=C3=A1 via B4 Relay <devnull+nuno.sa.analog.com@kernel.org> wrote:
+On Fri, 19 Dec 2025 15:31:50 +0100
+Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com> wrote:
 
-> Small series with some minor improvements for IIO DMA buffers:
->  * Use lockdep instead of WARN() + mutex API;
->  * Use cleanup.h;
->  * Turn iio_dma_buffer_init() void;
->  * And I could not resist in cleaning up coding style.
->=20
-> Also note that in some of the coding style cleanups I deliberately went
-> above the 80 col limit as I think it otherwise hurts readability. If not
-> the case for everyone, I can change it.
->=20
+> Use dev_err_probe() to make error code handling simpler and handle
+> deferred probe nicely (avoid spamming logs).
+> 
+> Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
+Not a comment on this patch as such, but this would benefit from a local
+struct device *dev
 
-Series applied with a few tweaks.
-
-Jonathan
 
 > ---
-> Changes in v2:
-> - Patch 1
->   * Updated the commit subject and message (given that lockdep also WARNs=
-())=20
-> - Patch 2
->   * Slight change on the 80 column limit when allocating the block
->     (Jonathan expressed preference on that form).
-> - Patch 4
->   * Updated mutex/spinlock comments according Andy feedback.
-> - Link to v1: https://lore.kernel.org/r/20251203-iio-dmabuf-improvs-v1-0-=
-0e4907ce7322@analog.com
->=20
-> ---
-> Nuno S=C3=A1 (6):
->       iio: buffer-dma: Use lockdep for locking annotations
->       iio: buffer-dma: Use the cleanup.h API
->       iio: buffer-dma: Turn iio_dma_buffer_init() void
->       iio: buffer-dma: Fix coding style complains
->       iio: buffer-dmaengine: Use the cleanup.h API
->       iio: buffer-dmaengine: Fix coding style complains
->=20
->  drivers/iio/buffer/industrialio-buffer-dma.c       | 187 +++++++++------=
-------
->  drivers/iio/buffer/industrialio-buffer-dmaengine.c |  22 +--
->  include/linux/iio/buffer-dma.h                     |  20 ++-
->  3 files changed, 97 insertions(+), 132 deletions(-)
-> ---
-> base-commit: c5411c8b9ed1caf53604bb1a5be3f487988efc98
-> change-id: 20251104-iio-dmabuf-improvs-03d942284b86
-> --
->=20
-> Thanks!
-> - Nuno S=C3=A1
->=20
->=20
->=20
+>  drivers/iio/adc/aspeed_adc.c | 9 ++++-----
+>  1 file changed, 4 insertions(+), 5 deletions(-)
+> 
+> diff --git a/drivers/iio/adc/aspeed_adc.c b/drivers/iio/adc/aspeed_adc.c
+> index bf2bfd6bdc41..1ae45fe90e6c 100644
+> --- a/drivers/iio/adc/aspeed_adc.c
+> +++ b/drivers/iio/adc/aspeed_adc.c
+> @@ -535,11 +535,10 @@ static int aspeed_adc_probe(struct platform_device *pdev)
+>  		return PTR_ERR(data->clk_scaler);
+>  
+>  	data->rst = devm_reset_control_get_shared(&pdev->dev, NULL);
+> -	if (IS_ERR(data->rst)) {
+> -		dev_err(&pdev->dev,
+> -			"invalid or missing reset controller device tree entry");
+> -		return PTR_ERR(data->rst);
+> -	}
+> +	if (IS_ERR(data->rst))
+> +		return dev_err_probe(&pdev->dev, PTR_ERR(data->rst),
+> +				     "invalid or missing reset controller device tree entry");
+> +
+>  	reset_control_deassert(data->rst);
+>  
+>  	ret = devm_add_action_or_reset(data->dev, aspeed_adc_reset_assert,
+> 
 
 

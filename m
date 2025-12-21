@@ -1,55 +1,54 @@
-Return-Path: <linux-iio+bounces-27265-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-27266-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 090AECD3FB3
-	for <lists+linux-iio@lfdr.de>; Sun, 21 Dec 2025 13:01:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0BDC3CD3FBC
+	for <lists+linux-iio@lfdr.de>; Sun, 21 Dec 2025 13:02:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id AE16D3008EB7
-	for <lists+linux-iio@lfdr.de>; Sun, 21 Dec 2025 12:01:50 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 101F1300A36A
+	for <lists+linux-iio@lfdr.de>; Sun, 21 Dec 2025 12:02:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92F2F28A3FA;
-	Sun, 21 Dec 2025 12:01:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E7AE22D8798;
+	Sun, 21 Dec 2025 12:02:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OYkI+LO6"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="V5rnltEV"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 526E5191F98
-	for <linux-iio@vger.kernel.org>; Sun, 21 Dec 2025 12:01:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3FB1274670
+	for <linux-iio@vger.kernel.org>; Sun, 21 Dec 2025 12:02:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766318509; cv=none; b=XoVbB5wlFGEI3D65YAXpZazRDHniGnQeMblmkVIMhd94sXLN1T4FU5MmW5Fe/voHUgxMJ6UQDyLmr1vVtTnv0Rp4J7GS3f5RbAjjgvh+1foKUgXujAwMZ2McEC45MjDJKPOa6Rgf9BfFYKDn5qDz2mpY7QdgLQuUeX+oocjX3IQ=
+	t=1766318563; cv=none; b=KOTA9H5OxrXeonJvz7dFDEErImmMoJR2duKvCcdwCtNlaxNfLImgRCsh/+3yFxxiGlV8qHdlD+ivFeMNg78UGvf09HnZR5dEX0zkIblUnSwtEdXNXXGLtqxX0M9pscvmnfaCeZPcXNoeYQp0VTNBqPBM4m5kUvNyJEXi2ZW+Rdc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766318509; c=relaxed/simple;
-	bh=dT1uxhEFEtmBtJWbPfhdC3UX/ycmc/ZP9gQNyymijCQ=;
+	s=arc-20240116; t=1766318563; c=relaxed/simple;
+	bh=XhbmSh6rV5fqudd+NuBEkp6MU+n69tlOGucaLEiJC7U=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=mA+6Gu32fBdKe7qmhD87pkIRZJGaYW0eCmrwMFdZaoGYAl2YLxBQB1dZOItOHmC/hwRlf3XrT5D8vejWXkkUqDnWNFKIQwuVOqZy7kPwSB9gv440Hg4LxMcKF8q9RaaF06ixbmglDia4GPNJV9v6LlpOB+BR82xhAHO4SBbRw7E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OYkI+LO6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90423C4CEFB;
-	Sun, 21 Dec 2025 12:01:46 +0000 (UTC)
+	 MIME-Version:Content-Type; b=TF+B3f3Sd+/hiiU8Idbb0cKEsGAff+O62OkrClZIOjcAsf5eiyLrE+8LJ7Uv+gbyTQ5a9IxKjiA2BYl+j4kj8Ih3+0jtaTIAIrHCb4GpzWmyMFNXA0FA0QsBYhFEXeaVo/tHctWzhS6Rtn9S3jYlpjzcGWmveIMGvsZbg+yB4l8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=V5rnltEV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C3D7C4CEFB;
+	Sun, 21 Dec 2025 12:02:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1766318508;
-	bh=dT1uxhEFEtmBtJWbPfhdC3UX/ycmc/ZP9gQNyymijCQ=;
+	s=k20201202; t=1766318563;
+	bh=XhbmSh6rV5fqudd+NuBEkp6MU+n69tlOGucaLEiJC7U=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=OYkI+LO6oeznRGKuW9rTwjLAqCkV1t0FgTX/miqZUCOmXkS7knG6tJ5w9x49aMl3p
-	 6M5vG+kG0PaVj+OALlFLhbCWnW9RZyskLqPolZAMEqKPQ9bsrW6KSYObpNK5F06ild
-	 fpy0rb4IFk7yMeaI/l2Gqdx3IomVrWIoYnV//N19qAY2hBbA2a4xhNNG5nEIE13DKp
-	 gTSW77Ds2LXWc8Uhykj1yD6VuEMGAkdBtFPcdEanaLuUWB/8Fw7hH7fUya5I8Ye7TN
-	 +tk7n6hV5u6sWWcDc8M8O1lm/JPxeIq457QO87zWTX4yS7GKI4APAwZKuZue6ekGGb
-	 v1MsPiLlTVYAg==
-Date: Sun, 21 Dec 2025 12:01:41 +0000
+	b=V5rnltEVRFRBWDaTkzNrSiEea7GYLgGEVIm4d1uX0XkFAp1eBEsUBOA5ljF5EFMip
+	 XeVNmt5sGYFL9+4DjSUL59iT5SFgTHJoNFS++pXytkuD6K+GxssFaM0J1K2/I/NJ0V
+	 ojqIr/ehOV1vPwQCF6HAbNraGjA/C2g4OIH0x1Vg3V54LWqz6FuWqQRjYLVNERCNVn
+	 q9TDidk24x2/jhfCtooDZqYuVtpZiI22g1PNnOgJigj0aHhs5d679dX2QG8FQZPhR/
+	 c7rcGbB2VaBLBVS1oDIqIM5xiYbWBHWmngmbblUdxiDEG06KId4widECEig4GAX/kY
+	 uLQmflibiQkFw==
+Date: Sun, 21 Dec 2025 12:02:35 +0000
 From: Jonathan Cameron <jic23@kernel.org>
 To: Nuno =?UTF-8?B?U8Oh?= via B4 Relay
  <devnull+nuno.sa.analog.com@kernel.org>
 Cc: nuno.sa@analog.com, linux-iio@vger.kernel.org, David Lechner
  <dlechner@baylibre.com>, Andy Shevchenko <andy@kernel.org>
-Subject: Re: [PATCH v2 5/6] iio: buffer-dmaengine: Use the cleanup.h API
-Message-ID: <20251221120141.02d01840@jic23-huawei>
-In-Reply-To: <20251219-iio-dmabuf-improvs-v2-5-caa76de6e873@analog.com>
+Subject: Re: [PATCH v2 0/6] iio: buffer-dma: Minor cleanups and improvements
+Message-ID: <20251221120235.6457d80a@jic23-huawei>
+In-Reply-To: <20251219-iio-dmabuf-improvs-v2-0-caa76de6e873@analog.com>
 References: <20251219-iio-dmabuf-improvs-v2-0-caa76de6e873@analog.com>
-	<20251219-iio-dmabuf-improvs-v2-5-caa76de6e873@analog.com>
 X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -60,63 +59,60 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
 
-On Fri, 19 Dec 2025 15:28:16 +0000
+On Fri, 19 Dec 2025 15:28:11 +0000
 Nuno S=C3=A1 via B4 Relay <devnull+nuno.sa.analog.com@kernel.org> wrote:
 
-> From: Nuno S=C3=A1 <nuno.sa@analog.com>
+> Small series with some minor improvements for IIO DMA buffers:
+>  * Use lockdep instead of WARN() + mutex API;
+>  * Use cleanup.h;
+>  * Turn iio_dma_buffer_init() void;
+>  * And I could not resist in cleaning up coding style.
 >=20
-> Make use of the cleanup.h API for locks in order to simplify some code
-> paths.
+> Also note that in some of the coding style cleanups I deliberately went
+> above the 80 col limit as I think it otherwise hurts readability. If not
+> the case for everyone, I can change it.
 >=20
-> Signed-off-by: Nuno S=C3=A1 <nuno.sa@analog.com>
 
-Needs cleanup.h for scoped_guard() definition.
-
-I'm not seeing this as a significant simplification but this driver is
-your problems so fair enough.
-
-So applied with the header include added.
+Series applied with a few tweaks.
 
 Jonathan
 
-
-
 > ---
->  drivers/iio/buffer/industrialio-buffer-dmaengine.c | 11 ++++-------
->  1 file changed, 4 insertions(+), 7 deletions(-)
+> Changes in v2:
+> - Patch 1
+>   * Updated the commit subject and message (given that lockdep also WARNs=
+())=20
+> - Patch 2
+>   * Slight change on the 80 column limit when allocating the block
+>     (Jonathan expressed preference on that form).
+> - Patch 4
+>   * Updated mutex/spinlock comments according Andy feedback.
+> - Link to v1: https://lore.kernel.org/r/20251203-iio-dmabuf-improvs-v1-0-=
+0e4907ce7322@analog.com
 >=20
-> diff --git a/drivers/iio/buffer/industrialio-buffer-dmaengine.c b/drivers=
-/iio/buffer/industrialio-buffer-dmaengine.c
-> index e9d9a7d39fe1..a8a4adb5ed3a 100644
-> --- a/drivers/iio/buffer/industrialio-buffer-dmaengine.c
-> +++ b/drivers/iio/buffer/industrialio-buffer-dmaengine.c
-> @@ -49,11 +49,9 @@ static void iio_dmaengine_buffer_block_done(void *data,
->  		const struct dmaengine_result *result)
->  {
->  	struct iio_dma_buffer_block *block =3D data;
-> -	unsigned long flags;
-> =20
-> -	spin_lock_irqsave(&block->queue->list_lock, flags);
-> -	list_del(&block->head);
-> -	spin_unlock_irqrestore(&block->queue->list_lock, flags);
-> +	scoped_guard(spinlock_irqsave, &block->queue->list_lock)
-> +		list_del(&block->head);
->  	block->bytes_used -=3D result->residue;
->  	iio_dma_buffer_block_done(block);
->  }
-> @@ -131,9 +129,8 @@ static int iio_dmaengine_buffer_submit_block(struct i=
-io_dma_buffer_queue *queue,
->  	if (dma_submit_error(cookie))
->  		return dma_submit_error(cookie);
-> =20
-> -	spin_lock_irq(&dmaengine_buffer->queue.list_lock);
-> -	list_add_tail(&block->head, &dmaengine_buffer->active);
-> -	spin_unlock_irq(&dmaengine_buffer->queue.list_lock);
-> +	scoped_guard(spinlock_irq, &dmaengine_buffer->queue.list_lock)
-> +		list_add_tail(&block->head, &dmaengine_buffer->active);
-> =20
->  	dma_async_issue_pending(dmaengine_buffer->chan);
-> =20
+> ---
+> Nuno S=C3=A1 (6):
+>       iio: buffer-dma: Use lockdep for locking annotations
+>       iio: buffer-dma: Use the cleanup.h API
+>       iio: buffer-dma: Turn iio_dma_buffer_init() void
+>       iio: buffer-dma: Fix coding style complains
+>       iio: buffer-dmaengine: Use the cleanup.h API
+>       iio: buffer-dmaengine: Fix coding style complains
+>=20
+>  drivers/iio/buffer/industrialio-buffer-dma.c       | 187 +++++++++------=
+------
+>  drivers/iio/buffer/industrialio-buffer-dmaengine.c |  22 +--
+>  include/linux/iio/buffer-dma.h                     |  20 ++-
+>  3 files changed, 97 insertions(+), 132 deletions(-)
+> ---
+> base-commit: c5411c8b9ed1caf53604bb1a5be3f487988efc98
+> change-id: 20251104-iio-dmabuf-improvs-03d942284b86
+> --
+>=20
+> Thanks!
+> - Nuno S=C3=A1
+>=20
+>=20
 >=20
 
 

@@ -1,55 +1,63 @@
-Return-Path: <linux-iio+bounces-27292-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-27293-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 049E0CD4477
-	for <lists+linux-iio@lfdr.de>; Sun, 21 Dec 2025 20:07:02 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 32AF3CD4486
+	for <lists+linux-iio@lfdr.de>; Sun, 21 Dec 2025 20:07:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id AAF9A3000932
-	for <lists+linux-iio@lfdr.de>; Sun, 21 Dec 2025 19:06:57 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 029183004CAF
+	for <lists+linux-iio@lfdr.de>; Sun, 21 Dec 2025 19:07:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F710233D88;
-	Sun, 21 Dec 2025 19:06:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA967302767;
+	Sun, 21 Dec 2025 19:07:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KA9ecCRN"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NJdyQaQE"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E278C1E32CF
-	for <linux-iio@vger.kernel.org>; Sun, 21 Dec 2025 19:06:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5325A1FC101;
+	Sun, 21 Dec 2025 19:07:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766344014; cv=none; b=Fdb2Qt9WKpKhzIEXefceCPTFTKP1zPFt+LpFObKk941TyH1uwdWkrVmmKpMD5YoGtK3y1c+SvPzEfqq67pEeGl/VOy/8PBefHHetFkzn4GrDzduNPF8F4Pc93YkL6bnAM5TNEZlBbuGNBrEIzPnrNlEy9XmVnaeDVvtBxXDOjjE=
+	t=1766344075; cv=none; b=QMsU+c0QBwgVme9NkRdqFHUbfBMX0C4i/nk0YkH6us+nvGQVneePSWwPpFLCrA7ES3AryRPnwLqZVYKfZpGC/347hpRXV8AN/nASU7Xl/JqWVnoOLpriWnbHfpxOQjqOY5FbUVMvYw2iJQCfKIrngm1whZpR9v2FWzKng70peO4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766344014; c=relaxed/simple;
-	bh=mYwUWc9vMRWfPmYq7p9fl4BhYW13g9F+MtyNe45Xnp8=;
+	s=arc-20240116; t=1766344075; c=relaxed/simple;
+	bh=5qRIeksMsfEJsG09uI0wVp8Q5PSrhw5lrhG/r6Dm2Bo=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=N3TvoyJDXQoXoihys71r0Yze+f8tF43jF7TyAG5itCZ0woblq/zmReMf7vs+A7Af6bxu10WGCdURi+wvDWgyySEbtVCxb/MP+wLuvPQREUKQN/k5dFS6dw9fnbLgQBVg/KgaI0URq/1rBqw9bIoLDyCwB80DP4qASZ19vv0fWRI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KA9ecCRN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9AA47C4CEFB;
-	Sun, 21 Dec 2025 19:06:51 +0000 (UTC)
+	 MIME-Version:Content-Type; b=NgKsaCzpkWfx4/b81+2aoo5xhHeEeSD8rdVSksdW7ddOi3cs2rOeCzGqgrGllXcvwbTTxj0eiqlJ6INYISP7IkNNIOAdZ2W/13noT6POXsJgwYuXvBb4hgMZ4W+HSTsQjqbGvCQok0NKfRXvVOw55cpp2D2PdcYLtX4c/Tjpp28=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NJdyQaQE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 394FAC4CEFB;
+	Sun, 21 Dec 2025 19:07:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1766344013;
-	bh=mYwUWc9vMRWfPmYq7p9fl4BhYW13g9F+MtyNe45Xnp8=;
+	s=k20201202; t=1766344074;
+	bh=5qRIeksMsfEJsG09uI0wVp8Q5PSrhw5lrhG/r6Dm2Bo=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=KA9ecCRNA0UCLxbhCglSxv6nayvCz6w3oxjnRUropQiufObVJsM08g3mjCUu6IlxU
-	 dQVUFqs1Ecd6GmRauhCjHWFsvdRGpbmgQRiEQkszcn/+iSxZR78yGPFOSTraB3dlyP
-	 IpfPwNd5I4Voe8nBlPmJ3mIHMcNxubPOokGrWPqxoXcuuEv/XH8/0yKU2rD8Umo2z/
-	 qaiMRIrzrcnmXNuzmMKi+PBDDxb7JeVTkLu7QP7X6gqHDW/aK3TcJ9xaWalCNF6qqc
-	 vn9JJaOUoKFoABw46jadkVFAH+d77s3dNNpf7oBHY07oQCBrhf++nX7ZqBMj9JAnEQ
-	 oMMyZi0jTInow==
-Date: Sun, 21 Dec 2025 19:06:45 +0000
+	b=NJdyQaQE0RKum87djB/p76VFtKzoStwkO6UQuhuJKEO51HPv4aOci1PpiVqRCfo13
+	 6bqbA4/TPkTyB7oFKolG4gZTCbRxHGzpQZAR3xXaN17wp8uTA9g+HgEhCg9ewCByE/
+	 BFWLAFExrSjQIiHg3jBi/ggBBxTmitBuM9Qq+tI3irDy1FeBGJULvOf4VhEWjg0vEj
+	 hE9OM87+RLGyfxP67EjCP6DC4cOBQHfXN/6rKrRA7tzF+NEqnfetjiObV2AZGdJbtZ
+	 nRVdWRWLA8VvW8uzvT1LeObbIP6f8E8Wbh6siljW5LWEjtgwC3/XgDT15OOnufwcb3
+	 y2nIzcR+GtbZg==
+Date: Sun, 21 Dec 2025 19:07:42 +0000
 From: Jonathan Cameron <jic23@kernel.org>
-To: Peter Rosin <peda@axentia.se>
-Cc: Rasmus Villemoes <ravi@prevas.dk>, linux-iio@vger.kernel.org, Guenter
- Roeck <linux@roeck-us.net>
-Subject: Re: [PATCH] iio: core: add separate lockdep class for
- info_exist_lock
-Message-ID: <20251221190645.5d5d1b32@jic23-huawei>
-In-Reply-To: <78de7c11-5724-c3ba-4a32-0dd0f8b4d74f@axentia.se>
-References: <20251215131723.4130826-1-ravi@prevas.dk>
-	<78de7c11-5724-c3ba-4a32-0dd0f8b4d74f@axentia.se>
+To: kernel test robot <lkp@intel.com>
+Cc: Frank Li <Frank.Li@nxp.com>, Alexandre Belloni
+ <alexandre.belloni@bootlin.com>, Miquel Raynal <miquel.raynal@bootlin.com>,
+ David Lechner <dlechner@baylibre.com>, Nuno =?UTF-8?B?U8Oh?=
+ <nuno.sa@analog.com>, Andy Shevchenko <andy@kernel.org>, Rob Herring
+ <robh@kernel.org>, Krzysztof Kozlowski <krzk@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+ linux-i3c@lists.infradead.org, linux-kernel@vger.kernel.org,
+ imx@lists.linux.dev, linux-iio@vger.kernel.org,
+ joshua.yeong@starfivetech.com, devicetree@vger.kernel.org,
+ linux@roeck-us.net, Carlos Song <carlos.song@nxp.com>, Adrian Fluturel
+ <fluturel.adrian@gmail.com>
+Subject: Re: [PATCH v12 2/2] iio: magnetometer: Add mmc5633 sensor
+Message-ID: <20251221190742.4162108b@jic23-huawei>
+In-Reply-To: <202512202141.aAwyC19D-lkp@intel.com>
+References: <20251215-i3c_ddr-v12-2-1ae31225b4d9@nxp.com>
+	<202512202141.aAwyC19D-lkp@intel.com>
 X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -60,45 +68,89 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Mon, 15 Dec 2025 14:33:38 +0100
-Peter Rosin <peda@axentia.se> wrote:
+On Sat, 20 Dec 2025 22:34:47 +0800
+kernel test robot <lkp@intel.com> wrote:
 
-> Hi!
+> Hi Frank,
 > 
-> 2025-12-15 at 14:17, Rasmus Villemoes wrote:
-> > When one iio device is a consumer of another, it is possible that
-> > the ->info_exist_lock of both ends up being taken when reading the
-> > value of the consumer device.
-> > 
-> > Since they currently belong to the same lockdep class (being
-> > initialized in a single location with mutex_init()), that results in a
-> > lockdep warning  
+> kernel test robot noticed the following build errors:
 > 
-> ...
+> [auto build test ERROR on 8f0b4cce4481fb22653697cced8d0d04027cb1e8]
 > 
-> > Just as the mlock_key already has its own lockdep class, add a
-> > lock_class_key for the info_exist mutex.
-> > 
-> > Signed-off-by: Rasmus Villemoes <ravi@prevas.dk>  
+> url:    https://github.com/intel-lab-lkp/linux/commits/Frank-Li/dt-bindings-trivial-devices-add-MEMSIC-3-axis-magnetometer/20251216-010451
+> base:   8f0b4cce4481fb22653697cced8d0d04027cb1e8
+> patch link:    https://lore.kernel.org/r/20251215-i3c_ddr-v12-2-1ae31225b4d9%40nxp.com
+> patch subject: [PATCH v12 2/2] iio: magnetometer: Add mmc5633 sensor
+> config: arm64-allmodconfig (https://download.01.org/0day-ci/archive/20251220/202512202141.aAwyC19D-lkp@intel.com/config)
+> compiler: clang version 19.1.7 (https://github.com/llvm/llvm-project cd708029e0b2869e80abe31ddb175f7c35361f90)
+> reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20251220/202512202141.aAwyC19D-lkp@intel.com/reproduce)
 > 
-> Looks sane from here.
+> If you fix the issue in a separate patch/commit (i.e. not just a new version of
+> the same patch/commit), kindly add following tags
+> | Reported-by: kernel test robot <lkp@intel.com>
+> | Closes: https://lore.kernel.org/oe-kbuild-all/202512202141.aAwyC19D-lkp@intel.com/
 > 
-> Reviewed-by: Peter Rosin <peda@axentia.se>
-Hi Rasmus,
+> All errors (new ones prefixed by >>):
+> 
+> >> drivers/iio/magnetometer/mmc5633.c:362:2: error: cannot jump from switch statement to this case label  
+>      362 |         default:
+>          |         ^
+>    drivers/iio/magnetometer/mmc5633.c:357:3: note: jump bypasses initialization of variable with __attribute__((cleanup))
+>      357 |                 guard(mutex)(&data->mutex);
+>          |                 ^
+>    include/linux/cleanup.h:414:15: note: expanded from macro 'guard'
+>      414 |         CLASS(_name, __UNIQUE_ID(guard))
+>          |                      ^
+>    include/linux/compiler.h:168:2: note: expanded from macro '__UNIQUE_ID'
+>      168 |         __PASTE(__UNIQUE_ID_,                                   \
+>          |         ^
+>    include/linux/compiler_types.h:16:23: note: expanded from macro '__PASTE'
+>       16 | #define __PASTE(a, b) ___PASTE(a, b)
+>          |                       ^
+>    include/linux/compiler_types.h:15:24: note: expanded from macro '___PASTE'
+>       15 | #define ___PASTE(a, b) a##b
+>          |                        ^
+>    <scratch space>:9:1: note: expanded from here
+>        9 | __UNIQUE_ID_guard_966
+>          | ^
+>    1 error generated.
+> 
+> 
+> vim +362 drivers/iio/magnetometer/mmc5633.c
+> 
+>    343	
+>    344	static int mmc5633_write_raw(struct iio_dev *indio_dev,
+>    345				     struct iio_chan_spec const *chan, int val,
+>    346				     int val2, long mask)
+>    347	{
+>    348		struct mmc5633_data *data = iio_priv(indio_dev);
+>    349		int ret;
+>    350	
+>    351		switch (mask) {
+>    352		case IIO_CHAN_INFO_SAMP_FREQ:
+{
+>    353			ret = mmc5633_get_samp_freq_index(data, val, val2);
+>    354			if (ret < 0)
+>    355				return ret;
+>    356	
+>    357			guard(mutex)(&data->mutex);
+>    358	
+>    359			return regmap_update_bits(data->regmap, MMC5633_REG_CTRL1,
+>    360						  MMC5633_CTRL1_BW_MASK,
+>    361						  FIELD_PREP(MMC5633_CTRL1_BW_MASK, ret));
+}
+Needed to add scope for the guard to apply to.
+If this is all that comes up I'll fix it whilst applying.
 
-Thanks for doing this!
-> 
-We should probably merge this as a fix and get it backported.
-Whilst fairly rare anyone hits this it is also safe enough wrt
-to very low chance of causing any problems.
-
-Would be good to have an appropriate Fixes tag though.
-Ideally please reply to this thread with an appropriate one.
-If not I'll try and figure one out, but not today!
+thanks,
 
 Jonathan
 
-> Cheers,
-> Peter
+>  > 362		default:  
+>    363			return -EINVAL;
+>    364		}
+>    365	}
+>    366	
+> 
 
 

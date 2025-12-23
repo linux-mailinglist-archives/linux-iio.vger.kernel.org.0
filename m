@@ -1,75 +1,78 @@
-Return-Path: <linux-iio+bounces-27325-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-27326-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id DFAC8CD7EBB
-	for <lists+linux-iio@lfdr.de>; Tue, 23 Dec 2025 03:55:35 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 07F31CD7EC7
+	for <lists+linux-iio@lfdr.de>; Tue, 23 Dec 2025 03:55:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 18C713002886
-	for <lists+linux-iio@lfdr.de>; Tue, 23 Dec 2025 02:55:35 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 5D72830351D8
+	for <lists+linux-iio@lfdr.de>; Tue, 23 Dec 2025 02:55:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A51032BF011;
-	Tue, 23 Dec 2025 02:55:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A654287265;
+	Tue, 23 Dec 2025 02:55:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=dionne-riel-com.20230601.gappssmtp.com header.i=@dionne-riel-com.20230601.gappssmtp.com header.b="B43PUX8R"
+	dkim=pass (2048-bit key) header.d=dionne-riel-com.20230601.gappssmtp.com header.i=@dionne-riel-com.20230601.gappssmtp.com header.b="yGgzIu4R"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-qk1-f175.google.com (mail-qk1-f175.google.com [209.85.222.175])
+Received: from mail-qk1-f179.google.com (mail-qk1-f179.google.com [209.85.222.179])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 953D023E33D
-	for <linux-iio@vger.kernel.org>; Tue, 23 Dec 2025 02:55:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD5512BE7BA
+	for <linux-iio@vger.kernel.org>; Tue, 23 Dec 2025 02:55:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766458533; cv=none; b=kryLI9zepuPV6SgdjRyalpA0fWhoYru/SK9ZGSvxLIGB2DpuMOPNjfUBKfnpId/6++KRQv16mP/fWRpCnZtNyMBfCaoq81jjeF/P7fXcBUXJQeUQqItqtz7GV8JB4z+Fh1C6MKWqPCScucDm8uiv1j/dFQDb2LJpOw5CDrw88KA=
+	t=1766458534; cv=none; b=Xp1QoLtnvQJ/G4bCv8PoLoaZzaUxBbOFX8wx7N95WLj54ytt0j52wxNl3/03afMX0g+wGf7fnVcVhifiWbmFmGJANUOWRpy0vOHPXQea6Skho5CV+/hw1fa2xVJpW/N4WqwUamg+QxjxKSiHlwTCn8zhUPbPxVpL0JDwmnlQGy4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766458533; c=relaxed/simple;
-	bh=FmINFl66x7c6O1WwsFnvRfuI0TeWpe8TQzvCXdh0cxE=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=V8aLBRXXIUKFYqiu1dyN70qjwJXW2IDlPWGdCnz1s3QqJXrRkBD4yO7u1CRJC6EautVxA7xNU4qp2Wuj4N5UIbWYSGyq8ksK8pryXr1qAgMiUIFxCdEO59dR/JjTIM7oi/ek+595WYwDPhkc2XZ+O4+x1lvcEKh2+snhdV1P5MY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=dionne-riel.com; spf=pass smtp.mailfrom=dionne-riel.com; dkim=pass (2048-bit key) header.d=dionne-riel-com.20230601.gappssmtp.com header.i=@dionne-riel-com.20230601.gappssmtp.com header.b=B43PUX8R; arc=none smtp.client-ip=209.85.222.175
+	s=arc-20240116; t=1766458534; c=relaxed/simple;
+	bh=ku3ZBVETifjeQ0o3DDEB1EmddF0OrNMWr7Ng1VwkBe4=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=LVTnxvUX8a7VKWXkToNTLwtUDtvFmxz3XpO2gtKAePRSYD3qUz84qj4psrRzjekX3qVsmB4uxzoVYjXzv0qJiJEdXAsFPTlL6gl1dfubhL42DVfdA7RP0DYd3wjs/9VmH8fy0tr6DRCa/GXoDzJlOFWKjbX5zXENNKoJ+x4W/n4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=dionne-riel.com; spf=pass smtp.mailfrom=dionne-riel.com; dkim=pass (2048-bit key) header.d=dionne-riel-com.20230601.gappssmtp.com header.i=@dionne-riel-com.20230601.gappssmtp.com header.b=yGgzIu4R; arc=none smtp.client-ip=209.85.222.179
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=dionne-riel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dionne-riel.com
-Received: by mail-qk1-f175.google.com with SMTP id af79cd13be357-8c15e8b2f1aso109894285a.0
-        for <linux-iio@vger.kernel.org>; Mon, 22 Dec 2025 18:55:30 -0800 (PST)
+Received: by mail-qk1-f179.google.com with SMTP id af79cd13be357-8be92e393f8so452605585a.1
+        for <linux-iio@vger.kernel.org>; Mon, 22 Dec 2025 18:55:31 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=dionne-riel-com.20230601.gappssmtp.com; s=20230601; t=1766458529; x=1767063329; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=oPXtsmZwqmszy2Z3ad4yZemQBr4otwPEMwkLHzGFQDs=;
-        b=B43PUX8Rmk0ANRZRDllquMSdCliB6TtdQyoG7Ep3thjUmw7n1Jmx4dIqw575/g9aeG
-         QlTtg2ckQ7vhOITLqiHmsOlm8ZZZxb7/peghx6YV/TJAoehwutBsApz/yuWyOHS2BUVA
-         D+P5IEXPaRz3Wa2hiPPj6JM91+5iYSRuzJGYLFaHPWrx+yA/m95sBXFKTMujpve9G9O9
-         l1kAwdS//DUlpV+Xs7SKKlPTyv+GYfphASPzzlypJxPK0uvgpUJMSvu+m8Q+O3ehbc4D
-         IIAcS58xVkhDTZqsbVO2XGIazsk3z1XZiQORe//EN1P8UDVtBfE3jlK+q6WcsQL+CKPa
-         B/Cg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1766458529; x=1767063329;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=dionne-riel-com.20230601.gappssmtp.com; s=20230601; t=1766458531; x=1767063331; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=oPXtsmZwqmszy2Z3ad4yZemQBr4otwPEMwkLHzGFQDs=;
-        b=IdFXj2qaLfuUoSIp/QV+cNeiF9oejohuesXPGb+k8z5dwdnb42TLjeJi1ouz66eHtT
-         79bDBWDX9zLHFF05dC1KLulrCs+7p++eFw+FH0ri/IQzXM0CJVhkPFjer4sKaIQRq6tG
-         +Eemv0kA1dKsxMmZeZB9Vm0nRTImW8dY+NPaZozqCWNt2kx5fepwLkx1+lxcdlNRoJqV
-         x+6isSK3+78lzHGv10vqZ6ji2+d22XdijUxy4fwPSxSafoTHQzReytSg6LgCGJHgbibt
-         MC4sf4YEXMMcjaO1MwRdxn/GIFzxkxWUX6gfQg0ptqaOZKATRcLEVFSJ5kGcoRnY43Yl
-         JdeA==
-X-Forwarded-Encrypted: i=1; AJvYcCUpCblq+n/U3Fxru6H86oFPJIRGpc5P1fZoBw7fINSFiSnGIgoYL0wmnxxpLiqKZBEdb0j9S0zffLk=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwZlBpYf8bh1Lf6ZvUJrdDJf5KmNtU4EW4VwLaOtqt8OhZdyoGG
-	Y0qbjt4TIs85KDSPskyAaTGckxlFIqksNAqQYLkdFqYMAcigynl9/WkDR7hnlMJehQ==
-X-Gm-Gg: AY/fxX7lk3NrnzqS7Zi1LqYhkT/B16DNI5wkNjL8n5jQXPmU4LEplA/RCT+dEayQzHv
-	+N6O7G0QnE6mldlA/BrHqmIaOO76Lz0ZALdR6Rj0e5T5Z8j7Q5KhLVpoZR/mo5O+BSSvPQyVM8Y
-	x/T4NHmsIBL+68+DAMOtCmKbHSc2GbdAQFRDqXz0SR148pjAV83ahtTY8Ornl+3GzYmnI4EtlGC
-	yCW9DQkHrWwc4mArUQrqcnK8DFUaPY/orM7FJt2j0yGPXSflIOxDLF1TEncQvdWoCcuFpoZ+LsK
-	UjoORE8vSWL3wdXoVnBUbGm1xqXZmMcOPs2TxdYGyFv79LChSHaboHOzR1vXXfn8zz8c/xLM6MZ
-	BS4W936xW4smCWgtNq36+kIOU1Vdf03evp41xPxkqlt1KBUBE2M/nhZRUDhyJEdaQPLRit0lBvU
-	fQPQy2aPcfMHWoJn7tJt59Kw3Eqls+53y4kK/+BgyQNzMzTnX/Wy6eLSVGHDzZHNG9MQ==
-X-Google-Smtp-Source: AGHT+IFMQBuJKG+s89ytfpim0agf28VsA4eYpJoXXbIrx917beJ85V1CH+cN07TPoFVi29t0qUWpOg==
-X-Received: by 2002:a05:620a:444a:b0:8b2:e986:2707 with SMTP id af79cd13be357-8c08faaf129mr2112728385a.45.1766458529319;
-        Mon, 22 Dec 2025 18:55:29 -0800 (PST)
+        bh=7ZosNXC7a/oy6bIWG7fweMBXN4zVwQCtuYGLBNLI7q8=;
+        b=yGgzIu4ROT9alF55yJUoDGOaeH+5t05REtxg7gXRyLErH5cqYO+vk8li4M0vbBrDk/
+         pCZJhIOsIMAB6QVOpIvmsAytFstttq00H1lKqH7tWpAbAOgNX+xI5BqDrXf0InTv0XpW
+         HxN+W6Nyf4n3NXzs4vCRYsQBm+5Bu2MId4n6CgkjaoExbjwa+k7CZna3O5+qsGxMYNJh
+         /yUbu+L2NFeJz6RtEBfDfIkXhpJw7AIKnBvwoMWgZyzK9JSEi8RjSgTGSkeDSEeYTdeK
+         eaVHxIrxKDXP1iZO/MLhYMEcxTz8MD2lh3Yv6EPyKDYf3UgaTGxRpRuhtHHcbyw6xo+2
+         CntQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1766458531; x=1767063331;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=7ZosNXC7a/oy6bIWG7fweMBXN4zVwQCtuYGLBNLI7q8=;
+        b=ANpdJiOjcVPH39RTRXsaHfoy7CVQtpw0HkvmjbxmT/uuppsabyuKMfZ4xX0mr3PpQv
+         BvP1BzGMo35fPzZPVbUfdl6HR97Xp51vL+XOcisJIqUNyEDGBQsU9zKJNR5Hqgpdd7ij
+         RPxvoYWc7pLY5ERP3XrmZpMssj3JLVQ+gzRKgnMC3cSKuu0FOsht+27fAeMVlo80Gyjm
+         C1AZoMU4CzNIvY2bKT5nDfprpmjOWNiaugvZl6omsr2b8aLUZqeh8jJkZNFvd//bmmlr
+         +tz/lEl5LLKq/jvcEfYliAS7thEmq0SkqGW72py3KoWxYu/OkksKZqTkFoMf+X/OM2dt
+         Tq6g==
+X-Forwarded-Encrypted: i=1; AJvYcCXvLdOmj3kZ4clez6rL9neeZ5s/fhLWoCkqvEYVRu52okV5R8ODLivbdu64oIIFf9hyXUrpntt/eNY=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzJBra76HiAHSx/gIXws8Wi3i3FPlUIFB7d1MlDLe2aUkW32Hg2
+	MIxtk/VQ9igxuV+j7tGiswzgvaumTFzgG9CX74ymcjg/atfu2ued8BrScxbdtOQbMfBOUCMPiiu
+	5XBs=
+X-Gm-Gg: AY/fxX5rLe8g2+Zek1a1rTJPAGxtTObb4jMzQXVkBkyXh84ZDMApl3zIMf56DsRkKUA
+	rbCyKrrIr+cOY+pLK2LfXhQ6hSIl4fVYlwkw6G9UKRUr8EdBxP6t564DKv1bXTDRZziIE47WJro
+	FJk27nfyFVERYgUKwn8SPh/ATEn4Is7z+qm1kyCL11sWl5lGe+06zGGQlJrdgs7o8dh4qTEvzgP
+	nmGlB+PYYbdzlzm0yX+YXvNTkaAdo4BI0I9HHNogYGwEaTdSl5g6zQLxX/fOlZImEL8MmmiB5jl
+	1JNt3KOUV9sJsuySx4TuBGVe8eCGv/nrln6kieyiIH2TC7i6EGb01uk0g//mnB3J8OvXTsMS38S
+	ROSZzKkvzgEzZ+vUFIcrWwT7SWPEAJ+/b8flWfUtQdEWU7IgyWq4sYLa4ART61kcfcCUP47g/18
+	RcbcTzQ9O7v03uxw1kKOC168BVX5fep812O8jd8X2PuScqMW0LPiMR4289nUsRqkBifQ==
+X-Google-Smtp-Source: AGHT+IFIjN3KCfF6HxWnQFgXimOgjIxHu+87lh3Uzmv992YLlYYkIgYyg7HuuB+Jt0EGAMWtlnPKOw==
+X-Received: by 2002:a05:620a:2685:b0:8a2:bff5:40e3 with SMTP id af79cd13be357-8c0906f7484mr2008264085a.38.1766458530683;
+        Mon, 22 Dec 2025 18:55:30 -0800 (PST)
 Received: from frankgrimes.elk-nominal.ts.net (135-23-195-66.cpe.pppoe.ca. [135.23.195.66])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-8c0970f8572sm952775585a.25.2025.12.22.18.55.28
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-8c0970f8572sm952775585a.25.2025.12.22.18.55.29
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 22 Dec 2025 18:55:28 -0800 (PST)
+        Mon, 22 Dec 2025 18:55:30 -0800 (PST)
 From: Samuel Dionne-Riel <samuel@dionne-riel.com>
 To: Lorenzo Bianconi <lorenzo@kernel.org>,
 	Jonathan Cameron <jic23@kernel.org>,
@@ -79,10 +82,12 @@ To: Lorenzo Bianconi <lorenzo@kernel.org>,
 Cc: Samuel Dionne-Riel <samuel@dionne-riel.com>,
 	linux-iio@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH 0/2] iio: imu: lsm6dsx: Support SMOCF05 ACPI ID
-Date: Mon, 22 Dec 2025 21:53:49 -0500
-Message-ID: <20251223025351.3099978-2-samuel@dionne-riel.com>
+Subject: [PATCH 1/2] iio: imu: lsm6dsx: Support SMOCF05 ACPI ID for LSM6DS3TR-C
+Date: Mon, 22 Dec 2025 21:53:50 -0500
+Message-ID: <20251223025351.3099978-3-samuel@dionne-riel.com>
 X-Mailer: git-send-email 2.51.0
+In-Reply-To: <20251223025351.3099978-2-samuel@dionne-riel.com>
+References: <20251223025351.3099978-2-samuel@dionne-riel.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -91,100 +96,32 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
+Same device (LSM6DS3TR-C), different integration with the firmware.
 
-This patch set adds the alternative identifiers for the LSM6DS3TR-C,
-just like the windows driver allows.
+The integration differs in that the firmware provides the SLA0 and SLG0
+mounting matrices. They are assumed to be Accelerometer and Gyroscope.
 
-I have done due diligence, and verified the assertion that the SMOCF05
-is also the LSM6DS3TR-C. This was verified by looking closely at the
-Windows driver, which also uses the LSM6DS3TR-C device identifier with
-that ACPI hardware identifier.
+Observations were made against the Windows driver, version
+`12/06/2023,1.0.4.3`. This driver supports both identifiers, but expose
+the device in different ways.
 
-From looking real close at the Windows driver, I am intuiting that this
-different identifier is used to change how the driver behaves, but does
-not materially change how the I2C device can work. Though I'm not 100%
-sure of this assertion, I believe it does not matter at all for the
-Linux driver.
+Signed-off-by: Samuel Dionne-Riel <samuel@dionne-riel.com>
+---
+ drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_i2c.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-This SMOCF05 configuration was tested on the Minisforum V3 SE.
-
-For completion's sake, the device's DSDT data follows.
-
-    Scope (_SB.I2CD)
-    {
-        Device (STS)
-        {
-            Name (_HID, EisaId ("SMOCF05"))  // _HID: Hardware ID
-            Name (_CID, EisaId ("SMOCF05"))  // _CID: Compatible ID
-            Name (_UID, Zero)  // _UID: Unique ID
-            Method (_STA, 0, NotSerialized)  // _STA: Status
-            {
-                Return (0x0F)
-            }
-    
-            Method (_CRS, 0, NotSerialized)  // _CRS: Current Resource Settings
-            {
-                Name (RBUF, ResourceTemplate ()
-                {
-                    I2cSerialBusV2 (0x006A, ControllerInitiated, 0x00061A80,
-                        AddressingMode7Bit, "\\_SB.I2CD",
-                        0x00, ResourceConsumer, , Exclusive,
-                        RawDataBuffer (0x04)  // Vendor Data
-                        {
-                            0x53, 0x4C, 0x41, 0x30
-                        })
-                    I2cSerialBusV2 (0x006A, ControllerInitiated, 0x00061A80,
-                        AddressingMode7Bit, "\\_SB.I2CD",
-                        0x00, ResourceConsumer, , Exclusive,
-                        RawDataBuffer (0x04)  // Vendor Data
-                        {
-                            0x53, 0x4C, 0x47, 0x30
-                        })
-                    GpioInt (Edge, ActiveHigh, Exclusive, PullNone, 0x0000,
-                        "\\_SB.GPIO", 0x00, ResourceConsumer, ,
-                        RawDataBuffer (0x04)  // Vendor Data
-                        {
-                            0x53, 0x4C, 0x41, 0x30
-                        })
-                        {   // Pin list
-                            0x0009
-                        }
-                })
-                Return (RBUF) /* \_SB_.I2CD.STS_._CRS.RBUF */
-            }
-    
-            Method (SLA0, 0, NotSerialized)
-            {
-                Name (RBUF, Package (0x03)
-                {
-                    "-1 0 0",
-                    "0 -1 0",
-                    "0 0 -1"
-                })
-                Return (RBUF) /* \_SB_.I2CD.STS_.SLA0.RBUF */
-            }
-    
-            Method (SLG0, 0, NotSerialized)
-            {
-                Name (RBUF, Package (0x03)
-                {
-                    "1 0 0",
-                    "0 1 0",
-                    "0 0 1"
-                })
-                Return (RBUF) /* \_SB_.I2CD.STS_.SLG0.RBUF */
-            }
-        }
-    }
-
-Samuel Dionne-Riel (2):
-  iio: imu: lsm6dsx: Support SMOCF05 ACPI ID for LSM6DS3TR-C
-  iio: imu: lsm6dsx: Add alternative ACPI mount matrix retrieval
-
- drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c | 6 ++++++
- drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_i2c.c  | 1 +
- 2 files changed, 7 insertions(+)
-
+diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_i2c.c b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_i2c.c
+index 7c933218036b8..86a9ed648aa24 100644
+--- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_i2c.c
++++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_i2c.c
+@@ -144,6 +144,7 @@ MODULE_DEVICE_TABLE(of, st_lsm6dsx_i2c_of_match);
+ 
+ static const struct acpi_device_id st_lsm6dsx_i2c_acpi_match[] = {
+ 	{ "SMO8B30", ST_LSM6DS3TRC_ID, },
++	{ "SMOCF05", ST_LSM6DS3TRC_ID, },
+ 	{ }
+ };
+ MODULE_DEVICE_TABLE(acpi, st_lsm6dsx_i2c_acpi_match);
 -- 
 2.51.0
 

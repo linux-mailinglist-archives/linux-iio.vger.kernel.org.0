@@ -1,373 +1,153 @@
-Return-Path: <linux-iio+bounces-27335-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-27336-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 85034CD9E00
-	for <lists+linux-iio@lfdr.de>; Tue, 23 Dec 2025 16:56:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 60055CD9F16
+	for <lists+linux-iio@lfdr.de>; Tue, 23 Dec 2025 17:25:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id CC9843056791
-	for <lists+linux-iio@lfdr.de>; Tue, 23 Dec 2025 15:55:59 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 775B6302D5D6
+	for <lists+linux-iio@lfdr.de>; Tue, 23 Dec 2025 16:24:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 141C727BF7C;
-	Tue, 23 Dec 2025 15:55:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3711232E6B5;
+	Tue, 23 Dec 2025 16:24:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="yKB8MM9e"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YxocYG+q"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3CC01DA62E;
-	Tue, 23 Dec 2025 15:55:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1690318151;
+	Tue, 23 Dec 2025 16:24:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766505358; cv=none; b=asW0Tkh5FdrZYSmcxYVnRZKaFgtgXb094G1XqOsP5hASL1i8AJeeidyiJjpZGYkhdtBnK2D2a6xh92sw3EJ5AXKl0aTkC3G/iNKsgRFvfUzKQsC0zhKJsar7pOyVAGa59z1Nz94ZFHTUSzyszH98txH07LQ0XjKYKVVyJNpjsT0=
+	t=1766507079; cv=none; b=S9EaB2CULqY0KQnrsPsFk76Gl8XkxnGBuJYGX/7CinykRYIt7yZhV2FG3fwXLw3Vps0OwZ5FWzjRvUG/Mzbc8YFXVvqY4AkKrWdmrQL9VBKeosFKNu6PKxYQaErC/PfOOwjkJmf1luA1fKCxPpGHG7pJRRH5Vew1s5NVpSJH6+g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766505358; c=relaxed/simple;
-	bh=poZQn7Agu5ywNgg3uB33d1fbiLBYSy8hBxt1Mw++Hog=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iFiCrbZ5GaNKjJBGhb/CzmILqXp8XdaKcChhsyQUInKKwToZCu4EE3VGzXOWXVSqWa7se29xUlH6FzywRijg0jg8G7Xq06g6f7odVobZC2LqLrQzyuPrxqVjIOYuLW9jxbSko8JK7CCiiZZO+5X6fOpgC1vOr6YNTll3eW7q4XM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=yKB8MM9e; arc=none smtp.client-ip=185.246.85.4
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-03.galae.net (Postfix) with ESMTPS id 1AFC74E41D52;
-	Tue, 23 Dec 2025 15:55:53 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id E2E4660716;
-	Tue, 23 Dec 2025 15:55:52 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 870B010AB0BB1;
-	Tue, 23 Dec 2025 16:55:49 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1766505351; h=from:subject:date:message-id:to:cc:mime-version:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=JqvpCgakLbqyOqF8D9gvhpB419I7/mBwXxM7M8O++/8=;
-	b=yKB8MM9e/QwZH9JtiYpwGinoysi+6IbSZGsP5YkJm/eePtwpLIh5/XqVPKnHkRXBBd2+e3
-	lM2wdoQxZQKrqZ/I8BAVDRLFniuGNg4IoQ6/ISo7zFGeIMJ7e0zHXkPS1PFYzhLalylmS3
-	TSGeHmJMGONvk3Gef33DIZL4Ket6MsDbyY0+gJz5oCSSGrO3/uDuJVRLy+M0nOJWATYIQ9
-	4eUJjxj7GwBDoNeheeD/8n6/NJCaruul/Qs+N4qm8yuyJRa7AVB9mY6dqI060XUZTUdvMw
-	Ek6C10o+sDnTIQPkYw6PdpxwjsWUglMx/7F9IbLcgpc7arQW3zFHrunZtywEOg==
-From: Maxime Chevallier <maxime.chevallier@bootlin.com>
-To: Jonathan Cameron <jic23@kernel.org>,
+	s=arc-20240116; t=1766507079; c=relaxed/simple;
+	bh=3qVOvSQIWwScePELLmWnd91+x+FO0ghrlMNcQT2LZbk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=XxrAiWi14x+jbvNinMhC5DAN1MxVH3yBT0xzr6v3VSI+CrMked+1o4XAPgu/nYSzsQzu03T2l6zFXnYUSZwxG0WBy6Fv1b2krScnGCH9MhDyxbY90/eqd7LuCKDPXCT6uCGI10tiGFxqptNuoNw1KRycLl9jQYk6TT6VIyzjlpg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YxocYG+q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0240C113D0;
+	Tue, 23 Dec 2025 16:24:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1766507078;
+	bh=3qVOvSQIWwScePELLmWnd91+x+FO0ghrlMNcQT2LZbk=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=YxocYG+qrFsexKvWp8UnmdmobfpsDyH7P1+YJTEa2MYESPoFxhafpM8gsfi6cIU1R
+	 n9Gfg1fwPKTG1mVszIKw6gD/hi1FUHPlichzp8hHC1c+ODcPI9IBtiK3ysngVX/8kW
+	 6qtUsjPhga/f+L4DCnVAi/486vh+xUTx4zZGQNwJ3DsWuw1m/H07s9A63d0isPWvAn
+	 xfv73Q5cyzS9PAQGwA0vuOAt9j1S+Rh8W8c92InWjFECnByviZpnF8o0xVzvH73G+F
+	 Ou0DXgasgqiym6+NqEvExYrZ1OZI3ZKfz52X4AGZYCiiAOFPgWM25YiaBJBeAweuxD
+	 6BLkrF9xDKKgg==
+Date: Tue, 23 Dec 2025 21:54:34 +0530
+From: Vinod Koul <vkoul@kernel.org>
+To: Romain Gantois <romain.gantois@bootlin.com>
+Cc: MyungJoo Ham <myungjoo.ham@samsung.com>,
+	Chanwoo Choi <cw00.choi@samsung.com>,
+	Guenter Roeck <linux@roeck-us.net>, Peter Rosin <peda@axentia.se>,
+	Jonathan Cameron <jic23@kernel.org>,
 	David Lechner <dlechner@baylibre.com>,
-	nuno.sa@analog.com,
+	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
 	Andy Shevchenko <andy@kernel.org>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Marcelo Schmitt <marcelo.schmitt@analog.com>,
-	Matti Vaittinen <mazziesaccount@gmail.com>,
-	Antoniu Miclaus <antoniu.miclaus@analog.com>,
-	Angelo Dureghello <adureghello@baylibre.com>,
-	Tobias Sperling <tobias.sperling@softing.com>,
-	Eason Yang <j2anfernee@gmail.com>,
-	Marilene Andrade Garcia <marilene.agarcia@gmail.com>,
-	Cosmin Tanislav <cosmin-gabriel.tanislav.xa@renesas.com>,
-	duje@dujemihanovic.xyz,
-	herve.codina@bootlin.com,
-	Rodolfo Giometti <giometti@enneenne.com>
-Cc: Maxime Chevallier <maxime.chevallier@bootlin.com>,
-	linux-iio@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	thomas.petazzoni@bootlin.com
-Subject: [PATCH 2/2] iio: adc: add driver for Texas Instruments TLA2528 adc
-Date: Tue, 23 Dec 2025 16:55:33 +0100
-Message-ID: <20251223155534.220504-3-maxime.chevallier@bootlin.com>
-X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20251223155534.220504-1-maxime.chevallier@bootlin.com>
-References: <20251223155534.220504-1-maxime.chevallier@bootlin.com>
+	Lars-Peter Clausen <lars@metafoo.de>,
+	Michael Hennerich <Michael.Hennerich@analog.com>,
+	Mariel Tinaco <Mariel.Tinaco@analog.com>,
+	Kevin Tsai <ktsai@capellamicro.com>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+	Eugen Hristev <eugen.hristev@linaro.org>,
+	Kishon Vijay Abraham I <kishon@kernel.org>,
+	Sebastian Reichel <sre@kernel.org>, Chen-Yu Tsai <wens@csie.org>,
+	Hans de Goede <hansg@kernel.org>,
+	Support Opensource <support.opensource@diasemi.com>,
+	Paul Cercueil <paul@crapouillou.net>,
+	Iskren Chernev <me@iskren.info>,
+	Krzysztof Kozlowski <krzk@kernel.org>,
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	Matheus Castello <matheus@castello.eng.br>,
+	Saravanan Sekar <sravanhome@gmail.com>,
+	Matthias Brugger <matthias.bgg@gmail.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Casey Connolly <casey.connolly@linaro.org>,
+	Pali =?iso-8859-1?Q?Roh=E1r?= <pali@kernel.org>,
+	Orson Zhai <orsonzhai@gmail.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	Chunyan Zhang <zhang.lyra@gmail.com>,
+	Amit Kucheria <amitk@kernel.org>,
+	Thara Gopinath <thara.gopinath@gmail.com>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Daniel Lezcano <daniel.lezcano@linaro.org>,
+	Zhang Rui <rui.zhang@intel.com>, Lukasz Luba <lukasz.luba@arm.com>,
+	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>,
+	Liam Girdwood <lgirdwood@gmail.com>,
+	Mark Brown <broonie@kernel.org>, Jaroslav Kysela <perex@perex.cz>,
+	Takashi Iwai <tiwai@suse.com>,
+	Sylwester Nawrocki <s.nawrocki@samsung.com>,
+	Olivier Moysan <olivier.moysan@foss.st.com>,
+	Arnaud Pouliquen <arnaud.pouliquen@foss.st.com>,
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+	Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+	linux-kernel@vger.kernel.org, linux-hwmon@vger.kernel.org,
+	linux-iio@vger.kernel.org, linux-input@vger.kernel.org,
+	linux-phy@lists.infradead.org, linux-pm@vger.kernel.org,
+	linux-mips@vger.kernel.org, linux-mediatek@lists.infradead.org,
+	linux-arm-msm@vger.kernel.org, linux-sound@vger.kernel.org,
+	linux-stm32@st-md-mailman.stormreply.com,
+	Sebastian Reichel <sebastian.reichel@collabora.com>,
+	Andy Shevchenko <andriy.shevchenko@intel.com>
+Subject: Re: [PATCH v2 2/2] iio: inkern: Use namespaced exports
+Message-ID: <aUrCQu-wmQ7gOyD3@vaman>
+References: <20251209-iio-inkern-use-namespaced-exports-v2-0-9799a33c4b7f@bootlin.com>
+ <20251209-iio-inkern-use-namespaced-exports-v2-2-9799a33c4b7f@bootlin.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251209-iio-inkern-use-namespaced-exports-v2-2-9799a33c4b7f@bootlin.com>
 
-This adds a new driver for the TI TLA2528 ADC chip. It ha 8 12-bit
-channels, that can also be configured as 16-bit averaging channels.
+On 09-12-25, 09:25, Romain Gantois wrote:
+> Use namespaced exports for IIO consumer API functions.
+> 
+> This will make it easier to manage the IIO export surface. Consumer drivers
+> will only be provided access to a specific set of functions, thereby
+> restricting usage of internal IIO functions by other parts of the kernel.
+> 
+> This change cannot be split into several parts without breaking
+> bisectability, thus all of the affected drivers are modified at once.
+> 
+> Acked-by: Sebastian Reichel <sebastian.reichel@collabora.com> # for power-supply
+> Acked-by: Guenter Roeck <linux@roeck-us.net>
+> Reviewed-by: Andy Shevchenko <andriy.shevchenko@intel.com>
+> Signed-off-by: Romain Gantois <romain.gantois@bootlin.com>
+> ---
+>  drivers/extcon/extcon-adc-jack.c                |  1 +
+>  drivers/hwmon/iio_hwmon.c                       |  1 +
+>  drivers/hwmon/ntc_thermistor.c                  |  1 +
+>  drivers/iio/adc/envelope-detector.c             |  1 +
+>  drivers/iio/afe/iio-rescale.c                   |  1 +
+>  drivers/iio/buffer/industrialio-buffer-cb.c     |  1 +
+>  drivers/iio/buffer/industrialio-hw-consumer.c   |  1 +
+>  drivers/iio/dac/ad8460.c                        |  1 +
+>  drivers/iio/dac/dpot-dac.c                      |  1 +
+>  drivers/iio/inkern.c                            | 54 ++++++++++++-------------
+>  drivers/iio/light/cm3605.c                      |  1 +
+>  drivers/iio/light/gp2ap002.c                    |  1 +
+>  drivers/iio/multiplexer/iio-mux.c               |  1 +
+>  drivers/iio/potentiostat/lmp91000.c             |  1 +
+>  drivers/input/joystick/adc-joystick.c           |  1 +
+>  drivers/input/keyboard/adc-keys.c               |  1 +
+>  drivers/input/touchscreen/colibri-vf50-ts.c     |  1 +
+>  drivers/input/touchscreen/resistive-adc-touch.c |  1 +
+>  drivers/phy/motorola/phy-cpcap-usb.c            |  1 +
 
-Add a very simple driver for it, allowing reading raw values for each
-channel.
+Acked-by: Vinod Koul <vkoul@kernel.org>
 
-Signed-off-by: Rodolfo Giometti <giometti@enneenne.com>
-Signed-off-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
----
- MAINTAINERS                  |   7 ++
- drivers/iio/adc/Kconfig      |  10 ++
- drivers/iio/adc/Makefile     |   1 +
- drivers/iio/adc/ti-tla2528.c | 209 +++++++++++++++++++++++++++++++++++
- 4 files changed, 227 insertions(+)
- create mode 100644 drivers/iio/adc/ti-tla2528.c
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index dc731d37c8fe..5c382ae216c7 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -25866,6 +25866,13 @@ F:	include/dt-bindings/soc/ti,sci_pm_domain.h
- F:	include/linux/soc/ti/ti_sci_inta_msi.h
- F:	include/linux/soc/ti/ti_sci_protocol.h
- 
-+TEXAS INSTRUMENTS' TLA2528 ADC DRIVER
-+M:	Maxime Chevallier <maxime.chevallier@bootlin.com>
-+L:	linux-iio@vger.kernel.org
-+S:	Supported
-+F:	Documentation/devicetree/bindings/iio/adc/ti,tla2528.yaml
-+F:	drivers/iio/adc/ti-tla2528.c
-+
- TEXAS INSTRUMENTS' TMP117 TEMPERATURE SENSOR DRIVER
- M:	Puranjay Mohan <puranjay@kernel.org>
- L:	linux-iio@vger.kernel.org
-diff --git a/drivers/iio/adc/Kconfig b/drivers/iio/adc/Kconfig
-index 58da8255525e..67376de410bf 100644
---- a/drivers/iio/adc/Kconfig
-+++ b/drivers/iio/adc/Kconfig
-@@ -1803,6 +1803,16 @@ config TI_LMP92064
- 	  This driver can also be built as a module. If so, the module will be called
- 	  ti-lmp92064.
- 
-+config TI_TLA2528
-+	tristate "Texas Instruments TLA2528 ADC driver"
-+	depends on I2C
-+	help
-+	  Say yes here to build support for Texas Instruments TLA2528
-+	  12-Bit 8-Channel ADC.
-+
-+	  To compile this driver as a module, choose M here: the module will be
-+	  called ti-tla2528.
-+
- config TI_TLC4541
- 	tristate "Texas Instruments TLC4541 ADC driver"
- 	depends on SPI
-diff --git a/drivers/iio/adc/Makefile b/drivers/iio/adc/Makefile
-index 7cc8f9a12f76..941606defbf7 100644
---- a/drivers/iio/adc/Makefile
-+++ b/drivers/iio/adc/Makefile
-@@ -157,6 +157,7 @@ obj-$(CONFIG_TI_ADS8344) += ti-ads8344.o
- obj-$(CONFIG_TI_ADS8688) += ti-ads8688.o
- obj-$(CONFIG_TI_AM335X_ADC) += ti_am335x_adc.o
- obj-$(CONFIG_TI_LMP92064) += ti-lmp92064.o
-+obj-$(CONFIG_TI_TLA2528) += ti-tla2528.o
- obj-$(CONFIG_TI_TLC4541) += ti-tlc4541.o
- obj-$(CONFIG_TI_TSC2046) += ti-tsc2046.o
- obj-$(CONFIG_TWL4030_MADC) += twl4030-madc.o
-diff --git a/drivers/iio/adc/ti-tla2528.c b/drivers/iio/adc/ti-tla2528.c
-new file mode 100644
-index 000000000000..9c572e730ffb
---- /dev/null
-+++ b/drivers/iio/adc/ti-tla2528.c
-@@ -0,0 +1,209 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/*
-+ * Driver for Texas Instruments TLA2528 ADC
-+ *
-+ * Copyright (C) 2020-2021 Rodolfo Giometti <giometti@enneenne.com>
-+ * Copyright (C) 2025 Maxime Chevallier <maxime.chevallier@bootlin.com>
-+ */
-+
-+#include <linux/delay.h>
-+#include <linux/i2c.h>
-+#include <linux/module.h>
-+#include <linux/mod_devicetable.h>
-+#include <linux/regulator/consumer.h>
-+
-+#include <linux/iio/iio.h>
-+
-+#define TLA2528_OP_WRITE_REG		0x08
-+
-+#define TLA2528_DATA_CFG_ADR		0x02
-+
-+/* Datasheet says [5:4] sets the append status, but only bit 4 is used */
-+#define TLA2528_DATA_CFG_APPEND_STATUS	BIT(4)
-+#define TLA2528_PIN_CFG_ADR		0x05
-+#define TLA2528_SEQUENCE_CFG_ADR	0x10
-+#define TLA2528_CHANNEL_SEL_ADR		0x11
-+
-+struct tla2528 {
-+	struct i2c_client *client;
-+	int vref_uv;
-+
-+	/* Protects manual channel selection, i.e. last_read_channel */
-+	struct mutex lock;
-+	u8 last_read_channel;
-+};
-+
-+static s32 tla2528_write_reg(const struct i2c_client *client, u8 reg, u8 val)
-+{
-+	u8 data[3] = {TLA2528_OP_WRITE_REG, reg, val};
-+	int ret;
-+
-+	ret = i2c_master_send(client, data, 3);
-+
-+	return ret < 0 ? ret : 0;
-+}
-+
-+static int tla2528_read_sample(const struct i2c_client *client)
-+{
-+	__be16 data;
-+	int ret;
-+
-+	ret = i2c_master_recv(client, (char *)&data, 2);
-+	if (ret < 0)
-+		return ret;
-+
-+	return be16_to_cpu(data) >> 4;
-+}
-+
-+static int tla2528_read(struct tla2528 *tla2528, u8 channel, int *val)
-+{
-+	struct i2c_client *client = tla2528->client;
-+	int ret;
-+
-+	if (channel != tla2528->last_read_channel) {
-+		ret = tla2528_write_reg(client, TLA2528_CHANNEL_SEL_ADR, channel);
-+		if (ret < 0)
-+			return ret;
-+
-+		tla2528->last_read_channel = channel;
-+	}
-+
-+	ret = tla2528_read_sample(client);
-+	if (ret < 0)
-+		return ret;
-+
-+	*val = ret;
-+
-+	return 0;
-+}
-+
-+static int tla2528_read_raw(struct iio_dev *indio_dev,
-+			    struct iio_chan_spec const *chan,
-+			    int *val, int *val2, long mask)
-+{
-+	struct tla2528 *tla2528 = iio_priv(indio_dev);
-+	int ret;
-+
-+	switch (mask) {
-+	case IIO_CHAN_INFO_RAW:
-+		mutex_lock(&tla2528->lock);
-+		ret = tla2528_read(tla2528, chan->channel, val);
-+		mutex_unlock(&tla2528->lock);
-+		if (ret < 0)
-+			return ret;
-+
-+		return IIO_VAL_INT;
-+
-+	case IIO_CHAN_INFO_SCALE:
-+		*val = tla2528->vref_uv / 1000;
-+		*val2 = 12;
-+
-+		return IIO_VAL_FRACTIONAL_LOG2;
-+
-+	default:
-+		return -EINVAL;
-+	}
-+}
-+
-+#define TLA2528_CHAN(_chan, _name) { \
-+	.type = IIO_VOLTAGE,					\
-+	.channel = (_chan),					\
-+	.info_mask_separate = BIT(IIO_CHAN_INFO_RAW),		\
-+	.info_mask_shared_by_type = BIT(IIO_CHAN_INFO_SCALE),	\
-+	.datasheet_name = _name,				\
-+	.indexed = 1,						\
-+}
-+
-+static const struct iio_chan_spec tla2528_channel[] = {
-+	TLA2528_CHAN(0, "AIN0"),
-+	TLA2528_CHAN(1, "AIN1"),
-+	TLA2528_CHAN(2, "AIN2"),
-+	TLA2528_CHAN(3, "AIN3"),
-+	TLA2528_CHAN(4, "AIN4"),
-+	TLA2528_CHAN(5, "AIN5"),
-+	TLA2528_CHAN(6, "AIN6"),
-+	TLA2528_CHAN(7, "AIN7"),
-+};
-+
-+static const struct iio_info tla2528_info = {
-+	.read_raw = tla2528_read_raw,
-+};
-+
-+static int tla2528_probe(struct i2c_client *client)
-+{
-+	struct iio_dev *indio_dev;
-+	struct tla2528 *tla2528;
-+	int ret;
-+
-+	if (!i2c_check_functionality(client->adapter, I2C_FUNC_I2C |
-+				     I2C_FUNC_SMBUS_WRITE_WORD_DATA))
-+		return -EOPNOTSUPP;
-+
-+	indio_dev = devm_iio_device_alloc(&client->dev, sizeof(*tla2528));
-+	if (!indio_dev)
-+		return -ENOMEM;
-+
-+	tla2528 = iio_priv(indio_dev);
-+	i2c_set_clientdata(client, indio_dev);
-+	tla2528->client = client;
-+
-+	indio_dev->name = client->name;
-+	indio_dev->info = &tla2528_info;
-+	indio_dev->modes = INDIO_DIRECT_MODE;
-+	indio_dev->channels = tla2528_channel;
-+	indio_dev->num_channels = ARRAY_SIZE(tla2528_channel);
-+
-+	mutex_init(&tla2528->lock);
-+
-+	tla2528->vref_uv = devm_regulator_get_enable_read_voltage(&client->dev,
-+								  "vref");
-+	if (tla2528->vref_uv < 0)
-+		return tla2528->vref_uv;
-+
-+	/* Set all inputs as analog */
-+	ret = tla2528_write_reg(tla2528->client, TLA2528_PIN_CFG_ADR, 0x00);
-+	if (ret < 0)
-+		return ret;
-+
-+	ret = tla2528_write_reg(tla2528->client, TLA2528_DATA_CFG_ADR,
-+				TLA2528_DATA_CFG_APPEND_STATUS);
-+	if (ret < 0)
-+		return ret;
-+
-+	/* Set manual mode */
-+	ret = tla2528_write_reg(tla2528->client, TLA2528_SEQUENCE_CFG_ADR, 0x00);
-+	if (ret < 0)
-+		return ret;
-+
-+	/* Init private data */
-+	tla2528->last_read_channel = ~0;
-+
-+	return devm_iio_device_register(&client->dev, indio_dev);
-+}
-+
-+static const struct i2c_device_id tla2528_id[] = {
-+	{ "tla2528", 0 },
-+	{ }
-+};
-+MODULE_DEVICE_TABLE(i2c, tla2528_id);
-+
-+static const struct of_device_id tla2528_of_match[] = {
-+	{ .compatible = "ti,tla2528", },
-+	{  },
-+};
-+MODULE_DEVICE_TABLE(of, tla2528_of_match);
-+
-+static struct i2c_driver tla2528_driver = {
-+	.driver = {
-+		.name = "tla2528",
-+		.of_match_table = tla2528_of_match,
-+	},
-+	.probe = tla2528_probe,
-+	.id_table = tla2528_id,
-+};
-+module_i2c_driver(tla2528_driver);
-+
-+MODULE_AUTHOR("Maxime Chevallier <maxime.chevallier@bootlin.com>");
-+MODULE_AUTHOR("Rodolfo Giometti <giometti@enneenne.com>");
-+MODULE_DESCRIPTION("Texas Instruments TLA2528 ADC driver");
-+MODULE_LICENSE("GPL");
 -- 
-2.49.0
-
+~Vinod
 

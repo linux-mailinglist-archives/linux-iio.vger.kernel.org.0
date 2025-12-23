@@ -1,133 +1,135 @@
-Return-Path: <linux-iio+bounces-27327-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-27328-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0EEF8CD7EC4
-	for <lists+linux-iio@lfdr.de>; Tue, 23 Dec 2025 03:55:51 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 34933CD884D
+	for <lists+linux-iio@lfdr.de>; Tue, 23 Dec 2025 10:12:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id A0D4F302424C
-	for <lists+linux-iio@lfdr.de>; Tue, 23 Dec 2025 02:55:39 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id B7B1B30202D3
+	for <lists+linux-iio@lfdr.de>; Tue, 23 Dec 2025 09:12:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A57E42BF3CC;
-	Tue, 23 Dec 2025 02:55:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 36F7D2FABE7;
+	Tue, 23 Dec 2025 09:12:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=dionne-riel-com.20230601.gappssmtp.com header.i=@dionne-riel-com.20230601.gappssmtp.com header.b="b5UZXv97"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="X7/LHjAT"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-qk1-f171.google.com (mail-qk1-f171.google.com [209.85.222.171])
+Received: from mail-pj1-f44.google.com (mail-pj1-f44.google.com [209.85.216.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43CF72BEC27
-	for <linux-iio@vger.kernel.org>; Tue, 23 Dec 2025 02:55:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8276730E0EC
+	for <linux-iio@vger.kernel.org>; Tue, 23 Dec 2025 09:12:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766458535; cv=none; b=IlUf9tCAwR/SNNQJKBsbpIkwWG3vaqvj89NVlayLFbh78a3QbQXMCvLU0sS3dgbtF91bHOhSaBnj0AUqHDjQbD+5vWUuEaJUiY08QNsMEevwLDo5eHZoDxK3eLu8gXXwv67x8b7a8t+anZZPg1/s2SUt/p3uPZeQccaeWD58c1Y=
+	t=1766481161; cv=none; b=dS1j9OctNOlOQsZRJHiXKuYOE9B3XX+Ds1x0AgPOyOl/7vpvFm0QC6P1Dr03G/kZJ2Af14pulb3yD+BvoZWVnOnwPlMrltY6uLjXdULgIuuz5YeYq2Ky/PWZOqO68FJUh2mxRHddtRSF1qk8SAiwDRAzFSbI/X5n9ucAdiAcLg8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766458535; c=relaxed/simple;
-	bh=R/pyaDy3Q7zpGfMK7jtEmQplZlnmXe5j1vpWw+kfDUk=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OE4NsQU27/3RqcXn9Xui3+jAq45g/Jgi7dBQjL5Qo/lbUSeQdGwWForI/PYhYrsAXFI12wJNjjzWnO+glgJvFZMph0JOvOHE7yRHBrQZXkkS0f00eNiytNJ/kGrnYsNq39jcHKJteM3C/+Q1Xk24ov+JUD1U9exWGHKYmznut14=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=dionne-riel.com; spf=pass smtp.mailfrom=dionne-riel.com; dkim=pass (2048-bit key) header.d=dionne-riel-com.20230601.gappssmtp.com header.i=@dionne-riel-com.20230601.gappssmtp.com header.b=b5UZXv97; arc=none smtp.client-ip=209.85.222.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=dionne-riel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dionne-riel.com
-Received: by mail-qk1-f171.google.com with SMTP id af79cd13be357-8c0d16bb24dso243654985a.0
-        for <linux-iio@vger.kernel.org>; Mon, 22 Dec 2025 18:55:33 -0800 (PST)
+	s=arc-20240116; t=1766481161; c=relaxed/simple;
+	bh=UD5kMgJDr4gyHdjVbkeA8ncPtEl/ZWoblEdUtUaX6Is=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=aNW+WhHxXoAYD9sOei87cPSMn63aUYfKcyg4IF2GcmhP4IMv7MRUcYrUE4jTg7UUlXdYILNl50hMtWbl75BuR5tDiDWMOjfPsX0y4Zy4GxqZfwl4JTjC7MR7D+E4NaDoBgyZY/vbbc/jnS8HppBjwvtHX8KEfvmsyI/Qg5VmDGs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=X7/LHjAT; arc=none smtp.client-ip=209.85.216.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pj1-f44.google.com with SMTP id 98e67ed59e1d1-34c708702dfso5037491a91.1
+        for <linux-iio@vger.kernel.org>; Tue, 23 Dec 2025 01:12:39 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=dionne-riel-com.20230601.gappssmtp.com; s=20230601; t=1766458532; x=1767063332; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=4byC3Mn7IdIEYarlTV3BJ0tOgTi1ifeHJj4YTWnTDNM=;
-        b=b5UZXv974ITY1VPlleMISySbVlroR4+dBogTFdyYjLxhZ/OZkrCiwTuNxSxhnmOUpv
-         +tgr+AeEWf0fBw/2ySX2egES22Wva55vNiE7SkaM4e820VmUsq7y6QSytmjUX6L2yf03
-         MihrKFBf/frCDJMHJNT4W9HCjGyepCKmSNuBlc62MIUYglqeuQjvFyeYOo+Z1uvpXADC
-         eTTecHZaVYmJrtVGusA9wXwJ6aDeVBr0QiMUQAteKUF0V1xqSg6kfexSInH9QqkEJ8Ex
-         9INSDRgbFP/1nYaDxjAXKE3f7D6nvs+8Ljd29rXT2A8ICixxs+2BYObNli5Aaqoh8hMW
-         Dfeg==
+        d=gmail.com; s=20230601; t=1766481159; x=1767085959; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=VUuy/PtZ9QhLtpMzGpl7OARqqSVWx7rYV1ajChEf4Dw=;
+        b=X7/LHjATXyTLrjfLORu96poWfuLNNf4rLSLTgxoVWcCuM5tzKn5KSffEhJj8GnbyXY
+         iWXnRRUzHDGd3xTfB45Mu11CbyQ6DjVoCiaktbCJCZYBTzQbU+yhfe62TVT2aUVfQkD3
+         J98sFpquMWroonkPp/mZ5DZsWPy4xBAleWD2JgY3fSzDkH75OesMMaqGTz/ZnYAk5DZk
+         XPzr8TeHjd51nV9PrdT6vw8WgrIisctLNO8MdIV0RryPFDveJB+pFbmey+nVwQsOZDFv
+         fee+CAxnh+ewl1FC51lH3r6H3yDoBF5a283e04a/uFX+8gfhEUsCXE+9PscqQbXNsXzH
+         8izg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1766458532; x=1767063332;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=4byC3Mn7IdIEYarlTV3BJ0tOgTi1ifeHJj4YTWnTDNM=;
-        b=pSDJPjgBvFuKPLUOGc3mf3LktAZeny+DrC+UyAa3EKAxn1PmAUdQ88sA6NNknhaIeh
-         PnHZNB2+LgYIKhrs51KUgrstm4eHXCIw0qRrBV+5EyO7llO+ZKmd7kFHXIbTBou3t8hV
-         xosTdJRD8KfSX5xwcaGnvw8+Fn6W1pQDLdAUv+TBWeJfy+DnFjVJj+iwYHw2+xUa5M2Q
-         /p0g/4jqFwEwi/X1c1WR4ZYVtI/5jIfHMandFvIv7p5PUv4tTUzM0VkD1iDO5GEbY4ZY
-         /sIQSzfg05+l+j4o4s0S3LgdWr+7qO4IuurLGN1KuB6lK8lUiiz8lizHAVqVpRcThgBe
-         fAvg==
-X-Forwarded-Encrypted: i=1; AJvYcCWUU3lMF8Zb/2KTYaMp5lo2Sx1986Bpkr7EWGoxiUmL9RnZh5ElxI84TtP6JQhmTHN/cGXCpeqbs2o=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyViZSqxNScyQ8Elhwktvt6XcekQdYZ7BXow4HRn5uIESQsz0ik
-	dFwCYLwaDr2LotA/3xIQiP0oGbN72fBs7wEbn7mqP7bQlM1Goj3ki6JswoCilXyFcA==
-X-Gm-Gg: AY/fxX56fx23EPeXXWucgKpg4w1h0McACbM6VDbeeOFbc2TECQK3+6XCm2HdVNVr3Hy
-	goVEPlbkp94oj1QlAm1QeBTxZBUZ7NNRA5l2FdEmcnvCbP8VUTLX8epG2ngVKRvmqyAP4OVV9ZC
-	qDfR11SBS93sF9V0UcrwtWcSDP6Mj/lFLHsmsVMoWtiL6jogV1Jx+Zkn+K993EUkOThyN3fN+io
-	nyinonHch9PjUKco2Ktn24ndhiOXe6DV9aLb5sQD/+aUTYDs8c7U82+ZLPnwvJyETL3d5pS4U7K
-	0JnXtnvyKJcQGKGY62Gnw3JBJ8gXzURikBwrAJIwtqJsU0Xk2QSXI+uk9e+b1ZjHbvdVg4DcLFy
-	jC0WN10bPd/7Qnii2VlJIAlZKI7sguhbDhbrRnLXrhpHRRRUXAA9CbTuXYe3uJiXfcavOqeuKSu
-	eZi2B2K5WVk7zVIcEyADi51k00HsAiAUfUBVxPNLLZbHdCwzIATcAivBWZhqY1J0jQGMUUm7jyu
-	6j/
-X-Google-Smtp-Source: AGHT+IE7uWWD/9WJtJidhv9TOoiEsH6kL22XXd7ZcKB4XxyaFlTJGguqeEdNjR/eFBcTx0vexKnYqw==
-X-Received: by 2002:a05:620a:4484:b0:8b2:ec00:784f with SMTP id af79cd13be357-8c08fbb9c47mr2108884385a.82.1766458532150;
-        Mon, 22 Dec 2025 18:55:32 -0800 (PST)
-Received: from frankgrimes.elk-nominal.ts.net (135-23-195-66.cpe.pppoe.ca. [135.23.195.66])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-8c0970f8572sm952775585a.25.2025.12.22.18.55.31
+        d=1e100.net; s=20230601; t=1766481159; x=1767085959;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=VUuy/PtZ9QhLtpMzGpl7OARqqSVWx7rYV1ajChEf4Dw=;
+        b=rdi21RxlDEUvC4r1vVFYBZdPCBDCGiG8SykUqKW8+pP/qsIyQKndXmpFv224o4kJI/
+         fyzUH61EKAx25WHTXHY6vGlf3MB4QdLFm5V1u7CKPTPF/44g9KfFmbA0RwkG40Gp4ZeJ
+         dWDbofTtly4y3aGvxIO77QAgs4vPBxhKYAZ00pVG1BcuRMSMyCIAirUcHbRg0qLashB3
+         3qbfMy3IGnbI2APTCOhjTUnWmw7M0CzQywp+8fodYHB33FBblddX3dEc1L+Prme44JZs
+         RRlt8CDICH55IkFMNerskj2Vb2Wv2ACWdtmG1whrQlqoLYzQ39QLOaYJ/di88ewXp6Ig
+         ya1A==
+X-Forwarded-Encrypted: i=1; AJvYcCX1qcNo2Ur0TV4njil2fx85FewZIHlybwFy+OFkNu/3ZACeq2wBjzhrwmBCvi0w1sqRActQl/xZvrU=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwlpWesGlzXANyNFsPzMary75gquXy+VLrVv2gXmv9FPH7cVVZX
+	o0JnUyz8ce4zFljn5QEuNRRGDG2iX8+a6uYZi7CmNpx37gAg+R3ZBckV
+X-Gm-Gg: AY/fxX4Ap0lCNF6ubYDLglu5OsW/yXf/To7GsdcekWyDieWYmlqsrNb49jaWezfuIXJ
+	a03+GQTiBykerZRXufkppOL8rOgghy8eeQbm4dVAnhInVudEp1eSDmY+ytI4FWMnskkq5JBubaA
+	3s/emEZ0UDRYQpsePRtpq3fYblwDnp99JapLBjynOuFrCKIM+nvJzTNs6FUDq3vV2Wmf0R+MYJA
+	Qo/adAVE658Hnso4aWGpOnFxyX3CQYI6W8kBTQ3LsayWiUCbP4orkzfDY7N+uD4yxjnjQUKyp4D
+	EVl3n6jYaeRx4fvDhYKDC+mF1I4YA13Fdj/6Gnc4byBMCtnGtoZAg2kFx8sqibS0T4MVztMbggX
+	T6Fgwefg8oa4flku6D3OBnSVYLURGy2x30qQNWI0v2TPTkpmNvgjnmMuqCGXVJ9/RFXidn/TXUV
+	/uChlLwTPDCIZMJ46brd8oy0Ynad/JDcGdt2Zp/YTQcLblsnkNMEc=
+X-Google-Smtp-Source: AGHT+IFiEprMGVw5bVwvl2YWxliS1LVs29cxSUEufeoxyimAG5IT/zw84jdWnRlvhWMPBL7WBc6L4w==
+X-Received: by 2002:a17:90b:2585:b0:341:8ac6:2244 with SMTP id 98e67ed59e1d1-34e9212a9fbmr11414669a91.9.1766481158643;
+        Tue, 23 Dec 2025 01:12:38 -0800 (PST)
+Received: from [127.0.1.1] (61-220-246-151.hinet-ip.hinet.net. [61.220.246.151])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-34e9224d9e5sm12352454a91.17.2025.12.23.01.12.36
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 22 Dec 2025 18:55:31 -0800 (PST)
-From: Samuel Dionne-Riel <samuel@dionne-riel.com>
-To: Lorenzo Bianconi <lorenzo@kernel.org>,
-	Jonathan Cameron <jic23@kernel.org>,
-	David Lechner <dlechner@baylibre.com>,
-	=?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
-	Andy Shevchenko <andy@kernel.org>
-Cc: Samuel Dionne-Riel <samuel@dionne-riel.com>,
-	linux-iio@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH 2/2] iio: imu: lsm6dsx: Add alternative ACPI mount matrix retrieval
-Date: Mon, 22 Dec 2025 21:53:51 -0500
-Message-ID: <20251223025351.3099978-4-samuel@dionne-riel.com>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251223025351.3099978-2-samuel@dionne-riel.com>
-References: <20251223025351.3099978-2-samuel@dionne-riel.com>
+        Tue, 23 Dec 2025 01:12:38 -0800 (PST)
+From: Kyle Hsieh <kylehsieh1995@gmail.com>
+Subject: [PATCH 0/2] iio: adc: ltc2309: add support driver for ltc2305
+Date: Tue, 23 Dec 2025 17:12:24 +0800
+Message-Id: <20251223-add_ltc2305_driver-v1-0-dfa0827fd620@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAPhcSmkC/x3MSwqAMAwA0atI1hbaiN+riJTaRg2ISioiiHe3u
+ HyLmQciCVOELntA6OLI+5Zg8gz84raZFIdkQI2lQSyUC8Gup8dClzYIXySqxmZyranM6GtI4SE
+ 08f1P++F9P8c7ZkdkAAAA
+X-Change-ID: 20251223-add_ltc2305_driver-728fa9161bc7
+To: Lars-Peter Clausen <lars@metafoo.de>, 
+ Michael Hennerich <Michael.Hennerich@analog.com>, 
+ Jonathan Cameron <jic23@kernel.org>, David Lechner <dlechner@baylibre.com>, 
+ =?utf-8?q?Nuno_S=C3=A1?= <nuno.sa@analog.com>, 
+ Andy Shevchenko <andy@kernel.org>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Liam Beguin <liambeguin@gmail.com>
+Cc: Michael Hennerich <michael.hennerich@analog.com>, 
+ linux-iio@vger.kernel.org, devicetree@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, Kyle Hsieh <kylehsieh1995@gmail.com>
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=openpgp-sha256; l=727;
+ i=kylehsieh1995@gmail.com; h=from:subject:message-id;
+ bh=UD5kMgJDr4gyHdjVbkeA8ncPtEl/ZWoblEdUtUaX6Is=;
+ b=owEBbQGS/pANAwAKAaWDQrcJVsSBAcsmYgBpSl0D7aN2D3pWAw5ItrHUjO/4cVTyJNKQxdAXP
+ Xtq1MvVUZCJATMEAAEKAB0WIQTJHsaNZOdY+THGqJelg0K3CVbEgQUCaUpdAwAKCRClg0K3CVbE
+ gcxwB/915KWSF23U5iK3qDWl25B9lkrwVSorT3YucSe8ta6k/ukgfgE7kSwz+G3Xvd9Yc+BbjZ7
+ ZNWN8rVZkcLfPa/L3WVsGLRLVhF33O6Q9ZUH4m53GXqlS5rBYC0y01nwEnJclbxKKvCEq/j0Vj8
+ UY12+e0fTj2x4Dc0qfQVuH1uE6S96ekiL64bHDzp0pmJDTkWrLEybwMlaSPaVCThqvjw08cPbHq
+ DuiYVRZifmh9WPFq5zD8P3Ke//RPl6CR0Q9CY45UaSTRJXtULAcsAm1VNU9y4nm5hajOj0MI/O+
+ ddOXHzdFPVyE/3lHufOSlyLV6xZanZOfxCxAOzMB2K4rr/sa
+X-Developer-Key: i=kylehsieh1995@gmail.com; a=openpgp;
+ fpr=C91EC68D64E758F931C6A897A58342B70956C481
 
-This uses the SLA0 matrix, which is how the SMOCF05 configuration
-exposes the mounting information for the accelerometer.
+The series add support for ltc2305 controller from 
+Linear Technology Corporation(lltc).
+This is low noise, low power, 2 channels 12-bit successive
+approximation ADCs.
 
-On a limited sample size of one (1) unit, the SLG0 matrix is the
-identity matrix. It is unknown how the SLG0 mounting matrix would
-logically affect the data, if it differed from the identity matrix.
-After all, the IMU is mounted as one single unit, its mounting can't
-differ on the gyroscope compared to the accelerometer.
-
-Signed-off-by: Samuel Dionne-Riel <samuel@dionne-riel.com>
+Signed-off-by: Kyle Hsieh <kylehsieh1995@gmail.com>
 ---
- drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+Kyle Hsieh (2):
+      dt-bindings: adc: ltc2497: add support for ltc2305
+      iio: adc: ltc2309: add support for ltc2305
 
-diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
-index 49ac17806e720..4bf1f7f7552d1 100644
---- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
-+++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
-@@ -2707,6 +2707,12 @@ int st_lsm6dsx_probe(struct device *dev, int irq, int hw_id,
- 			return err;
- 	}
- 
-+	if (!iio_read_acpi_mount_matrix(hw->dev, &hw->orientation, "SLA0")) {
-+		err = iio_read_mount_matrix(hw->dev, &hw->orientation);
-+		if (err)
-+			return err;
-+	}
-+
- 	for (i = 0; i < ST_LSM6DSX_ID_MAX; i++) {
- 		if (!hw->iio_devs[i])
- 			continue;
+ .../devicetree/bindings/iio/adc/lltc,ltc2497.yaml  |  7 +++
+ drivers/iio/adc/ltc2309.c                          | 50 ++++++++++++++++++++--
+ 2 files changed, 53 insertions(+), 4 deletions(-)
+---
+base-commit: 9448598b22c50c8a5bb77a9103e2d49f134c9578
+change-id: 20251223-add_ltc2305_driver-728fa9161bc7
+
+Best regards,
 -- 
-2.51.0
+Kyle Hsieh <kylehsieh1995@gmail.com>
 
 

@@ -1,153 +1,107 @@
-Return-Path: <linux-iio+bounces-27336-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-27337-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 60055CD9F16
-	for <lists+linux-iio@lfdr.de>; Tue, 23 Dec 2025 17:25:39 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 04D56CDA0F8
+	for <lists+linux-iio@lfdr.de>; Tue, 23 Dec 2025 18:12:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 775B6302D5D6
-	for <lists+linux-iio@lfdr.de>; Tue, 23 Dec 2025 16:24:42 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id E0D0F3012757
+	for <lists+linux-iio@lfdr.de>; Tue, 23 Dec 2025 17:12:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3711232E6B5;
-	Tue, 23 Dec 2025 16:24:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C22F8345CA1;
+	Tue, 23 Dec 2025 17:12:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YxocYG+q"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="hI3J5MlJ"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1690318151;
-	Tue, 23 Dec 2025 16:24:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 192CD20FAB2;
+	Tue, 23 Dec 2025 17:12:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766507079; cv=none; b=S9EaB2CULqY0KQnrsPsFk76Gl8XkxnGBuJYGX/7CinykRYIt7yZhV2FG3fwXLw3Vps0OwZ5FWzjRvUG/Mzbc8YFXVvqY4AkKrWdmrQL9VBKeosFKNu6PKxYQaErC/PfOOwjkJmf1luA1fKCxPpGHG7pJRRH5Vew1s5NVpSJH6+g=
+	t=1766509935; cv=none; b=J/y9x44dpq/blU38PGVSmYgbRKXTS7kaiN9WpUpmIB1oACXfMSMUHuI9XsCTgTB6dFSEnnAI9lI0sJu2FdBSsKh+FHbSZAoJKdmgIPSwVYJ3kb/H8T8cZo7jiWIZdnBeT72WjebVevsMb1/EICkxxeLTulFMqYh6hMsSGHlcjXM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766507079; c=relaxed/simple;
-	bh=3qVOvSQIWwScePELLmWnd91+x+FO0ghrlMNcQT2LZbk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=XxrAiWi14x+jbvNinMhC5DAN1MxVH3yBT0xzr6v3VSI+CrMked+1o4XAPgu/nYSzsQzu03T2l6zFXnYUSZwxG0WBy6Fv1b2krScnGCH9MhDyxbY90/eqd7LuCKDPXCT6uCGI10tiGFxqptNuoNw1KRycLl9jQYk6TT6VIyzjlpg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YxocYG+q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0240C113D0;
-	Tue, 23 Dec 2025 16:24:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1766507078;
-	bh=3qVOvSQIWwScePELLmWnd91+x+FO0ghrlMNcQT2LZbk=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=YxocYG+qrFsexKvWp8UnmdmobfpsDyH7P1+YJTEa2MYESPoFxhafpM8gsfi6cIU1R
-	 n9Gfg1fwPKTG1mVszIKw6gD/hi1FUHPlichzp8hHC1c+ODcPI9IBtiK3ysngVX/8kW
-	 6qtUsjPhga/f+L4DCnVAi/486vh+xUTx4zZGQNwJ3DsWuw1m/H07s9A63d0isPWvAn
-	 xfv73Q5cyzS9PAQGwA0vuOAt9j1S+Rh8W8c92InWjFECnByviZpnF8o0xVzvH73G+F
-	 Ou0DXgasgqiym6+NqEvExYrZ1OZI3ZKfz52X4AGZYCiiAOFPgWM25YiaBJBeAweuxD
-	 6BLkrF9xDKKgg==
-Date: Tue, 23 Dec 2025 21:54:34 +0530
-From: Vinod Koul <vkoul@kernel.org>
-To: Romain Gantois <romain.gantois@bootlin.com>
-Cc: MyungJoo Ham <myungjoo.ham@samsung.com>,
-	Chanwoo Choi <cw00.choi@samsung.com>,
-	Guenter Roeck <linux@roeck-us.net>, Peter Rosin <peda@axentia.se>,
-	Jonathan Cameron <jic23@kernel.org>,
-	David Lechner <dlechner@baylibre.com>,
-	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
-	Andy Shevchenko <andy@kernel.org>,
-	Lars-Peter Clausen <lars@metafoo.de>,
-	Michael Hennerich <Michael.Hennerich@analog.com>,
-	Mariel Tinaco <Mariel.Tinaco@analog.com>,
-	Kevin Tsai <ktsai@capellamicro.com>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-	Eugen Hristev <eugen.hristev@linaro.org>,
-	Kishon Vijay Abraham I <kishon@kernel.org>,
-	Sebastian Reichel <sre@kernel.org>, Chen-Yu Tsai <wens@csie.org>,
-	Hans de Goede <hansg@kernel.org>,
-	Support Opensource <support.opensource@diasemi.com>,
-	Paul Cercueil <paul@crapouillou.net>,
-	Iskren Chernev <me@iskren.info>,
-	Krzysztof Kozlowski <krzk@kernel.org>,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	Matheus Castello <matheus@castello.eng.br>,
-	Saravanan Sekar <sravanhome@gmail.com>,
-	Matthias Brugger <matthias.bgg@gmail.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Casey Connolly <casey.connolly@linaro.org>,
-	Pali =?iso-8859-1?Q?Roh=E1r?= <pali@kernel.org>,
-	Orson Zhai <orsonzhai@gmail.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Chunyan Zhang <zhang.lyra@gmail.com>,
-	Amit Kucheria <amitk@kernel.org>,
-	Thara Gopinath <thara.gopinath@gmail.com>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Daniel Lezcano <daniel.lezcano@linaro.org>,
-	Zhang Rui <rui.zhang@intel.com>, Lukasz Luba <lukasz.luba@arm.com>,
-	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>,
-	Liam Girdwood <lgirdwood@gmail.com>,
-	Mark Brown <broonie@kernel.org>, Jaroslav Kysela <perex@perex.cz>,
-	Takashi Iwai <tiwai@suse.com>,
-	Sylwester Nawrocki <s.nawrocki@samsung.com>,
-	Olivier Moysan <olivier.moysan@foss.st.com>,
-	Arnaud Pouliquen <arnaud.pouliquen@foss.st.com>,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
-	linux-kernel@vger.kernel.org, linux-hwmon@vger.kernel.org,
-	linux-iio@vger.kernel.org, linux-input@vger.kernel.org,
-	linux-phy@lists.infradead.org, linux-pm@vger.kernel.org,
-	linux-mips@vger.kernel.org, linux-mediatek@lists.infradead.org,
-	linux-arm-msm@vger.kernel.org, linux-sound@vger.kernel.org,
-	linux-stm32@st-md-mailman.stormreply.com,
-	Sebastian Reichel <sebastian.reichel@collabora.com>,
-	Andy Shevchenko <andriy.shevchenko@intel.com>
-Subject: Re: [PATCH v2 2/2] iio: inkern: Use namespaced exports
-Message-ID: <aUrCQu-wmQ7gOyD3@vaman>
-References: <20251209-iio-inkern-use-namespaced-exports-v2-0-9799a33c4b7f@bootlin.com>
- <20251209-iio-inkern-use-namespaced-exports-v2-2-9799a33c4b7f@bootlin.com>
+	s=arc-20240116; t=1766509935; c=relaxed/simple;
+	bh=pGF/nk2V4zvDcRsITqybuveA+fF1/6Fh6I3fg+tNDxw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=B0chLVh93Syr/hAAe0HCIiWTCaFyDhdEl05uc2RrKOPzC2SEzIHbsU6Tv7ptxV+TNH81h4RauwokrzuNoq0mLR2yJMOSgtTAA5qRKgL4WBp7sb/dY+1MlDM7JwdB4z/mzDOyMGIJE6/586tQVcECBs7Y15s1gX7ZWrQL6Ch9t8Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=hI3J5MlJ; arc=none smtp.client-ip=185.246.84.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-02.galae.net (Postfix) with ESMTPS id 3DB741A23B4;
+	Tue, 23 Dec 2025 17:12:10 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id F2D7360716;
+	Tue, 23 Dec 2025 17:12:09 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 172B410AB0C06;
+	Tue, 23 Dec 2025 18:12:02 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1766509929; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:content-language:in-reply-to:references;
+	bh=QDDnoNff9WviCZzOgvsznn/dQRq577VQVTn6i/oqNIs=;
+	b=hI3J5MlJQtNKFFVUAIPw/puW2pgJRck5GxEr/svgAkKrfUsGp7a/QNdq9hgDx9frLskQIj
+	KZPW3dMed9NCeo93/P+uetKzWsyE7Iu+E1+siCQ2quSjcZQLJw9zJ4gjZXB6R1eVgJPFI1
+	40RXn3eAPKTm5hzHtu9O2XTRu/1MSzBZdI79m/QOoeMofNsy1uNtY907fTLYr2L7cPCcTC
+	slZS2Y2lXqJyq/eTakm51aJnSug6GOB1esLUJGveQ8iXVeJlvm/9/Fgt0d7zGrFPps0UlS
+	xrPF8zSzCO50ntElPw65jE34aryR+5HU5fpE33axakEKX8alBHlZa0tyYIjWPg==
+Message-ID: <3e9a5df0-c650-46dc-8b64-b8708099262e@bootlin.com>
+Date: Tue, 23 Dec 2025 18:12:02 +0100
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251209-iio-inkern-use-namespaced-exports-v2-2-9799a33c4b7f@bootlin.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 2/2] iio: adc: add driver for Texas Instruments TLA2528
+ adc
+To: Jonathan Cameron <jic23@kernel.org>, David Lechner
+ <dlechner@baylibre.com>, nuno.sa@analog.com,
+ Andy Shevchenko <andy@kernel.org>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Marcelo Schmitt <marcelo.schmitt@analog.com>,
+ Matti Vaittinen <mazziesaccount@gmail.com>,
+ Antoniu Miclaus <antoniu.miclaus@analog.com>,
+ Angelo Dureghello <adureghello@baylibre.com>,
+ Tobias Sperling <tobias.sperling@softing.com>,
+ Eason Yang <j2anfernee@gmail.com>,
+ Marilene Andrade Garcia <marilene.agarcia@gmail.com>,
+ Cosmin Tanislav <cosmin-gabriel.tanislav.xa@renesas.com>,
+ duje@dujemihanovic.xyz, herve.codina@bootlin.com,
+ Rodolfo Giometti <giometti@enneenne.com>
+Cc: linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, thomas.petazzoni@bootlin.com
+References: <20251223155534.220504-1-maxime.chevallier@bootlin.com>
+ <20251223155534.220504-3-maxime.chevallier@bootlin.com>
+From: Maxime Chevallier <maxime.chevallier@bootlin.com>
+Content-Language: en-US
+In-Reply-To: <20251223155534.220504-3-maxime.chevallier@bootlin.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-On 09-12-25, 09:25, Romain Gantois wrote:
-> Use namespaced exports for IIO consumer API functions.
+Hi again,
+
+On 23/12/2025 16:55, Maxime Chevallier wrote:
+> This adds a new driver for the TI TLA2528 ADC chip. It ha 8 12-bit
+> channels, that can also be configured as 16-bit averaging channels.
 > 
-> This will make it easier to manage the IIO export surface. Consumer drivers
-> will only be provided access to a specific set of functions, thereby
-> restricting usage of internal IIO functions by other parts of the kernel.
+> Add a very simple driver for it, allowing reading raw values for each
+> channel.
 > 
-> This change cannot be split into several parts without breaking
-> bisectability, thus all of the affected drivers are modified at once.
-> 
-> Acked-by: Sebastian Reichel <sebastian.reichel@collabora.com> # for power-supply
-> Acked-by: Guenter Roeck <linux@roeck-us.net>
-> Reviewed-by: Andy Shevchenko <andriy.shevchenko@intel.com>
-> Signed-off-by: Romain Gantois <romain.gantois@bootlin.com>
-> ---
->  drivers/extcon/extcon-adc-jack.c                |  1 +
->  drivers/hwmon/iio_hwmon.c                       |  1 +
->  drivers/hwmon/ntc_thermistor.c                  |  1 +
->  drivers/iio/adc/envelope-detector.c             |  1 +
->  drivers/iio/afe/iio-rescale.c                   |  1 +
->  drivers/iio/buffer/industrialio-buffer-cb.c     |  1 +
->  drivers/iio/buffer/industrialio-hw-consumer.c   |  1 +
->  drivers/iio/dac/ad8460.c                        |  1 +
->  drivers/iio/dac/dpot-dac.c                      |  1 +
->  drivers/iio/inkern.c                            | 54 ++++++++++++-------------
->  drivers/iio/light/cm3605.c                      |  1 +
->  drivers/iio/light/gp2ap002.c                    |  1 +
->  drivers/iio/multiplexer/iio-mux.c               |  1 +
->  drivers/iio/potentiostat/lmp91000.c             |  1 +
->  drivers/input/joystick/adc-joystick.c           |  1 +
->  drivers/input/keyboard/adc-keys.c               |  1 +
->  drivers/input/touchscreen/colibri-vf50-ts.c     |  1 +
->  drivers/input/touchscreen/resistive-adc-touch.c |  1 +
->  drivers/phy/motorola/phy-cpcap-usb.c            |  1 +
+> Signed-off-by: Rodolfo Giometti <giometti@enneenne.com>
 
-Acked-by: Vinod Koul <vkoul@kernel.org>
+Looking closer at this, Rodolfo hasn't seen this patch prior to me
+sending it, so it should rather be :
 
+Orginally-by: Rodolfo Giometti <giometti@enneenne.com>
 
--- 
-~Vinod
+> Signed-off-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
+
+I can resend if need be :)
+
+Maxime
+
 

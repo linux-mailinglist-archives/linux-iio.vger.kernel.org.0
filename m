@@ -1,188 +1,165 @@
-Return-Path: <linux-iio+bounces-27368-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-27369-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5CF91CDFEF0
-	for <lists+linux-iio@lfdr.de>; Sat, 27 Dec 2025 17:05:55 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1499DCDFF02
+	for <lists+linux-iio@lfdr.de>; Sat, 27 Dec 2025 17:11:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id CC9903009868
-	for <lists+linux-iio@lfdr.de>; Sat, 27 Dec 2025 16:05:53 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 16674300DC91
+	for <lists+linux-iio@lfdr.de>; Sat, 27 Dec 2025 16:11:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9E5A3168E3;
-	Sat, 27 Dec 2025 16:05:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71E793233FA;
+	Sat, 27 Dec 2025 16:11:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="iY2qdeSU"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fNgTDuW9"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F07DB1A3164;
-	Sat, 27 Dec 2025 16:05:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20DBC1A23B9;
+	Sat, 27 Dec 2025 16:11:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766851550; cv=none; b=mVx65QdWTUMPYayDBPFPG0bnTJonzkQ8LpSx/vKBimcTi+aTH1swGT7TcWdV4m+nw1KpBieJHHJTfvPN425sb0qnJwojhISLM1UDNarr9swMY9id9AfPLfkkmI+QjNzi1rFACpK2q/8/L2AL+cNiUqY7stbmg3hK4zKYRQrVpks=
+	t=1766851885; cv=none; b=ds7yCTkhq60UIxqDZogLdlRCydMhVG/sc1jcausVumd77/vACZsj9QctMIyGEq1Kz6yQ4dPmpNnNwtvuWA+6Xj8TSDCsX9jkuWFojXSw4pjKCNQ5CBcAfpwEPOXnEFfcgxqGOM9/uYFMvBFPcdOJErapqfpMyphTdhBhrDxVNm0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766851550; c=relaxed/simple;
-	bh=XCX/KbtLe6SeKCyI7TFADoY3oPq/avkmtJqfy1yIAuY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=e1e0UUG8EzsXdR6QZpc4HohGEjfdVmuPGy21GZoXtSx/FRcjsKPCBrUxyWt9nEpC9WQtglyuBddHAMsLFTCk6Hjedi9T4tx6VcyZLQDnt+jBgxHqimQK79PmEoqshpHvLPmalt/cH0pOZd/gqmseOxEfoNtzmSnR+Q0GaTjj3Ks=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=iY2qdeSU; arc=none smtp.client-ip=198.175.65.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1766851549; x=1798387549;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=XCX/KbtLe6SeKCyI7TFADoY3oPq/avkmtJqfy1yIAuY=;
-  b=iY2qdeSU3OqaRneUNR06L6DGpNvmhrjpaHk91ATtFw7ZcXYsuHNttZL0
-   3SQpXAtY/k6ZYCLidSHdLaw9RlcPIb9x9il0FZFevNLnSOw1bWdqAIq2C
-   7ZNgBv/cuGvCBXSn+PGGnOVZgp8frunRo9xUgWEnRIseAovhbtHiXSATL
-   rInKa3aRoNri3G4C7fNnbKUudnvosqhp5YpuJbfz9GFu30hDW+/0Zu7Ei
-   oTKgRN58c5+AbeqxuAvFxZ+BzHDdjZ7CdyhuaJjbkIHrXt3hY9WWs6e56
-   BKHEMlvTWfeyIa5CTZX17xCIq3a9nHCyFY+f2pshHTm/amfXrBpjsz1pJ
-   w==;
-X-CSE-ConnectionGUID: l2OsDtjqQh+hksA2V5jwbg==
-X-CSE-MsgGUID: x6C5NJ2wScW+5OtsTcfMbg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11654"; a="72400236"
-X-IronPort-AV: E=Sophos;i="6.21,180,1763452800"; 
-   d="scan'208";a="72400236"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
-  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Dec 2025 08:05:49 -0800
-X-CSE-ConnectionGUID: AnEYM+IES9q6Cpv91whsng==
-X-CSE-MsgGUID: IJDuBZbEQ4eCTZ64FEzG+Q==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,180,1763452800"; 
-   d="scan'208";a="199802696"
-Received: from egrumbac-mobl6.ger.corp.intel.com (HELO localhost) ([10.245.244.211])
-  by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Dec 2025 08:05:46 -0800
-Date: Sat, 27 Dec 2025 18:05:43 +0200
-From: Andy Shevchenko <andriy.shevchenko@intel.com>
-To: Jonathan Cameron <jic23@kernel.org>
-Cc: Ariana Lazar <ariana.lazar@microchip.com>,
-	David Lechner <dlechner@baylibre.com>,
-	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
-	Andy Shevchenko <andy@kernel.org>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, linux-iio@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v4 2/2] iio: dac: adding support for Microchip MCP47FEB02
-Message-ID: <aVAD13oSRAlj-1VF@smile.fi.intel.com>
-References: <20251216-mcp47feb02-v4-0-4b687094ff90@microchip.com>
- <20251216-mcp47feb02-v4-2-4b687094ff90@microchip.com>
- <20251227155245.6a3f5344@jic23-huawei>
+	s=arc-20240116; t=1766851885; c=relaxed/simple;
+	bh=/Z1HYkA3Z9nkZuzaX5+2e8tSWqn76PSoV2KdJ45cBo0=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=PBtxwfrMupQ0R2W8rRzRJmDXn3YeAZMzF+ct3q7nGpPAfHM443Dzko/BSuWDon+1DS269y9/tYOhPgfPpk4hc+EX6n7kIZ8OxzYbjVIIv0Cgepa1dRgiRNufVJw75Sxjh2OgED/6qwrRiqoVmo3xBuSdzHMC09JVNcoBIVt9sXs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fNgTDuW9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D427C4CEF1;
+	Sat, 27 Dec 2025 16:11:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1766851884;
+	bh=/Z1HYkA3Z9nkZuzaX5+2e8tSWqn76PSoV2KdJ45cBo0=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=fNgTDuW9pgSJrAHP0F6bppK7UT/vcWpGXQeQKJYVNxjSaqCkXECdSSUO85uISz+ed
+	 apV5tWa/739B7otIEvBxF9o8IUmOJBq9C2xopVwoZzH++K992PvaBXn5T8BiJSRZYY
+	 XxJeuHGaRjhq5JOmk1r/uMkkgfXH1Gcdp7vcTVCOnCUocRDKhzqZnNeslXO2jH6AwX
+	 njN1pq2PUoiSfDXXH9fWki5j/1SfymX7NVqP6pSk2nZ5K+mDDTrhzSR5sZ5BJN60kv
+	 YYib1snTl2OYaLCHlG+0j4vN0Rp4HltClj1WCaCo6CgH+AfA7Q1BgXLYDx/Yq3AJJF
+	 mzyOFF9PtfxNQ==
+Date: Sat, 27 Dec 2025 16:11:15 +0000
+From: Jonathan Cameron <jic23@kernel.org>
+To: Jonathan Santos <Jonathan.Santos@analog.com>
+Cc: <linux-iio@vger.kernel.org>, <devicetree@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>, <lars@metafoo.de>,
+ <Michael.Hennerich@analog.com>, <dlechner@baylibre.com>,
+ <nuno.sa@analog.com>, <andy@kernel.org>, <robh@kernel.org>,
+ <krzk+dt@kernel.org>, <conor+dt@kernel.org>, <jonath4nns@gmail.com>
+Subject: Re: [PATCH v5 5/5] iio: adc: ad7768-1: add support for ADAQ776x-1
+ ADC Family
+Message-ID: <20251227161115.5e38e874@jic23-huawei>
+In-Reply-To: <dab6e0ffc1a297d857f5a9c75184794c301d70f3.1765900411.git.Jonathan.Santos@analog.com>
+References: <cover.1765900411.git.Jonathan.Santos@analog.com>
+	<dab6e0ffc1a297d857f5a9c75184794c301d70f3.1765900411.git.Jonathan.Santos@analog.com>
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251227155245.6a3f5344@jic23-huawei>
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
- krs, Bertel Jungin Aukio 5, 02600 Espoo
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Sat, Dec 27, 2025 at 03:52:45PM +0000, Jonathan Cameron wrote:
-> On Tue, 16 Dec 2025 14:05:51 +0200
-> Ariana Lazar <ariana.lazar@microchip.com> wrote:
+On Wed, 17 Dec 2025 02:53:08 -0300
+Jonathan Santos <Jonathan.Santos@analog.com> wrote:
 
-> > This is the iio driver for Microchip MCP47F(E/V)B(0/1/2)1,
-> > MCP47F(E/V)B(0/1/2)2, MCP47F(E/V)B(0/1/2)4 and MCP47F(E/V)B(0/1/2)8 series
-> > of buffered voltage output Digital-to-Analog Converters with nonvolatile or
-> > volatile memory and an I2C Interface.
-> > 
-> > The families support up to 8 output channels.
-> > 
-> > The devices can be 8-bit, 10-bit and 12-bit.
-> > 
-> > Signed-off-by: Ariana Lazar <ariana.lazar@microchip.com>
-> Hi Ariana,
+> Add support for ADAQ7767/68/69-1 series, which includes PGIA and
+> Anti-aliasing filter (AAF) gains. Unlike the AD7768-1, they do not
+> provide a VCM regulator interface.
 > 
-> One stale bit of documentation and I'd be surprised if the
-> style of text used in Kconfig short help proves sustainable.
-> We often end up over time moving to 'x and similar' to avoid
-> very complex pattern matching as more and more parts end up supported
-> by a given driver.
+> The PGA gain is configured in run-time through the scale attribute,
+> if supported by the device. PGA is controlled by GPIOs provided in
+> the device tree.
 > 
-> With those in mind. Applied to the togreg branch of iio.git which I'll initially
-> push out as testing to let 0-day take a poke at it.
+> The AAF gain is defined by hardware connections and should be specified
+> in the device tree.
 > 
-> Thanks
-> 
-> Jonathan
-> 
-> > diff --git a/drivers/iio/dac/mcp47feb02.c b/drivers/iio/dac/mcp47feb02.c
-> > new file mode 100644
-> > index 0000000000000000000000000000000000000000..c04f3b72b1b1fc303b1bde63c281aade8a67b2f9
-> > --- /dev/null
-> > +++ b/drivers/iio/dac/mcp47feb02.c
-> 
-> > +/**
-> > + * struct mcp47feb02_data - chip configuration
-> > + * @chdata: options configured for each channel on the device
-> > + * @lock: prevents concurrent reads/writes to driver's state members
-> > + * @chip_features: pointer to features struct
-> > + * @scale_1: scales set on channels that are based on Vref1
-> > + * @scale: scales set on channels that are based on Vref/Vref0
-> > + * @active_channels_mask: enabled channels
-> > + * @client: the i2c-client attached to the device
-> 
-> Not there. I'll tidy this up whilst applying if nothing else
-> comes up.
-> 
-> > + * @regmap: regmap for directly accessing device register
-> > + * @vref1_buffered: Vref1 buffer is enabled
-> > + * @vref_buffered: Vref/Vref0 buffer is enabled
-> > + * @phys_channels: physical channels on the device
-> > + * @labels: table with channels labels
-> > + * @use_vref1: vref1-supply is defined
-> > + * @use_vref: vref-supply is defined
-> > + */
-> > +struct mcp47feb02_data {
-> > +	struct mcp47feb02_channel_data chdata[MCP47FEB02_MAX_CH];
-> > +	struct mutex lock; /* prevents concurrent reads/writes to driver's state members */
-> > +	const struct mcp47feb02_features *chip_features;
-> > +	int scale_1[2 * MCP47FEB02_MAX_SCALES_CH];
-> > +	int scale[2 * MCP47FEB02_MAX_SCALES_CH];
-> > +	unsigned long active_channels_mask;
-> > +	struct regmap *regmap;
-> > +	bool vref1_buffered;
-> > +	bool vref_buffered;
-> > +	u16 phys_channels;
-> > +	const char *labels[MCP47FEB02_MAX_CH];
-> > +	bool use_vref1;
-> > +	bool use_vref;
+> Signed-off-by: Jonathan Santos <Jonathan.Santos@analog.com>
 
-I would group slightly different these:
+Hi Jonathan
 
-	...
-	const char *labels[MCP47FEB02_MAX_CH];
-	bool vref1_buffered;
-	bool vref_buffered;
-	bool use_vref1;
-	bool use_vref;
-	u16 phys_channels;
+I noted one minor area where I think the code could be slightly cleaner.
+If we didn't have the outstanding question about the comment in the BP definitions
+patch I'd just have merged it as it stands. I don't mind that much if you
+prefer the current form.
 
-With this the vref grouped together and not split. A possible variant:
+Jonathan
 
-	const char *labels[MCP47FEB02_MAX_CH];
-	u16 phys_channels;
-	bool vref1_buffered;
-	bool vref_buffered;
-	bool use_vref1;
-	bool use_vref;
+>  
+> +static int ad7768_parse_aaf_gain(struct device *dev, struct ad7768_state *st)
+> +{
+> +	bool aaf_gain_provided;
+> +	u32 val;
+> +	int ret;
+> +
+> +	ret = device_property_read_u32(dev, "adi,aaf-gain-bp", &val);
+> +	if (ret == -EINVAL)
+> +		aaf_gain_provided = false;
+> +	else if (ret)
+> +		return dev_err_probe(dev, ret, "Failed to get AAF gain value\n");
+> +	else
+> +		aaf_gain_provided = true;
+> +
+> +	if (!aaf_gain_provided) {
+> +		if (st->chip->has_variable_aaf)
+> +			st->aaf_gain = AD7768_AAF_IN1;
+> +		return 0;
+> +	}
+> +
+> +	if (aaf_gain_provided && !st->chip->has_variable_aaf)
+> +		return dev_err_probe(dev, -EOPNOTSUPP,
+> +				     "AAF gain not supported for %s\n", st->chip->name);
+> +
 
-Jonathan, can you also tweak this?
+Might be simpler if we just did the actions for aaf_gain at the point of detecting it.
 
-And I think it's worth to add
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@intel.com>
+	if (ret == -EINVAL) {
+		/* If controllable, use default */
+		if (st->chip->has_variable_aaf)
+			st->aaf_gain = AD7768_AAF_IN1;
+		return 0;
+	}
+	if (ret)
+		return dev_err_probe(dev, ret, "Failed to get AAF gain value\n");
 
-> > +};
+	if (!st->chip->has_variable_aaf)
+		return dev_err_probe(dev,, -EOPNOTSUPP,
+		     "AAF gain provided, but variable AFF gain not supported for %s\n", ...)
 
--- 
-With Best Regards,
-Andy Shevchenko
+or maybe make the gain number obvious as the default by doing.
+
+	if (ret == -EINVAL) {
+		if (!st->chip->has_variable_aaf)
+			return 0;
+
+		val = 10000; /* Matches the default from DT */
+	} else if (ret) {
+		return dev_err_probe(dev, ret, "Failed to get AAF gain value\n");
+	} else if (!st->chip->has_variable_aaf) {
+		return dev_err_probe(dev,, -EOPNOTSUPP,
+		     "AAF gain provided, but variable AFF gain not supported for %s\n", ...)
+	}
+
+The first option is simpler, bu the second makes it easier to align with DT binding.
 
 
+> +	switch (val) {
+> +	case 10000:
+> +		st->aaf_gain = AD7768_AAF_IN1;
+> +		break;
+> +	case 3640:
+> +		st->aaf_gain = AD7768_AAF_IN2;
+> +		break;
+> +	case 1430:
+> +		st->aaf_gain = AD7768_AAF_IN3;
+> +		break;
+> +	default:
+> +		return dev_err_probe(dev, -EINVAL, "Invalid firmware provided AAF gain\n");
+> +	}
+> +
+> +	return 0;
+> +}
 

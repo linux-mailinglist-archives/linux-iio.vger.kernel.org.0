@@ -1,117 +1,139 @@
-Return-Path: <linux-iio+bounces-27392-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-27393-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 85747CE0102
-	for <lists+linux-iio@lfdr.de>; Sat, 27 Dec 2025 19:18:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id F1AE1CE0108
+	for <lists+linux-iio@lfdr.de>; Sat, 27 Dec 2025 19:21:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 27FBB30206AB
-	for <lists+linux-iio@lfdr.de>; Sat, 27 Dec 2025 18:18:21 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A437F301B2DB
+	for <lists+linux-iio@lfdr.de>; Sat, 27 Dec 2025 18:20:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5925F323416;
-	Sat, 27 Dec 2025 18:18:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 747C632471F;
+	Sat, 27 Dec 2025 18:20:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nfOYI5/E"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="CjeBsTnh"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oi1-f176.google.com (mail-oi1-f176.google.com [209.85.167.176])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D77A5464F;
-	Sat, 27 Dec 2025 18:18:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C43E3FFD
+	for <linux-iio@vger.kernel.org>; Sat, 27 Dec 2025 18:20:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766859499; cv=none; b=Ao8Po2FYg4pTMojV4ZG3r1b4eXsMaDa1HKDVjDoiejFLxi3+HPnmvUlM0QH7mDMA3bKCWw+l+APE541uypeHwNgy7TXpKC89YDwvKOS/5VYLoBpapCh9aSN7Y6hr0AjNECfbNo1RtGuZ6pAipx+xH8doYG7pWL+MMW2UFkKoanQ=
+	t=1766859657; cv=none; b=qqRANPFR0MluXbjrOs3TcN4KP6iSCZiwpAX2IT/wmBJPj0CK1u/L6np03TSNi1ojlwZxkmTElcs1CzGboFP1EOus1Kml5Vf3mCbub3i3GZwsvVSTuboara3c6Fp/sPJ6zinNQRz19b8A2IPjUvxuawqeh+4yobvOPiMM7U651X4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766859499; c=relaxed/simple;
-	bh=z53un9l34kelY0KLvqcgvmsyIvHS3HHvIShjZIeLTPs=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=s1o2QOblV2xTOKcKYKGb1rgv+k2SZ7OcNCF+TNIfZ4zIClBIlfVslK3o4mZIh5DYsKUerOwEV8WVktBIjihRRgvyb2yxWFcDXUceXAayG/1kRDIiShSjxVWA070sBxj95VFDYNbqb3a1XEQ5O0CLQHT/IESXBz/kDcir3CqDPWk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nfOYI5/E; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6DB7C4CEF1;
-	Sat, 27 Dec 2025 18:18:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1766859498;
-	bh=z53un9l34kelY0KLvqcgvmsyIvHS3HHvIShjZIeLTPs=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=nfOYI5/EcmNmyVZ49Ffz9eEMGkH7zVpeMWHeZC8qum3iA7R5lRzM2DMeW7jOsUaxF
-	 n87y9gZqb8X7iFR7aw7Kpq/DdFmCDQWOod5MLg8CqMO8ftx6XMHuTHLHZuCkx0D2MT
-	 5I7Mck+QD+p/w6OMjP6GgvJh5qmYdBYqloHScXyayR7C8gHoQwh7jXyjYHrCD6KRhd
-	 jv/ZGsRlpg/pDoMVmp5aW7k48jks15z5ZgxQStgvRdFSyHU2c+cjXxDrlzQZWTyvNR
-	 EGYUL2RDK4yRM8n7EbKdopxaSGjhZ4zw6NhMNIUam4AMAVIQn6/eiGRfzqZr6vJtME
-	 iszB4qIjESCLQ==
-Date: Sat, 27 Dec 2025 18:18:08 +0000
-From: Jonathan Cameron <jic23@kernel.org>
-To: Kyle Hsieh <kylehsieh1995@gmail.com>
-Cc: Lars-Peter Clausen <lars@metafoo.de>, Michael Hennerich
- <Michael.Hennerich@analog.com>, David Lechner <dlechner@baylibre.com>, Nuno
- =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>, Andy Shevchenko <andy@kernel.org>,
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, Liam Beguin <liambeguin@gmail.com>,
- linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 2/2] iio: adc: ltc2309: add support for ltc2305
-Message-ID: <20251227181808.3dbe5b0a@jic23-huawei>
-In-Reply-To: <20251224-add_ltc2305_driver-v2-2-061f78cf45a3@gmail.com>
-References: <20251224-add_ltc2305_driver-v2-0-061f78cf45a3@gmail.com>
-	<20251224-add_ltc2305_driver-v2-2-061f78cf45a3@gmail.com>
-X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1766859657; c=relaxed/simple;
+	bh=+CbJpq+tdkgrbaPm9dRNavpRXrube0jjJxJrm5A9Mnc=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=eFn6UfTqhNaJQlwNvaY5V7QZvPjcqOUtDUpiMjVQ3pmc36g2F9wIgrvCEqFtJyWPGgPL8f4L9YewMvfR9I+sK5lnvvZ7aWIrWuhlv14hvosobTbe3m8MbQi9BvXTgwSmvdlnWHqD23jVbC5tUQwgACS+l4I+3DeEnWiZkx6zXWg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=CjeBsTnh; arc=none smtp.client-ip=209.85.167.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-oi1-f176.google.com with SMTP id 5614622812f47-4557e6303a5so2207824b6e.3
+        for <linux-iio@vger.kernel.org>; Sat, 27 Dec 2025 10:20:55 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1766859654; x=1767464454; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=J2j9oSp9OzmTh5S36B2mxVYf+/+BpGtxTc6qLR8BJ9M=;
+        b=CjeBsTnhbYSeS+DGE1mvhLwaO4nUbr8J+YRjXDqGOsyVPHw4SbVmALgVu5DvRjw2h1
+         582ZzK1dSfOLKE1GJOmJGiUi2ZbylESQQ7yjgzh7cae8hbclZM4Ry+LqJ2QKh7hahv0s
+         OQ2S8PDOaxbtR6h++BnSNVLKkYrHl1MZLoGUTNpZr27lX2TS8hq8YbrfS+NkXXyzR15x
+         KZSCYEsKgr0gnsky8sEaJ2ht1yVli6BlpqXsI4YwJo14DIQMnMRYzTJXvGUyW3Jxf9wD
+         YdfKUqf5l6JX77YJQKe1XAdgBGbrDOjqiBDEJ8wyj6kU2c4994vPPdJYC9aDSM42De+G
+         B2YQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1766859654; x=1767464454;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=J2j9oSp9OzmTh5S36B2mxVYf+/+BpGtxTc6qLR8BJ9M=;
+        b=pwDjBIoHndWW2suryl6yKNdcA1mbyNKiverGHtKGvbgzyI4Nq2RR7y8ysqByeWTMf6
+         3a+hhGlONg3DypVRahwahgLl+al4uL3qyfTyJ7hTqI3voVnX39n7NTDAveCCAtG7SBbE
+         +d6x5e60tYUlTxiaa3lrfNAVe4rWRFEddYjWFytSSJ0XV8Od6mcuRXW+/9mnfKk1x9qE
+         13wFWoALDpLCKecL2ATM8dzCI8RrmJ9fyq1U1cf66AZ+mo31L6OYYE4BM39Y7TzPvyEL
+         VCEGyxHlCZg3ePV+dYoVfABS3jKYMmF2iTgWSP4a7e93zaqX+wMssnUg5WRGhQrL4NCA
+         fInQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWgeO+8N1Tu6LycHzuyb6g7LmN5WpICTZwL9pG1VXWJzp56HLj+VwcjE/ODFgk0F131wfR5tdWrd1A=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxUOrHQJOThoBTzl4aUsvBALLMeGCsYaG68h3xOV6ZxsSX5Mm6d
+	6e/opABSc2eXNngsftBxtW61MWKOaiO/5gPZyuxG04hn2HRy2+ISZBBL6qpo6l76eO8=
+X-Gm-Gg: AY/fxX5ksWxtGDrXFEK3yuzghds/ZRcbWqTNXOB7CxDyAYuHomQK/vA5QoIv3fDNnO3
+	Rz2T5ZZXtp7tCVVBjjK7ud91d9oOfYe6IOMgGUn9zmGVIWYs1bC6vkmgFkAva3C69TSkpztEDG2
+	B2vEg/96A2zCYhZImMW1qHAZagbsE4TT4HkCiiXeyk1otUwa9QlbRwbCawZZBatkzGj0qC/AELf
+	dYK4z9WL42y0f2tpa5XweOxXO0izsxMzm/RdrultBjrXv1vnkaVp34BLeWsxcFUQIEagF1P/WFZ
+	z5ZkS8ojWwyzluETewgU0kIIm06ufxeLepC5Nb4sqQcf3F4JJpbcN5SwAiL0jvDd7esOyYojCSo
+	WsZjfHqCnQvfZlu3B9IQIxM4zuupkBFEooM8WviQsoLqC+Z/nD/GdlzpkgbEXe4zhp2IRoIde98
+	/VldzMBkotYWCi9xGppP2/NWA2YACtnsNeWmR6qVaRcqxsF7Y8bMDclQncFzeb
+X-Google-Smtp-Source: AGHT+IFPqw8otBicikTMcpttXB+4UlYnr6IaZlBoYe9K5ZRzq3nsV03RecZLJ0LeOfBCKUElLGSUqA==
+X-Received: by 2002:a05:6808:1b25:b0:450:c0c4:3728 with SMTP id 5614622812f47-457b2175c27mr11920065b6e.30.1766859654263;
+        Sat, 27 Dec 2025 10:20:54 -0800 (PST)
+Received: from ?IPV6:2600:8803:e7e4:500:81b7:1177:37cc:3153? ([2600:8803:e7e4:500:81b7:1177:37cc:3153])
+        by smtp.gmail.com with ESMTPSA id 46e09a7af769-7cc667284fdsm17601022a34.2.2025.12.27.10.20.52
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sat, 27 Dec 2025 10:20:53 -0800 (PST)
+Message-ID: <6d40a735-ad73-4a21-bd66-3af1edd0d1e7@baylibre.com>
+Date: Sat, 27 Dec 2025 12:20:51 -0600
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 4/7] iio: core: Add cleanup.h support for
+ iio_device_claim_*()
+To: Kurt Borja <kuurtb@gmail.com>,
+ Andy Shevchenko <andriy.shevchenko@intel.com>,
+ Lars-Peter Clausen <lars@metafoo.de>,
+ Michael Hennerich <Michael.Hennerich@analog.com>,
+ Jonathan Cameron <jic23@kernel.org>, Benson Leung <bleung@chromium.org>,
+ Antoniu Miclaus <antoniu.miclaus@analog.com>,
+ Gwendal Grignou <gwendal@chromium.org>,
+ Shrikant Raskar <raskar.shree97@gmail.com>,
+ Per-Daniel Olsson <perdaniel.olsson@axis.com>
+Cc: =?UTF-8?Q?Nuno_S=C3=A1?= <nuno.sa@analog.com>,
+ Andy Shevchenko <andy@kernel.org>, Guenter Roeck <groeck@chromium.org>,
+ Jonathan Cameron <Jonathan.Cameron@huawei.com>, linux-iio@vger.kernel.org,
+ linux-kernel@vger.kernel.org, chrome-platform@lists.linux.dev
+References: <20251211-lock-impr-v2-0-6fb47bdaaf24@gmail.com>
+ <20251211-lock-impr-v2-4-6fb47bdaaf24@gmail.com>
+ <f5ef483b-12d8-4ed2-9637-af993c3f8b7d@baylibre.com>
+ <DF974CHWQ5BL.MW4NYZU499S7@gmail.com>
+Content-Language: en-US
+From: David Lechner <dlechner@baylibre.com>
+In-Reply-To: <DF974CHWQ5BL.MW4NYZU499S7@gmail.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On Wed, 24 Dec 2025 13:37:15 +0800
-Kyle Hsieh <kylehsieh1995@gmail.com> wrote:
+On 12/27/25 12:04 PM, Kurt Borja wrote:
+> On Tue Dec 23, 2025 at 12:23 PM -05, David Lechner wrote:
+>> On 12/11/25 8:45 PM, Kurt Borja wrote:
+>>> Add guard classes for iio_device_claim_*() conditional locks. This will
+>>> aid drivers write safer and cleaner code when dealing with some common
+>>> patterns.
+>>>
+>>
 
-> Add support for the 2-channel LTC2305 ADC in the existing LTC2309 driver.
-> The LTC2305 and LTC2309 share similar features: both are 12-bit,
-> low-noise, low-power SAR ADCs with an I2C interface.
-> The main difference is the number of channels: LTC2305 has 2 channels,
-> while LTC2309 has 8 channels.
+...
+
+>>> + */
+>>> +#define IIO_DEV_ACQUIRE_ERR(_var_ptr) \
+>>> +	ACQUIRE_ERR(__priv__iio_dev_mode_lock_try_buffer, _var_ptr)
+>>
+>> There is no error code here, so calling it "ERR" seems wrong.
+>> Maybe IIO_DEV_ACQUIRE_FAILED()?
 > 
-> Signed-off-by: Kyle Hsieh <kylehsieh1995@gmail.com>
-Hi Kyle
+> Here I'd prefer to keep it as _ERR so users can make the immediate
+> association. But I don't feel strongly about it.
 
-This is a fairly small patch, so don't bother doing it this time, but
-for future reference, if you are doing a refactor to enable something new
-split it into a refactor patch (which makes no operational changes) and
-a new stuff patch. Here first of those patches would introduce the chip_info
-structure but only for existing supported devices.  That can be reviewed
-easily to make sure there are not functional changes.  The second patch then
-adds the entries for the new device (which can be checked against the datasheet).
+I'm afraid I fail to make any association with _ERR() and something that
+doesn't have an error code.
 
-When it is very small, in the interests of expediency we sometimes don't
-worry too much about the ideal formation of patches.
-
-In line I mention that the ltc2301 would be very easy to add as well if you
-want to do so.  Otherwise looks good to me. I'll leave it on list a little
-while though before applying.
-
-> ---
->  drivers/iio/adc/ltc2309.c | 51 ++++++++++++++++++++++++++++++++++++++++++-----
->  1 file changed, 46 insertions(+), 5 deletions(-)
-> 
-> diff --git a/drivers/iio/adc/ltc2309.c b/drivers/iio/adc/ltc2309.c
-> index 5f0d947d0615..0cf9bcae36c8 100644
-> --- a/drivers/iio/adc/ltc2309.c
-> +++ b/drivers/iio/adc/ltc2309.c
-> @@ -1,8 +1,10 @@
->  // SPDX-License-Identifier: GPL-2.0
->  /*
-> + * The LTC2305 is a  2-Channel, 12-Bit SAR ADC with an I2C Interface.
->   * The LTC2309 is an 8-Channel, 12-Bit SAR ADC with an I2C Interface.
->   *
->   * Datasheet:
-> + * https://www.analog.com/media/en/technical-documentation/data-sheets/23015fb.pdf
-
-If you wanted to, it should be trivial to also support the 2301 (I looked given the
-odd datasheet file name!)  For families of parts it is common to add support based
-on only have access to a small subset.
+Is this about following the established pattern with ACQUIRE() and
+ACQUIRE_ERR()? Usually, I am strongly in favor of following patterns
+like this. But in this case, I just doesn't make logical sense.
 
 
->   * https://www.analog.com/media/en/technical-documentation/data-sheets/2309fd.pdf
 

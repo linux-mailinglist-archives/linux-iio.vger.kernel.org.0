@@ -1,58 +1,60 @@
-Return-Path: <linux-iio+bounces-27369-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-27370-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1499DCDFF02
-	for <lists+linux-iio@lfdr.de>; Sat, 27 Dec 2025 17:11:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D1C04CDFF54
+	for <lists+linux-iio@lfdr.de>; Sat, 27 Dec 2025 17:35:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 16674300DC91
-	for <lists+linux-iio@lfdr.de>; Sat, 27 Dec 2025 16:11:27 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 9C26C3021E4B
+	for <lists+linux-iio@lfdr.de>; Sat, 27 Dec 2025 16:35:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71E793233FA;
-	Sat, 27 Dec 2025 16:11:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6EF7032548D;
+	Sat, 27 Dec 2025 16:35:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fNgTDuW9"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="k1xyhjSB"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20DBC1A23B9;
-	Sat, 27 Dec 2025 16:11:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 130B822652D;
+	Sat, 27 Dec 2025 16:35:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766851885; cv=none; b=ds7yCTkhq60UIxqDZogLdlRCydMhVG/sc1jcausVumd77/vACZsj9QctMIyGEq1Kz6yQ4dPmpNnNwtvuWA+6Xj8TSDCsX9jkuWFojXSw4pjKCNQ5CBcAfpwEPOXnEFfcgxqGOM9/uYFMvBFPcdOJErapqfpMyphTdhBhrDxVNm0=
+	t=1766853318; cv=none; b=JRTDdxhCPaJ+yVOymZHOuJ7kUVT+XPQdhfzLj8GajpS83DfXUvjw1VcvIjy2UJzBD5eTya1LXHU1sJgcZr6arVyfaQqdg6iGFFJstFhlnSgt7sGmsaMCwT44G9Gkmf1hBqrmTO8Z3LGNoyn+iMlLzyfIFzdmSJwxsIvU9StkQnk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766851885; c=relaxed/simple;
-	bh=/Z1HYkA3Z9nkZuzaX5+2e8tSWqn76PSoV2KdJ45cBo0=;
+	s=arc-20240116; t=1766853318; c=relaxed/simple;
+	bh=hICSu6Vxrj2xniWAka5RE0nDT7nVND62Yrkq1RNJuCc=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=PBtxwfrMupQ0R2W8rRzRJmDXn3YeAZMzF+ct3q7nGpPAfHM443Dzko/BSuWDon+1DS269y9/tYOhPgfPpk4hc+EX6n7kIZ8OxzYbjVIIv0Cgepa1dRgiRNufVJw75Sxjh2OgED/6qwrRiqoVmo3xBuSdzHMC09JVNcoBIVt9sXs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fNgTDuW9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D427C4CEF1;
-	Sat, 27 Dec 2025 16:11:20 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Q/MEa6+MBRjL4DFGHt1rYq3UZHHRWjBYWmUmbo7eQrUSLMffCiYw3il1Ui4WXqAN6tulbmXaTzZTjsAPiHwpfY40jpiY4GYehuc829WPlkD+lRkc4GE9q/MZf4r2CBeHYkkyDEQyES3xqc6njlnIvepDjj41Gsu2pyq7XZLIPvE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=k1xyhjSB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2949DC4CEF1;
+	Sat, 27 Dec 2025 16:35:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1766851884;
-	bh=/Z1HYkA3Z9nkZuzaX5+2e8tSWqn76PSoV2KdJ45cBo0=;
+	s=k20201202; t=1766853317;
+	bh=hICSu6Vxrj2xniWAka5RE0nDT7nVND62Yrkq1RNJuCc=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=fNgTDuW9pgSJrAHP0F6bppK7UT/vcWpGXQeQKJYVNxjSaqCkXECdSSUO85uISz+ed
-	 apV5tWa/739B7otIEvBxF9o8IUmOJBq9C2xopVwoZzH++K992PvaBXn5T8BiJSRZYY
-	 XxJeuHGaRjhq5JOmk1r/uMkkgfXH1Gcdp7vcTVCOnCUocRDKhzqZnNeslXO2jH6AwX
-	 njN1pq2PUoiSfDXXH9fWki5j/1SfymX7NVqP6pSk2nZ5K+mDDTrhzSR5sZ5BJN60kv
-	 YYib1snTl2OYaLCHlG+0j4vN0Rp4HltClj1WCaCo6CgH+AfA7Q1BgXLYDx/Yq3AJJF
-	 mzyOFF9PtfxNQ==
-Date: Sat, 27 Dec 2025 16:11:15 +0000
+	b=k1xyhjSBtGy8Fk7eM7dfl7B33FD8UlrlJJwAdGxf/lyQUVQCB3f1YPQXHNZ7ap2d2
+	 YBFTsQntiWNvdnXbSwHKrc8TtJUF2Ah3TvqmbUhSfpumYWqnd8MzLU+glKiSQjGrWP
+	 mGt5ayrxU6vp8C0byzuNeofh9cmIribWZNiR8QVUnKTkJORi+dgypZcptvZR0XDtQg
+	 JDdsFBaSsndF1zLxb2kDAurp+WERnYkbH4NHJklljJoUNOnFaBxoq2m1qpRr5ez8Rh
+	 /u0ruAxQbi0vF8b7a9PxqkSjasJiaF3TaxIMFwvWa3TIyyOdrBDl6wLuFyDeFT6ezA
+	 Bb5ajQOt3HAwA==
+Date: Sat, 27 Dec 2025 16:35:06 +0000
 From: Jonathan Cameron <jic23@kernel.org>
-To: Jonathan Santos <Jonathan.Santos@analog.com>
-Cc: <linux-iio@vger.kernel.org>, <devicetree@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>, <lars@metafoo.de>,
- <Michael.Hennerich@analog.com>, <dlechner@baylibre.com>,
- <nuno.sa@analog.com>, <andy@kernel.org>, <robh@kernel.org>,
- <krzk+dt@kernel.org>, <conor+dt@kernel.org>, <jonath4nns@gmail.com>
-Subject: Re: [PATCH v5 5/5] iio: adc: ad7768-1: add support for ADAQ776x-1
- ADC Family
-Message-ID: <20251227161115.5e38e874@jic23-huawei>
-In-Reply-To: <dab6e0ffc1a297d857f5a9c75184794c301d70f3.1765900411.git.Jonathan.Santos@analog.com>
-References: <cover.1765900411.git.Jonathan.Santos@analog.com>
-	<dab6e0ffc1a297d857f5a9c75184794c301d70f3.1765900411.git.Jonathan.Santos@analog.com>
+To: Jorge Marques <jorge.marques@analog.com>
+Cc: Lars-Peter Clausen <lars@metafoo.de>, Michael Hennerich
+ <Michael.Hennerich@analog.com>, David Lechner <dlechner@baylibre.com>, Nuno
+ =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>, Andy Shevchenko <andy@kernel.org>,
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, Jonathan Corbet <corbet@lwn.net>, Linus
+ Walleij <linus.walleij@linaro.org>, Bartosz Golaszewski <brgl@bgdev.pl>,
+ <linux-iio@vger.kernel.org>, <devicetree@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>, <linux-doc@vger.kernel.org>,
+ <linux-gpio@vger.kernel.org>, Linus Walleij <linusw@kernel.org>
+Subject: Re: [PATCH v4 0/9] Add support for AD4062 device family
+Message-ID: <20251227163506.2fb90815@jic23-huawei>
+In-Reply-To: <20251217-staging-ad4062-v4-0-7890a2951a8f@analog.com>
+References: <20251217-staging-ad4062-v4-0-7890a2951a8f@analog.com>
 X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -63,103 +65,25 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Wed, 17 Dec 2025 02:53:08 -0300
-Jonathan Santos <Jonathan.Santos@analog.com> wrote:
+On Wed, 17 Dec 2025 13:13:23 +0100
+Jorge Marques <jorge.marques@analog.com> wrote:
 
-> Add support for ADAQ7767/68/69-1 series, which includes PGIA and
-> Anti-aliasing filter (AAF) gains. Unlike the AD7768-1, they do not
-> provide a VCM regulator interface.
+> The AD4060/AD4062 are versatile, 16-bit/12-bit, successive approximation
+> register (SAR) analog-to-digital converter (ADC).
 > 
-> The PGA gain is configured in run-time through the scale attribute,
-> if supported by the device. PGA is controlled by GPIOs provided in
-> the device tree.
+> The device uses a 2-wire I3C interface. The device simplifies acquisition
+> by providing 4-bytes in the register map, signal-extending the sample
+> reading accordingly.
 > 
-> The AAF gain is defined by hardware connections and should be specified
-> in the device tree.
+> The device has autonomous monitoring capabilities, that are exposed as
+> IIO events. Since register access requires leaving the monitoring state
+> and returning, any device access exits monitoring mode, disabling the
+> IIO event.
 > 
-> Signed-off-by: Jonathan Santos <Jonathan.Santos@analog.com>
+Applied to the togreg branch of iio.git, though initially only pushed out as
+testing to give 0-day a first opportunity to poke at it.
 
-Hi Jonathan
-
-I noted one minor area where I think the code could be slightly cleaner.
-If we didn't have the outstanding question about the comment in the BP definitions
-patch I'd just have merged it as it stands. I don't mind that much if you
-prefer the current form.
+Thanks,
 
 Jonathan
-
->  
-> +static int ad7768_parse_aaf_gain(struct device *dev, struct ad7768_state *st)
-> +{
-> +	bool aaf_gain_provided;
-> +	u32 val;
-> +	int ret;
-> +
-> +	ret = device_property_read_u32(dev, "adi,aaf-gain-bp", &val);
-> +	if (ret == -EINVAL)
-> +		aaf_gain_provided = false;
-> +	else if (ret)
-> +		return dev_err_probe(dev, ret, "Failed to get AAF gain value\n");
-> +	else
-> +		aaf_gain_provided = true;
-> +
-> +	if (!aaf_gain_provided) {
-> +		if (st->chip->has_variable_aaf)
-> +			st->aaf_gain = AD7768_AAF_IN1;
-> +		return 0;
-> +	}
-> +
-> +	if (aaf_gain_provided && !st->chip->has_variable_aaf)
-> +		return dev_err_probe(dev, -EOPNOTSUPP,
-> +				     "AAF gain not supported for %s\n", st->chip->name);
-> +
-
-Might be simpler if we just did the actions for aaf_gain at the point of detecting it.
-
-	if (ret == -EINVAL) {
-		/* If controllable, use default */
-		if (st->chip->has_variable_aaf)
-			st->aaf_gain = AD7768_AAF_IN1;
-		return 0;
-	}
-	if (ret)
-		return dev_err_probe(dev, ret, "Failed to get AAF gain value\n");
-
-	if (!st->chip->has_variable_aaf)
-		return dev_err_probe(dev,, -EOPNOTSUPP,
-		     "AAF gain provided, but variable AFF gain not supported for %s\n", ...)
-
-or maybe make the gain number obvious as the default by doing.
-
-	if (ret == -EINVAL) {
-		if (!st->chip->has_variable_aaf)
-			return 0;
-
-		val = 10000; /* Matches the default from DT */
-	} else if (ret) {
-		return dev_err_probe(dev, ret, "Failed to get AAF gain value\n");
-	} else if (!st->chip->has_variable_aaf) {
-		return dev_err_probe(dev,, -EOPNOTSUPP,
-		     "AAF gain provided, but variable AFF gain not supported for %s\n", ...)
-	}
-
-The first option is simpler, bu the second makes it easier to align with DT binding.
-
-
-> +	switch (val) {
-> +	case 10000:
-> +		st->aaf_gain = AD7768_AAF_IN1;
-> +		break;
-> +	case 3640:
-> +		st->aaf_gain = AD7768_AAF_IN2;
-> +		break;
-> +	case 1430:
-> +		st->aaf_gain = AD7768_AAF_IN3;
-> +		break;
-> +	default:
-> +		return dev_err_probe(dev, -EINVAL, "Invalid firmware provided AAF gain\n");
-> +	}
-> +
-> +	return 0;
-> +}
 

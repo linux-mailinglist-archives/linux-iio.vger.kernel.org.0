@@ -1,57 +1,55 @@
-Return-Path: <linux-iio+bounces-27381-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-27382-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6E6BDCE006C
-	for <lists+linux-iio@lfdr.de>; Sat, 27 Dec 2025 18:46:16 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1962CCE0074
+	for <lists+linux-iio@lfdr.de>; Sat, 27 Dec 2025 18:47:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 75F61300501B
-	for <lists+linux-iio@lfdr.de>; Sat, 27 Dec 2025 17:46:13 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D9B5B301B2E4
+	for <lists+linux-iio@lfdr.de>; Sat, 27 Dec 2025 17:47:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A6421D619F;
-	Sat, 27 Dec 2025 17:46:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4370E335BA;
+	Sat, 27 Dec 2025 17:47:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Guaht01e"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="foPAxL3y"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6C983A1E66;
-	Sat, 27 Dec 2025 17:46:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 005E918E1F
+	for <linux-iio@vger.kernel.org>; Sat, 27 Dec 2025 17:47:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766857571; cv=none; b=X10zEy27PB8Ptg6Zi8k5E15G2aZvWzHvriCZOgCcGeDFgyGSwUakgjJX5v5dzX2606YMMnHxwSgRz9/vJFS+707VpAIf2whPQTRELQy0gMmqk2t7ZBguh1QOzDaafxjk4ont8I6GA2C9weXk+KAIOJ7xmwu5eLF2hy+NSwCYj08=
+	t=1766857652; cv=none; b=emQ7atm6LeVjjxf1yx6fU/sqikwiVXDr1dTPMkSvkT2xabeVOc5hKtjWDAy5Do2hAyjqOsM4JKnsNATQ2i0iHAV5khzSlvsiNR5hhl6LUz4Ug37AluHIm8TfGUS0NtvtgDgA9yjFMEL+yHNvmyHtN3ohA0MCp/lGUHSTevaA6ac=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766857571; c=relaxed/simple;
-	bh=Oe1q4vqbiNucWodqKNEldX869a2igibZ1Zyy/x4dxzI=;
+	s=arc-20240116; t=1766857652; c=relaxed/simple;
+	bh=oMRJ+ymAakR27A7+c7X8LyE3o24VWChnJXCw1C3AxCI=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=jtNjldqqRiBSvCmMbSJPZuU7tE5fSyug04zAyulpYkdkYo0IEtVc4HVtqmb4RkfynwtgG/qUmIQVjw5YaSe2NKiqxhkV59/ri7t61hpPwkFttSVsS4p5HWAp8GGlHpYHqXY3NUMxqYdqBwbMz0ycSoRRWN53ZTCouE7eCX7ohJE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Guaht01e; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52410C4CEF1;
-	Sat, 27 Dec 2025 17:46:05 +0000 (UTC)
+	 MIME-Version:Content-Type; b=NqzbyfIFhDxrqESY6WXfqCjY2Bbm/M0nV93v+IoJIdHL7rqzHaHCubjKr7BRCRZv5atGpBMOzkoxqtyZS26khwO6TArBO+Mmv16r6NFKwWY6algKSowSKSSosXPTW0NYnxVIe7GcY/JpbuYxs65NhJTh5W8nsYRclpiuqvFMm8Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=foPAxL3y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA7D2C4CEF1;
+	Sat, 27 Dec 2025 17:47:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1766857570;
-	bh=Oe1q4vqbiNucWodqKNEldX869a2igibZ1Zyy/x4dxzI=;
+	s=k20201202; t=1766857651;
+	bh=oMRJ+ymAakR27A7+c7X8LyE3o24VWChnJXCw1C3AxCI=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=Guaht01elJXwVq7Fdbpz/qQYbI59qU+xUrCAd9PZ81+1ZSLncX6u3OoT7k2MYnKp1
-	 2lRHo1PRPAhe9HqB3rbEFbCWGz40FWAJm0QYJiV20pYfYnbvM63NL1gElE9ykSm+1q
-	 GSEzlbBYItyIQ6Rnj/GaF3WM4ZY63eSaV8uVkfZFnZvsVKYifoa52YYS/o/MNjgi69
-	 B7qRuXsoevhfO1WqIKx9PuFrWLPiBVUz4TBx8FBHIlMTIk3PmJuZ6/fF5/itJ/gT5z
-	 GQUAfZv98j+wtYaGT8h12A4f5yqBqSydQyuKWPE630do/2RjQPFRYv7r1sZ7LwA5RE
-	 EMgg5MIkLNEDg==
-Date: Sat, 27 Dec 2025 17:45:59 +0000
+	b=foPAxL3yJKdJtcw3nrqVNibPq213PFfpmjJRe3bygOridL3OwKU00qRzmpYwZQBHR
+	 A7BgG3lbpPfYa8ScdK0KgK2gcuu0T9Psi/g9gF6ev3oSuM8No8hRsbLFC6GswZ4woI
+	 iI6K5LiOtfsQ9BoOO5VwB6B7cotgJJScRVoxnttyHYWyqirwELZ5LoBH3BJlQAIuCs
+	 wVBl2cmWNt805lvbnCwm31nmXsMwR7dJ2Ym8zV84G04HJLWJvwFIK1HMcnNvj4cD0i
+	 JV/FU9WuZz9HIRRwR9TdoY57Y+JZeHgQJJETSPg4Cpph59LmH4C/7wNzJ6MVDyJ2ZY
+	 c+0B0F8ayEQWw==
+Date: Sat, 27 Dec 2025 17:47:23 +0000
 From: Jonathan Cameron <jic23@kernel.org>
-To: Shrikant Raskar <raskar.shree97@gmail.com>
-Cc: robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
- dlechner@baylibre.com, nuno.sa@analog.com, andy@kernel.org,
- heiko@sntech.de, neil.armstrong@linaro.org, skhan@linuxfoundation.org,
- david.hunter.linux@gmail.com, linux-iio@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3 0/4] iio: proximity: Add interrupt support for
- RFD77402
-Message-ID: <20251227174559.33539640@jic23-huawei>
-In-Reply-To: <20251221083902.134098-1-raskar.shree97@gmail.com>
-References: <20251221083902.134098-1-raskar.shree97@gmail.com>
+To: Nuno =?UTF-8?B?U8Oh?= via B4 Relay
+ <devnull+nuno.sa.analog.com@kernel.org>
+Cc: nuno.sa@analog.com, linux-iio@vger.kernel.org, Michael Hennerich
+ <Michael.Hennerich@analog.com>, David Lechner <dlechner@baylibre.com>, Andy
+ Shevchenko <andy@kernel.org>
+Subject: Re: [PATCH v3 0/2] iio: dac: adi-axi-dac: Minor cleanups
+Message-ID: <20251227174723.7b3105c6@jic23-huawei>
+In-Reply-To: <20251222-iio-axi-dac-minor-changes-v3-0-29199f239d9c@analog.com>
+References: <20251222-iio-axi-dac-minor-changes-v3-0-29199f239d9c@analog.com>
 X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -59,66 +57,42 @@ List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-On Sun, 21 Dec 2025 14:08:58 +0530
-Shrikant Raskar <raskar.shree97@gmail.com> wrote:
+On Mon, 22 Dec 2025 13:48:00 +0000
+Nuno S=C3=A1 via B4 Relay <devnull+nuno.sa.analog.com@kernel.org> wrote:
 
-> This patch series adds:
->  - Add RF Digital vendor prefix
->  - YAML binding for RFD77402
->  - Add OF device ID for enumeration via DT
->  - Use kernel helper for result polling
->  - Interrupt handling support
->  
-> These changes enable DT-based configuration and event-driven
-> operation for the RFD77402 Time-of-Flight sensor.
-
-Hi Shrikant,
-
-I'm only seeing this cover letter (and lore doesn't seem
-to have the patches either).  Probably need to resend them.
+> Here it's v3 with the patch split in two.
+Applied.
 
 Thanks,
 
 Jonathan
-
-
-> 
-> Changelog:
-> Changes since v2:
-> - Add 'Reviewed-by' tag to dt-binding patch.
-> - Update commit message in OF device ID patch.
-> - Update commit message in the third patch.
-> - Replace rfd77402_result_polling() with read_poll_timeout().
-> - Add 'struct rfd77402_data' details in kernel-doc format.
-> - Arrange includes in order.
-> - Add comment for completion timeout value.
-> - Remove blank lines.
-> - Indent the comments to code.
-> - Convert mutex_init() to devm_mutex_init().
-> - Remove 'IRQF_TRIGGER_FALLING' flag from devm_request_threaded_irq().
-> - Drop the duplicate message.
-> - Replace 'dev_info' with 'dev_dbg()'.
-> - Update 'dev_id' to 'pdata' in rfd77402_interrupt_handler().
-> - Drop 'interrupt mode' comment
-> - Use 'if(ret)' instead of 'if(ret < 0) for consistency.
-> - Use 'return i2c_smbus_write_byte_data()' in 'rfd77402_config_irq'.
-> 
-> Shrikant Raskar (4):
->   dt-bindings: iio: proximity: Add RF Digital RFD77402 ToF sensor
->   iio: proximity: rfd77402: Add OF device ID for enumeration via DT
->   iio: proximity: rfd77402: Use kernel helper for result polling
->   iio: proximity: rfd77402: Add interrupt handling support
-> 
->  .../iio/proximity/rfdigital,rfd77402.yaml     |  53 +++++++
->  .../devicetree/bindings/vendor-prefixes.yaml  |   2 +
->  drivers/iio/proximity/rfd77402.c              | 149 +++++++++++++++---
->  3 files changed, 183 insertions(+), 21 deletions(-)
->  create mode 100644 Documentation/devicetree/bindings/iio/proximity/rfdigital,rfd77402.yaml
-> 
-> 
-> base-commit: d8ba32c5a460837a5f0b9619dac99fafb6faef07
+>=20
+> ---
+> Changes in v3:
+> - Patch 1:
+>   * New patch.
+> - Link to v2: https://lore.kernel.org/r/20251219-iio-axi-dac-minor-change=
+s-v2-1-e9fccc019b01@analog.com
+>=20
+> ---
+> Nuno S=C3=A1 (2):
+>       iio: dac: adi-axi-dac: Make use of a local struct device variable
+>       iio: dac: adi-axi-dac: Make use of dev_err_probe()
+>=20
+>  drivers/iio/dac/adi-axi-dac.c | 66 ++++++++++++++++++++-----------------=
+------
+>  1 file changed, 31 insertions(+), 35 deletions(-)
+> ---
+> base-commit: f9e05791642810a0cf6237d39fafd6fec5e0b4bb
+> change-id: 20251203-iio-axi-dac-minor-changes-945fa5f2e1eb
+> --
+>=20
+> Thanks!
+> - Nuno S=C3=A1
+>=20
+>=20
 
 

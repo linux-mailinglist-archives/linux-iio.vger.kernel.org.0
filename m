@@ -1,206 +1,139 @@
-Return-Path: <linux-iio+bounces-27396-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-27397-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 63D30CE0126
-	for <lists+linux-iio@lfdr.de>; Sat, 27 Dec 2025 19:42:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6A926CE0129
+	for <lists+linux-iio@lfdr.de>; Sat, 27 Dec 2025 19:44:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A91D8301B80E
-	for <lists+linux-iio@lfdr.de>; Sat, 27 Dec 2025 18:42:20 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 1733E301C3DD
+	for <lists+linux-iio@lfdr.de>; Sat, 27 Dec 2025 18:44:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77D62324B24;
-	Sat, 27 Dec 2025 18:42:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC047632;
+	Sat, 27 Dec 2025 18:44:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="R6Xf69sK"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="WSOokB+9"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-vs1-f53.google.com (mail-vs1-f53.google.com [209.85.217.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 308F5632;
-	Sat, 27 Dec 2025 18:42:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20FE3280325
+	for <linux-iio@vger.kernel.org>; Sat, 27 Dec 2025 18:44:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.217.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766860938; cv=none; b=pY2TKW1q5OuuSiKYkyoiv+vPedZ43saMY3wRdI/LsaVbmlnrbE1vJNn1FtJYrcE8SFkw1cLXuDRUOwJ5rTV8CtBnVXwe0Ol6FOQdOpczxFn83kEqaX3aUgls2BQrGUP6ymC+JU+iaFaTdFjaviJYW/CdvJKNWKTsq91CS5EUYK8=
+	t=1766861080; cv=none; b=IARK77y0j8jrKRhVld/80wGJkE36xqKOEYvGTQmzMFXkisQdphcI0CPVme9MOD4AwUByRK8FZrNp/Q855lHU2xyOghN6splxsLodgAAe6zQb1g5mYTiJf9anaLKIaGbj9V9zayPIC6bc1HNg61ZWdkGvIepMoaANDjqjsHFZ8i0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766860938; c=relaxed/simple;
-	bh=2huUn/PzWL56HOjSRVJVnYIV4xXPnaVAb0pq+ijBdY4=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Rer6qfYgMD3AE0QpL+Ca3Qpu1931oxw1iI6zVORc3k+bwyrPBRSAZNd9rTMCaD1zHEYLp/aGiS2aBN6faVebVqqv1r6vf0OcV4a0WToJrzsMQm/31/qgymNAvhyrgQLOmny/uBMG8xa2pAF8VgWB2hCyVK6UutX3R7PzZdt0RkM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=R6Xf69sK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0CA3C4CEF1;
-	Sat, 27 Dec 2025 18:42:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1766860937;
-	bh=2huUn/PzWL56HOjSRVJVnYIV4xXPnaVAb0pq+ijBdY4=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=R6Xf69sKFHFd3F6tDaBlI2AcK6BbGfJVkYu+FSpPQU/gIyIcuNXpsqUSkOP/l6RoX
-	 Lv7Y1agtRks9s27v19XuQRH/bU8QBRIzmRVZYf0xCf5X5Q0BSAs8Yc3V83XTyg+q34
-	 rfuBXylx4NroFEgxnrw3J8H/PKgWTC+sZ6ECY5oxEN8xBuJU0YWxIpeXmmR/aOGdLx
-	 FRG3XeI+bJYv59aSjYzSx4IJBhU2upFPzEc3PE4xg4g8BBWBEd8sDAoFK3lLWE7hg+
-	 p2zD/KzRlyOSDu0LfL0tBrtdOUeifNf53tX+fdemoIqqoce0Q/5ZA5yOoIx1kBopVM
-	 rsoTLUPqghC2A==
-Date: Sat, 27 Dec 2025 18:42:04 +0000
-From: Jonathan Cameron <jic23@kernel.org>
-To: Maxime Chevallier <maxime.chevallier@bootlin.com>
-Cc: David Lechner <dlechner@baylibre.com>, nuno.sa@analog.com, Andy
- Shevchenko <andy@kernel.org>, Rob Herring <robh@kernel.org>, Krzysztof
- Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Marcelo
- Schmitt <marcelo.schmitt@analog.com>, Matti Vaittinen
- <mazziesaccount@gmail.com>, Antoniu Miclaus <antoniu.miclaus@analog.com>,
- Angelo Dureghello <adureghello@baylibre.com>, Tobias Sperling
- <tobias.sperling@softing.com>, Eason Yang <j2anfernee@gmail.com>, Marilene
- Andrade Garcia <marilene.agarcia@gmail.com>, Cosmin Tanislav
- <cosmin-gabriel.tanislav.xa@renesas.com>, duje@dujemihanovic.xyz,
- herve.codina@bootlin.com, Rodolfo Giometti <giometti@enneenne.com>,
- linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, thomas.petazzoni@bootlin.com
-Subject: Re: [PATCH 2/2] iio: adc: add driver for Texas Instruments TLA2528
- adc
-Message-ID: <20251227184204.6815a3b4@jic23-huawei>
-In-Reply-To: <20251223155534.220504-3-maxime.chevallier@bootlin.com>
-References: <20251223155534.220504-1-maxime.chevallier@bootlin.com>
-	<20251223155534.220504-3-maxime.chevallier@bootlin.com>
-X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1766861080; c=relaxed/simple;
+	bh=rdhIBTfFdXUktQ9sa/Bcoyf0GMkDmxm1f+vi1Bd9iOU=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
+	 References:In-Reply-To; b=DCYcsFDxqEeRIxhK7m6Uq52fi+hk+AOF+fVZGS0+zm8KmW5S6G+UJjPWZfy0/p4qr2nOUf44awXA5thJ3RpeUsYOrDpUsOhA3ww2IsV9CRZ/B4n6h6KbeAV+XWDOa4ni3SLl4UTGN9nW5tuPT9QYfm22Q2U5AQ2hd/Vd4bpJtc8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=WSOokB+9; arc=none smtp.client-ip=209.85.217.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-vs1-f53.google.com with SMTP id ada2fe7eead31-5dfa9bfa9c7so5695804137.1
+        for <linux-iio@vger.kernel.org>; Sat, 27 Dec 2025 10:44:38 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1766861078; x=1767465878; darn=vger.kernel.org;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-transfer-encoding:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=L7kO+jmMKH7V5UQhMAssLbKi2imCsali/qeRnKC3XxI=;
+        b=WSOokB+9XvdLvBTsJxRhw2m3F7vqAL0+EfKQhMaam4FRKK0DxkiD118gwH/ERy5xc1
+         ZpJQK52nb6l+mWEY62sPbP9fQ06tJ/mD+ChCO8RvS56R2B2IT+MY7zTYTyi5oGD8A5FX
+         sWJ9v+abOt27Iz0lwou7qMfy+YC+xnYTXwjgpoUcjiw4ouWoaRq9SllvpIYeSb7NFYus
+         gd7wN2isosVVc1gHCgnJfQxsvXQHUPvNBhDNpIaeRivhOzadwcshbskXeQynLcB6zT8C
+         REL+NRxjcgNVBIo0CvbYxK9LmP5B7XcDIgQiNc/sf/FYUJNMJG9CmutQNqO3kNDiXuji
+         SRzw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1766861078; x=1767465878;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-transfer-encoding:mime-version:x-gm-gg:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=L7kO+jmMKH7V5UQhMAssLbKi2imCsali/qeRnKC3XxI=;
+        b=t0/UqKeefdfcIIUGMNiSGlyzobgLjnhP0VkLsHR1mqhYp5dL6WW7LJQKuq4Jkq/NZ0
+         enCLcMITKdmfqUhPdZ36Lo3FuwBdYTxK27lW6X6cUVajXBSy0Q6SumOkhnbPlGvBoxoO
+         y8JdvOqh+qNMLaUToGVd1juQTbdWcCc9aRFdz1/Ma6Q4v7XqInCroUEAw7Kkxcr6n6XU
+         J6GRHskVDC5bca5C1mPhYTZ6Deh6OuVb+qaf7oAOm16pmMBQb20RQF3RkK6SNrP+jvZf
+         l4s9PhOU+Qpq9x6JBhimjfk0Nb8E8nRqlMSunzdQOAbJU1rjAMzsOP/Z3DyOhLPQNk53
+         pq5Q==
+X-Forwarded-Encrypted: i=1; AJvYcCWeu3y/hQN0z/H/GntjmDCUWcxM5x0rYm6EXKb8vM+0gTpCBNSTrnwDkt/l6/STZOKU2+l7yzMFFMI=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzpGpJq2J4WyepH9pfll7KvpoggaZJUuNxDgmk2wC3dv1UbdejQ
+	LMxUgRftbOer1QLRBBf1XXNR9DR8uTXfg/LkRKEOfMOQVfVpFLqB4HAB
+X-Gm-Gg: AY/fxX6IZt00KaWB0A14ClDCXCtx+t8FKTuQDHMqt7Mowv99E2fh2jO0Iv7Pwr6BFYC
+	l/TffN/ElZ6ONu+z0tOVeV6IgKyXU2xlezf/TDEgJJvtPQF4BoVfn1t0jtVSVgumXnNQSCjX/bz
+	0uI+Jmgk9JpXDiIVAEkM3Tq+28IyhX3bOELORDCGCHaXa0kOZAonJY87JSz6x0rAMRC8A70sPa7
+	bZ+/006FxtK3xrlWDN8aYdEBvF2UuVMwY5Kzea/HDZ/fGlUvGj+8EeNxwOpQdhI2qx7qFd6d7lB
+	+bQYiVQN6+gnEapzNhGNv8g0mkCh7ughkMAuK7YMS5r71cy+/djZY8emYlBKS+EUn69NSlkdoOa
+	vii7/a9KLh28UHZOL4rqifU5r77/IO6/GyTGK4zB++mv3LmBH4oY33cHVpEY/hGC1PwYuNZ1oOI
+	pdlHWHtS1aZIW3
+X-Google-Smtp-Source: AGHT+IEZcQ/IcoUf7aH/caNcZC+d2KO1dJbj+QLlr65L47GvTlxUk1imjM7pKXq3ZG6lkoTMvo/JAA==
+X-Received: by 2002:a05:6102:2c81:b0:5db:deb6:b261 with SMTP id ada2fe7eead31-5eb1a687a81mr8750016137.13.1766861078123;
+        Sat, 27 Dec 2025 10:44:38 -0800 (PST)
+Received: from localhost ([2800:bf0:82:11a2:7ac4:1f2:947b:2b6])
+        by smtp.gmail.com with ESMTPSA id ada2fe7eead31-5eb1aa4f32dsm8215153137.3.2025.12.27.10.44.36
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sat, 27 Dec 2025 10:44:37 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Sat, 27 Dec 2025 13:44:35 -0500
+Message-Id: <DF97Z8HIH640.49M8GK9XPEXZ@gmail.com>
+Cc: "Andy Shevchenko" <andriy.shevchenko@intel.com>, "Lars-Peter Clausen"
+ <lars@metafoo.de>, "Michael Hennerich" <Michael.Hennerich@analog.com>,
+ "Benson Leung" <bleung@chromium.org>, "Antoniu Miclaus"
+ <antoniu.miclaus@analog.com>, "Gwendal Grignou" <gwendal@chromium.org>,
+ "Shrikant Raskar" <raskar.shree97@gmail.com>, "Per-Daniel Olsson"
+ <perdaniel.olsson@axis.com>, =?utf-8?q?Nuno_S=C3=A1?= <nuno.sa@analog.com>,
+ "Andy Shevchenko" <andy@kernel.org>, "Guenter Roeck" <groeck@chromium.org>,
+ "Jonathan Cameron" <Jonathan.Cameron@huawei.com>,
+ <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+ <chrome-platform@lists.linux.dev>
+Subject: Re: [PATCH v2 3/7] iio: core: Match iio_device_claim_*() semantics
+ and implementation
+From: "Kurt Borja" <kuurtb@gmail.com>
+To: "David Lechner" <dlechner@baylibre.com>, "Kurt Borja"
+ <kuurtb@gmail.com>, "Jonathan Cameron" <jic23@kernel.org>
+X-Mailer: aerc 0.21.0-0-g5549850facc2
+References: <20251211-lock-impr-v2-0-6fb47bdaaf24@gmail.com>
+ <20251211-lock-impr-v2-3-6fb47bdaaf24@gmail.com>
+ <20251227144707.1bebcf27@jic23-huawei>
+ <DF97CCMNGWVP.2JBZR7CQF1FID@gmail.com>
+ <f1c1ca8d-7896-4ccd-b59b-8c6c1bf4fa66@baylibre.com>
+In-Reply-To: <f1c1ca8d-7896-4ccd-b59b-8c6c1bf4fa66@baylibre.com>
 
-On Tue, 23 Dec 2025 16:55:33 +0100
-Maxime Chevallier <maxime.chevallier@bootlin.com> wrote:
+On Sat Dec 27, 2025 at 1:24 PM -05, David Lechner wrote:
+> On 12/27/25 12:14 PM, Kurt Borja wrote:
+>> On Sat Dec 27, 2025 at 9:47 AM -05, Jonathan Cameron wrote:
+>>> On Thu, 11 Dec 2025 21:45:21 -0500
+>>> Kurt Borja <kuurtb@gmail.com> wrote:
+>>>
+>
+> ...
+>
+>>> Given earlier discussion about this one being rather more tricky
+>>> to name than the claim_direct because claim_buffer sounds like
+>>> we are grabbing the buffer, I'm not sure on the best naming to have
+>>> here. iio_device_claim_buffer_m maybe?  Ugly though and
+>>> these are super rare so maybe this isn't a particularly major
+>>> concern.
+>>=20
+>> Yes, it's a bit ugly, but as I proposed in the cover letter, if we go
+>> for a full API rename, it shouldn't matter for now?
+>>=20
+>> What do you think about that?
+>>=20
+>> I'll go for iio_device_claim_buffer_m() if I can't think of something
+>> better.
+>
+> iio_device_try_claim_buffer_mode()?
+>
 
-> This adds a new driver for the TI TLA2528 ADC chip. It ha 8 12-bit
-> channels, that can also be configured as 16-bit averaging channels.
-> 
-> Add a very simple driver for it, allowing reading raw values for each
-> channel.
-> 
-> Signed-off-by: Rodolfo Giometti <giometti@enneenne.com>
-> Signed-off-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
+Yes, that's better.
 
-Hi Maxime,
-
-A few extra bits from me
-
-Thanks,
-
-Jonathan
-
-
-> diff --git a/drivers/iio/adc/ti-tla2528.c b/drivers/iio/adc/ti-tla2528.c
-> new file mode 100644
-> index 000000000000..9c572e730ffb
-> --- /dev/null
-> +++ b/drivers/iio/adc/ti-tla2528.c
-> @@ -0,0 +1,209 @@
-
-> +
-> +static s32 tla2528_write_reg(const struct i2c_client *client, u8 reg, u8 val)
-> +{
-> +	u8 data[3] = {TLA2528_OP_WRITE_REG, reg, val};
-
-Style wise. Prefer { TLA25... val };
-
-- couple of spaces next to the brackets.
-
-> +	int ret;
-> +
-> +	ret = i2c_master_send(client, data, 3);
-> +
-> +	return ret < 0 ? ret : 0;
-> +}
-> +
-> +static int tla2528_read_sample(const struct i2c_client *client)
-> +{
-> +	__be16 data;
-> +	int ret;
-> +
-> +	ret = i2c_master_recv(client, (char *)&data, 2);
-
-sizeof(data)
-
-> +	if (ret < 0)
-> +		return ret;
-> +
-> +	return be16_to_cpu(data) >> 4;
-> +}
-
-> +
-> +#define TLA2528_CHAN(_chan, _name) { \
-
-The _ aren't adding anything here, so I'd drop them.
-
-> +	.type = IIO_VOLTAGE,					\
-> +	.channel = (_chan),					\
-> +	.info_mask_separate = BIT(IIO_CHAN_INFO_RAW),		\
-> +	.info_mask_shared_by_type = BIT(IIO_CHAN_INFO_SCALE),	\
-> +	.datasheet_name = _name,				\
-> +	.indexed = 1,						\
-> +}
-
-> +
-> +static int tla2528_probe(struct i2c_client *client)
-> +{
-> +	struct iio_dev *indio_dev;
-> +	struct tla2528 *tla2528;
-> +	int ret;
-> +
-> +	if (!i2c_check_functionality(client->adapter, I2C_FUNC_I2C |
-> +				     I2C_FUNC_SMBUS_WRITE_WORD_DATA))
-> +		return -EOPNOTSUPP;
-> +
-> +	indio_dev = devm_iio_device_alloc(&client->dev, sizeof(*tla2528));
-> +	if (!indio_dev)
-> +		return -ENOMEM;
-> +
-> +	tla2528 = iio_priv(indio_dev);
-> +	i2c_set_clientdata(client, indio_dev);
-
-Ever used? If not don't set it.
-
-> +	tla2528->client = client;
-> +
-> +	indio_dev->name = client->name;
-
-Prefer to see it hard coded as a string.  If we added extra firmware
-types in future the content of client->name can become something other
-than the part number.
-
-
-> +	indio_dev->info = &tla2528_info;
-> +	indio_dev->modes = INDIO_DIRECT_MODE;
-> +	indio_dev->channels = tla2528_channel;
-> +	indio_dev->num_channels = ARRAY_SIZE(tla2528_channel);
-> +
-> +	mutex_init(&tla2528->lock);
-> +
-> +	tla2528->vref_uv = devm_regulator_get_enable_read_voltage(&client->dev,
-> +								  "vref");
-> +	if (tla2528->vref_uv < 0)
-> +		return tla2528->vref_uv;
-> +
-> +	/* Set all inputs as analog */
-> +	ret = tla2528_write_reg(tla2528->client, TLA2528_PIN_CFG_ADR, 0x00);
-> +	if (ret < 0)
-> +		return ret;
-> +
-> +	ret = tla2528_write_reg(tla2528->client, TLA2528_DATA_CFG_ADR,
-> +				TLA2528_DATA_CFG_APPEND_STATUS);
-> +	if (ret < 0)
-> +		return ret;
-> +
-> +	/* Set manual mode */
-> +	ret = tla2528_write_reg(tla2528->client, TLA2528_SEQUENCE_CFG_ADR, 0x00);
-> +	if (ret < 0)
-> +		return ret;
-> +
-> +	/* Init private data */
-> +	tla2528->last_read_channel = ~0;
-> +
-> +	return devm_iio_device_register(&client->dev, indio_dev);
-> +}
+--=20
+ ~ Kurt
 

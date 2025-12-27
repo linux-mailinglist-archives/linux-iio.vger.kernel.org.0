@@ -1,98 +1,164 @@
-Return-Path: <linux-iio+bounces-27382-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-27383-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1962CCE0074
-	for <lists+linux-iio@lfdr.de>; Sat, 27 Dec 2025 18:47:34 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id EDC4FCE0080
+	for <lists+linux-iio@lfdr.de>; Sat, 27 Dec 2025 18:51:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D9B5B301B2E4
-	for <lists+linux-iio@lfdr.de>; Sat, 27 Dec 2025 17:47:32 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id CA0DE301919F
+	for <lists+linux-iio@lfdr.de>; Sat, 27 Dec 2025 17:51:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4370E335BA;
-	Sat, 27 Dec 2025 17:47:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59B4F2405FD;
+	Sat, 27 Dec 2025 17:51:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="foPAxL3y"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="XazrX/3C"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ua1-f44.google.com (mail-ua1-f44.google.com [209.85.222.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 005E918E1F
-	for <linux-iio@vger.kernel.org>; Sat, 27 Dec 2025 17:47:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FD2815CD74
+	for <linux-iio@vger.kernel.org>; Sat, 27 Dec 2025 17:51:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766857652; cv=none; b=emQ7atm6LeVjjxf1yx6fU/sqikwiVXDr1dTPMkSvkT2xabeVOc5hKtjWDAy5Do2hAyjqOsM4JKnsNATQ2i0iHAV5khzSlvsiNR5hhl6LUz4Ug37AluHIm8TfGUS0NtvtgDgA9yjFMEL+yHNvmyHtN3ohA0MCp/lGUHSTevaA6ac=
+	t=1766857905; cv=none; b=ePJzTw+wxW/WH9B3nDgeZ+HN095I5d5g+57q+UD5Ioc2/dWPJjLI0jtcOSTW7QR1w9v8PbrhVKhjSS5EjtskjFgFDblgB19iEy/aDMRs0l8PvlTLDJYveVJl84x1AlAN0WRLHjeZfdXNuw6tpbVWBrrrfXvkcd4VpGOcE+gDNM0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766857652; c=relaxed/simple;
-	bh=oMRJ+ymAakR27A7+c7X8LyE3o24VWChnJXCw1C3AxCI=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=NqzbyfIFhDxrqESY6WXfqCjY2Bbm/M0nV93v+IoJIdHL7rqzHaHCubjKr7BRCRZv5atGpBMOzkoxqtyZS26khwO6TArBO+Mmv16r6NFKwWY6algKSowSKSSosXPTW0NYnxVIe7GcY/JpbuYxs65NhJTh5W8nsYRclpiuqvFMm8Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=foPAxL3y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA7D2C4CEF1;
-	Sat, 27 Dec 2025 17:47:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1766857651;
-	bh=oMRJ+ymAakR27A7+c7X8LyE3o24VWChnJXCw1C3AxCI=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=foPAxL3yJKdJtcw3nrqVNibPq213PFfpmjJRe3bygOridL3OwKU00qRzmpYwZQBHR
-	 A7BgG3lbpPfYa8ScdK0KgK2gcuu0T9Psi/g9gF6ev3oSuM8No8hRsbLFC6GswZ4woI
-	 iI6K5LiOtfsQ9BoOO5VwB6B7cotgJJScRVoxnttyHYWyqirwELZ5LoBH3BJlQAIuCs
-	 wVBl2cmWNt805lvbnCwm31nmXsMwR7dJ2Ym8zV84G04HJLWJvwFIK1HMcnNvj4cD0i
-	 JV/FU9WuZz9HIRRwR9TdoY57Y+JZeHgQJJETSPg4Cpph59LmH4C/7wNzJ6MVDyJ2ZY
-	 c+0B0F8ayEQWw==
-Date: Sat, 27 Dec 2025 17:47:23 +0000
-From: Jonathan Cameron <jic23@kernel.org>
-To: Nuno =?UTF-8?B?U8Oh?= via B4 Relay
- <devnull+nuno.sa.analog.com@kernel.org>
-Cc: nuno.sa@analog.com, linux-iio@vger.kernel.org, Michael Hennerich
- <Michael.Hennerich@analog.com>, David Lechner <dlechner@baylibre.com>, Andy
- Shevchenko <andy@kernel.org>
-Subject: Re: [PATCH v3 0/2] iio: dac: adi-axi-dac: Minor cleanups
-Message-ID: <20251227174723.7b3105c6@jic23-huawei>
-In-Reply-To: <20251222-iio-axi-dac-minor-changes-v3-0-29199f239d9c@analog.com>
-References: <20251222-iio-axi-dac-minor-changes-v3-0-29199f239d9c@analog.com>
-X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1766857905; c=relaxed/simple;
+	bh=Swu1AsoD2uKVKIsO16rFYanR9wkyI2Uyh69Ficn0+3k=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
+	 References:In-Reply-To; b=KBtoCIAphSnVjQ9yX0tzmG4srS03Hj5F1QwS7JB765iNSdW4vop01jS9/Qb49nESM2gSIPl9SPOy5mJxrlHEXh/8Gshy+s1QPzXYFsHGWXmQipmzu3xMIDla+4tr/yZjxJfm/nQpSqikcoZ8PCSyZTOn00EBe4PDB+c1PIPtGiE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=XazrX/3C; arc=none smtp.client-ip=209.85.222.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ua1-f44.google.com with SMTP id a1e0cc1a2514c-93f5910b06cso4876070241.0
+        for <linux-iio@vger.kernel.org>; Sat, 27 Dec 2025 09:51:43 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1766857902; x=1767462702; darn=vger.kernel.org;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-transfer-encoding:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=vmFzJPPSFZ71FHxxZJBuKnxU6e6Q71MdYKBIZQXMAjs=;
+        b=XazrX/3CzQMYvbReDqM73WJlsCCM9wqN4jd6B7zfyvpXiiWyGurthpOqDbJoW9/BYE
+         ATahx+qomKphxY0qIL2kI3dlsoFpRO6IUPFHjw0h3yJ45SroLJEEeH3YUA3kK/Y+nPVR
+         7KQ3DxXqKS7Zb99mPXbkPtIixxSBV/1PoAJDog4MVZZU1jPfGHPUxSFxYqzl1Xg9BXF9
+         tJ/dBBnYqOHk3WUX3QbP6mGQ0csP4Byzfi9E+ZtJFE/U1Rkc394qe9NY/Yhu6Vw3UzFp
+         beAM67bhftAUXF8l7+vXbRYAXEaUSnaBT1klrRaSuLtryNv4pBtMU/1bJdYVVRQRxgVq
+         2zZg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1766857902; x=1767462702;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-transfer-encoding:mime-version:x-gm-gg:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=vmFzJPPSFZ71FHxxZJBuKnxU6e6Q71MdYKBIZQXMAjs=;
+        b=Hv3M7oUHZrf6cNIN+hbf4gz8W43ZnCtP25j3tN/fAaM9CbPZt1ZvoEyn0fEsvcTvJW
+         aKhx0CV2HLLHnsk1YKxdYy2oprI2YyvbFEfAvU8Z9OHWtazxbMqBUq+f6EjYFXXn2IFm
+         +aiBBEunMI1z7nKSGwle1iAjjSCUuFyIkB33lRwuTSHcsdc8mRGQ8uAxe6XMY4SJFJ7C
+         dw4o56tJHnO8dKz9r4HgGSf43JY69rzbSXPUoqhJ1nadQYbV36jy82jkLTC9IdbVCx0F
+         XD8VTJ5LakWxFgntQGNSaJm61nmTS2J75tCUyePPJqY/Bv2qBZxmS6pDQINWp0H7Uw9v
+         FibQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXDJgFvdjoX5c6wxwPwQ41jGW3hKpovYUWQdRSXR6ZaYk7rUaKkqnsyXXvzp904RJlIdAIQS4j+NYk=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy4Avw5t06/yEEI9mJ9AJ1CJOpLqNxPzKGdps6qyx7LSQ1KWYVD
+	YqZINX84GRqR0s0/4Zn+zBtP4rHoiBqNJfngFyP4SL2JjF8RecYwzp5u
+X-Gm-Gg: AY/fxX4zrCeSf4n819NBGO/IknR6skQOJ/HsnU05aeduj+tXxgDFdmvsKooWUUsMqEG
+	Uywn6jNMf1SYTXrSWWABnOUWo86F3l7T9OBbAmDLbqSi6+JVecykkkk9cFRE+XpJcyNK8q1Lc4z
+	iO2SQts7RJcTw/+zHnomLU/UP5lIpAPU1INszdrEQ55r4Qb7BcHWnARg9eYkYcrnQuls3p80yn9
+	wO3ht/3GiFES+v1ZIaloVr8Vle3E3ipbZrr8fArXnZFE1FAl7hf86tMxyR/h0kGLWwZYXbRiPCM
+	gb3e+lHkw9r1bE2Cysks9wlVZ/NW4hzVyVdRKOFcfT8cMlm7ZNcaCecDidPIWuuPSbhcCxUjRUg
+	X41Qy1FMO50gxnuVRSZaEHuNoS01hCct+GLhgdoYECdBaPjtStwvA2ktcFdAe036Q7pzCBYXY80
+	Bw/A==
+X-Google-Smtp-Source: AGHT+IGKy3LCwmWTq56Z8fUz0bj3S63XBFyo48A59tnEZ/yi1Ul7cN7lZGg0NVGTKJhH2jVih4glzw==
+X-Received: by 2002:a05:6102:5113:b0:5d7:dddd:5709 with SMTP id ada2fe7eead31-5eb181a50e7mr8023956137.0.1766857902259;
+        Sat, 27 Dec 2025 09:51:42 -0800 (PST)
+Received: from localhost ([2800:bf0:82:11a2:7ac4:1f2:947b:2b6])
+        by smtp.gmail.com with ESMTPSA id ada2fe7eead31-5eb1ac64f63sm8447665137.10.2025.12.27.09.51.39
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sat, 27 Dec 2025 09:51:41 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Sat, 27 Dec 2025 12:51:39 -0500
+Message-Id: <DF96UPJ1TKP2.2U8D76HGLPT09@gmail.com>
+Cc: =?utf-8?q?Nuno_S=C3=A1?= <nuno.sa@analog.com>, "Andy Shevchenko"
+ <andy@kernel.org>, "Guenter Roeck" <groeck@chromium.org>, "Jonathan
+ Cameron" <Jonathan.Cameron@huawei.com>, <linux-iio@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>, <chrome-platform@lists.linux.dev>
+Subject: Re: [PATCH v2 1/7] iio: core: Add and export __iio_dev_mode_lock()
+From: "Kurt Borja" <kuurtb@gmail.com>
+To: "David Lechner" <dlechner@baylibre.com>, "Kurt Borja"
+ <kuurtb@gmail.com>, "Andy Shevchenko" <andriy.shevchenko@intel.com>,
+ "Lars-Peter Clausen" <lars@metafoo.de>, "Michael Hennerich"
+ <Michael.Hennerich@analog.com>, "Jonathan Cameron" <jic23@kernel.org>,
+ "Benson Leung" <bleung@chromium.org>, "Antoniu Miclaus"
+ <antoniu.miclaus@analog.com>, "Gwendal Grignou" <gwendal@chromium.org>,
+ "Shrikant Raskar" <raskar.shree97@gmail.com>, "Per-Daniel Olsson"
+ <perdaniel.olsson@axis.com>
+X-Mailer: aerc 0.21.0-0-g5549850facc2
+References: <20251211-lock-impr-v2-0-6fb47bdaaf24@gmail.com>
+ <20251211-lock-impr-v2-1-6fb47bdaaf24@gmail.com>
+ <92d07935-b2b5-4cf3-bd45-654d77cdc23b@baylibre.com>
+In-Reply-To: <92d07935-b2b5-4cf3-bd45-654d77cdc23b@baylibre.com>
 
-On Mon, 22 Dec 2025 13:48:00 +0000
-Nuno S=C3=A1 via B4 Relay <devnull+nuno.sa.analog.com@kernel.org> wrote:
+Hi David,
 
-> Here it's v3 with the patch split in two.
-Applied.
+On Tue Dec 23, 2025 at 12:19 PM -05, David Lechner wrote:
+> On 12/11/25 8:45 PM, Kurt Borja wrote:
+>> Add infallible wrappers around the internal IIO mode lock.
+>
+> Not sure what "infallible" is supposed to mean in this context. Maybe
+> referring to autocleanup?
 
-Thanks,
+I meant wrappers that do not fail i.e. return void. Should I word it
+differently?
 
-Jonathan
->=20
-> ---
-> Changes in v3:
-> - Patch 1:
->   * New patch.
-> - Link to v2: https://lore.kernel.org/r/20251219-iio-axi-dac-minor-change=
-s-v2-1-e9fccc019b01@analog.com
->=20
-> ---
-> Nuno S=C3=A1 (2):
->       iio: dac: adi-axi-dac: Make use of a local struct device variable
->       iio: dac: adi-axi-dac: Make use of dev_err_probe()
->=20
->  drivers/iio/dac/adi-axi-dac.c | 66 ++++++++++++++++++++-----------------=
-------
->  1 file changed, 31 insertions(+), 35 deletions(-)
-> ---
-> base-commit: f9e05791642810a0cf6237d39fafd6fec5e0b4bb
-> change-id: 20251203-iio-axi-dac-minor-changes-945fa5f2e1eb
-> --
->=20
-> Thanks!
-> - Nuno S=C3=A1
->=20
->=20
+>
+>>=20
+>> As mentioned in the documentation, this is not meant to be used by
+>> drivers, instead this will aid in the eventual addition of cleanup
+>> classes around conditional locks.
+>>=20
+>> Signed-off-by: Kurt Borja <kuurtb@gmail.com>
+>> ---
+>>  drivers/iio/industrialio-core.c | 30 ++++++++++++++++++++++++++++++
+>>  include/linux/iio/iio.h         |  3 +++
+>>  2 files changed, 33 insertions(+)
+>>=20
+>> diff --git a/drivers/iio/industrialio-core.c b/drivers/iio/industrialio-=
+core.c
+>> index f69deefcfb6f..1cce2d1ecef1 100644
+>> --- a/drivers/iio/industrialio-core.c
+>> +++ b/drivers/iio/industrialio-core.c
+>> @@ -2171,6 +2171,36 @@ int __devm_iio_device_register(struct device *dev=
+, struct iio_dev *indio_dev,
+>>  }
+>>  EXPORT_SYMBOL_GPL(__devm_iio_device_register);
+>> =20
+>> +/**
+>> + * __iio_dev_mode_lock - Locks the current IIO device mode
+>> + * @indio_dev: the iio_dev associated with the device
+>> + *
+>> + * If the device is either in direct or buffer mode, it's guaranteed to=
+ stay
+>> + * that way until __iio_dev_mode_unlock() is called.
+>> + *
+>> + * This function is not meant to be used directly by drivers to protect=
+ internal
+>> + * state, a driver should have it's own mechanisms for that matter.
+>> + *
+>> + * There are very few cases where a driver actually needs to lock any m=
+ode. It's
+>> + * *strongly* recommended to use iio_device_claim_direct() or
+>
+> I wouldn't even say "strongly recommend". Just say "use these instead".
+>
+> In the exceptions, likely the autocleanup version should be used as is
+> the case currently.
 
+Sure!
+
+--=20
+ ~ Kurt
 

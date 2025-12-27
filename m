@@ -1,58 +1,57 @@
-Return-Path: <linux-iio+bounces-27366-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-27367-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD930CDFE9C
-	for <lists+linux-iio@lfdr.de>; Sat, 27 Dec 2025 16:53:26 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8F036CDFEAE
+	for <lists+linux-iio@lfdr.de>; Sat, 27 Dec 2025 16:55:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 4431D3011769
-	for <lists+linux-iio@lfdr.de>; Sat, 27 Dec 2025 15:52:56 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 029E63010AA7
+	for <lists+linux-iio@lfdr.de>; Sat, 27 Dec 2025 15:55:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 084762620FC;
-	Sat, 27 Dec 2025 15:52:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54FF2263C7F;
+	Sat, 27 Dec 2025 15:55:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QCUneI+L"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LL41XJPA"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A64D25F995;
-	Sat, 27 Dec 2025 15:52:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 083D73FFD;
+	Sat, 27 Dec 2025 15:55:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766850774; cv=none; b=Jw2CuDboDcWtLsEtv1l77MZvoNrdKMiMxZyPkqj5Svt+tjWG6Q9Ubto7ZC+5bBL6CCq/pBst6uPSkSUoE79LnBq9cK2h15IquC8VmJ0ED3HP5GhQahl3LdEvWKPjgvwo0/23tKp4tmaKEhfGVE/PiaoVdPraaGEh5XL4t94Hlns=
+	t=1766850936; cv=none; b=QQmSPAwrdQcJw1QN/XWu7e7vob9YfnMFA5tw3IeyK1fauBVYrjjQpFupaAIFur2EbS2cZjn/X2L6Uy47n0TiobxkJJT9YS0R3r989CwAqW1giLWbTSlgVjOytGuXDKFXGSYd3RKDl06NWl++K4+CFAiw1qlarruzrYLfXJDP+AI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766850774; c=relaxed/simple;
-	bh=2WJC2VuUA77wKao0U1jHZAdt5NZw4EFA8Cqy4xSS9Qo=;
+	s=arc-20240116; t=1766850936; c=relaxed/simple;
+	bh=Kl/7xxvBstaH0Xn6m52c1MEEPvuxhhjl9pM+od8b+go=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=iiAVc9xSLaEIb5WGR4NybgzyuQx1EVueQdhQfSojfGjhsGtZPclN6FOYIkby6EzOU4ct6izrSGM6RN5+CfXQmlS1bln+nJAPHH+vdAlSgRnOy/yuQlJqlSm2e3Rl7EkkUmEwcySKAiEsv8NMFN10btg7bhCoRwJnKFg2xG3a8zw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QCUneI+L; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45340C4CEF1;
-	Sat, 27 Dec 2025 15:52:50 +0000 (UTC)
+	 MIME-Version:Content-Type; b=W9Ed9iQTBB2r/qeqGK7PsDqzgu6S1Ix58IHXnM2mNY7MvQSPUagSYNFd/sN06W/R7HTNULPqhl0bOXc3xSWsGhYFEUh2BbcMzcOy/0f4su/1f8pIPHX/HaM7+9qAebWwQHvRMXN11Y1IXBFdl3m3tRdmCuA5QKK3KyAu22SwIio=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LL41XJPA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C9C7C4CEF1;
+	Sat, 27 Dec 2025 15:55:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1766850774;
-	bh=2WJC2VuUA77wKao0U1jHZAdt5NZw4EFA8Cqy4xSS9Qo=;
+	s=k20201202; t=1766850935;
+	bh=Kl/7xxvBstaH0Xn6m52c1MEEPvuxhhjl9pM+od8b+go=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=QCUneI+Lslcu0EZNg+IgA47uhiEz37DHOv3WgR8f0xL08WZCxXaEmDj+J4DBhAamU
-	 dh+O4KJzTUG7cY7SDY9wsfVVwNKXPua24e1YVR2A885JG+pJdwy1vztvyTAon4o0RL
-	 xHbN7MgZliyUjWqiY3QxHo70+nzGC/JtR9Q5i+nhkIsRpJodDaqdwGl1D7nsfanjUh
-	 pOuE8FiOodXYnqigmqGFqKsWsEOX2HK0F4yrSD2l/CjVTsvuaWT6zA+bpJNteqlBtx
-	 j5OTWI8FPwqfrJtS2ip2UQJpkzT0A2hmXxlbQIXUx3q7PYeL6Egs+v5Exqd326HSlx
-	 d3WDXCFQ50L+w==
-Date: Sat, 27 Dec 2025 15:52:45 +0000
+	b=LL41XJPAJH99cv4UPjLpWdJtk+fdKMWTArXake4XT0FXwCnh1EqlEdmgvrwmnrjna
+	 2AwMwO1ZW8XV+pi6kn7OGGgZHqnMceB6imEyj6GNDjQJLupKINx++VClusoBUzQiYI
+	 pO4m5qrVDn7w23B6MoZrDBNM3vE0D3/9z/DY2jK0H5w5AaJOHxXWR9roqbu4jO76MC
+	 tWafIBtOFNzSa6/cRBnmrwvJ4eZvnT8zu7UPXOTgODWxlfO7LLWUEiMZ89g/pbL2eb
+	 hrybfC4sBa2sr68LVFjozYN+NSO/U04y/5lr9JvbHi2UEGgIxda6EfjjXH4TU0hasl
+	 FrDK0KCazjwFw==
+Date: Sat, 27 Dec 2025 15:55:25 +0000
 From: Jonathan Cameron <jic23@kernel.org>
-To: Ariana Lazar <ariana.lazar@microchip.com>
-Cc: David Lechner <dlechner@baylibre.com>, Nuno =?UTF-8?B?U8Oh?=
- <nuno.sa@analog.com>, Andy Shevchenko <andy@kernel.org>, Rob Herring
- <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, <linux-iio@vger.kernel.org>,
- <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v4 2/2] iio: dac: adding support for Microchip
- MCP47FEB02
-Message-ID: <20251227155245.6a3f5344@jic23-huawei>
-In-Reply-To: <20251216-mcp47feb02-v4-2-4b687094ff90@microchip.com>
-References: <20251216-mcp47feb02-v4-0-4b687094ff90@microchip.com>
-	<20251216-mcp47feb02-v4-2-4b687094ff90@microchip.com>
+To: Jonathan Santos <Jonathan.Santos@analog.com>
+Cc: <linux-iio@vger.kernel.org>, <devicetree@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>, <lars@metafoo.de>,
+ <Michael.Hennerich@analog.com>, <dlechner@baylibre.com>,
+ <nuno.sa@analog.com>, <andy@kernel.org>, <robh@kernel.org>,
+ <krzk+dt@kernel.org>, <conor+dt@kernel.org>, <jonath4nns@gmail.com>
+Subject: Re: [PATCH v5 3/5] units: add PERCENT and BASIS_POINTS macros
+Message-ID: <20251227155525.6d712f42@jic23-huawei>
+In-Reply-To: <43504217d5b3c32da946bed0ce4d81e216f7c7c7.1765900411.git.Jonathan.Santos@analog.com>
+References: <cover.1765900411.git.Jonathan.Santos@analog.com>
+	<43504217d5b3c32da946bed0ce4d81e216f7c7c7.1765900411.git.Jonathan.Santos@analog.com>
 X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -63,75 +62,55 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Tue, 16 Dec 2025 14:05:51 +0200
-Ariana Lazar <ariana.lazar@microchip.com> wrote:
+On Wed, 17 Dec 2025 02:52:45 -0300
+Jonathan Santos <Jonathan.Santos@analog.com> wrote:
 
-> This is the iio driver for Microchip MCP47F(E/V)B(0/1/2)1,
-> MCP47F(E/V)B(0/1/2)2, MCP47F(E/V)B(0/1/2)4 and MCP47F(E/V)B(0/1/2)8 series
-> of buffered voltage output Digital-to-Analog Converters with nonvolatile or
-> volatile memory and an I2C Interface.
+> Add macros for percentage related units, with basis points defined as
+> 1/100th of a percent. Basis points are commonly used in finance and
+> engineering to express small percentage changes with precision.
 > 
-> The families support up to 8 output channels.
+> Signed-off-by: Jonathan Santos <Jonathan.Santos@analog.com>
+> ---
+> v5 Changes:
+> * Included PERCENT macro along with BASIS_POINTS.
+> * Adjusted commit description and comment in the code to add more context and
+>   examples.
 > 
-> The devices can be 8-bit, 10-bit and 12-bit.
+> v4 Changes:
+> * New patch.
+> ---
+>  include/linux/units.h | 14 ++++++++++++++
+>  1 file changed, 14 insertions(+)
 > 
-> Signed-off-by: Ariana Lazar <ariana.lazar@microchip.com>
-Hi Ariana,
+> diff --git a/include/linux/units.h b/include/linux/units.h
+> index 00e15de33eca..9c2fbcf04c81 100644
+> --- a/include/linux/units.h
+> +++ b/include/linux/units.h
+> @@ -21,6 +21,20 @@
+>  #define PICO	1000000000000ULL
+>  #define FEMTO	1000000000000000ULL
+>  
+> +/*
+> + * Percentage and basis point units
+> + *
+> + * Basis points are 1/100th of a percent (1/100), commonly used in finance,
+> + * engineering or other applications that require precise percentage
+> + * calculations.
+> + *
+> + * Examples:
+> + *   100% = 10000 basis points = BASIS_POINTS
+> + *   1%   = 100 basis points   = PERCENT
 
-One stale bit of documentation and I'd be surprised if the
-style of text used in Kconfig short help proves sustainable.
-We often end up over time moving to 'x and similar' to avoid
-very complex pattern matching as more and more parts end up supported
-by a given driver.
+I don't understand the final equality in these examples.
+The top line is as it says 10000 basis points but you have it equal
+to BASIS_POINTS?  
 
-With those in mind. Applied to the togreg branch of iio.git which I'll initially
-push out as testing to let 0-day take a poke at it.
-
-Thanks
-
-Jonathan
-
-> diff --git a/drivers/iio/dac/mcp47feb02.c b/drivers/iio/dac/mcp47feb02.c
-> new file mode 100644
-> index 0000000000000000000000000000000000000000..c04f3b72b1b1fc303b1bde63c281aade8a67b2f9
-> --- /dev/null
-> +++ b/drivers/iio/dac/mcp47feb02.c
-
-> +/**
-> + * struct mcp47feb02_data - chip configuration
-> + * @chdata: options configured for each channel on the device
-> + * @lock: prevents concurrent reads/writes to driver's state members
-> + * @chip_features: pointer to features struct
-> + * @scale_1: scales set on channels that are based on Vref1
-> + * @scale: scales set on channels that are based on Vref/Vref0
-> + * @active_channels_mask: enabled channels
-> + * @client: the i2c-client attached to the device
-
-Not there. I'll tidy this up whilst applying if nothing else
-comes up.
-
-> + * @regmap: regmap for directly accessing device register
-> + * @vref1_buffered: Vref1 buffer is enabled
-> + * @vref_buffered: Vref/Vref0 buffer is enabled
-> + * @phys_channels: physical channels on the device
-> + * @labels: table with channels labels
-> + * @use_vref1: vref1-supply is defined
-> + * @use_vref: vref-supply is defined
 > + */
-> +struct mcp47feb02_data {
-> +	struct mcp47feb02_channel_data chdata[MCP47FEB02_MAX_CH];
-> +	struct mutex lock; /* prevents concurrent reads/writes to driver's state members */
-> +	const struct mcp47feb02_features *chip_features;
-> +	int scale_1[2 * MCP47FEB02_MAX_SCALES_CH];
-> +	int scale[2 * MCP47FEB02_MAX_SCALES_CH];
-> +	unsigned long active_channels_mask;
-> +	struct regmap *regmap;
-> +	bool vref1_buffered;
-> +	bool vref_buffered;
-> +	u16 phys_channels;
-> +	const char *labels[MCP47FEB02_MAX_CH];
-> +	bool use_vref1;
-> +	bool use_vref;
-> +};
+> +#define PERCENT		100UL
+> +#define BASIS_POINTS	10000UL
+> +
+>  #define NANOHZ_PER_HZ		1000000000UL
+>  #define MICROHZ_PER_HZ		1000000UL
+>  #define MILLIHZ_PER_HZ		1000UL
 
 

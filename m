@@ -1,61 +1,61 @@
-Return-Path: <linux-iio+bounces-27378-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-27379-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 17E9ACE0012
-	for <lists+linux-iio@lfdr.de>; Sat, 27 Dec 2025 18:06:22 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 49903CE003A
+	for <lists+linux-iio@lfdr.de>; Sat, 27 Dec 2025 18:19:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id D472430024BE
-	for <lists+linux-iio@lfdr.de>; Sat, 27 Dec 2025 17:06:18 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 0604F3021E6A
+	for <lists+linux-iio@lfdr.de>; Sat, 27 Dec 2025 17:19:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 480DE3176F2;
-	Sat, 27 Dec 2025 17:06:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 63F7831A577;
+	Sat, 27 Dec 2025 17:19:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nCaKuqA1"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cno6JRCK"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E90DA8834;
-	Sat, 27 Dec 2025 17:06:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13D992BAF7;
+	Sat, 27 Dec 2025 17:19:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766855177; cv=none; b=FnKYUQ9R/6CHTJAOLZLWClzJktynToFyQ7/w7CRE3w5VSOBFt4ls5zn2cz17ZDUvyodqiOD4gQHbeekOqQbUrz1GneG+LVUYRqoL6LmoYwCqS6lNvijzovEljyaGVBkc27z0cB7UzJXRcCB5VC6TBS4nsDSvlEJZYlea+ESyyXU=
+	t=1766855942; cv=none; b=MhMP5hbO7U7VmsMibyRyxsj4aU9uDK20xvivBhWgEpF/SAZZn+NhKPhDpdVm8dMVNJTHlYTHs6u53I/kes0XqkQ2b5OUDWlf9Sh361pyHPEgBeM/dnZRlheG43PJiXReuzTIUskKpKdXg9UKR+6ymyIWus1zLD8GwcsPX9IzNF8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766855177; c=relaxed/simple;
-	bh=NTpVw1MWKdQD5XzNEpyiLS5xNVoZRVpbvXKO2AcrC6g=;
+	s=arc-20240116; t=1766855942; c=relaxed/simple;
+	bh=GTK0czgPMgvbKrEcKKKWzCPyOf2LeVnHgV2YChJ0Ysk=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=mGYBM2491EEaPmN1Ua/Bj2ZzWQ7hffS4pbc9MYbEzL2GO5zbRTtfyPLO5auqputBGXS2CA/qh8I05Z0hHy33aI4f4myg5JSOu1IusDNDevVP90RzLVNa5ek0GbXhToLc7j06t5YrcGdQVHu8aUwVPRU0Gn1icGU80aheUB5ii/0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nCaKuqA1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8EBE1C4CEF1;
-	Sat, 27 Dec 2025 17:06:10 +0000 (UTC)
+	 MIME-Version:Content-Type; b=IybdlNGoSzljEKHn7CoNWx1PjjjUsqnvN8nh3ToxdrGDdCeW4XxmRdel+0TpWbhlvLXO+EOVMt3sk0hJw1yOuKKRP7ND3Ss2+rvQCEyGrEb9cc/5wrPzuwORm1jPtPLqFkXaSC3htXOnNHm7R7VzlyzU24IN/+QBVOPWZIlmsHw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cno6JRCK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37A90C4CEF1;
+	Sat, 27 Dec 2025 17:18:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1766855176;
-	bh=NTpVw1MWKdQD5XzNEpyiLS5xNVoZRVpbvXKO2AcrC6g=;
+	s=k20201202; t=1766855941;
+	bh=GTK0czgPMgvbKrEcKKKWzCPyOf2LeVnHgV2YChJ0Ysk=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=nCaKuqA1cPzRNBaAz01qgKAnOtSoAwic5A4Y9zWaSOe17DBRUXXst8EprgLXvB6UT
-	 dR8TDyKi4rkYOnFj4chSZEW+BNzcbuPUgXFYAjnXwwmDlE2Qlgt2PDOElekoT8CxqO
-	 s9v6+slFiK+R7O8hNXexU2cEsc1z+7WINvU3rj9kj4jVzb3+zBHi96icbifD+3tHrK
-	 46kMNg4VuzHG0xvDQY+W6+mXmI+QX5cZ55wdjQj00abHxQQ3mpAhN4CSzHLU9/EGee
-	 Y1ylrw/CoWPlEHgN64sAwHxsBm7wt60w7hRH39ktw2CjyM5exV4dYFT7f3nAz4GgzK
-	 EPfwIzPf8nBFg==
-Date: Sat, 27 Dec 2025 17:06:05 +0000
+	b=cno6JRCKW8Jz8W0YqlNyEpZ+uvi+f8B4xH/PwHeNV9t5k6wVUZgoOQK2iHJOGW+ef
+	 ey5mihGUPaBG20tkJ7NA8hqL/L1nUK9Cdco5eMNHDTF+ulUVAMyqR4S2FIoKQxiscf
+	 Zx1fu0XwNheZTC9f6hF1YHxlLQJuk1zT1xmxbts6lyVx4DImP71XQ677m5DdxDfwTd
+	 d494tj7YxAPU5g83prKa0rDX7uBnPHMGOOAUsNWVQafXB4JUuJX7qXbXZv4VXPQPhU
+	 vmPwvtrLZOtpKjXBrfJpvy6yIvjQU6prqCLJ2nUWjASUI4/sJqHn4uhzQgVOmit04G
+	 MMM/XakhLh8FA==
+Date: Sat, 27 Dec 2025 17:18:50 +0000
 From: Jonathan Cameron <jic23@kernel.org>
-To: Rodrigo Alencar <455.rodrigo.alencar@gmail.com>
-Cc: rodrigo.alencar@analog.com, linux-kernel@vger.kernel.org,
- linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
- linux-doc@vger.kernel.org, David Lechner <dlechner@baylibre.com>, Andy
- Shevchenko <andy@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>, Michael
- Hennerich <Michael.Hennerich@analog.com>, Rob Herring <robh@kernel.org>,
+To: David Lechner <dlechner@baylibre.com>
+Cc: Mark Brown <broonie@kernel.org>, Rob Herring <robh@kernel.org>,
  Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Jonathan Corbet <corbet@lwn.net>
-Subject: Re: [PATCH v2 5/6] docs: iio: add documentation for adf41513 driver
-Message-ID: <20251227170453.66752435@jic23-huawei>
-In-Reply-To: <73sjjxkltm7a5ylpwv7jyiha3rsgmiwrjc4gwkva5u2vc36trk@sn4ctgr7v7ek>
-References: <20251219-adf41513-iio-driver-v2-0-be29a83d5793@analog.com>
-	<20251219-adf41513-iio-driver-v2-5-be29a83d5793@analog.com>
-	<20251221180018.488cbac5@jic23-huawei>
-	<73sjjxkltm7a5ylpwv7jyiha3rsgmiwrjc4gwkva5u2vc36trk@sn4ctgr7v7ek>
+ <conor+dt@kernel.org>, Marcelo Schmitt <marcelo.schmitt@analog.com>,
+ Michael Hennerich <michael.hennerich@analog.com>, Nuno =?UTF-8?B?U8Oh?=
+ <nuno.sa@analog.com>, Andy Shevchenko <andy@kernel.org>, Sean Anderson
+ <sean.anderson@linux.dev>, linux-spi@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-iio@vger.kernel.org
+Subject: Re: [PATCH v4 3/9] spi: support controllers with multiple data
+ lanes
+Message-ID: <20251227171850.0c93c1c9@jic23-huawei>
+In-Reply-To: <20251219-spi-add-multi-bus-support-v4-3-145dc5204cd8@baylibre.com>
+References: <20251219-spi-add-multi-bus-support-v4-0-145dc5204cd8@baylibre.com>
+	<20251219-spi-add-multi-bus-support-v4-3-145dc5204cd8@baylibre.com>
 X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -63,72 +63,125 @@ List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+
+On Fri, 19 Dec 2025 15:32:11 -0600
+David Lechner <dlechner@baylibre.com> wrote:
+
+> Add support for SPI controllers with multiple physical SPI data lanes.
+> (A data lane in this context means lines connected to a serializer, so a
+> controller with two data lanes would have two serializers in a single
+> controller).
+> 
+> This is common in the type of controller that can be used with parallel
+> flash memories, but can be used for general purpose SPI as well.
+> 
+> To indicate support, a controller just needs to set ctlr->num_data_lanes
+> to something greater than 1. Peripherals indicate which lane they are
+> connected to via device tree (ACPI support can be added if needed).
+> 
+> The spi-{tx,rx}-bus-width DT properties can now be arrays. The length of
+> the array indicates the number of data lanes, and each element indicates
+> the bus width of that lane. For now, we restrict all lanes to have the
+> same bus width to keep things simple. Support for an optional controller
+> lane mapping property is also implemented.
+> 
+> Signed-off-by: David Lechner <dlechner@baylibre.com>
+> ---
+> 
+> v4 changes:
+> - Update for changes in devicetree bindings.
+> - Don't put new fields in the middle of CS fields.
+> - Dropped acks since this was a significant rework.
+> 
+> v3 changes:
+> * Renamed "buses" to "lanes" to reflect devicetree property name change.
+> 
+> This patch has been seen in a different series [1] by Sean before:
+> 
+> [1]: https://lore.kernel.org/linux-spi/20250616220054.3968946-4-sean.anderson@linux.dev/
+> 
+> Changes:
+> * Use u8 array instead of bitfield so that the order of the mapping is
+>   preserved. (Now looks very much like chip select mapping.)
+> * Added doc strings for added fields.
+> * Tweaked the comments.
+> ---
+>  drivers/spi/spi.c       | 114 +++++++++++++++++++++++++++++++++++++++++++++++-
+>  include/linux/spi/spi.h |  22 ++++++++++
+>  2 files changed, 134 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+> index e25df9990f82..9caa22583b8f 100644
+> --- a/drivers/spi/spi.c
+> +++ b/drivers/spi/spi.c
+> @@ -2370,7 +2370,52 @@ static int of_spi_parse_dt(struct spi_controller *ctlr, struct spi_device *spi,
+>  		spi->mode |= SPI_CS_HIGH;
+>  
+>  	/* Device DUAL/QUAD mode */
+> -	if (!of_property_read_u32(nc, "spi-tx-bus-width", &value)) {
+> +
+> +	rc = of_property_read_u32_array(nc, "spi-tx-lane-map", spi->tx_lane_map,
+> +					ARRAY_SIZE(spi->tx_lane_map));
+
+Why must there always be a fixed number of these?  Isn't it meant to be
+one per lane in use? Or at least to me that seems reasonable assumption?
+Maybe use of_property_read_variable_u32_array() which takes min and max sizes
+and returns (on success) how many were there.
 
 
 
-> > > +2.3 Reference Input Control
-> > > +---------------------------
-> > > +
-> > > +The ``refin_frequency`` attribute allows control of the reference in=
-put
-> > > +frequency when using a programmable reference clock. The supported r=
-ange is
-> > > +10 MHz to 800 MHz. =20
-> >
-> > I'm not really sure why need this as opposed to having a standard clock
-> > provide it. =C2=A0What's the use case? =20
->=20
-> I was thinking about, and for the application I am currently evaluating t=
-he part
-> the reference signal comes from a DDS, and that signal is not a clock it =
-is a
-> series of chirp patterns. The important thing about this property is to s=
-et
-> a center frequency for the DDS to work on. In that scenario the PLL will =
-not
-> really work as a frequency sythentizer, but as a frequency tracker of the
-> varying reference. Problem is that I've realized that recently after putt=
-ing
-> together a device driver for the DDS. Therefore this property is still im=
-portant,
-> and I need to make the reference clock input as an optional property.
-> I thought of making the DDS as a clock provider, but that center frequency
-> would have a "virtual" meaning, not attached to the hardware configs.
+> +	if (rc == -EINVAL) {
+> +		/* Default lane map */
+> +		for (idx = 0; idx < ARRAY_SIZE(spi->tx_lane_map); idx++)
+> +			spi->tx_lane_map[idx] = idx;
 
-Interesting use case!  I'm not really sure how we support it. I can think o=
-f a
-a few approaches that might work. In some way it's a bit similar to an ampl=
-ifier
-in front of an ADC or other analog front end, just working in the frequency=
- domain.
-I've never been entirely happy with how we support those either though!
+Having this fixed in size is fine even if we only use first few elements.
 
->=20
+> +	} else if (rc < 0) {
+> +		dev_err(&ctlr->dev,
+> +			"failed to read spi-tx-lane-map property: %d\n", rc);
+> +		return rc;
+> +	}
+> +
+> +	rc = of_property_count_u32_elems(nc, "spi-tx-bus-width");
+> +	if (rc < 0 && rc != -EINVAL) {
+> +		dev_err(&ctlr->dev,
 
-> > > +2.5 Phase adjustment
-> > > +--------------------
-> > > +
-> > > +The ``phase`` attribute allows adjustment of the output phase in deg=
-rees. =20
-> >
-> > As per driver feedback, I don't think this is compliant with existing A=
-BI. =20
->=20
-> ABI is not in degrees? the attribute is named out_altvoltage0_phase
+...
 
-All angle things (including phase) in IIO are in Radians (we try to stick t=
-o SI
-units). Check these in
-Documentation/ABI/testing/sysfs-bus-iio*
+> @@ -2394,7 +2439,61 @@ static int of_spi_parse_dt(struct spi_controller *ctlr, struct spi_device *spi,
+>  		}
+>  	}
+>  
+> -	if (!of_property_read_u32(nc, "spi-rx-bus-width", &value)) {
+> +	for (idx = 0; idx < spi->num_tx_lanes; idx++) {
+> +		if (spi->tx_lane_map[idx] >= spi->controller->num_data_lanes) {
+> +			dev_err(&ctlr->dev,
+> +				"spi-tx-lane-map has invalid value %d (num_data_lanes=%d)\n",
+> +				spi->tx_lane_map[idx],
+> +				spi->controller->num_data_lanes);
+> +			return -EINVAL;
+> +		}
+> +	}
+> +
+> +	rc = of_property_read_u32_array(nc, "spi-rx-lane-map", spi->rx_lane_map,
+> +					ARRAY_SIZE(spi->rx_lane_map));
 
-Note that is not always as complete as it should be so if anything is missi=
-ng
-and in use we should add it.  We don't blanket add stuff the ABI constructi=
-on
-code allows as some cases will never occur in reality.
+Similar to above. Not obvious to me why this is fixed size read.
 
-Jonathan
 
+> +	if (rc == -EINVAL) {
+> +		/* Default lane map */
+> +		for (idx = 0; idx < ARRAY_SIZE(spi->rx_lane_map); idx++)
+> +			spi->rx_lane_map[idx] = idx;
+...
+> diff --git a/include/linux/spi/spi.h b/include/linux/spi/spi.h
+> index cb2c2df31089..7aff60ab257e 100644
+> --- a/include/linux/spi/spi.h
+> +++ b/include/linux/spi/spi.h
+...
+
+> +/* Max no. of data lanes supported per spi device */
 

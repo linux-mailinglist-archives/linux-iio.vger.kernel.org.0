@@ -1,116 +1,132 @@
-Return-Path: <linux-iio+bounces-27376-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-27377-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED894CDFFC3
-	for <lists+linux-iio@lfdr.de>; Sat, 27 Dec 2025 17:56:05 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 29E5CCDFFCC
+	for <lists+linux-iio@lfdr.de>; Sat, 27 Dec 2025 17:56:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 2D807303FE3B
-	for <lists+linux-iio@lfdr.de>; Sat, 27 Dec 2025 16:54:17 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 0BF04300E46F
+	for <lists+linux-iio@lfdr.de>; Sat, 27 Dec 2025 16:56:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3229F325722;
-	Sat, 27 Dec 2025 16:54:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1D31324B0C;
+	Sat, 27 Dec 2025 16:56:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RlvzTBex"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aRsV8Gfh"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ej1-f51.google.com (mail-ej1-f51.google.com [209.85.218.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4144B325716
-	for <linux-iio@vger.kernel.org>; Sat, 27 Dec 2025 16:54:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 634612B2DA;
+	Sat, 27 Dec 2025 16:56:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766854454; cv=none; b=rEqgz8okwpnP6n1f1PF3Dr+kS7Z/i4S+unAzJwgn791NhSs11RBWIb1Py3LQtUMTCebbHldOlYKPOiL16UPGAQDSK6V2iJGSTx+4OOC/EeOzFDpk/VOFhpadLJlN7dPFmclvBThi+3TPloAKTWeP2nOG3AS6pq5YAJnrGTVr/HA=
+	t=1766854585; cv=none; b=QbRSPawb9UMBHJH4XEOKha101K12fGinFUNQCZ2I/dloDQgr5xfia3TxuTH0LW02cCsG051aCkskISs7RZ/DafRM5ky62hkI1hRdNIhuQzWNyvgtUtTw1pEDvaRSOqdPUPYQIbHAG7nLW9LoMp8j+S6XAt6+mEQk0ONVOl6Wn8g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766854454; c=relaxed/simple;
-	bh=fEYdGJTBXajaUrNAsrK5tA6o0RHNKjo0+Wl1GKYTiuI=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Wdf6i50qfjRG88JhXXul569UwBSDZQMCTxWdLOtc1LIadmoYwrCJOVKOYiUktovBQxrKPA+UmjTK8Xw2VOICuNSKOOhM9mYo4ixhTNoAzyeV48BJf/WFb1vzwmHSXXvNPSEAfBgMXaJSClQ+naBsrTpqm5w11ivwgfvBYTv7kjk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=RlvzTBex; arc=none smtp.client-ip=209.85.218.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f51.google.com with SMTP id a640c23a62f3a-b736d883ac4so1359763766b.2
-        for <linux-iio@vger.kernel.org>; Sat, 27 Dec 2025 08:54:11 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1766854450; x=1767459250; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=fEYdGJTBXajaUrNAsrK5tA6o0RHNKjo0+Wl1GKYTiuI=;
-        b=RlvzTBexLB8vAH9j/twWw+A4hf8zyUwpSag9hVrZrRdef+TBEGjtluQ3iLfRX6EnHx
-         wtDCy/eKiNCXiufxq8HszBiil+7q3FSdE85cP/wRuLKi+XApPDz662t5ZvIQMBAcBOma
-         Z5UR1B4OmqD7WJbmd3zQWk9foHN0RnrhtqoKjYxpyJFpWdAiRsXRraGCEEaNpJxWpMed
-         pK1GUSb7N+JRj4sJzZ2Bxr9kp2r00KKWSSRhaMBFr+IWxrc0ELvPEtR6rjbAojNe6Pt3
-         pqY/oIvwBnYRRmbg65ek2wyq6CGslxXZt3/cnDfm7I7S1GYYHAGH//MAs5TV/NrVCPTT
-         tnMQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1766854450; x=1767459250;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=fEYdGJTBXajaUrNAsrK5tA6o0RHNKjo0+Wl1GKYTiuI=;
-        b=pCGZ/Kw7/2iet5R0L94FiRVsq+nBh4W6vf1Wmft6KlLIkwoEMxPAattJ/EHJCx5GLU
-         4EawdZXo2XWtMRRAv9ktnDBMODF68yaJjwZ4wCXDFanhUaVO7QYnyMJAz9N2Wz8fYzrG
-         MbOqm52+c8/0ASBwvONjMCGMlHeDNMHGVsRNN5z7ApPvMbE4F1lhaH7UqSEDbIpvqM+r
-         bUJI+r7VcV7z0X/n1Mdo4ZqhJTjGi52gAGrnz5hAHuIEsM/tfLFfpOpo2dupcR1/MVsR
-         uVUkt5Wdsr6LjyYfkTYMr5dS5+X1qc73VfyD/b37KSwnpaLEarFXqCt2BG35147d4TFW
-         r05g==
-X-Forwarded-Encrypted: i=1; AJvYcCUVvnwe0MzT+BTmAupTbthRQZGsgR8fvBKH6/pRFoKLP2tAGoEVNGdrlwjYpmuV9cMH2rt9mBeoU/4=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzy6cyK4IOnDr98S+FXBn9ATOuAemXFeT3kqDsy//M19FCdA0jh
-	bfnsGbTbqT49m3RhdIdZtr7rExjQ8h0+KdF5/6bBfxFbIhe6z/fWPoR6Bcyyq25RJpWcUq8EbEd
-	SyuLoIv6y4BHwE3v0AXI1CM/IIpG/sndeLC7k
-X-Gm-Gg: AY/fxX5oxcgo6Ugm3gluvv7gYyxalouY4Nw8CjpItyunfL5s45KYb59PY6vi2C/JFJz
-	oA31QrmGf7/mNqyytZ+ZV1joCDWXoUaUN4ITKRy5rc+jV2IzvolCZtuv7SZCVxEvElhWkMa9WpE
-	5xBxawvEXP+h7v6ZfeyKe2KLH3fTjwKMWYcXUgCHcNaR+PEkkKmg7rI03VO/79dubt8SlQUb26b
-	nsnBJ0C7WLC3lFRofvgUAi9b+KdU1GEbIo+5DO1tOk45PsVtMeIJIR211SPasqPbDxRyu/f/1Vf
-	X/z1JOZjWUNNDeV9DIt2FJYhm0Bf9bM58sSB97qRQaiMu/U54WUYDIoQbuy4snyYKNkdBhM=
-X-Google-Smtp-Source: AGHT+IGzhdKUm2kUh6gBHGyRHPs5NkLVgUF1gZqV6A7v61VPEy5XWWzE5biUv9XfjwATbwqlgPYDe2MvbumQ7GhMMY8=
-X-Received: by 2002:a17:907:3e1c:b0:b79:e974:4060 with SMTP id
- a640c23a62f3a-b80371d7db3mr2912543166b.48.1766854450421; Sat, 27 Dec 2025
- 08:54:10 -0800 (PST)
+	s=arc-20240116; t=1766854585; c=relaxed/simple;
+	bh=1VgjqUJS75sYiz8u7aAl7Ta8yZZWWXRxXGNm1eC3oo0=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=XYyUGEnRib/bqNLgf/FgxkIWOMvzrc+sYIcbKJ2kJr53hThncrVhv/zL5URb4njr8NpychBDV9Ne3hBtD2UXSjS5FUnvtNe2ud0mgD5M3Xu3oJyOJ95TG+bxQYIUYl4aijBv4PZa0XqWT73af0cSjxRPltHwmZiJ76blJoEDV5U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aRsV8Gfh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 344EEC4CEF1;
+	Sat, 27 Dec 2025 16:56:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1766854584;
+	bh=1VgjqUJS75sYiz8u7aAl7Ta8yZZWWXRxXGNm1eC3oo0=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=aRsV8GfhlObM3d2eO9fLfAsuWkST83IrszLfjuVZOcp6R8OwZSRaxT1ymdV+xNqLi
+	 z9Fkp+F2wzav7tFBl5W+2GL5WztHoYbVxsuA1bxC+xLEv7zCIXnJLpBrKbgyuVF+Zb
+	 qyivfFTE4Ayp3vJ2fny31fDNvcjix4VGLFrRYX6dMslYUfN2Lt1E69fI65vW+Na+95
+	 meM82NrAFgHuaMzd+YGUcc3j1P2pnsh3sLr+UdB6FmrxmdPjDMKbA7S9lb/7k2qFSt
+	 suy6GuW92BmDkFAe//Col/kCsF2BN08ufTg2SWXViWQ2IBcR3/WoPmbtdJFjuj/sR0
+	 8k0ZcGvHBro3g==
+Date: Sat, 27 Dec 2025 16:56:13 +0000
+From: Jonathan Cameron <jic23@kernel.org>
+To: Rodrigo Alencar <455.rodrigo.alencar@gmail.com>
+Cc: Rodrigo Alencar via B4 Relay
+ <devnull+rodrigo.alencar.analog.com@kernel.org>,
+ rodrigo.alencar@analog.com, linux-kernel@vger.kernel.org,
+ linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-doc@vger.kernel.org, David Lechner <dlechner@baylibre.com>, Andy
+ Shevchenko <andy@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>, Michael
+ Hennerich <Michael.Hennerich@analog.com>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Jonathan Corbet <corbet@lwn.net>
+Subject: Re: [PATCH v2 2/6] iio: frequency: adf41513: driver implementation
+Message-ID: <20251227165613.264d6e11@jic23-huawei>
+In-Reply-To: <3agb73fmwhcoho4uowhwh3tchux5wb5amgzrmr2fj66uiw4grg@oddcbaeqmneu>
+References: <20251219-adf41513-iio-driver-v2-0-be29a83d5793@analog.com>
+	<20251219-adf41513-iio-driver-v2-2-be29a83d5793@analog.com>
+	<20251221174902.7ebb9e74@jic23-huawei>
+	<3agb73fmwhcoho4uowhwh3tchux5wb5amgzrmr2fj66uiw4grg@oddcbaeqmneu>
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <cover.1765900411.git.Jonathan.Santos@analog.com>
- <43504217d5b3c32da946bed0ce4d81e216f7c7c7.1765900411.git.Jonathan.Santos@analog.com>
- <20251227155525.6d712f42@jic23-huawei> <CAHp75Vd0n+aTkdzMC53y9LrPW4t0mckpzmmud4Ez5gXbAdLeVg@mail.gmail.com>
-In-Reply-To: <CAHp75Vd0n+aTkdzMC53y9LrPW4t0mckpzmmud4Ez5gXbAdLeVg@mail.gmail.com>
-From: Andy Shevchenko <andy.shevchenko@gmail.com>
-Date: Sat, 27 Dec 2025 18:53:33 +0200
-X-Gm-Features: AQt7F2o5pKu3JZDHtQuLDnXH7bgPd_iJLkPg7pb83Ops5_qMZGPLToR05RzuF8I
-Message-ID: <CAHp75VfA3Ww2N9CA-gUpko7=s===s6DDM2ik=w2NJ=mUQqo4XQ@mail.gmail.com>
-Subject: Re: [PATCH v5 3/5] units: add PERCENT and BASIS_POINTS macros
-To: Jonathan Cameron <jic23@kernel.org>
-Cc: Jonathan Santos <Jonathan.Santos@analog.com>, linux-iio@vger.kernel.org, 
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, lars@metafoo.de, 
-	Michael.Hennerich@analog.com, dlechner@baylibre.com, nuno.sa@analog.com, 
-	andy@kernel.org, robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org, 
-	jonath4nns@gmail.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Sat, Dec 27, 2025 at 6:52=E2=80=AFPM Andy Shevchenko
-<andy.shevchenko@gmail.com> wrote:
-> On Sat, Dec 27, 2025 at 5:55=E2=80=AFPM Jonathan Cameron <jic23@kernel.or=
-g> wrote:
-> > On Wed, 17 Dec 2025 02:52:45 -0300
-> > Jonathan Santos <Jonathan.Santos@analog.com> wrote:
 
 ...
 
-> Also there are pp (percentage points) and others like per mille
->
-> https://en.wikipedia.org/wiki/Percentage_point (see "Related units" secti=
-on).
+> > > +	cfg->ref_div2 = FIELD_GET(ADF41513_REG5_RDIV2_MSK,
+> > > +				  st->regs_hw[ADF41513_REG5]);
+> > > +	cfg->prescaler = FIELD_GET(ADF41513_REG5_PRESCALER_MSK,
+> > > +				   st->regs_hw[ADF41513_REG5]);  
+> > For cases like this I think keeping to 80 chars is hurting readability
+> > and so it is fine to go a little higher. 
+> > 	cfg->int_value = FIELD_GET(ADF41513_REG0_INT_MSK, st->regs_hw[ADF41513_REG0]);
+> > 	cfg->frac1 = FIELD_GET(ADF41513_REG1_FRAC1_MSK, st->regs_hw[ADF41513_REG1]);
+> > 	cfg->frac2 = FIELD_GET(ADF41513_REG3_FRAC2_MSK, st->regs_hw[ADF41513_REG3]);
+> > 	cfg->mod2 = FIELD_GET(ADF41513_REG4_MOD2_MSK, st->regs_hw[ADF41513_REG4]);
+> > 	cfg->r_counter = FIELD_GET(ADF41513_REG5_R_CNT_MSK, st->regs_hw[ADF41513_REG5]);
+> > 	cfg->ref_doubler = FIELD_GET(ADF41513_REG5_REF_DOUBLER_MSK, st->regs_hw[ADF41513_REG5]);
+> > 	cfg->ref_div2 = FIELD_GET(ADF41513_REG5_RDIV2_MSK, st->regs_hw[ADF41513_REG5]);
+> > 	cfg->prescaler = FIELD_GET(ADF41513_REG5_PRESCALER_MSK,st->regs_hw[ADF41513_REG5]);
+> > Is fine here. I'd also be fine with wrapping the ref_doubler line as it's rather
+> > longer than the others.  
+> 
+> ack
 
-And given most of them are in the PER* namespace I would use those
-names instead of variants.
+Small kernel development process thing.  For efficiency general rule is
+don't bother replying at all to suggestions you accept. It just adds noise.
+Much better to just crop that chunk of the reply out so we can
+rapidly see where more discussion is needed.
 
+>  
+> > > +
+> > > +	/* calculate pfd frequency */
 
---=20
-With Best Regards,
-Andy Shevchenko
+...
+
+> > > +static int adf41513_parse_fw(struct adf41513_state *st)
+> > > +{
+> > > +	struct device *dev = &st->spi->dev;
+> > > +	int ret;
+> > > +	u32 tmp;
+> > > +	u32 cp_resistance;
+> > > +	u32 cp_current;  
+> > Where you have set of variables of same type and grouping doesn't hurt
+> > readability, declare them all on one line.
+> > 
+> > 	u32 tmp, cp_resistance, cp_current;  
+> 
+> ack
+> 
+> > I'll not repeat comments I made on the dt-binding in here but I'd expect
+> > this code to change somewhat in response to those.  
+> 
+> understood. for now, will use -mhz for the power-up frequency, but I will
+> see how the discussion follows.
+
+That one is indeed non obvious and so (assuming I didn't miss anything) this
+is the one block where there was a non trivial comment in your reply so
+ideally would have been only bit there.
+
+I get grumpy about this every now and then and this time you get to be
+the target!
+
+Jonathan
 

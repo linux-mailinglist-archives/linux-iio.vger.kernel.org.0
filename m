@@ -1,186 +1,121 @@
-Return-Path: <linux-iio+bounces-27384-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-27385-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5DEB7CE009B
-	for <lists+linux-iio@lfdr.de>; Sat, 27 Dec 2025 18:58:55 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id EE144CE00A7
+	for <lists+linux-iio@lfdr.de>; Sat, 27 Dec 2025 19:00:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 4346530024B1
-	for <lists+linux-iio@lfdr.de>; Sat, 27 Dec 2025 17:58:52 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id DD8AF300AB3B
+	for <lists+linux-iio@lfdr.de>; Sat, 27 Dec 2025 18:00:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 234371BEF8A;
-	Sat, 27 Dec 2025 17:58:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A114E32570F;
+	Sat, 27 Dec 2025 18:00:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Nv8FACGA"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QdE0gYR9"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-vk1-f172.google.com (mail-vk1-f172.google.com [209.85.221.172])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4738532692E
-	for <linux-iio@vger.kernel.org>; Sat, 27 Dec 2025 17:58:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AF401C862E;
+	Sat, 27 Dec 2025 18:00:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766858330; cv=none; b=f3iKkGX/NvoOfcVSIZIiTFRPdcJdEHxOgEpegwtkAIQ7HhWTZRuAGcFqFpLZgiFoqt47VyFS57x/c2VoWK4AplZzsAd2K7euJfGZBuqHF/oxF6hSHXEbE4xPutuvTRpOd0mYPCXCxdgd/XNCIAba8zbaMmRCl8A09gnsLTWaShk=
+	t=1766858414; cv=none; b=js3SFv0yYQHMJdexC987mYyv9QIF/CWyrBGoLCaJbGLBmjHWgCA7t3Ka13HefgB88AIzYgmglD38aCbMKEeVosfyJw2KU7gAi3AVW/y68Wj/31r3Ckj6nHrG+CdgePSextL/u/aIGvwA1QQ2ZXliTqQMnnPlY29ppRIxIVmKZh0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766858330; c=relaxed/simple;
-	bh=unYrbs1T+wnAEQdMdfCauI1Sktq4y8Uw/FBTmPNJYzY=;
-	h=Mime-Version:Content-Type:Date:Message-Id:From:To:Cc:Subject:
-	 References:In-Reply-To; b=LqBcjBmkota1MZPHdOOoSZ5980kmjsTX1/d6dNPqnpDdA4mtjF2cNhKKH7glLfiwSHcQ1pLwOrwhKtuD7aKZ2zKJXRN1zLD3pGAKTyas2EVG25BQJMJhdZLfD+LHGGe4BdWh2oA8ppM77NTziqiFjnGJYHDKrHLT1V1hTj7m2FY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Nv8FACGA; arc=none smtp.client-ip=209.85.221.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-vk1-f172.google.com with SMTP id 71dfb90a1353d-55b1dde0961so5989724e0c.2
-        for <linux-iio@vger.kernel.org>; Sat, 27 Dec 2025 09:58:46 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1766858325; x=1767463125; darn=vger.kernel.org;
-        h=in-reply-to:references:subject:cc:to:from:message-id:date
-         :content-transfer-encoding:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=3PQuMr6wBVUJuyrHrhYcC4MChvAIPzu2L1/FVbd0FA4=;
-        b=Nv8FACGAuaT//jeZtKXgg/fwzb5Kh2MBGh5MB53oPYqDlhhgqNMtmJFPj98rbcNgvB
-         ML5DTMC7SEkgjfbPs0w4UGAcJKtbpa3QK5gdycte969G/2DnIkPtRHl6O86VSy+YpOWX
-         /vGXknKW5hQDXL28P8sFc1iB4fqOcdVB6dXafjvdQZbhxAghsEzSARCENOvg70YMzhUQ
-         6sJ8fLIyxLqBTSDFLtf+VKqoQXbwZW5aJyhMp46xqOx2nhH7XMezk/ODjAsTv7IuIS2k
-         iU5NeSCqCkcnCx1fO9vGq+LQHd03AqVJFH92mKZm0EMYv7v0uJUV8y99yUr4E+s49OVp
-         IVSA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1766858325; x=1767463125;
-        h=in-reply-to:references:subject:cc:to:from:message-id:date
-         :content-transfer-encoding:mime-version:x-gm-gg:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=3PQuMr6wBVUJuyrHrhYcC4MChvAIPzu2L1/FVbd0FA4=;
-        b=P48FuxF2wUAcC+Osm/oo4zXvgYxzTi+fyZ2dkjKYRGBT9lmIWppSAmTssVsjHrO4NF
-         1HFNsA70q4Mqz0MfpI8nzeBqlICp4JcCQ0zz3yOAmAMkrEppiYj0KdCq8QGGkv/PqK/x
-         5VY5A/9R2F1zXHAu06s0IZeMxZ11OEwq4zGQl7BlVaLylnvvam+EaSJ5yb8jM9Cc9Gry
-         N+s31xUKK4Rcf3tGV7iczHy3rZbMlEYAZ/ftKW4JYhqGWWUF276BTls80MTeYfLyAlnE
-         DEOyWIBlDyqqT69/Mmxg2mDA5tobtAD7nvoydZaxL37125GV5eb2hbt0SQdv7KXm187M
-         7VnA==
-X-Forwarded-Encrypted: i=1; AJvYcCWrIv2mPlDy2LSKzshVf9J9q9f+hmFHHq26uU7aBNKmpxAEMLxODoluALDgglxBGkcGnkItOAyp1mM=@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywubrl2l9ztfq0KD3AYnTebKSIoZ4cZJbSP+JSfq3Pg60hy3oNq
-	J+ytb6zzESXujwCoPp6maYSI0Xr+LzVueeq1TEXvSmQqgyDYo9uTfDQ9
-X-Gm-Gg: AY/fxX7ho5m2WNiJVaHWI1+GMN52SURqJDrIHSgLDy5OOq6xSvuP7TGS6dRik7Gpwyw
-	xLeuVrvuufw+QOzlijScAHS3lyokiO90gyYtG7lwGTol5MGQ0WmfNtkw8cKvyhBoR6+OGwO7ZCA
-	SFteUdWO47Z6Sbi4lyfQZ56/tLXP+4o6K7uMcYMJV4qguj5kTDIx6s/MrapGwH6Z0r1m/F+P73R
-	if8W0JcKxcqYDAn9kZWAcMU0A4IODENl1RKXOhfJm/H024J4v8AFvnXXNn3KzwczgiVqN43xn2b
-	Mm9nYUtfArNmhDhdHI8njPcm1Pz7WoZoHOXE2ecV1EBdlZA1pLCHeS/QxbBowSLRVW22LswDt9F
-	kQTRq8/dj35j/O0GZVvztnjWJ6xiV4JYPm5yRODsi9JWhL/q9bBNK6hy6VL00qA0ocWLRLdEuCn
-	yw/A==
-X-Google-Smtp-Source: AGHT+IF5qieJEyZmb6QmnGjcQXf/tzE1xyqtk3YZirur3Xb0fzxTbnHNfA2HC5NRTch0STJMLcwhFw==
-X-Received: by 2002:a05:6122:238c:b0:559:79d8:27a5 with SMTP id 71dfb90a1353d-5615bb9b5a0mr8288055e0c.0.1766858325180;
-        Sat, 27 Dec 2025 09:58:45 -0800 (PST)
-Received: from localhost ([2800:bf0:82:11a2:7ac4:1f2:947b:2b6])
-        by smtp.gmail.com with ESMTPSA id 71dfb90a1353d-5615d165f2csm7886851e0c.20.2025.12.27.09.58.43
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 27 Dec 2025 09:58:44 -0800 (PST)
+	s=arc-20240116; t=1766858414; c=relaxed/simple;
+	bh=2jrcd7lNMsv9NaWukXznHnm1ByuLbgKXfqHus+woNhE=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=jDa0Hn0O3uqvvRqc2onTmocH1MJkjJY+hnRMF1rrNhrT20qUU4pJSnGI2Kwyl/OXrd9IOGJ+AL7g4A+5dUOhi0VYUN78gpedloWxrjzb6ZyOFH7X1alFUgSYb74MNr3GCWjoCqxUdjn6lwRSzRY7UvsvahGDWRXvjpZgOV2390w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QdE0gYR9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9152C4CEF1;
+	Sat, 27 Dec 2025 18:00:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1766858413;
+	bh=2jrcd7lNMsv9NaWukXznHnm1ByuLbgKXfqHus+woNhE=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=QdE0gYR9JdTt8+OOaCACTsUWDjQKZEMsvGBmxR5+JmSBdhCyEmwhbrFoSlcM9wghW
+	 jvPY79gKcbz5bbxNTGGsq840+J6FkYx/LqXXRO/rg9o0UCMjw65zv04LW5Vhd+/Q8R
+	 nZSfoP3i8NfXFmKwq14t3JblSWeBVvVm8YnFHWHBTtjTneXMjKBWQv84PfO6X3MWL1
+	 Uu1n/vh3PMS8J3vYFlv4yiRrWoiOHIOtz3ie90EqwH8BJp6WREzR+VyFvNqL1cg0j7
+	 6XzkB0KaNRXXYAc1bJRb5UZUbEGAfBnYW8PTiVvKX4XIBsPCi3FjUEO0v/KGPPYUha
+	 +G1n8HW4rTvwA==
+Date: Sat, 27 Dec 2025 18:00:06 +0000
+From: Jonathan Cameron <jic23@kernel.org>
+To: Samuel Dionne-Riel <samuel@dionne-riel.com>
+Cc: Lorenzo Bianconi <lorenzo@kernel.org>, David Lechner
+ <dlechner@baylibre.com>, Nuno =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>, Andy
+ Shevchenko <andy@kernel.org>, linux-iio@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 2/2] iio: imu: lsm6dsx: Add alternative ACPI mount
+ matrix retrieval
+Message-ID: <20251227180006.139c64e2@jic23-huawei>
+In-Reply-To: <20251223025351.3099978-4-samuel@dionne-riel.com>
+References: <20251223025351.3099978-2-samuel@dionne-riel.com>
+	<20251223025351.3099978-4-samuel@dionne-riel.com>
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Sat, 27 Dec 2025 12:58:42 -0500
-Message-Id: <DF97040MFVN2.18VE8M36CAX80@gmail.com>
-From: "Kurt Borja" <kuurtb@gmail.com>
-To: "David Lechner" <dlechner@baylibre.com>, "Kurt Borja"
- <kuurtb@gmail.com>, "Andy Shevchenko" <andriy.shevchenko@intel.com>,
- "Lars-Peter Clausen" <lars@metafoo.de>, "Michael Hennerich"
- <Michael.Hennerich@analog.com>, "Jonathan Cameron" <jic23@kernel.org>,
- "Benson Leung" <bleung@chromium.org>, "Antoniu Miclaus"
- <antoniu.miclaus@analog.com>, "Gwendal Grignou" <gwendal@chromium.org>,
- "Shrikant Raskar" <raskar.shree97@gmail.com>, "Per-Daniel Olsson"
- <perdaniel.olsson@axis.com>
-Cc: =?utf-8?q?Nuno_S=C3=A1?= <nuno.sa@analog.com>, "Andy Shevchenko"
- <andy@kernel.org>, "Guenter Roeck" <groeck@chromium.org>, "Jonathan
- Cameron" <Jonathan.Cameron@huawei.com>, <linux-iio@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>, <chrome-platform@lists.linux.dev>
-Subject: Re: [PATCH v2 2/7] iio: core: Refactor iio_device_claim_direct()
- implementation
-X-Mailer: aerc 0.21.0-0-g5549850facc2
-References: <20251211-lock-impr-v2-0-6fb47bdaaf24@gmail.com>
- <20251211-lock-impr-v2-2-6fb47bdaaf24@gmail.com>
- <6ad0f764-91f2-4946-81cd-9363ec87722a@baylibre.com>
-In-Reply-To: <6ad0f764-91f2-4946-81cd-9363ec87722a@baylibre.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Tue Dec 23, 2025 at 12:20 PM -05, David Lechner wrote:
-> On 12/11/25 8:45 PM, Kurt Borja wrote:
->> In order to eventually unify the locking API, implement
->> iio_device_claim_direct() fully inline, with the use of
->> __iio_dev_mode_lock(), which takes care of sparse annotations.
->>=20
->> Signed-off-by: Kurt Borja <kuurtb@gmail.com>
->> ---
+On Mon, 22 Dec 2025 21:53:51 -0500
+Samuel Dionne-Riel <samuel@dionne-riel.com> wrote:
 
-...
+> This uses the SLA0 matrix, which is how the SMOCF05 configuration
+> exposes the mounting information for the accelerometer.
+> 
+> On a limited sample size of one (1) unit, the SLG0 matrix is the
+> identity matrix. It is unknown how the SLG0 mounting matrix would
+> logically affect the data, if it differed from the identity matrix.
+> After all, the IMU is mounted as one single unit, its mounting can't
+> differ on the gyroscope compared to the accelerometer.
+Hi Samuel
 
->> diff --git a/include/linux/iio/iio.h b/include/linux/iio/iio.h
->> index aecda887d833..76398dbfa5ca 100644
->> --- a/include/linux/iio/iio.h
->> +++ b/include/linux/iio/iio.h
->> @@ -664,30 +664,42 @@ int iio_push_event(struct iio_dev *indio_dev, u64 =
-ev_code, s64 timestamp);
->> =20
->>  void __iio_dev_mode_lock(struct iio_dev *indio_dev) __acquires(indio_de=
-v);
->>  void __iio_dev_mode_unlock(struct iio_dev *indio_dev) __releases(indio_=
-dev);
->> -bool __iio_device_claim_direct(struct iio_dev *indio_dev);
->> -void __iio_device_release_direct(struct iio_dev *indio_dev);
->> =20
->> -/*
->> - * Helper functions that allow claim and release of direct mode
->> - * in a fashion that doesn't generate many false positives from sparse.
->> - * Note this must remain static inline in the header so that sparse
->> - * can see the __acquire() marking. Revisit when sparse supports
->> - * __cond_acquires()
->
-> I think we should leave a comment that says these functions need to stay
-> as static inline so that sparse works. Although I'm wondering how sparse
+*sigh* More ACPI creativity.  Thanks for your detailed investigation.
 
-I'll keep that part!
+I'm a bit curious why they didn't use the ones Microsoft defined
+for windows but otherwise fine to support this.  A comment on the
+approach below.
 
-> could still work since __acquire() and __release() are removed here. IIRC
-> it was a bit finicky about that.
+> 
+> Signed-off-by: Samuel Dionne-Riel <samuel@dionne-riel.com>
+> ---
+>  drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c | 6 ++++++
+>  1 file changed, 6 insertions(+)
+> 
+> diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
+> index 49ac17806e720..4bf1f7f7552d1 100644
+> --- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
+> +++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
+> @@ -2707,6 +2707,12 @@ int st_lsm6dsx_probe(struct device *dev, int irq, int hw_id,
+>  			return err;
+>  	}
+>  
+> +	if (!iio_read_acpi_mount_matrix(hw->dev, &hw->orientation, "SLA0")) {
+> +		err = iio_read_mount_matrix(hw->dev, &hw->orientation);
+Whilst this 'works' this internal call is pointless as we already did this
+if there was not match on ROTM just off the context visible here.
 
-Now __iio_dev_mode_{lock,unlock}() are declared with __acquires() and
-__releases() tags. These are then used conditionally in
-iio_device_claim_direct().
+I think the way to do this cleanly is probably to have an st_read_acpi_mount_matrix()
+helper that tries ROTM and SLA0 in turn.  Then have something like;
 
-I did test every driver with `make C=3D2` and it seems to work in the same
-way.
+	if(!st_read_acpi_mount_matrix(hw->dev, &hw->orientation)) {
+		err = iio_read_mount_matrix(hw->dev, &hw->orientation);
+		if (err)
+			return err;
 
-...
 
->> +/**
->> + * iio_device_release_direct - Releases claim on direct mode
->> + * @indio_dev:	the iio_dev associated with the device
->> + *
->> + * Release the claim. Device is no longer guaranteed to stay
->> + * in direct mode.
->> + *
->> + * Use with iio_device_claim_direct()
->> + */
->>  static inline void iio_device_release_direct(struct iio_dev *indio_dev)
->
-> It could make more sense to make this:
->
-> #define iio_device_release_direct __iio_dev_mode_unlock
->
-> To make it clear that the auto cleanup functions that come later
-> don't call iio_device_release_direct() but rather call
-> __iio_dev_mode_unlock() directly.
->
-> Otherwise, someone could be tempted to modify the iio_device_release_dire=
-ct()
-> function and the changes would not have an effect when auto cleanup is us=
-ed.
->
-> (Same applies to the release buffer mode function.)
->
+	}
+> +		if (err)
+> +			return err;
+> +	}
+> +
+>  	for (i = 0; i < ST_LSM6DSX_ID_MAX; i++) {
+>  		if (!hw->iio_devs[i])
+>  			continue;
 
-Agree. I'll implement it like this.
-
---=20
- ~ Kurt
 

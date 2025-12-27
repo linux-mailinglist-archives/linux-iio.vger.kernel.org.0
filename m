@@ -1,139 +1,122 @@
-Return-Path: <linux-iio+bounces-27362-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-27363-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id B41EFCDFE2B
-	for <lists+linux-iio@lfdr.de>; Sat, 27 Dec 2025 16:07:34 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 013D8CDFE37
+	for <lists+linux-iio@lfdr.de>; Sat, 27 Dec 2025 16:14:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 60E03300E3CE
-	for <lists+linux-iio@lfdr.de>; Sat, 27 Dec 2025 15:07:33 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 6334230022C1
+	for <lists+linux-iio@lfdr.de>; Sat, 27 Dec 2025 15:14:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A07A82459D9;
-	Sat, 27 Dec 2025 15:07:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4191C2512E6;
+	Sat, 27 Dec 2025 15:14:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ahOxKyyr"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="exbvYdwx"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 602AA23E35B
-	for <linux-iio@vger.kernel.org>; Sat, 27 Dec 2025 15:07:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFA9012F5A5;
+	Sat, 27 Dec 2025 15:14:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766848052; cv=none; b=ZPgR4zRQsEckSsX8sFnElazb+LIAuuoVagpTKzuUkyFDrSB6FpWdFja+K2p4N5jPq8N73owZ/NMR9vgZi8pJK0OQkkh6oRUHV/2GbCEGaDHuS5bWv0Y4ge+ieqKEdQ1a4RKzCzdSKzIpxAbcVCiRlzxWa1kARf12dRw0dN2HvxM=
+	t=1766848456; cv=none; b=vCAJ1e7CKjthb4LjmGT+9kkoN/nuUcfcUIaYRwrwWrsSfKhy1xc8pkyMVuEjFtyywq6G+RglR/zIiXoLcnz/xtDkOcymq8M9JhzHcp4YGIsNjAJBQLouL38NQU/cGOJtaRvfub7LKvJ8ks6UhBFdB3Zu07kTJ07xYaXmu4+CF8M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766848052; c=relaxed/simple;
-	bh=kc9IfybTpcfy/TQ+Y6ALzGRSWGPLYro2M6GKy3PqXY8=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=r1M5SmLMZoYrKlsH7TFVnrxjSZjzPBXQpfHDj0hxOkYZRX+VxYwo21Ed6aCwYuk+Q6MVb3B12qpNQqDcU/oeb0KAeSGrA4VoH1Rufe9LIiCqMe7CtZu8AjdyQTVgQ9yJ0mSMSMZM7MPbsBwob3S+TewSZKRrcWYMbzUvZjY5ypQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ahOxKyyr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DEFACC4CEF1;
-	Sat, 27 Dec 2025 15:07:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1766848051;
-	bh=kc9IfybTpcfy/TQ+Y6ALzGRSWGPLYro2M6GKy3PqXY8=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=ahOxKyyr1p/jBfS5Dkbj0KCC/P2kMS5V0dlMRFp65EzmhY+JYPFHPo4Pneagcr8dd
-	 2oJxZhRuVEQtYk7MIGcHbaFItzpoTNdd9HTv7DQImwYj+Dx7AL+Pj9vKQHpllkrifz
-	 U2HnPvIxkdCC/pgWwYHzgvdMiN2O2D8VU17Dt6HRkioYXKcufvrTRC5RY76iceCYu8
-	 P8GvhunzbKVpIeQPuRzHo45V2fuPp72Zhfp6LGQsZoMwdmTP82ZJ3Qg+33QffHD/eV
-	 dLHuHUSWFR99hv2iFi0AnK11ciP2yw5N/rk4uokyhfAQPSphBML/9O4VA/D7Wolv7k
-	 dhVngKLL0H9eQ==
-Date: Sat, 27 Dec 2025 15:07:24 +0000
-From: Jonathan Cameron <jic23@kernel.org>
-To: Rasmus Villemoes <ravi@prevas.dk>
-Cc: Peter Rosin <peda@axentia.se>, linux-iio@vger.kernel.org, Guenter Roeck
- <linux@roeck-us.net>
-Subject: Re: [PATCH] iio: core: add separate lockdep class for
- info_exist_lock
-Message-ID: <20251227150724.08e17cc3@jic23-huawei>
-In-Reply-To: <875x9yucdh.fsf@prevas.dk>
-References: <20251215131723.4130826-1-ravi@prevas.dk>
-	<78de7c11-5724-c3ba-4a32-0dd0f8b4d74f@axentia.se>
-	<20251221190645.5d5d1b32@jic23-huawei>
-	<875x9yucdh.fsf@prevas.dk>
-X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1766848456; c=relaxed/simple;
+	bh=ayGnvzGYTMOYZSbWIa1SXRKPdxDlB2oCn9u0AuNbJrQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=kLfjJ7m9qpYeWfrH5DnEGloIEuXbcsc5ppH8dO/8qyA7Dk1FUhTLo6IuVV2Hg36kT81f8UbOIMryibgrQoJLuJrTT9MyP32Kc0XiI4zWdX3ndqtVlE4U9807sdTUA5NFYl9Y7Ni5nXxMfSVpq7JyRln6tYwN/4jrvSX0AVvfKIk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=exbvYdwx; arc=none smtp.client-ip=198.175.65.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1766848454; x=1798384454;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=ayGnvzGYTMOYZSbWIa1SXRKPdxDlB2oCn9u0AuNbJrQ=;
+  b=exbvYdwxO1Thm2eK9HVa3tciGMCztmfwJwDAigh0xsFMImZ8x5CXW43A
+   uc/NAIFbwp7YcqHstI/mcS5WKRkPS5vociphE1iQu3V0izEzQpBHSj/wP
+   wKGCyixpdTfdRe13m194Dxkmb9e2TdZSczstvOzVysT+ZtOsEHsTTfUlM
+   joR3sjINNwfyXfjMLFlm+xClqRauK1tfYRmhacVttmi+AEuoSntjq+CH5
+   zmNsuNT/vGFVoXzIn+jDr6tQIn8ejMxakfRHo6CNvQJfFfHf9RIjKRJPU
+   qylWWksGBf6wjwyWi0rbNYUbrNsglVU+QqLQgOYbY6831fz5pFQGTwnvq
+   g==;
+X-CSE-ConnectionGUID: WhfAhOT6TXq76OfMkV90eg==
+X-CSE-MsgGUID: XUnXJ/f2RNyhqJAoJx2Q+w==
+X-IronPort-AV: E=McAfee;i="6800,10657,11654"; a="68706781"
+X-IronPort-AV: E=Sophos;i="6.21,180,1763452800"; 
+   d="scan'208";a="68706781"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Dec 2025 07:14:13 -0800
+X-CSE-ConnectionGUID: Fz8pSKfGRN+9mMDadppbbw==
+X-CSE-MsgGUID: NwCboQ1dSzKyicwXdmCCjQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,180,1763452800"; 
+   d="scan'208";a="200586196"
+Received: from egrumbac-mobl6.ger.corp.intel.com (HELO localhost) ([10.245.244.211])
+  by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Dec 2025 07:14:09 -0800
+Date: Sat, 27 Dec 2025 17:14:07 +0200
+From: Andy Shevchenko <andriy.shevchenko@intel.com>
+To: David Lechner <dlechner@baylibre.com>
+Cc: Mark Brown <broonie@kernel.org>, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Marcelo Schmitt <marcelo.schmitt@analog.com>,
+	Michael Hennerich <michael.hennerich@analog.com>,
+	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
+	Jonathan Cameron <jic23@kernel.org>,
+	Andy Shevchenko <andy@kernel.org>,
+	Sean Anderson <sean.anderson@linux.dev>, linux-spi@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-iio@vger.kernel.org
+Subject: Re: [PATCH v4 4/9] spi: add multi_lane_mode field to struct
+ spi_transfer
+Message-ID: <aU_3v5smP1AnsHCG@smile.fi.intel.com>
+References: <20251219-spi-add-multi-bus-support-v4-0-145dc5204cd8@baylibre.com>
+ <20251219-spi-add-multi-bus-support-v4-4-145dc5204cd8@baylibre.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251219-spi-add-multi-bus-support-v4-4-145dc5204cd8@baylibre.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
+ krs, Bertel Jungin Aukio 5, 02600 Espoo
 
-On Mon, 22 Dec 2025 09:52:42 +0100
-Rasmus Villemoes <ravi@prevas.dk> wrote:
-
-> On Sun, Dec 21 2025, Jonathan Cameron <jic23@kernel.org> wrote:
+On Fri, Dec 19, 2025 at 03:32:12PM -0600, David Lechner wrote:
+> Add a new multi_lane_mode field to struct spi_transfer to allow
+> peripherals that support multiple SPI lanes to be used with a single
+> SPI controller.
 > 
-> > On Mon, 15 Dec 2025 14:33:38 +0100
-> > Peter Rosin <peda@axentia.se> wrote:
-> >  
-> >> Hi!
-> >> 
-> >> 2025-12-15 at 14:17, Rasmus Villemoes wrote:  
-> >> > When one iio device is a consumer of another, it is possible that
-> >> > the ->info_exist_lock of both ends up being taken when reading the
-> >> > value of the consumer device.
-> >> > 
-> >> > Since they currently belong to the same lockdep class (being
-> >> > initialized in a single location with mutex_init()), that results in a
-> >> > lockdep warning    
-> >> 
-> >> ...
-> >>   
-> >> > Just as the mlock_key already has its own lockdep class, add a
-> >> > lock_class_key for the info_exist mutex.
-> >> > 
-> >> > Signed-off-by: Rasmus Villemoes <ravi@prevas.dk>    
-> >> 
-> >> Looks sane from here.
-> >> 
-> >> Reviewed-by: Peter Rosin <peda@axentia.se>  
-> > Hi Rasmus,
-> >
-> > Thanks for doing this!  
-> >>   
-> > We should probably merge this as a fix and get it backported.
-> > Whilst fairly rare anyone hits this it is also safe enough wrt
-> > to very low chance of causing any problems.
-> >
-> > Would be good to have an appropriate Fixes tag though.
-> > Ideally please reply to this thread with an appropriate one.
-> > If not I'll try and figure one out, but not today!  
-> 
-> I tried to find one, but the problem goes way back, probably all the way
-> to either the introduction of info_exist_lock or the ability for one iio
-> channel to have a dependency on another, whichever came latest. And I'm
-> not really very familiar with the iio subsystem, so I couldn't find one
-> single commit to name.
-> 
-> Commit 2bc9cd66eb25d ("iio: Use per-device lockdep class for mlock")
-> which introduced the mlock_key referred to 67e17300dc1d76 ("iio:
-> potentiostat: add LMP91000 support"), but that feels more like a "this
-> driver is what first exposed the problem" and not really "this is where
-> the problem was introduced in the iio framework".
-> 
-> Wrt. backporting, it's probably worth mentioning c76ba4b264442 ("iio:
-> core: Replace lockdep_set_class() + mutex_init() by combined call") as a
-> prerequisite, as that is needed to make it cherry-pick cleanly.
+> This requires both the peripheral and the controller to have multiple
+> serializers connected to separate data lanes. It could also be used with
+> a single controller and multiple peripherals that are functioning as a
+> single logical device (similar to parallel memories).
 
-Thanks for doing the archeology.  I had a dig as well and fairly sure it's.
-That references the rules for consumers in the commit message so definitely
-seems that all the relevant infrastructure was in there at that point.
-Given it's from 2012 we can backport this to all kernels anyone still cares
-about.
+...
 
- ac917a81117c ("staging:iio:core set the iio_dev.info pointer to null on unregister under lock.")
+>  	unsigned	cs_change:1;
+>  	unsigned	tx_nbits:4;
+>  	unsigned	rx_nbits:4;
+> +
+> +#define SPI_MULTI_LANE_MODE_SINGLE	0 /* only use single lane */
+> +#define SPI_MULTI_LANE_MODE_STRIPE	1 /* one data word per lane */
+> +#define SPI_MULTI_LANE_MODE_MIRROR	2 /* same word sent on all lanes */
+> +	unsigned	multi_lane_mode: 2;
+> +
+>  	unsigned	timestamped:1;
 
-So applied with that fixes tag to the fixes-togreg branch of iio.git.
+Btw, have you checked the layout of these bitfields? Are they all in one 32-bit
+word or split? Dunno if `pahole` handles them, never actually paid attention
+before.
 
-thanks,
+-- 
+With Best Regards,
+Andy Shevchenko
 
-Jonathan
-
-
-> Rasmus
 
 

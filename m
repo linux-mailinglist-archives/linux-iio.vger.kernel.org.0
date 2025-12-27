@@ -1,59 +1,55 @@
-Return-Path: <linux-iio+bounces-27371-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-27372-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 84E00CDFF5A
-	for <lists+linux-iio@lfdr.de>; Sat, 27 Dec 2025 17:40:16 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 02187CDFF60
+	for <lists+linux-iio@lfdr.de>; Sat, 27 Dec 2025 17:42:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 40296300B69A
-	for <lists+linux-iio@lfdr.de>; Sat, 27 Dec 2025 16:40:15 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 8509F300BD9E
+	for <lists+linux-iio@lfdr.de>; Sat, 27 Dec 2025 16:42:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C6B3325490;
-	Sat, 27 Dec 2025 16:40:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1AB673254A0;
+	Sat, 27 Dec 2025 16:42:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Kp6Xgbbv"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oX4SjqWB"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 075F5324B22;
-	Sat, 27 Dec 2025 16:40:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBA3B324B22;
+	Sat, 27 Dec 2025 16:42:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766853611; cv=none; b=KqEw7WPP33Q0NRtWLyO7jnzRkdhTDgqeuP6FwSnp6Y5On8gElPkwe8z8lBH+wBSletmbpC3CSHULRyDXBIcEmaph3pxNbCYZ0dXHXnD97l5CQRmM/NZc14Hf9L8tPSmXHMyIRAFy8E9WSTgTH8S5OfxnPCSZmot0mfIDprf1dsc=
+	t=1766853747; cv=none; b=q8uT5njTP87fTTEj/DDBPijJcl37nP3qV7C5Zi9lfd+hRCKvWYrNBQ7CpMl+NaxP8jHihrFJ4++0dVCVe/TZzd0ZEVmE8W+kYn89cedkEpOP7Tbc6sV9SbS3vZlGRISs8BQJ35rU+w91GgelK/g2wr1bUJxKl66jhB5WAimCRlc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766853611; c=relaxed/simple;
-	bh=gQ5wLLWHw2PApgnKABMLdbTLhEHZRaoAE62701mYXz0=;
+	s=arc-20240116; t=1766853747; c=relaxed/simple;
+	bh=frKC2hjrSjQqL23j0BFVMIqv5PhzEQPP2TOi0JSQs7M=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=BozK9+Z1+kblvcHOJ2nRPBRfZFcfAUFfx/1VxecQTjFwMi7CNq9tkv1xGtfZpj0dUwasX3BFe3cgcvl71eanYnAwU/pbSZWwSTT19V4/Y8odi34pNzLrAA4zTfI5VymtdrNPdh5HXuUpTPPw6QM+v3rV/tl3Yj/+RgHkwPve77c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Kp6Xgbbv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79C57C4CEF1;
-	Sat, 27 Dec 2025 16:40:07 +0000 (UTC)
+	 MIME-Version:Content-Type; b=SdkbmICDplYmGug9Zm6ZBHLBpGiOYjtQFiEoGO+BRm93r5718l+SP8PKirD5prO8ICqCKbo2Q3jcnKhtAIhowZ40QbKi/843f7p8ZSGEGsor8ae/+dyDyVl7istf18MkNalomQyKeZX454nvbWXmp0D6c7XbO1Aa1J2knK4HqmM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oX4SjqWB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1FB58C4CEF1;
+	Sat, 27 Dec 2025 16:42:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1766853610;
-	bh=gQ5wLLWHw2PApgnKABMLdbTLhEHZRaoAE62701mYXz0=;
+	s=k20201202; t=1766853747;
+	bh=frKC2hjrSjQqL23j0BFVMIqv5PhzEQPP2TOi0JSQs7M=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=Kp6XgbbvVTenp90dmOxGTG4fdCsy/nsLsffIL+xrPj9O1w9pqEZtdRThvqH2Fm8cy
-	 KjEXb76peP18fw2LfN+gUVTZjZaNCwDPvKTY8ZvrVZ/W3y3tBrhkEnSYjz5OwKeI0f
-	 uKD0HciEZtY397q1CVD6e4mIwX/SEAv6WSjuot1gXnH0kUTUcFkMElaXvkHPGufn80
-	 s/FHkCP5LUWunE5lJkIkY7ezCj5DW34WjUV02PYWshgN3zuYC2I8spP3hhveerjvxT
-	 OngBCtmrvqnbTmpQW6q/0qLIb580dRchcUhaORDuF9H5f6GRbV/o8eg9HTZilkc0yw
-	 QOFyZvSIT6dog==
-Date: Sat, 27 Dec 2025 16:40:02 +0000
+	b=oX4SjqWBN3CiRjonsimNJ1IN7Q65Ak8zZLxho6BBDH1yoToiUHAZ9dWoX52186IR4
+	 9zDSaTYMi0Ntf8TD1H3ViTc/AtW14MmttPzS4Ouzl51h/nyevwp/0cP4RRk4IllTze
+	 G21BRaIo595x4r6aqW661XGnKWmgwD/gDb/tBgYvQUjRT+6lbkPMPSC2G4CfCZN+Hq
+	 DAxTFTAIyqC5fcZPh0JDzQvrytOaZoN1hUWIh/08wjNW6xGKz7dSLaNjB6esr2BcSC
+	 tKAA9kaN5HnRlV4i7RlKXVSzBn9MkGiJKilLgg/EFD2sLwtXddq4Xl2zucdLYJ6FYu
+	 G2wRQySkbikmA==
+Date: Sat, 27 Dec 2025 16:42:19 +0000
 From: Jonathan Cameron <jic23@kernel.org>
-To: Petre Rodan <petre.rodan@subdimension.ro>
-Cc: David Lechner <dlechner@baylibre.com>, Nuno =?UTF-8?B?U8Oh?=
- <nuno.sa@analog.com>, Andy Shevchenko <andy@kernel.org>, Andreas Klinger
- <ak@it-klinger.de>, linux-iio@vger.kernel.org,
- linux-kernel@vger.kernel.org, Jonathan Cameron
- <Jonathan.Cameron@huawei.com>
-Subject: Re: [PATCH 12/14] iio: pressure: mprls0025pa: fix interrupt flag
-Message-ID: <20251227164002.13f6ac58@jic23-huawei>
-In-Reply-To: <aUjxnibLMpvMtOY1@lipo.home.arpa>
-References: <20251218-mprls_cleanup-v1-0-b36a170f1a5c@subdimension.ro>
-	<20251218-mprls_cleanup-v1-12-b36a170f1a5c@subdimension.ro>
-	<20251221183826.3050247c@jic23-huawei>
-	<aUjxnibLMpvMtOY1@lipo.home.arpa>
+To: David Lechner <dlechner@baylibre.com>
+Cc: Fiona Klute <fiona.klute@gmx.de>, Roan van Dijk <roan@protonic.nl>,
+ linux-iio@vger.kernel.org, Nuno =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>, Andy
+ Shevchenko <andy@kernel.org>, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] iio: chemical: scd4x: fix reported channel endianness
+Message-ID: <20251227164219.5ffa1b60@jic23-huawei>
+In-Reply-To: <64181fc9-4795-4c5b-97de-a9482eea4bf4@baylibre.com>
+References: <20251213163226.1678707-1-fiona.klute@gmx.de>
+	<64181fc9-4795-4c5b-97de-a9482eea4bf4@baylibre.com>
 X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -64,76 +60,30 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Mon, 22 Dec 2025 09:22:06 +0200
-Petre Rodan <petre.rodan@subdimension.ro> wrote:
+On Mon, 15 Dec 2025 10:41:04 -0600
+David Lechner <dlechner@baylibre.com> wrote:
 
-> hello Jonathan,
-> 
-> On Sun, Dec 21, 2025 at 06:38:26PM +0000, Jonathan Cameron wrote:
-> > On Thu, 18 Dec 2025 13:05:54 +0200
-> > Petre Rodan <petre.rodan@subdimension.ro> wrote:
-> >   
-> > > Interrupt falling/rising flags should only be defined in the device tree.
-> > > 
-> > > Fixes: 713337d9143e ("iio: pressure: Honeywell mprls0025pa pressure sensor")
-> > > Signed-off-by: Petre Rodan <petre.rodan@subdimension.ro>  
-> > Gah. We shoudn't have let this slip through in 2023.
-> > Some old drivers have done this for many years and for those we definitely
-> > can't be sure there aren't boards with it set wrong in DT that will see
-> > a regression with this fix.
+> On 12/13/25 10:32 AM, Fiona Klute wrote:
+> > The driver converts values read from the sensor from BE to CPU
+> > endianness in scd4x_read_meas(). The result is then pushed into the
+> > buffer in scd4x_trigger_handler(), so on LE architectures parsing the
+> > buffer using the reported BE type gave wrong results.
 > > 
-> > For a 2023 driver, maybe we can gamble that no one has broken DT (where this
-> > would annoyingly be a regression).  One other question below.
+> > scd4x_read_raw() which provides sysfs *_raw values is not affected, it
+> > used the values returned by scd4x_read_meas() without further
+> > conversion.
 > > 
-> >   
-> > > ---
-> > >  drivers/iio/pressure/mprls0025pa.c | 5 ++---
-> > >  1 file changed, 2 insertions(+), 3 deletions(-)
-> > > 
-> > > diff --git a/drivers/iio/pressure/mprls0025pa.c b/drivers/iio/pressure/mprls0025pa.c
-> > > index 243a5717b88f..fc04988b9437 100644
-> > > --- a/drivers/iio/pressure/mprls0025pa.c
-> > > +++ b/drivers/iio/pressure/mprls0025pa.c
-> > > @@ -14,6 +14,7 @@
-> > >  #include <linux/bits.h>
-> > >  #include <linux/delay.h>
-> > >  #include <linux/errno.h>
-> > > +#include <linux/interrupt.h>
-> > >  #include <linux/math64.h>
-> > >  #include <linux/mod_devicetable.h>
-> > >  #include <linux/module.h>
-> > > @@ -404,9 +405,7 @@ int mpr_common_probe(struct device *dev, const struct mpr_ops *ops, int irq)
-> > >  
-> > >  	if (data->irq > 0) {
-> > >  		ret = devm_request_irq(dev, data->irq, mpr_eoc_handler,
-> > > -				       IRQF_TRIGGER_RISING,
-> > > -				       dev_name(dev),
-> > > -				       data);
-> > > +				       IRQF_ONESHOT, dev_name(dev), data);  
-> > IRQF_ONESHOT addition here needs a separate explanation. Might well be correct
-> > but it's not related to your patch description.  
+> > Fixes: 49d22b695cbb6 ("drivers: iio: chemical: Add support for Sensirion SCD4x CO2 sensor")
+> > Signed-off-by: Fiona Klute <fiona.klute@gmx.de>
+> > ---  
+> Reviewed-by: David Lechner <dlechner@baylibre.com>
 > 
-> do you feel like IRQF_TRIGGER_NONE would be a better fit?
-That would be the minimal change.
 > 
-> I used ONESHOT just because it seemed like a good idea to isolate the sensor while the handler is running (if I understand the documentation correctly).
-It's normally only necessary for devices where we might get
-more interrupts signalled before we have performed all the operations
-we need to for the one we are already handling.  E.g. level interrupts
-with a threaded handler, or IIRC any freerunning pulse type interrupt.
+
+Oops. Seems I queued this up but never replied to say I had done so
+(or updated patchwork). This is on the fixes-togreg branch of iio.git.
+
+Thanks,
 
 Jonathan
-
-> 
-> best regards,
-> peter
-> 
-> >   
-> > >  		if (ret)
-> > >  			return dev_err_probe(dev, ret,
-> > >  					  "request irq %d failed\n", data->irq);
-> > >   
-> >   
-> 
-
 

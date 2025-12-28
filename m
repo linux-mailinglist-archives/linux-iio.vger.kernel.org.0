@@ -1,106 +1,115 @@
-Return-Path: <linux-iio+bounces-27398-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-27399-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD79DCE4944
-	for <lists+linux-iio@lfdr.de>; Sun, 28 Dec 2025 06:21:16 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0CEABCE499C
+	for <lists+linux-iio@lfdr.de>; Sun, 28 Dec 2025 07:52:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E9B1A300CBA5
-	for <lists+linux-iio@lfdr.de>; Sun, 28 Dec 2025 05:21:14 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 8B04D3004F09
+	for <lists+linux-iio@lfdr.de>; Sun, 28 Dec 2025 06:52:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB7A01F7916;
-	Sun, 28 Dec 2025 05:21:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E4BF27A904;
+	Sun, 28 Dec 2025 06:52:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LBsWlq/c"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="B2L+Z5OH"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50AAE20ED
-	for <linux-iio@vger.kernel.org>; Sun, 28 Dec 2025 05:21:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5891259CB6;
+	Sun, 28 Dec 2025 06:52:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766899273; cv=none; b=dvkeFLpZA7mrWW5jNPEXRzn0hD6esK4dnVCc0UhU23XGLB9sNcNkmRcexH/sA9meJv9sIbxbSrbt3fNj/pdkA1UQVR27MatL9xm6kukMcr5rKR6yTqg30TtgcIb9n8y8+yqGJDUT0VxmKvHdghq/h1ALb+ky6inR8Ddwfdnjrhg=
+	t=1766904768; cv=none; b=GTAFe+Ld4RUPqT71yL8Qs89Iw0+nDGt+pBtsoBhP6AHRDfV2eTqekCrwS5CqHiiD0P0U6TMcw7KLsiLIxY8DQnBe+SkZCckURpstZ+Ru6Iq5dRGsHUfVyJvACTPSubp3HSlRkPbPSVocegjL7blLjwtJr2UGthFzDTa7AiKV0cM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766899273; c=relaxed/simple;
-	bh=5WmgHDmt+hjvwJiuuT4LosK9EB8Hxmha0L/UcveEXRo=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=E7u9MrAatmgTL2N++3YCJY8S09soYzDV9ptrgoFrb0fi8FYAyh+6e51xDF8ZQUxd4w/O+sa6nJZnWqOWETyNTX3tStDZXhrKXezvdCQ/wsoZAsMyNHjBKCPdBreZUgFFE0Sh+/NnZhCbh8nGAR3J/i3HF9NH28zGQjW8pM8TTcg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LBsWlq/c; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46CE6C4CEFB;
-	Sun, 28 Dec 2025 05:21:09 +0000 (UTC)
+	s=arc-20240116; t=1766904768; c=relaxed/simple;
+	bh=uXXoCbWj+ft3G+bbeyfRGBLWRRFRoHtxxL0vn/VevBo=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=bglBtmF1sL4asyBPoNR5sB/m9CwDi38oulZlaKh6S2OeHWK19rtfHcIYCx4hYIQCyqJ9Yo+6mJW1vnJanl3em37mHoNrnjFE6pgOz3lc9DlYWcJeMkES7W30hDF2zNYPaAN1QO/6Gy+/tdeipyB2aUioD3hX8b4bcE6bd1oXwjg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=B2L+Z5OH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 436C6C4CEFB;
+	Sun, 28 Dec 2025 06:52:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1766899269;
-	bh=5WmgHDmt+hjvwJiuuT4LosK9EB8Hxmha0L/UcveEXRo=;
-	h=Date:From:To:Cc:Subject:From;
-	b=LBsWlq/czDliAY6uhJNhjCjSWhs1tFYX+9+FU0gnqy44VPHyaABVFXJkBFmNx23NU
-	 rYK+FP/eUPiK1w9zSnmt3PPTWe/yFV6jRdZ/E5GvIyJKvc828NpzjEAO0ILp8M/Hdp
-	 3eNCrNuSq7a+EeYRDc3uPOzd2/HoGHGm8LOi+yKMQ/mAX6kU4blROeNNKLQVEhqOqy
-	 6tGv4fxx+EnkcDpELCT+lg7pkA7wvuAvxag34FdNEhxpavmPkDld1r7LTz4qcnzLJ2
-	 WjgmCfmZC5z6PQP+MSVmZFaRHpHEkP+XyAkyTyiigXUEEQI9s6hj+Oc8Wglf0/lRDu
-	 RNBd4dw9XPr+w==
-Date: Sun, 28 Dec 2025 14:21:06 +0900
+	s=k20201202; t=1766904767;
+	bh=uXXoCbWj+ft3G+bbeyfRGBLWRRFRoHtxxL0vn/VevBo=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=B2L+Z5OHw3Hd1gGt0E756UjXsqxG8RhwILE1aNPwgIQXC0rK6KeMfUyQmktUja8os
+	 bbjyLS3qPSL2ZDi9DkY7SHSNC2x/P76EJRw68nWV5d8rKpqTZ/FxSGWYLsHkq49Hkm
+	 LNjIQHEv1gEcMRy6ftiW1g+4ZlGVnRzqj0Imem4WYNL9AJNAMEylRD5WIr2OgVV7nN
+	 xPb0W697Zq0lHCMYmgvsp9e74pEDcBrdkHVFRuKK0ZBl+zEgp08u2cZgXyulSSsTzZ
+	 Z338+nSqrne2lBAvIHTtuF+JW2Ix+85u99QmaY+bknGr3tyTOX/BiTC3B1n2ljkEd0
+	 HO6vtHLspJQ6w==
 From: William Breathitt Gray <wbg@kernel.org>
-To: gregkh@linuxfoundation.org
-Cc: linux-iio@vger.kernel.org
-Subject: [GIT PULL] Counter fixes for 6.19
-Message-ID: <aVC-QsxCpDSnelZq@emerald>
+To: Daniel Lezcano <daniel.lezcano@linaro.org>
+Cc: William Breathitt Gray <wbg@kernel.org>,
+	robh@kernel.org,
+	conor+dt@kernel.org,
+	krzk+dt@kernel.org,
+	s32@nxp.com,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-iio@vger.kernel.org,
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+	Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	linux-stm32@st-md-mailman.stormreply.com,
+	linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH v3 3/3] counter: Add STM based counter
+Date: Sun, 28 Dec 2025 15:52:40 +0900
+Message-ID: <20251228065241.21144-1-wbg@kernel.org>
+X-Mailer: git-send-email 2.52.0
+In-Reply-To: <20251217075000.2592966-4-daniel.lezcano@linaro.org>
+References: <20251217075000.2592966-4-daniel.lezcano@linaro.org>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="pq3L5bpCZnoUZFil"
-Content-Disposition: inline
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2114; i=wbg@kernel.org; h=from:subject; bh=uXXoCbWj+ft3G+bbeyfRGBLWRRFRoHtxxL0vn/VevBo=; b=owGbwMvMwCW21SPs1D4hZW3G02pJDJkBl5eV3nC/Oe0pY83T8hc6BcdPKfLm9+5mFD+035VV+ kJtXqRjRykLgxgXg6yYIkuv+dm7Dy6pavx4MX8bzBxWJpAhDFycAjCRaB1Ghs1TzRb95zCbxpir seOwT8ghvW/5s1aLfzTbkFv5Y0VSUhHDP3uzJrP45bUXa/adLkhWex/S6BOXfnXF1lOSr0113Nf MYAcA
+X-Developer-Key: i=wbg@kernel.org; a=openpgp; fpr=8D37CDDDE0D22528F8E89FB6B54856CABE12232B
+Content-Transfer-Encoding: 8bit
 
+On Wed, Dec 17, 2025 at 08:49:57AM +0100, Daniel Lezcano wrote:
+> The NXP S32G2 automotive platform integrates four Cortex-A53 cores and
+> three Cortex-M7 cores, along with a large number of timers and
+> counters. These hardware blocks can be used as clocksources or
+> clockevents, or as timestamp counters shared across the various
+> subsystems running alongside the Linux kernel, such as firmware
+> components. Their actual usage depends on the overall platform
+> software design.
+> 
+> In a Linux-based system, the kernel controls the counter, which is a
+> read-only shared resource for the other subsystems. One of its primary
+> purposes is to act as a common timestamp source for messages or
+> traces, allowing correlation of events occurring in different
+> operating system contexts.
+> 
+> These changes introduce a basic counter driver that can start, stop,
+> and reset the counter. It also handles overflow accounting and
+> configures the prescaler value.
+> 
+> Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
 
---pq3L5bpCZnoUZFil
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Hi Daniel,
 
-The following changes since commit 9448598b22c50c8a5bb77a9103e2d49f134c9578:
+It sounds like you're trying to implement a clock for timestamping.
+Although the Generic Counter interface is flexible enough to shoehorn a
+a clock into its representation, I don't believe it's the right
+abstraction for this particular device. Perhaps reimplementing this
+driver under the Linux common clock framework would be a better approach
+to achieve what you want.
 
-  Linux 6.19-rc2 (2025-12-21 15:52:04 -0800)
+Regardless, if you do pursue a Counter driver you'll need to follow the
+Generic Counter paradigm[^1] and define at least three core components:
+a Signal, a Synapse, and a Count. Resetting the Count is typically
+implemented by defining a struct counter_ops counter_write()
+callback[^2], while overflows are typically implemented by pushing
+COUNTER_EVENT_OVERFLOW Counter events[^3] that can be watched by
+userspace.
 
-are available in the Git repository at:
+William Breathitt Gray
 
-  git://git.kernel.org/pub/scm/linux/kernel/git/wbg/counter.git tags/counter-fixes-for-6.19
-
-for you to fetch changes up to 9517d76dd160208b7a432301ce7bec8fc1ddc305:
-
-  counter: 104-quad-8: Fix incorrect return value in IRQ handler (2025-12-22 20:03:23 +0900)
-
-----------------------------------------------------------------
-Counter fixes for 6.19
-
-A fix for interrupt-cnt dropping the IRQF_NO_THREAD configuration to
-allow the IRQ handler to correctly acquire a spinlock_t lock. A fix for
-104-quad-8 correcting quad8_irq_handler() to return irqreturn_t enum
-values rather than negative errno codes on error.
-
-----------------------------------------------------------------
-Alexander Sverdlin (1):
-      counter: interrupt-cnt: Drop IRQF_NO_THREAD flag
-
-Haotian Zhang (1):
-      counter: 104-quad-8: Fix incorrect return value in IRQ handler
-
- drivers/counter/104-quad-8.c    | 20 ++++++++++++++------
- drivers/counter/interrupt-cnt.c |  3 +--
- 2 files changed, 15 insertions(+), 8 deletions(-)
-
---pq3L5bpCZnoUZFil
-Content-Type: application/pgp-signature; name=signature.asc
-
------BEGIN PGP SIGNATURE-----
-
-iHUEARYKAB0WIQSNN83d4NIlKPjon7a1SFbKvhIjKwUCaVC+QgAKCRC1SFbKvhIj
-KwSpAPsH4R8aXNRKYdL7KQriyhzJ8qekNSJDbDbHlMAP0uW/RAD/UEKcmuzly0fh
-+8dFLcUlZUj4JKgVI9PcBT74iayfQgI=
-=Sxsq
------END PGP SIGNATURE-----
-
---pq3L5bpCZnoUZFil--
+[^1] https://docs.kernel.org/driver-api/generic-counter.html#paradigm
+[^2] https://docs.kernel.org/driver-api/generic-counter.html#c.counter_ops
+[^3] https://docs.kernel.org/driver-api/generic-counter.html#counter-events
 

@@ -1,196 +1,128 @@
-Return-Path: <linux-iio+bounces-27410-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-27411-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E90A8CE64FB
-	for <lists+linux-iio@lfdr.de>; Mon, 29 Dec 2025 10:40:47 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 11E7BCE686A
+	for <lists+linux-iio@lfdr.de>; Mon, 29 Dec 2025 12:29:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A834230081BE
-	for <lists+linux-iio@lfdr.de>; Mon, 29 Dec 2025 09:40:32 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 148DC3008885
+	for <lists+linux-iio@lfdr.de>; Mon, 29 Dec 2025 11:29:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F17F728135D;
-	Mon, 29 Dec 2025 09:40:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25B0E3090FF;
+	Mon, 29 Dec 2025 11:29:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Gpwtjptd"
+	dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b="JyJqRfta"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ej1-f46.google.com (mail-ej1-f46.google.com [209.85.218.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.smtpout.orange.fr (smtp-70.smtpout.orange.fr [80.12.242.70])
+	(using TLSv1.2 with cipher AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D406252900
-	for <linux-iio@vger.kernel.org>; Mon, 29 Dec 2025 09:40:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B600E3081A4;
+	Mon, 29 Dec 2025 11:28:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.12.242.70
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767001230; cv=none; b=omP7v+YCWb+TlI9cB+jQ8Mh8+BEtj31z+3SxiFOLFe7WjIznZbcIxLFQ5T7QwmjPP2Q9uvy8U9ckDY4nMmYva2LelgGZ/4szoJxBIZfXf6m8xiF5AXltVa7gnQVbCAKXawVtywy6y8dX7E7UQfGaPKPsmjD+eUmJcIk8cl6Hz5c=
+	t=1767007742; cv=none; b=JIno71HHijQSzx7oihlLVXg1Uw6hVlC9c+1ApIm+J4xosQajVTAZyE4mLb5NTCMLSiL702OQNzgI3b2sF0GnXVH6yZyUVbvVgSFbppG6dq+jnkTLbvQI7Eh/hQ1aD7HRJxHEia9smBO2cag6OBI7sD7sXfa3Nsf+UCatoTRGozU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767001230; c=relaxed/simple;
-	bh=WnJ2tC4zepAuYUdnYjJVNb6K4dEj4f7sCT4B+Rwp7bg=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=EX+uYTfFSIISDxJUwaU+gVaNoukjCfavTPY5GognUn+KdFacpqFtfQHZIomKJsmIKfB4Fhn18Bvkt/s5MGEiOE2TY400rnZ2ebWR7d2JkMzwSgvYy00w8XQVnHqq+RWlKKGUviWv6fke68kM68LKePQLWGFBdjI6MhrlNu6Fr4Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Gpwtjptd; arc=none smtp.client-ip=209.85.218.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f46.google.com with SMTP id a640c23a62f3a-b728a43e410so1676046966b.1
-        for <linux-iio@vger.kernel.org>; Mon, 29 Dec 2025 01:40:28 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1767001227; x=1767606027; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=sIiSQ+H4iozlL1RZCBDSnCB5yNmXDQlTJYU7HFVKRIA=;
-        b=GpwtjptdlnY9m9B51e7YR6fpVRodCfgZtoYdEGds8KBvwBpic4ViyoPV9VYFvGKK0n
-         RH+QXo3k/3MPNyk8uvjmxxA339iFl0g7hMwpoUemJibiU4rSknVUt7noLcyTyFZ5iGGn
-         rKQPVQkdH5a57jhmos/0kCckxDSfFoFkhwKW9rfTGNf0LPEcSvbBCHbAzo2xwFyA/a4M
-         xw9cBf30lQ5Skf/QrXL5jxgl0mESz+scC3uTQXUeeQiq3B/YAcjJ0bEiKGieWNweTkTW
-         UBLPeK0eUME4sm/0t6YGLEYoJgCK5B04VozxFa+t0JlCswWqOFQcajavITCnXtyUzQDH
-         HsRA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767001227; x=1767606027;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=sIiSQ+H4iozlL1RZCBDSnCB5yNmXDQlTJYU7HFVKRIA=;
-        b=Pt66BCBp0QgU7AgQBhbFFtG6bjCcTRmfP6TS1smgDcrMFrQWSonCnER8pjLimmhxLN
-         mUwbAaktG+HbgAn/Nl8H8HwNDrotXhh3smR0YtR/vHfjMe19TO8YKgB5iIVquCGJBIme
-         xxUoRKKmeIUnUXSJjEaW3YvZX+J8W+4VQMLM67/IArdbkpYrHbIMB2C2SI1m5yMi2T8Y
-         ekNYrkarT3GmbkxOCw+eZNTyLnnTh4uYd+Do3hTPIjmrg2Vdz1Q0Pg8KJa3QwCTzZaBx
-         p3voT+CiBsxqsGgX8bbJMROH70+zfloVxzupVEGBYGCbKIDC6MasE37u36v9Vzt1eXlS
-         cg9g==
-X-Forwarded-Encrypted: i=1; AJvYcCUZvvq7fAEQ3eiEDEvtxCb+X9tRQY+aHhFdx4gkx79xvMfCrqq5wR6ARv5ypo+EzJZzbLtWm0yqTjs=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw+ONwOSQElgk/ApWg23CBocQf35R3BRin1CdvC4n+qLTuUCfod
-	y1yOSHp7WWvoFtV5suLp80Y1gfx619ISJkqVJt1/3mchEW25mVOZdFJXe/gpKyiz69rEQPeTRMD
-	9wf5yhybY2x5/jSQ0q9R3Xcbj5mvamdI=
-X-Gm-Gg: AY/fxX6DppgjtGTQYD0OWnXSUGYonn/Xuckd43SnWljOjCpaHvScs+eGnJXUSoT8/UF
-	QY1wxiGPWYoDQWmVbOwWOgQkMROhlQHe75LNVifZDmcem5kAcXxecCUSj+22gw1iyTqdu5d8BXf
-	WKpoJKxk5WE3JkXKDve39Ajg3AS2TLixYtf9vn9LBcKFMvaYfd4rkpw0sMJgpamstrYE28di4XC
-	m2m/FyhdRpbh0Jk4KqVD6IFSLCnSCUuLcSJ/SQ/ykDVqJfyHLmDmpsDM3ri7UsOCS3jaWzqLC0M
-	GqewejCzM2CbkX8St+7Zb+w4m905IVD2SsuuUsIzHl+8eTOwje4zAQEXnK+1RdgVeZudlcQ=
-X-Google-Smtp-Source: AGHT+IF+DgFNPkINf3LkL7IgAP5Ss98RBe1Y/rMetdZObpY5qXdwT+IPbDR+z8ZQU1FR4VUuazyt9Qi1KWf67/a6B60=
-X-Received: by 2002:a17:906:c154:b0:b72:5e2c:9e97 with SMTP id
- a640c23a62f3a-b8037051e8cmr3016256966b.36.1767001227274; Mon, 29 Dec 2025
- 01:40:27 -0800 (PST)
+	s=arc-20240116; t=1767007742; c=relaxed/simple;
+	bh=Vrnp3+9t9QGomuqSC9z66YdxV8/FFX1/LqbUfxTILvQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=rpae3qpdJMN5n7bjSCmxuL/0qVlMm/pLp3LAA7C8bh+DhIpvq74QQplf99dh/xB1TkZdnU2d8hnw+f4dkfCfn/qfXw3kHhABb8j4FGgN+CqnzZSHDrLMneRbvAiZ5+ue1xC88dlcN+yX9rw/GqAg/RLzkQcCSXCiusAdD7KLDnw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr; spf=pass smtp.mailfrom=wanadoo.fr; dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b=JyJqRfta; arc=none smtp.client-ip=80.12.242.70
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wanadoo.fr
+Received: from fedora.home ([IPv6:2a01:cb10:785:b00:8347:f260:7456:7662])
+	by smtp.orange.fr with ESMTPA
+	id aBPhvRhhv36oUaBPivOmj8; Mon, 29 Dec 2025 12:27:50 +0100
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wanadoo.fr;
+	s=t20230301; t=1767007670;
+	bh=as0Q48OrzNAwx7nSEc4aZL7xhVX1lYPBclH0kPM3rBg=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version;
+	b=JyJqRftaUlo3n9FJfF/MV2RpDlWENaCX/7/ODtyl5sVLnln5WyVWcJcQ5U4ThLgPR
+	 xqXhJeTRtVtbFQEHjcVYHAf1MWQrl8zfCwPcrpQHLDZogdH6l1D9nvEJZ+d+wLXtkw
+	 UGV5rEkpBu3me9AYbwV5S8Wykt4oH9dykWCIk3RNVTWlAb6PchLuYXGOUQAo1c9q9E
+	 vebMBO0uIpIYSWgFusuWR31uGccWy6ZT/SyhS84+eXpAG/LjWvxS7TIHYYqk8ZVp6B
+	 VXjUXsjfOKIgizkyL+YzhTIXjPT1J5D8IQnrAQAo6ySVvhIYW+SZ0FiWJWZmb5LByg
+	 NPLGUowBOXeAA==
+X-ME-Helo: fedora.home
+X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
+X-ME-Date: Mon, 29 Dec 2025 12:27:50 +0100
+X-ME-IP: 2a01:cb10:785:b00:8347:f260:7456:7662
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+To: Jonathan Cameron <jic23@kernel.org>,
+	David Lechner <dlechner@baylibre.com>,
+	=?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
+	Andy Shevchenko <andy@kernel.org>
+Cc: linux-kernel@vger.kernel.org,
+	kernel-janitors@vger.kernel.org,
+	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+	linux-iio@vger.kernel.org
+Subject: [PATCH] iio: core: Constify struct configfs_item_operations and configfs_group_operations
+Date: Mon, 29 Dec 2025 12:27:43 +0100
+Message-ID: <6f327beea525e2b96724b0b395f1105ff7ccc305.1767007641.git.christophe.jaillet@wanadoo.fr>
+X-Mailer: git-send-email 2.52.0
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251223155534.220504-1-maxime.chevallier@bootlin.com> <20251223155534.220504-3-maxime.chevallier@bootlin.com>
-In-Reply-To: <20251223155534.220504-3-maxime.chevallier@bootlin.com>
-From: Andy Shevchenko <andy.shevchenko@gmail.com>
-Date: Mon, 29 Dec 2025 11:39:51 +0200
-X-Gm-Features: AQt7F2ow0LXkeOk1f5InDRvxm9TqnTni9CKevOTaW_8CqwwHCYej-mmXag9PBLs
-Message-ID: <CAHp75VdtPnDABykge4z2=74zPhGQbfZkiQR30QPvyam4eYE83Q@mail.gmail.com>
-Subject: Re: [PATCH 2/2] iio: adc: add driver for Texas Instruments TLA2528 adc
-To: Maxime Chevallier <maxime.chevallier@bootlin.com>
-Cc: Jonathan Cameron <jic23@kernel.org>, David Lechner <dlechner@baylibre.com>, nuno.sa@analog.com, 
-	Andy Shevchenko <andy@kernel.org>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Marcelo Schmitt <marcelo.schmitt@analog.com>, Matti Vaittinen <mazziesaccount@gmail.com>, 
-	Antoniu Miclaus <antoniu.miclaus@analog.com>, Angelo Dureghello <adureghello@baylibre.com>, 
-	Tobias Sperling <tobias.sperling@softing.com>, Eason Yang <j2anfernee@gmail.com>, 
-	Marilene Andrade Garcia <marilene.agarcia@gmail.com>, 
-	Cosmin Tanislav <cosmin-gabriel.tanislav.xa@renesas.com>, duje@dujemihanovic.xyz, 
-	herve.codina@bootlin.com, Rodolfo Giometti <giometti@enneenne.com>, linux-iio@vger.kernel.org, 
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	thomas.petazzoni@bootlin.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Tue, Dec 23, 2025 at 5:55=E2=80=AFPM Maxime Chevallier
-<maxime.chevallier@bootlin.com> wrote:
->
-> This adds a new driver for the TI TLA2528 ADC chip. It ha 8 12-bit
-> channels, that can also be configured as 16-bit averaging channels.
->
-> Add a very simple driver for it, allowing reading raw values for each
-> channel.
+'struct configfs_item_operations' and 'configfs_group_operations' are not
+modified in this driver.
 
-...
+Constifying these structures moves some data to a read-only section, so
+increases overall security, especially when the structure holds some
+function pointers.
 
-> +#include <linux/delay.h>
-> +#include <linux/i2c.h>
-> +#include <linux/module.h>
-> +#include <linux/mod_devicetable.h>
-> +#include <linux/regulator/consumer.h>
+On a x86_64, with allmodconfig:
+Before:
+======
+   text	   data	    bss	    dec	    hex	filename
+   5037	   1528	     64	   6629	   19e5	drivers/iio/industrialio-sw-device.o
+   5509	   1528	     64	   7101	   1bbd	drivers/iio/industrialio-sw-trigger.o
 
-Follow IWYU. Here are missing headers, such as bits.h, mutex.h, types.h.
+After:
+=====
+   text	   data	    bss	    dec	    hex	filename
+   5133	   1432	     64	   6629	   19e5	drivers/iio/industrialio-sw-device.o
+   5605	   1432	     64	   7101	   1bbd	drivers/iio/industrialio-sw-trigger.o
 
-...
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+---
+Compile tested only.
 
-> +       case IIO_CHAN_INFO_SCALE:
-> +               *val =3D tla2528->vref_uv / 1000;
+This change is possible since commits f2f36500a63b and f7f78098690d.
+---
+ drivers/iio/industrialio-sw-device.c  | 2 +-
+ drivers/iio/industrialio-sw-trigger.c | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-(MICRO/MILLI) ?
+diff --git a/drivers/iio/industrialio-sw-device.c b/drivers/iio/industrialio-sw-device.c
+index cdaf30a3f233..3582524de0b8 100644
+--- a/drivers/iio/industrialio-sw-device.c
++++ b/drivers/iio/industrialio-sw-device.c
+@@ -148,7 +148,7 @@ static void device_drop_group(struct config_group *group,
+ 	config_item_put(item);
+ }
+ 
+-static struct configfs_group_operations device_ops = {
++static const struct configfs_group_operations device_ops = {
+ 	.make_group	= &device_make_group,
+ 	.drop_item	= &device_drop_group,
+ };
+diff --git a/drivers/iio/industrialio-sw-trigger.c b/drivers/iio/industrialio-sw-trigger.c
+index d86a3305d9e8..334b6b10a784 100644
+--- a/drivers/iio/industrialio-sw-trigger.c
++++ b/drivers/iio/industrialio-sw-trigger.c
+@@ -152,7 +152,7 @@ static void trigger_drop_group(struct config_group *group,
+ 	config_item_put(item);
+ }
+ 
+-static struct configfs_group_operations trigger_ops = {
++static const struct configfs_group_operations trigger_ops = {
+ 	.make_group	= &trigger_make_group,
+ 	.drop_item	= &trigger_drop_group,
+ };
+-- 
+2.52.0
 
-> +               *val2 =3D 12;
-> +
-> +               return IIO_VAL_FRACTIONAL_LOG2;
-
-
-
-> +       tla2528->vref_uv =3D devm_regulator_get_enable_read_voltage(&clie=
-nt->dev,
-> +                                                                 "vref")=
-;
-
-With
-
-  struct device *dev =3D &client->dev;
-
-at the top of the function this will be one line and others also can
-be shortened.
-
-> +       if (tla2528->vref_uv < 0)
-> +               return tla2528->vref_uv;
-
-...
-
-> +       /* Set all inputs as analog */
-> +       ret =3D tla2528_write_reg(tla2528->client, TLA2528_PIN_CFG_ADR, 0=
-x00);
-
-Why not simply use the "client"?
-
-> +       if (ret < 0)
-> +               return ret;
-> +
-> +       ret =3D tla2528_write_reg(tla2528->client, TLA2528_DATA_CFG_ADR,
-> +                               TLA2528_DATA_CFG_APPEND_STATUS);
-> +       if (ret < 0)
-> +               return ret;
-> +
-> +       /* Set manual mode */
-> +       ret =3D tla2528_write_reg(tla2528->client, TLA2528_SEQUENCE_CFG_A=
-DR, 0x00);
-> +       if (ret < 0)
-> +               return ret;
-
-Ditto.
-
-...
-
-> +static const struct i2c_device_id tla2528_id[] =3D {
-> +       { "tla2528", 0 },
-
-No ', 0' part.
-
-> +       { }
-> +};
-
-...
-
-> +static const struct of_device_id tla2528_of_match[] =3D {
-> +       { .compatible =3D "ti,tla2528", },
-
-No inner comma.
-
-> +       {  },
-
-No trailing comma.
-
-> +};
-
---=20
-With Best Regards,
-Andy Shevchenko
 

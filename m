@@ -1,79 +1,79 @@
-Return-Path: <linux-iio+bounces-27407-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-27408-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 05B4CCE632B
-	for <lists+linux-iio@lfdr.de>; Mon, 29 Dec 2025 09:04:49 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id A986DCE63B8
+	for <lists+linux-iio@lfdr.de>; Mon, 29 Dec 2025 09:20:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B0AA53007273
-	for <lists+linux-iio@lfdr.de>; Mon, 29 Dec 2025 08:04:44 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 6590B3000DD3
+	for <lists+linux-iio@lfdr.de>; Mon, 29 Dec 2025 08:20:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA317220F2C;
-	Mon, 29 Dec 2025 08:04:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BFCD926E6E1;
+	Mon, 29 Dec 2025 08:20:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="BLc6qFRo"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kNxnPSnH"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-lf1-f42.google.com (mail-lf1-f42.google.com [209.85.167.42])
+Received: from mail-lf1-f48.google.com (mail-lf1-f48.google.com [209.85.167.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B862288B1
-	for <linux-iio@vger.kernel.org>; Mon, 29 Dec 2025 08:04:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68543272816
+	for <linux-iio@vger.kernel.org>; Mon, 29 Dec 2025 08:20:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766995482; cv=none; b=P3OGSzADK6oFfABchurbFj+oH/mNwzirAlPrgPo2dG/2quDRSZh4eWkXIUKHKt9sKNLkUsJvQeXvdSwGXk/StgNzhjd4zE1ehZfmPYAVr6XRuUkUM290Tx7HmphFclV1gcuZOOZ97n6G+lHxk+jFKHF0ThVRjw9kTd24wuNyIoc=
+	t=1766996429; cv=none; b=ZGMEYcc3jqU886maKS/4B1Ld10vyeGLiF7noGBvDxuzCa7wx6I5RqxNCsQQrq/jPeUCqUQH14zQFgz66CqnY7m+k6r+aQ5oVRGCi/2MxBGptp9mP4qRJpC8teSINPVfKOgsXTJj+Dt9Tk79cfBEgcBruTqdpkm6/iKJEn69p1oM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766995482; c=relaxed/simple;
-	bh=QGq4DPJ0jJ/rHKZagYA/Gwi/I8NZNKw39yi03vPCY6M=;
+	s=arc-20240116; t=1766996429; c=relaxed/simple;
+	bh=XNKCfyWlS1I9hXURg/ShCfdueGtYndG0m6Ppfilh1oA=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=t2L46QefJ/GWxGybsVh/IXSqyxQrFbqgzFnOKY6YQpg8Bgffxu8bg0TVh/jCGc00qB50NTuh/L6IRdGjqe/pYTGX7+a/d97JLop0Kf5s7tg4GY1/ypCuzsHSUJd7j0VAEIxF6q9RfFoJ1EUE2WwJttbjYd9lq8dENaIDntSc+eA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=BLc6qFRo; arc=none smtp.client-ip=209.85.167.42
+	 In-Reply-To:Content-Type; b=oPEXfcTtWNMofizV4HC2tVhNIZyKUVubWCYlgsC9XCE3/zg8LB+nLd3AIX70Ky+APHZ6Cnn3pq1jHZD6VbUsnZjiku42vomsWWCcn4bmSqoQfMrP6IYxT3XYpwQmCtn3gBIwvLayDmC0S3xzcIJEWLD/b12egPsC1niHSXqcryg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=kNxnPSnH; arc=none smtp.client-ip=209.85.167.48
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lf1-f42.google.com with SMTP id 2adb3069b0e04-598eaafa587so10009659e87.3
-        for <linux-iio@vger.kernel.org>; Mon, 29 Dec 2025 00:04:40 -0800 (PST)
+Received: by mail-lf1-f48.google.com with SMTP id 2adb3069b0e04-594330147efso10674329e87.2
+        for <linux-iio@vger.kernel.org>; Mon, 29 Dec 2025 00:20:27 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1766995479; x=1767600279; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1766996425; x=1767601225; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=Wxgtnknbp9U58qvY6RDKQlVjrvd1hHGIvUEbNeV4crE=;
-        b=BLc6qFRoSzSMuhUVgLfr+SKtUyeDN56/SWuzC48loOe3rmTRkm2u4lidvNDywmKSc6
-         mz2esSwArgp46wP8Of+G1P1cPtMWiyDkkY1gqvytByNBte7o5OYz4KXvXX/G6fqt5V0P
-         seoYiDL+9PoqdZRrB1WMHZzjFZCEx1CX7e4Wvqle1Y/YHRPuzHnZybUliruJctCJf7yL
-         neVsGA3XyIRIZhzIxFuUpiLNqzHBwwmSwtZWHogWKq/P1OD4S92F/HAqd8DNpBbA5enA
-         qrDae9Xxk3FEwjhXfVvRKRx64AM0xfesOeCK6BIUMc7NoM/Og//qCO71l3ZDQ4Ln6iBp
-         Oxyw==
+        bh=n51YESICvfpRm8ksQv4jSSb8R6pc2K6b6lP0CB2YgHs=;
+        b=kNxnPSnHckWxlg9kC2CqroMYwyBPW87AY2zp5SOeShwsdGgRdcuR849cQLYkQVMpCM
+         Pw17jWtjWicwKGnRnmlUUkRpBghuoWf9i4zQVqDX5DtevAthFUJdT9dxZVnaPQGdp0b9
+         uEFyhYV/5eC4dmoGKPmQeoPZHasInUQuQKkjtmFoZRKrGV5znykDCSd4pUi59avRw7Q0
+         DnOsxLVp7/zB/ClqCYanf8uNWXBVy8n/E2n7s9XiMtc/0GfIhKrWz+KJqg/Q+S5JqnHu
+         +CQ3gaY2W9cKgS6OtNMcWbJu6c4SxK9s4hM1pAQMgSBksGdr9OlwPuJXdXqbziFbGWYP
+         M3pQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1766995479; x=1767600279;
+        d=1e100.net; s=20230601; t=1766996425; x=1767601225;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=Wxgtnknbp9U58qvY6RDKQlVjrvd1hHGIvUEbNeV4crE=;
-        b=OC5JQIGLdEO9InmdZUrrMrxY0Inu8Urrf/Mot76RSW2gvSeRZSkDufqsEVy/KaV/yN
-         1XzhSiAFmBKvRH48+1mv3XOBx7lDVF5HaYRdax+mX9zcx0apvxDoy+9hb+2vy29e5lyO
-         aX2tBpFXVQEuhraokx4hxCMRxDkX7rSO36SquU0tP2tKksrbfJyOSXaakIN2fcoeWkav
-         4pOAyW21wpS2fLH492I1L8aw2lWLDdvn/Tj0rNn55mvwle+WJaUlkBXAM3XfRtpENNp6
-         8Oz60c76YgVDMxQdmOtxD1mAp5qNII2fBHhY4Wn//VNCx1xSnFEZ4tnLGwpk86O+ISfc
-         pGYw==
-X-Gm-Message-State: AOJu0YyZwMoDexch9Brwrqt8A2aAoT7vEQp657gTMdid4C7A678rgwHJ
-	njxXL4Ud/6hj2NEI4UocJgIGzL35EKo0IP+RwgNkPN3LOymjXLFMec8T
-X-Gm-Gg: AY/fxX7mZerG6a3ijmXfES4TcgWUudtZzOwkYAighXBFNFKabJLyS+CuBKMuWTcR6Pb
-	Vt8qx1fvTwJF9uc1AMaZVItvF00Z3ekHKyr7GOIvZjieJ2cPmh1VCeH5JvzAgRyf7/s0nmHT/Sf
-	5R2s6YgHYg2+03TZIt+XjbX0P7s8GaMEIYrR0c9RGemWKy53OtJKbIFDSso4Qpoc0bFCOzr6jEQ
-	jckDZWiZqo1LZbHlUNTi/RYhUZXvl/wXUizx1Hdd1I8M1XNCfUFvcbcsZWnUJVs887/d7P6VyeN
-	hVgusKt9ZzA/pQFRtO3r7qT7qmY62klmeq2vnG9zXy4A/ZyhGGABQqYeRMhtBzJpf1ztsqT/yeL
-	xKIqO7DAMNyFRlNnwqYhkPIS6DQosP1DT84c5j0umirNeRQ5LniVmB19c/HhOHxeYhWZl2RG+Fz
-	h9E8iYOY8s/hAk99J7qFKz5aObMoOeEVoXburraqLsHBbleBG/kFfR6qniAhp4IdU8zSzw
-X-Google-Smtp-Source: AGHT+IHv7BrFv+9Bmci9Wx37WLq70y+3/7ZdPTcagW7BQFhWX9hxw3OqjOFGnEeRtNerT1X0WbSrPA==
-X-Received: by 2002:a05:6512:4016:b0:598:f4cb:aafd with SMTP id 2adb3069b0e04-59a17d958b8mr11139461e87.19.1766995478827;
-        Mon, 29 Dec 2025 00:04:38 -0800 (PST)
+        bh=n51YESICvfpRm8ksQv4jSSb8R6pc2K6b6lP0CB2YgHs=;
+        b=dDo9v4SrIOF7LlUBuoZDAwLy1sWra5PddHVDXD/1CIzS1pnj1u4xCBbAYdvf0gyBtS
+         7/pM67nj5krZZUPdkZG+5YDxVLiiHMXPn/gkX9CcuXNSfSOgx+6+hG6wAOnCEzWH+lcA
+         DYASdiuZxhm1FvJOuvTOkUyMCZG5KEeaRfQhQhhgSVecFxU78xQYCSOkH85Op3HJ1SPI
+         o6+42912DVI8Lp6DyF2dQ5GEoZ75p2vlVzS5hQzCfp0czkUz1hxvTS+R/AOIQJtFIr67
+         l/p2QN/b8NObKYZgrwDFzPttM4ilezN0ktwMmQ+xicWE7C5uygKSIRABts5BtNPiYTDX
+         b09A==
+X-Gm-Message-State: AOJu0YxpoSz4L++GW8LkvsvmS9jYcYrN6UzEw2p+BliaHnBejCxewcqD
+	9oxyhPJlN+EwXCR1V7QrY/NMUpHM2t1AELSN1CxJlYaqcU/xQeBtN0b8
+X-Gm-Gg: AY/fxX4DVR1jPwuJ527bVfzuThEX8Wo1PBl7vXUedaloP70MNILlTS8XqpT9RncTQ+9
+	eeLDz6nSmJdCelVxUCMlHzazJ1NWNfVxQ8yZQj8LqldSOnn/L2RRMXCRcQoHrYm+EQHZ65C3OUf
+	MnrHpCds0pzNCuZywV2/3X7STIwys54imwKEOOYm8MRTYXC8rf+eGVhK8foLyxQZDncC4hkYSs5
+	DLKrzOV+pHMtcLfjFVDqc+U6emK8Ea8uvbHfXonWGAmSSnGYGh+31/E4uRCFmLNU/BcL3+fgCVg
+	7+uUIxLibaVRMxecMtRpOH2QQelBQIC+VU044Dai6CZrOE6zRoEF6+YkW3xxnuopLSm+Kh5c09W
+	cR04l2ngmfzWgMU0Qh+fMiucDj31JctNXZYIOW+Bx++i8+RBlm9UeojobXDbhGYoCbwL7URqGaf
+	ZJ/sz1XfBLhNIGtaIwpzJ1mBDl66GGsj5jvsqDdqMF0qKt11o1/IICcFdj4lR38PCAbvig
+X-Google-Smtp-Source: AGHT+IF+bA86J9sN/fDCC7icLlIgcEX2Mgl5aUrTsacSBJ5uQaHoHx1SitOJ6/8y+CDd8CA4crZJlA==
+X-Received: by 2002:a05:6512:1588:b0:598:95ad:11b0 with SMTP id 2adb3069b0e04-59a17d495c0mr9018172e87.6.1766996425210;
+        Mon, 29 Dec 2025 00:20:25 -0800 (PST)
 Received: from ?IPV6:2a10:a5c0:800d:dd00:8fdf:935a:2c85:d703? ([2a10:a5c0:800d:dd00:8fdf:935a:2c85:d703])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-59b30f7c322sm4395390e87.59.2025.12.29.00.04.37
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-59a1861f2c9sm9058645e87.68.2025.12.29.00.20.23
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 29 Dec 2025 00:04:38 -0800 (PST)
-Message-ID: <c386a4bd-9c7d-4b4d-b614-fdec424d57a0@gmail.com>
-Date: Mon, 29 Dec 2025 10:04:36 +0200
+        Mon, 29 Dec 2025 00:20:24 -0800 (PST)
+Message-ID: <efbe9720-0974-4d5e-9a03-fefd3c86e275@gmail.com>
+Date: Mon, 29 Dec 2025 10:20:23 +0200
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -81,13 +81,14 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/2] dt-bindings: iio: adc: add Texas Instruments TLA 2528
-To: David Lechner <dlechner@baylibre.com>,
- Maxime Chevallier <maxime.chevallier@bootlin.com>,
- Jonathan Cameron <jic23@kernel.org>, nuno.sa@analog.com,
- Andy Shevchenko <andy@kernel.org>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Marcelo Schmitt <marcelo.schmitt@analog.com>,
+Subject: Re: [PATCH 2/2] iio: adc: add driver for Texas Instruments TLA2528
+ adc
+To: Maxime Chevallier <maxime.chevallier@bootlin.com>,
+ Jonathan Cameron <jic23@kernel.org>, David Lechner <dlechner@baylibre.com>,
+ nuno.sa@analog.com, Andy Shevchenko <andy@kernel.org>,
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>,
+ Marcelo Schmitt <marcelo.schmitt@analog.com>,
  Antoniu Miclaus <antoniu.miclaus@analog.com>,
  Angelo Dureghello <adureghello@baylibre.com>,
  Tobias Sperling <tobias.sperling@softing.com>,
@@ -99,101 +100,320 @@ To: David Lechner <dlechner@baylibre.com>,
 Cc: linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
  linux-kernel@vger.kernel.org, thomas.petazzoni@bootlin.com
 References: <20251223155534.220504-1-maxime.chevallier@bootlin.com>
- <20251223155534.220504-2-maxime.chevallier@bootlin.com>
- <56c03c7f-1e5b-4586-beb0-47a1fa3bc86c@baylibre.com>
+ <20251223155534.220504-3-maxime.chevallier@bootlin.com>
 Content-Language: en-US, en-AU, en-GB, en-BW
 From: Matti Vaittinen <mazziesaccount@gmail.com>
-In-Reply-To: <56c03c7f-1e5b-4586-beb0-47a1fa3bc86c@baylibre.com>
+In-Reply-To: <20251223155534.220504-3-maxime.chevallier@bootlin.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
-On 23/12/2025 20:26, David Lechner wrote:
-> On 12/23/25 9:55 AM, Maxime Chevallier wrote:
->> The TI TLA 2528 is a simple 8 channel, 12-bit ADC? Add a binding
+On 23/12/2025 17:55, Maxime Chevallier wrote:
+> This adds a new driver for the TI TLA2528 ADC chip. It ha 8 12-bit
+> channels, that can also be configured as 16-bit averaging channels.
 > 
-> TLA2528 (no space). Also, why the "?"?
+> Add a very simple driver for it, allowing reading raw values for each
+> channel.
 > 
->> documentation for it.
->>
->> Signed-off-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
->> ---
->>   .../bindings/iio/adc/ti,tla2528.yaml          | 48 +++++++++++++++++++
->>   1 file changed, 48 insertions(+)
->>   create mode 100644 Documentation/devicetree/bindings/iio/adc/ti,tla2528.yaml
->>
->> diff --git a/Documentation/devicetree/bindings/iio/adc/ti,tla2528.yaml b/Documentation/devicetree/bindings/iio/adc/ti,tla2528.yaml
->> new file mode 100644
->> index 000000000000..0ee326d77014
->> --- /dev/null
->> +++ b/Documentation/devicetree/bindings/iio/adc/ti,tla2528.yaml
->> @@ -0,0 +1,48 @@
->> +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
->> +%YAML 1.2
->> +---
->> +$id: http://devicetree.org/schemas/iio/adc/ti,tla2528.yaml#
->> +$schema: http://devicetree.org/meta-schemas/core.yaml#
->> +
->> +title: Texas Instruments TLA2528 8-channel 12bit I2C ADC
+> Signed-off-by: Rodolfo Giometti <giometti@enneenne.com>
+> Signed-off-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
+> ---
+>   MAINTAINERS                  |   7 ++
+>   drivers/iio/adc/Kconfig      |  10 ++
+>   drivers/iio/adc/Makefile     |   1 +
+>   drivers/iio/adc/ti-tla2528.c | 209 +++++++++++++++++++++++++++++++++++
+>   4 files changed, 227 insertions(+)
+>   create mode 100644 drivers/iio/adc/ti-tla2528.c
 > 
-> 12-bit
-> 
->> +
->> +maintainers:
->> +  - Maxime Chevallier <maxime.chevallier@bootlin.com>
->> +
->> +description: |
->> +  12bit 8-channel I2C ADC.
-> 
-> The title already says this. Either drop it or add new info.
-> 
-> Also, don't need the |.
-> 
->> +
->> +properties:
->> +  compatible:
->> +    const: ti,tla2528
->> +
->> +  reg:
->> +    maxItems: 1
->> +
->> +  vref-supply:
->> +    description: Supply for 2.35V to 5.5V reference voltage
-> 
-> According the the datasheet, there are AVDD and DVDD supplies.
-> Nothing named VREF or REF.
-> 
-> So instead:
-> 
-> avdd-supply: true
-> dvdd-supply: true
-> 
-> 
-> It looks like inputs can also be used as GPIOs, so
-> 
-> gpio-controller: true
-> #gpio-cells:
->    const: 2
-> 
-> would be appropriate (it doesn't matter if the driver doesn't
-> implement it, we know what the correct bindings are).
-> 
->> +
->> +  "#io-channel-cells":
->> +    const: 1
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index dc731d37c8fe..5c382ae216c7 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -25866,6 +25866,13 @@ F:	include/dt-bindings/soc/ti,sci_pm_domain.h
+>   F:	include/linux/soc/ti/ti_sci_inta_msi.h
+>   F:	include/linux/soc/ti/ti_sci_protocol.h
+>   
+> +TEXAS INSTRUMENTS' TLA2528 ADC DRIVER
+> +M:	Maxime Chevallier <maxime.chevallier@bootlin.com>
+> +L:	linux-iio@vger.kernel.org
+> +S:	Supported
+> +F:	Documentation/devicetree/bindings/iio/adc/ti,tla2528.yaml
+> +F:	drivers/iio/adc/ti-tla2528.c
+> +
+>   TEXAS INSTRUMENTS' TMP117 TEMPERATURE SENSOR DRIVER
+>   M:	Puranjay Mohan <puranjay@kernel.org>
+>   L:	linux-iio@vger.kernel.org
+> diff --git a/drivers/iio/adc/Kconfig b/drivers/iio/adc/Kconfig
+> index 58da8255525e..67376de410bf 100644
 
-I didn't check the data-sheet, but if the pins can be set to be GPIOs or 
-ADC inputs, then I would require channels to be specified. It's only 8 
-channels, so always listing channels that are present shouldn't be that 
-big of a problem - and it should avoid one to add extra properties to 
-denote channels used for GPIO if GPIOs need to be supported.
+Hmm. Would it ease merging if MAINTAINERS changes were in their own patch?
 
-Well, I am not insisting this, there are folks that know this stuff 
-better than I :)
+> --- a/drivers/iio/adc/Kconfig
+> +++ b/drivers/iio/adc/Kconfig
+> @@ -1803,6 +1803,16 @@ config TI_LMP92064
+>   	  This driver can also be built as a module. If so, the module will be called
+>   	  ti-lmp92064.
+>   
+> +config TI_TLA2528
+> +	tristate "Texas Instruments TLA2528 ADC driver"
+> +	depends on I2C
+> +	help
+> +	  Say yes here to build support for Texas Instruments TLA2528
+> +	  12-Bit 8-Channel ADC.
+> +
+> +	  To compile this driver as a module, choose M here: the module will be
+> +	  called ti-tla2528.
+> +
+>   config TI_TLC4541
+>   	tristate "Texas Instruments TLC4541 ADC driver"
+>   	depends on SPI
+> diff --git a/drivers/iio/adc/Makefile b/drivers/iio/adc/Makefile
+> index 7cc8f9a12f76..941606defbf7 100644
+> --- a/drivers/iio/adc/Makefile
+> +++ b/drivers/iio/adc/Makefile
+> @@ -157,6 +157,7 @@ obj-$(CONFIG_TI_ADS8344) += ti-ads8344.o
+>   obj-$(CONFIG_TI_ADS8688) += ti-ads8688.o
+>   obj-$(CONFIG_TI_AM335X_ADC) += ti_am335x_adc.o
+>   obj-$(CONFIG_TI_LMP92064) += ti-lmp92064.o
+> +obj-$(CONFIG_TI_TLA2528) += ti-tla2528.o
+>   obj-$(CONFIG_TI_TLC4541) += ti-tlc4541.o
+>   obj-$(CONFIG_TI_TSC2046) += ti-tsc2046.o
+>   obj-$(CONFIG_TWL4030_MADC) += twl4030-madc.o
+> diff --git a/drivers/iio/adc/ti-tla2528.c b/drivers/iio/adc/ti-tla2528.c
+> new file mode 100644
+> index 000000000000..9c572e730ffb
+> --- /dev/null
+> +++ b/drivers/iio/adc/ti-tla2528.c
+> @@ -0,0 +1,209 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +/*
+> + * Driver for Texas Instruments TLA2528 ADC
+> + *
+> + * Copyright (C) 2020-2021 Rodolfo Giometti <giometti@enneenne.com>
+> + * Copyright (C) 2025 Maxime Chevallier <maxime.chevallier@bootlin.com>
+> + */
+> +
+> +#include <linux/delay.h>
+> +#include <linux/i2c.h>
+> +#include <linux/module.h>
+> +#include <linux/mod_devicetable.h>
+> +#include <linux/regulator/consumer.h>
+> +
+> +#include <linux/iio/iio.h>
+> +
+> +#define TLA2528_OP_WRITE_REG		0x08
+> +
+> +#define TLA2528_DATA_CFG_ADR		0x02
+> +
+> +/* Datasheet says [5:4] sets the append status, but only bit 4 is used */
+> +#define TLA2528_DATA_CFG_APPEND_STATUS	BIT(4)
+> +#define TLA2528_PIN_CFG_ADR		0x05
+> +#define TLA2528_SEQUENCE_CFG_ADR	0x10
+> +#define TLA2528_CHANNEL_SEL_ADR		0x11
+> +
+> +struct tla2528 {
+> +	struct i2c_client *client;
+> +	int vref_uv;
+> +
+> +	/* Protects manual channel selection, i.e. last_read_channel */
+> +	struct mutex lock;
+> +	u8 last_read_channel;
+> +};
+> +
+> +static s32 tla2528_write_reg(const struct i2c_client *client, u8 reg, u8 val)
+> +{
+> +	u8 data[3] = {TLA2528_OP_WRITE_REG, reg, val};
+> +	int ret;
+> +
+> +	ret = i2c_master_send(client, data, 3);
+> +
+> +	return ret < 0 ? ret : 0;
+> +}
+> +
+> +static int tla2528_read_sample(const struct i2c_client *client)
+> +{
+> +	__be16 data;
+> +	int ret;
+> +
+> +	ret = i2c_master_recv(client, (char *)&data, 2);
+> +	if (ret < 0)
+> +		return ret;
+> +
+> +	return be16_to_cpu(data) >> 4;
+> +}
 
+Can regmap be used for all the usual benefits?
+
+> +
+> +static int tla2528_read(struct tla2528 *tla2528, u8 channel, int *val)
+> +{
+> +	struct i2c_client *client = tla2528->client;
+> +	int ret;
+> +
+> +	if (channel != tla2528->last_read_channel) {
+> +		ret = tla2528_write_reg(client, TLA2528_CHANNEL_SEL_ADR, channel);
+> +		if (ret < 0)
+> +			return ret;
+> +
+> +		tla2528->last_read_channel = channel;
+> +	}
+> +
+> +	ret = tla2528_read_sample(client);
+> +	if (ret < 0)
+> +		return ret;
+> +
+> +	*val = ret;
+> +
+> +	return 0;
+> +}
+> +
+> +static int tla2528_read_raw(struct iio_dev *indio_dev,
+> +			    struct iio_chan_spec const *chan,
+> +			    int *val, int *val2, long mask)
+> +{
+> +	struct tla2528 *tla2528 = iio_priv(indio_dev);
+> +	int ret;
+> +
+> +	switch (mask) {
+> +	case IIO_CHAN_INFO_RAW:
+> +		mutex_lock(&tla2528->lock);
+> +		ret = tla2528_read(tla2528, chan->channel, val);
+> +		mutex_unlock(&tla2528->lock);
+> +		if (ret < 0)
+> +			return ret;
+> +
+> +		return IIO_VAL_INT;
+> +
+> +	case IIO_CHAN_INFO_SCALE:
+> +		*val = tla2528->vref_uv / 1000;
+> +		*val2 = 12;
+> +
+> +		return IIO_VAL_FRACTIONAL_LOG2;
+> +
+> +	default:
+> +		return -EINVAL;
+> +	}
+> +}
+> +
+> +#define TLA2528_CHAN(_chan, _name) { \
+> +	.type = IIO_VOLTAGE,					\
+> +	.channel = (_chan),					\
+> +	.info_mask_separate = BIT(IIO_CHAN_INFO_RAW),		\
+> +	.info_mask_shared_by_type = BIT(IIO_CHAN_INFO_SCALE),	\
+> +	.datasheet_name = _name,				\
+> +	.indexed = 1,						\
+> +}
+> +
+> +static const struct iio_chan_spec tla2528_channel[] = {
+> +	TLA2528_CHAN(0, "AIN0"),
+> +	TLA2528_CHAN(1, "AIN1"),
+> +	TLA2528_CHAN(2, "AIN2"),
+> +	TLA2528_CHAN(3, "AIN3"),
+> +	TLA2528_CHAN(4, "AIN4"),
+> +	TLA2528_CHAN(5, "AIN5"),
+> +	TLA2528_CHAN(6, "AIN6"),
+> +	TLA2528_CHAN(7, "AIN7"),
+> +};
+
+Not really insisting a change here, merely giving a nudge :)
+
+I wonder if the channels should be obtained from fwnode? I think the 
+dt-review mentioned channel inputs may be used for GPIOs? One might be 
+able to use the devm_iio_adc_device_alloc_chaninfo_se() to build the 
+chan_spec based on the dt - depending on the non dt use-cases.
+
+All in all, I think this is clean and nice driver.
+
+> +static const struct iio_info tla2528_info = {
+> +	.read_raw = tla2528_read_raw,
+> +};
+> +
+> +static int tla2528_probe(struct i2c_client *client)
+> +{
+> +	struct iio_dev *indio_dev;
+> +	struct tla2528 *tla2528;
+> +	int ret;
+> +
+> +	if (!i2c_check_functionality(client->adapter, I2C_FUNC_I2C |
+> +				     I2C_FUNC_SMBUS_WRITE_WORD_DATA))
+> +		return -EOPNOTSUPP;
+> +
+> +	indio_dev = devm_iio_device_alloc(&client->dev, sizeof(*tla2528));
+> +	if (!indio_dev)
+> +		return -ENOMEM;
+> +
+> +	tla2528 = iio_priv(indio_dev);
+> +	i2c_set_clientdata(client, indio_dev);
+> +	tla2528->client = client;
+> +
+> +	indio_dev->name = client->name;
+> +	indio_dev->info = &tla2528_info;
+> +	indio_dev->modes = INDIO_DIRECT_MODE;
+> +	indio_dev->channels = tla2528_channel;
+> +	indio_dev->num_channels = ARRAY_SIZE(tla2528_channel);
+> +
+> +	mutex_init(&tla2528->lock);
+> +
+> +	tla2528->vref_uv = devm_regulator_get_enable_read_voltage(&client->dev,
+> +								  "vref");
+> +	if (tla2528->vref_uv < 0)
+> +		return tla2528->vref_uv;
+> +
+> +	/* Set all inputs as analog */
+> +	ret = tla2528_write_reg(tla2528->client, TLA2528_PIN_CFG_ADR, 0x00);
+> +	if (ret < 0)
+> +		return ret;
+
+As mentioned above, perhaps get the channels from the DT, and only mux 
+the given channels?
+
+> +
+> +	ret = tla2528_write_reg(tla2528->client, TLA2528_DATA_CFG_ADR,
+> +				TLA2528_DATA_CFG_APPEND_STATUS);
+> +	if (ret < 0)
+> +		return ret;
+> +
+> +	/* Set manual mode */
+> +	ret = tla2528_write_reg(tla2528->client, TLA2528_SEQUENCE_CFG_ADR, 0x00);
+> +	if (ret < 0)
+> +		return ret;
+> +
+> +	/* Init private data */
+> +	tla2528->last_read_channel = ~0;
+> +
+> +	return devm_iio_device_register(&client->dev, indio_dev);
+> +}
+> +
+> +static const struct i2c_device_id tla2528_id[] = {
+> +	{ "tla2528", 0 },
+> +	{ }
+> +};
+> +MODULE_DEVICE_TABLE(i2c, tla2528_id);
+> +
+> +static const struct of_device_id tla2528_of_match[] = {
+> +	{ .compatible = "ti,tla2528", },
+> +	{  },
+> +};
+> +MODULE_DEVICE_TABLE(of, tla2528_of_match);
+> +
+> +static struct i2c_driver tla2528_driver = {
+> +	.driver = {
+> +		.name = "tla2528",
+> +		.of_match_table = tla2528_of_match,
+> +	},
+> +	.probe = tla2528_probe,
+> +	.id_table = tla2528_id,
+> +};
+> +module_i2c_driver(tla2528_driver);
+> +
+> +MODULE_AUTHOR("Maxime Chevallier <maxime.chevallier@bootlin.com>");
+> +MODULE_AUTHOR("Rodolfo Giometti <giometti@enneenne.com>");
+> +MODULE_DESCRIPTION("Texas Instruments TLA2528 ADC driver");
+> +MODULE_LICENSE("GPL");
 
 Yours,
 	-- Matti
 
+-- 
 ---
 Matti Vaittinen
 Linux kernel developer at ROHM Semiconductors

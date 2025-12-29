@@ -1,81 +1,79 @@
-Return-Path: <linux-iio+bounces-27406-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-27407-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id B8266CE54E1
-	for <lists+linux-iio@lfdr.de>; Sun, 28 Dec 2025 18:37:32 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 05B4CCE632B
+	for <lists+linux-iio@lfdr.de>; Mon, 29 Dec 2025 09:04:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 48149300A1CA
-	for <lists+linux-iio@lfdr.de>; Sun, 28 Dec 2025 17:37:29 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B0AA53007273
+	for <lists+linux-iio@lfdr.de>; Mon, 29 Dec 2025 08:04:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1D05215F7D;
-	Sun, 28 Dec 2025 17:37:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA317220F2C;
+	Mon, 29 Dec 2025 08:04:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="ZIwdCNnU"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="BLc6qFRo"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wr1-f42.google.com (mail-wr1-f42.google.com [209.85.221.42])
+Received: from mail-lf1-f42.google.com (mail-lf1-f42.google.com [209.85.167.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A94813B58A
-	for <linux-iio@vger.kernel.org>; Sun, 28 Dec 2025 17:37:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B862288B1
+	for <linux-iio@vger.kernel.org>; Mon, 29 Dec 2025 08:04:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766943447; cv=none; b=ixLKLzDXdhdAL4R762H7q510/Ki2d1KPrh0Ll9XwsVHdHtZ8D9rTLi0TAk1RmMyDGgbEps45YRCA93rcvsc2S7NR7HQG8f9to5u/xAoFgIPBQ13sBLla4Y4lIGdgtwHD//dtmplieTS3Lv6he4ArI3Ow5u9Tlr6dsJJguNn2HPQ=
+	t=1766995482; cv=none; b=P3OGSzADK6oFfABchurbFj+oH/mNwzirAlPrgPo2dG/2quDRSZh4eWkXIUKHKt9sKNLkUsJvQeXvdSwGXk/StgNzhjd4zE1ehZfmPYAVr6XRuUkUM290Tx7HmphFclV1gcuZOOZ97n6G+lHxk+jFKHF0ThVRjw9kTd24wuNyIoc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766943447; c=relaxed/simple;
-	bh=IU3oFTJZ5OOm1UjlmbTgSas+pHivq/znUw+5jxL3u2E=;
+	s=arc-20240116; t=1766995482; c=relaxed/simple;
+	bh=QGq4DPJ0jJ/rHKZagYA/Gwi/I8NZNKw39yi03vPCY6M=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Xn7lE0BmbgSY/dOVE6oFx3m2iOTqCUIVdyEeajRhovnwoKCYeOEYsUGx5Z0qUz0PfAlLgwn0C2GvVkFwAjzoQavQZWvmdWb3h0e/X+VSzMEhqhdlDznfucEfA+0sYNreGHthv+CHxNBYMwIYleTJkLFSEst5U17P8E5amsFEfrU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=ZIwdCNnU; arc=none smtp.client-ip=209.85.221.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-wr1-f42.google.com with SMTP id ffacd0b85a97d-4308d81fdf6so3928760f8f.2
-        for <linux-iio@vger.kernel.org>; Sun, 28 Dec 2025 09:37:25 -0800 (PST)
+	 In-Reply-To:Content-Type; b=t2L46QefJ/GWxGybsVh/IXSqyxQrFbqgzFnOKY6YQpg8Bgffxu8bg0TVh/jCGc00qB50NTuh/L6IRdGjqe/pYTGX7+a/d97JLop0Kf5s7tg4GY1/ypCuzsHSUJd7j0VAEIxF6q9RfFoJ1EUE2WwJttbjYd9lq8dENaIDntSc+eA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=BLc6qFRo; arc=none smtp.client-ip=209.85.167.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-lf1-f42.google.com with SMTP id 2adb3069b0e04-598eaafa587so10009659e87.3
+        for <linux-iio@vger.kernel.org>; Mon, 29 Dec 2025 00:04:40 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1766943444; x=1767548244; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1766995479; x=1767600279; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=wVpE42Nm/eglv4AuJiF24kJ0VOC6iIK2FSatfzsCK7c=;
-        b=ZIwdCNnU8FvfehJyjFTeKa9IFWr+KQ/tHMYfw0Q5ZpAozEmJWcVoKaUSSZKgKm+9Xy
-         klppD3twneWKRFAdTqlE+QgxGGILM0f6p+X8EPCWWjax6VVjwtYUiH158wINp9pYdCrU
-         ymOQeDG6pipxQTwHTU7/AiPULjx36CQSUqoAR03/HLYedK5R0goR0fCe/uGkVTS6qu4J
-         jHJ5cmt/uSYcBmkADTFDox61thT7MaMLwr05bfJ3X4eOS7trGlM65Vs+ye40qY583gqz
-         oL2nLdDbwIETIzd7tXRL0+UZ768DVAPuwvpN/woePldjOuThpPkKhkYI8ZHmlBb1w6A/
-         eHMw==
+        bh=Wxgtnknbp9U58qvY6RDKQlVjrvd1hHGIvUEbNeV4crE=;
+        b=BLc6qFRoSzSMuhUVgLfr+SKtUyeDN56/SWuzC48loOe3rmTRkm2u4lidvNDywmKSc6
+         mz2esSwArgp46wP8Of+G1P1cPtMWiyDkkY1gqvytByNBte7o5OYz4KXvXX/G6fqt5V0P
+         seoYiDL+9PoqdZRrB1WMHZzjFZCEx1CX7e4Wvqle1Y/YHRPuzHnZybUliruJctCJf7yL
+         neVsGA3XyIRIZhzIxFuUpiLNqzHBwwmSwtZWHogWKq/P1OD4S92F/HAqd8DNpBbA5enA
+         qrDae9Xxk3FEwjhXfVvRKRx64AM0xfesOeCK6BIUMc7NoM/Og//qCO71l3ZDQ4Ln6iBp
+         Oxyw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1766943444; x=1767548244;
+        d=1e100.net; s=20230601; t=1766995479; x=1767600279;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=wVpE42Nm/eglv4AuJiF24kJ0VOC6iIK2FSatfzsCK7c=;
-        b=jtRr6izUTpLwaddyEjOhb6m30rtAS0EfCVH5QEuG9Ezx1wxmaTXSFKlxjKV9n9N0h2
-         RBfbuPxC4QOru/c2i/4D/q44YdHLr+8i+9OQ7xLnHpizO0DLzDoglDWebU4jgwAOE320
-         av7oMd5edj44Wwz0+swwk0CIYxhKHq6PNhDupGlhPFYNu/A0uqOjnm3nhK7Nv4ztY5Kg
-         1UYbepa3540PRfhpFH1sonYy8SX+pp0vkrP8UUBKKWhfgbcKNfQRoBjbVOdq/eKPjgqg
-         wqeHcYjuAOy6BvHm64WukUNOfcPT/HxwRf8FfhKdCZJ14L5J6Zy4baNpWEPGXFFkULSF
-         2CqA==
-X-Forwarded-Encrypted: i=1; AJvYcCVM4IS8oLvFbYuurXgVz/BKIs90PRKkIg7hCodaDFUol+KloXalR0fb8kVTu47bs1yEDIujd4T/Pkg=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxf8qORyBQm7juQenCCdk+4pdehApPph05zTYr74zbkxUrdcthb
-	QR9e/BkvftlxkFeoo2KiIri2oYxGUnurNBdzdX2KXtdf+Jjz5BO+jRVbhfWkp5H6h2k=
-X-Gm-Gg: AY/fxX7pLLCO3DUdU0cG6DvVmkW89uKgyvuDT+RrKm012pF9B7UlWLNUiNycM+thkGc
-	6g2ytAYlDXKilJGN6wkCcUbNPdzX5QkLyMUYYMWUZ2SHbOrUkB2Bel3n4Uvu51vhYUoWUo+8lO7
-	VPisrxrUcqvcOLT3uFQY02vYwX0DXDeXYmCgJGIg/UEQX21+RL1vbvPx6LUZIDfvz4yaZrv/Q8r
-	wU3G4o+S96GoDZnZDYGpJod4fZq/RPB6jm3VKJ0eT0RNHhXZrGFN6O5iK25ShK3myhgIUYwrg+A
-	zxmj/PPQL9Hnv8AJhm0/wtVB639qImljRNBrRq1iJAYBIn+9/UdOSd5FEa84Fu624kYYMyR8Qmo
-	It+5AmnAPZOKCS9edPLxvd/ai/8TChbGFwSAVxjckZrjR3AelnkRjXeDuk7KYH52OPLgbooGnBs
-	fw/jE/fPRYsGIhtLHYLzF6jeHKPgD1H+38foZGpw4oRNYjMspWY1sLMCmt/zrX97KX8ifdpNCUk
-	uVy
-X-Google-Smtp-Source: AGHT+IHE0OkFcwTNOw8wEuwIrfhr0vrnj+ENYFnmwQiktK0vMMBBeGZzt5Tqu1ud08sB+J6NZr+fHw==
-X-Received: by 2002:a05:6000:2c0e:b0:42b:3afa:5e1d with SMTP id ffacd0b85a97d-4324e4c9d89mr38116918f8f.20.1766943443689;
-        Sun, 28 Dec 2025 09:37:23 -0800 (PST)
-Received: from ?IPV6:2a05:6e02:1041:c10:37e6:ed62:3c8b:2621? ([2a05:6e02:1041:c10:37e6:ed62:3c8b:2621])
-        by smtp.googlemail.com with ESMTPSA id ffacd0b85a97d-4324ea830f3sm56716550f8f.22.2025.12.28.09.37.22
+        bh=Wxgtnknbp9U58qvY6RDKQlVjrvd1hHGIvUEbNeV4crE=;
+        b=OC5JQIGLdEO9InmdZUrrMrxY0Inu8Urrf/Mot76RSW2gvSeRZSkDufqsEVy/KaV/yN
+         1XzhSiAFmBKvRH48+1mv3XOBx7lDVF5HaYRdax+mX9zcx0apvxDoy+9hb+2vy29e5lyO
+         aX2tBpFXVQEuhraokx4hxCMRxDkX7rSO36SquU0tP2tKksrbfJyOSXaakIN2fcoeWkav
+         4pOAyW21wpS2fLH492I1L8aw2lWLDdvn/Tj0rNn55mvwle+WJaUlkBXAM3XfRtpENNp6
+         8Oz60c76YgVDMxQdmOtxD1mAp5qNII2fBHhY4Wn//VNCx1xSnFEZ4tnLGwpk86O+ISfc
+         pGYw==
+X-Gm-Message-State: AOJu0YyZwMoDexch9Brwrqt8A2aAoT7vEQp657gTMdid4C7A678rgwHJ
+	njxXL4Ud/6hj2NEI4UocJgIGzL35EKo0IP+RwgNkPN3LOymjXLFMec8T
+X-Gm-Gg: AY/fxX7mZerG6a3ijmXfES4TcgWUudtZzOwkYAighXBFNFKabJLyS+CuBKMuWTcR6Pb
+	Vt8qx1fvTwJF9uc1AMaZVItvF00Z3ekHKyr7GOIvZjieJ2cPmh1VCeH5JvzAgRyf7/s0nmHT/Sf
+	5R2s6YgHYg2+03TZIt+XjbX0P7s8GaMEIYrR0c9RGemWKy53OtJKbIFDSso4Qpoc0bFCOzr6jEQ
+	jckDZWiZqo1LZbHlUNTi/RYhUZXvl/wXUizx1Hdd1I8M1XNCfUFvcbcsZWnUJVs887/d7P6VyeN
+	hVgusKt9ZzA/pQFRtO3r7qT7qmY62klmeq2vnG9zXy4A/ZyhGGABQqYeRMhtBzJpf1ztsqT/yeL
+	xKIqO7DAMNyFRlNnwqYhkPIS6DQosP1DT84c5j0umirNeRQ5LniVmB19c/HhOHxeYhWZl2RG+Fz
+	h9E8iYOY8s/hAk99J7qFKz5aObMoOeEVoXburraqLsHBbleBG/kFfR6qniAhp4IdU8zSzw
+X-Google-Smtp-Source: AGHT+IHv7BrFv+9Bmci9Wx37WLq70y+3/7ZdPTcagW7BQFhWX9hxw3OqjOFGnEeRtNerT1X0WbSrPA==
+X-Received: by 2002:a05:6512:4016:b0:598:f4cb:aafd with SMTP id 2adb3069b0e04-59a17d958b8mr11139461e87.19.1766995478827;
+        Mon, 29 Dec 2025 00:04:38 -0800 (PST)
+Received: from ?IPV6:2a10:a5c0:800d:dd00:8fdf:935a:2c85:d703? ([2a10:a5c0:800d:dd00:8fdf:935a:2c85:d703])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-59b30f7c322sm4395390e87.59.2025.12.29.00.04.37
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 28 Dec 2025 09:37:23 -0800 (PST)
-Message-ID: <ba28863a-a5fe-498f-92a0-d71c356e7189@linaro.org>
-Date: Sun, 28 Dec 2025 18:37:22 +0100
+        Mon, 29 Dec 2025 00:04:38 -0800 (PST)
+Message-ID: <c386a4bd-9c7d-4b4d-b614-fdec424d57a0@gmail.com>
+Date: Mon, 29 Dec 2025 10:04:36 +0200
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -83,92 +81,123 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 3/3] counter: Add STM based counter
-To: William Breathitt Gray <wbg@kernel.org>
-Cc: robh@kernel.org, conor+dt@kernel.org, krzk+dt@kernel.org, s32@nxp.com,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-iio@vger.kernel.org, Maxime Coquelin <mcoquelin.stm32@gmail.com>,
- Alexandre Torgue <alexandre.torgue@foss.st.com>,
- linux-stm32@st-md-mailman.stormreply.com,
- linux-arm-kernel@lists.infradead.org
-References: <20251217075000.2592966-4-daniel.lezcano@linaro.org>
- <20251228065241.21144-1-wbg@kernel.org>
-Content-Language: en-US
-From: Daniel Lezcano <daniel.lezcano@linaro.org>
-In-Reply-To: <20251228065241.21144-1-wbg@kernel.org>
+Subject: Re: [PATCH 1/2] dt-bindings: iio: adc: add Texas Instruments TLA 2528
+To: David Lechner <dlechner@baylibre.com>,
+ Maxime Chevallier <maxime.chevallier@bootlin.com>,
+ Jonathan Cameron <jic23@kernel.org>, nuno.sa@analog.com,
+ Andy Shevchenko <andy@kernel.org>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Marcelo Schmitt <marcelo.schmitt@analog.com>,
+ Antoniu Miclaus <antoniu.miclaus@analog.com>,
+ Angelo Dureghello <adureghello@baylibre.com>,
+ Tobias Sperling <tobias.sperling@softing.com>,
+ Eason Yang <j2anfernee@gmail.com>,
+ Marilene Andrade Garcia <marilene.agarcia@gmail.com>,
+ Cosmin Tanislav <cosmin-gabriel.tanislav.xa@renesas.com>,
+ duje@dujemihanovic.xyz, herve.codina@bootlin.com,
+ Rodolfo Giometti <giometti@enneenne.com>
+Cc: linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, thomas.petazzoni@bootlin.com
+References: <20251223155534.220504-1-maxime.chevallier@bootlin.com>
+ <20251223155534.220504-2-maxime.chevallier@bootlin.com>
+ <56c03c7f-1e5b-4586-beb0-47a1fa3bc86c@baylibre.com>
+Content-Language: en-US, en-AU, en-GB, en-BW
+From: Matti Vaittinen <mazziesaccount@gmail.com>
+In-Reply-To: <56c03c7f-1e5b-4586-beb0-47a1fa3bc86c@baylibre.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 
-
-Hi William,
-
-On 12/28/25 07:52, William Breathitt Gray wrote:
-> On Wed, Dec 17, 2025 at 08:49:57AM +0100, Daniel Lezcano wrote:
->> The NXP S32G2 automotive platform integrates four Cortex-A53 cores and
->> three Cortex-M7 cores, along with a large number of timers and
->> counters. These hardware blocks can be used as clocksources or
->> clockevents, or as timestamp counters shared across the various
->> subsystems running alongside the Linux kernel, such as firmware
->> components. Their actual usage depends on the overall platform
->> software design.
->>
->> In a Linux-based system, the kernel controls the counter, which is a
->> read-only shared resource for the other subsystems. One of its primary
->> purposes is to act as a common timestamp source for messages or
->> traces, allowing correlation of events occurring in different
->> operating system contexts.
->>
->> These changes introduce a basic counter driver that can start, stop,
->> and reset the counter. It also handles overflow accounting and
->> configures the prescaler value.
->>
->> Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
+On 23/12/2025 20:26, David Lechner wrote:
+> On 12/23/25 9:55 AM, Maxime Chevallier wrote:
+>> The TI TLA 2528 is a simple 8 channel, 12-bit ADC? Add a binding
 > 
-> Hi Daniel,
+> TLA2528 (no space). Also, why the "?"?
 > 
-> It sounds like you're trying to implement a clock for timestamping.
-
-Well no, it is a counter which is used for timestamping. It is an 
-automotive design.
-
-> Although the Generic Counter interface is flexible enough to shoehorn a
-> a clock into its representation, I don't believe it's the right
-> abstraction for this particular device.
- >
-> Perhaps reimplementing this
-> driver under the Linux common clock framework would be a better approach
-> to achieve what you want.
-
-The common clock framework ? Sorry I may have misunderstood the CCF but 
-how a counter exported and controlled by the userspace can be managed by 
-the CCF. Can you elaborate ?
-
-> Regardless, if you do pursue a Counter driver you'll need to follow the
-> Generic Counter paradigm[^1] and define at least three core components:
-> a Signal, a Synapse, and a Count. Resetting the Count is typically
-> implemented by defining a struct counter_ops counter_write()
-> callback[^2], while overflows are typically implemented by pushing
-> COUNTER_EVENT_OVERFLOW Counter events[^3] that can be watched by
-> userspace.
-
-Yes, I think the Generic counter makes sense here for the goal to be 
-achieved. Thanks for the pointers, I'll see how the counter fits with 
-the paradigm.
-
-   -- Daniel
-
-
-> William Breathitt Gray
+>> documentation for it.
+>>
+>> Signed-off-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
+>> ---
+>>   .../bindings/iio/adc/ti,tla2528.yaml          | 48 +++++++++++++++++++
+>>   1 file changed, 48 insertions(+)
+>>   create mode 100644 Documentation/devicetree/bindings/iio/adc/ti,tla2528.yaml
+>>
+>> diff --git a/Documentation/devicetree/bindings/iio/adc/ti,tla2528.yaml b/Documentation/devicetree/bindings/iio/adc/ti,tla2528.yaml
+>> new file mode 100644
+>> index 000000000000..0ee326d77014
+>> --- /dev/null
+>> +++ b/Documentation/devicetree/bindings/iio/adc/ti,tla2528.yaml
+>> @@ -0,0 +1,48 @@
+>> +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
+>> +%YAML 1.2
+>> +---
+>> +$id: http://devicetree.org/schemas/iio/adc/ti,tla2528.yaml#
+>> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+>> +
+>> +title: Texas Instruments TLA2528 8-channel 12bit I2C ADC
 > 
-> [^1] https://docs.kernel.org/driver-api/generic-counter.html#paradigm
-> [^2] https://docs.kernel.org/driver-api/generic-counter.html#c.counter_ops
-> [^3] https://docs.kernel.org/driver-api/generic-counter.html#counter-events
+> 12-bit
+> 
+>> +
+>> +maintainers:
+>> +  - Maxime Chevallier <maxime.chevallier@bootlin.com>
+>> +
+>> +description: |
+>> +  12bit 8-channel I2C ADC.
+> 
+> The title already says this. Either drop it or add new info.
+> 
+> Also, don't need the |.
+> 
+>> +
+>> +properties:
+>> +  compatible:
+>> +    const: ti,tla2528
+>> +
+>> +  reg:
+>> +    maxItems: 1
+>> +
+>> +  vref-supply:
+>> +    description: Supply for 2.35V to 5.5V reference voltage
+> 
+> According the the datasheet, there are AVDD and DVDD supplies.
+> Nothing named VREF or REF.
+> 
+> So instead:
+> 
+> avdd-supply: true
+> dvdd-supply: true
+> 
+> 
+> It looks like inputs can also be used as GPIOs, so
+> 
+> gpio-controller: true
+> #gpio-cells:
+>    const: 2
+> 
+> would be appropriate (it doesn't matter if the driver doesn't
+> implement it, we know what the correct bindings are).
+> 
+>> +
+>> +  "#io-channel-cells":
+>> +    const: 1
+
+I didn't check the data-sheet, but if the pins can be set to be GPIOs or 
+ADC inputs, then I would require channels to be specified. It's only 8 
+channels, so always listing channels that are present shouldn't be that 
+big of a problem - and it should avoid one to add extra properties to 
+denote channels used for GPIO if GPIOs need to be supported.
+
+Well, I am not insisting this, there are folks that know this stuff 
+better than I :)
 
 
--- 
-<http://www.linaro.org/> Linaro.org │ Open source software for ARM SoCs
+Yours,
+	-- Matti
 
-Follow Linaro:  <http://www.facebook.com/pages/Linaro> Facebook |
-<http://twitter.com/#!/linaroorg> Twitter |
-<http://www.linaro.org/linaro-blog/> Blog
+---
+Matti Vaittinen
+Linux kernel developer at ROHM Semiconductors
+Oulu Finland
+
+~~ When things go utterly wrong vim users can always type :help! ~~
 

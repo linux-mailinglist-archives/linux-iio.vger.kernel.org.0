@@ -1,125 +1,123 @@
-Return-Path: <linux-iio+bounces-27416-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-27417-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1011DCE7EFB
-	for <lists+linux-iio@lfdr.de>; Mon, 29 Dec 2025 19:52:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 49C8BCE876C
+	for <lists+linux-iio@lfdr.de>; Tue, 30 Dec 2025 02:08:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 198883072EA3
-	for <lists+linux-iio@lfdr.de>; Mon, 29 Dec 2025 18:46:01 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 7070C300FE0F
+	for <lists+linux-iio@lfdr.de>; Tue, 30 Dec 2025 01:08:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EFA7F27A907;
-	Mon, 29 Dec 2025 18:45:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E3272DE6FB;
+	Tue, 30 Dec 2025 01:08:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Us/vaexr"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="HNF9eypX"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ed1-f68.google.com (mail-ed1-f68.google.com [209.85.208.68])
+Received: from mail-vk1-f174.google.com (mail-vk1-f174.google.com [209.85.221.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A563275864
-	for <linux-iio@vger.kernel.org>; Mon, 29 Dec 2025 18:45:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.68
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CA272D979F
+	for <linux-iio@vger.kernel.org>; Tue, 30 Dec 2025 01:08:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767033959; cv=none; b=XxPWekx0WPEEoYJAZkcvlQZasLchqB+WL5GrrsSRC1EZr7Z78KL02hKiyr5D0UR9xj47KoJtDxkVaq2dso59TkurzniLbOHUM/W2Lv8OzjOa+G4WFMzouG96DBygMb8q4dp7kfQsiEjfaFHt0VUA5iuZVtWvjH1OLNWnGwEZEgU=
+	t=1767056894; cv=none; b=uMU6BYmPHtgkGUn8nYfEzvoHiwSAQgcD69hpDrYrsdmwH9c8wQPoni52BklGX/HHRicJ8fzrzvxFrq6u4fF33nJtz+QmKl6Pwkjq/UDAiodS1H9f3rD1RrrbXNUVJ8yEmAag0wCsGXcfPY/kTImdXsGUWGCQtUaTE/a8wywNhVo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767033959; c=relaxed/simple;
-	bh=u2zY1U/O5G1mW4q0DJbO9nX1EVe6Wz4mhjjdI1xUbhU=;
+	s=arc-20240116; t=1767056894; c=relaxed/simple;
+	bh=bBs7yx3IH7rbuqikyv1k1RP3GLoN2h+HudwG/7Ey+ww=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=WnruoRRP3UMexDrA6G/ioF8jCnYq9rOVbA7jITnoK/ev3xzUxkyRFvo3hFGWD5Py5fSdufrK2MbX/OVJg8oak9GNgT6NOUNB1QUZYDzoh/V0U+1DUfQM52sTpk9cT7hVCoGeQeQhtrdzYRBzwajLzj7gMVBJ7HUv3Q8saePCtm8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Us/vaexr; arc=none smtp.client-ip=209.85.208.68
+	 To:Cc:Content-Type; b=eFxO8iD/2K2APdNAhaHjoGv5c0eFYlKQmK7g+h2cLyOPhKXQ4JpE7xIa2pLHqTV3GsW0rM+or/mqpOTIYIrlRxZ32Qe+Y76ivMH/UuvFi6PWniCW1ND2//myaYZa3HKUs0VlfeVc9wZomFw6qDT/IiBJ/7TewnNEG0uDLmc9mTU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=HNF9eypX; arc=none smtp.client-ip=209.85.221.174
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ed1-f68.google.com with SMTP id 4fb4d7f45d1cf-64b9230f564so10921182a12.1
-        for <linux-iio@vger.kernel.org>; Mon, 29 Dec 2025 10:45:57 -0800 (PST)
+Received: by mail-vk1-f174.google.com with SMTP id 71dfb90a1353d-55b2a09ff61so1952311e0c.2
+        for <linux-iio@vger.kernel.org>; Mon, 29 Dec 2025 17:08:12 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1767033956; x=1767638756; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1767056891; x=1767661691; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=Kz73L7aF/6ZlEa0FxvRTURfLB54A5VMkd9bhOsz/l7c=;
-        b=Us/vaexrG1+NlPivVSln8MzJ+fFcTVfumySUh/pp3rxhCBKbspSqMnrX2yvP/PUdiz
-         AAhQImetIvYlY3Z6xvUf8qsxxCbwl29kC2rQvOwrDMoJC9VapvVFHbHFKm6qu82XbBG5
-         zjTh8k5fLvlgZVmoVI0SM20AsZaCjJ2MDghy0b7C0vAQLW+dhxI7PM1HjGoHQ9ybCUfQ
-         /03y33qK+uKj4t2ccgLek5PC7/0+KtEK63hV3Q1w12/CGE0+y4p78Okwj0h/T1RF9z19
-         UFut3ZQemDXp1gIXEXPB1iTELDEfAAe2eSs2fh6xqhHnMSGkABT7bBGXYB+34vl0nxwX
-         RHew==
+        bh=bBs7yx3IH7rbuqikyv1k1RP3GLoN2h+HudwG/7Ey+ww=;
+        b=HNF9eypX8uiXiNapTCyfTfaiQxjxcfeVk15X27Wcmh4f2tqd9du+DuTSEplaGVKvtS
+         A8g5MadgeZUPmQhB5XT95GFh6t3ycVks+TKHmB1G6ZMUxLhd53a9WIfQdZ53v3SNXg+u
+         0QvmU3Bb3YL4xScJKMEUTtCv3/TI7BbGShFDMFAE9NV8I6TzOkaFGuuOQZPHdriy+5G3
+         sKtyxbprp48MgUC+NnLND2xQPNyBagzsJoiM4OwQWBe5MaL00JfRh3tVzqxtgJllVliQ
+         r8auur82R4Errk5Qbk69QLtNdY99078rqO9d8vHMYke5Uj9qDRwsfpwGYXzOloLyiUAK
+         Afjw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767033956; x=1767638756;
+        d=1e100.net; s=20230601; t=1767056891; x=1767661691;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=Kz73L7aF/6ZlEa0FxvRTURfLB54A5VMkd9bhOsz/l7c=;
-        b=hK0Gf3DnPA5KPDD9po57mdh4hC+mYDHVNFJ23weu4pbOMOC92fhCH7XZ7uDEt3e7bD
-         VkxeyBj4AtS8RzSdrPW4/a2oL2pfb5ITdqvPndNooVpAMDv/xBV4BJwHCUlT/MpfOTPt
-         fUJ3m82WQ98Yug/qv18unCrAyXzbkw4LHRv4NB8S2q0P4UI+2xmR2A3N9lsqWjqrBIS7
-         I9sZW/kwmYUhQm+YHJ91hFfE7dVTS04kRTMIAT0m3DZS1x1zX/d5/ER2aRkAnrzIHAIk
-         yuZK8OxHbyEurhhIgreY2tfF040MtA+r1DSu6GqXG8SGi6Pdc6usbGsmyRAyDKz+jJTG
-         7Ynw==
-X-Forwarded-Encrypted: i=1; AJvYcCXRimLjFhsFPfLCTDRqFc8ectLKj0frfZNEo9ZIn7xDpQ4J2CFtCTPNDlZ2ZNSSIaGZiW9MvULdHCw=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx+6LUNEAHfIqz/XJ2wmfr/9yqKa2D+WDb3G7wSw/jD3FBiG5Ak
-	c3nci7vmEEvr+Iyy+2xvU+zj5cC4viUkFanXbKCyNI4FtJ4kQPpcF1WCqkupU/0juE7ITcCQ567
-	KJt89kLXKMKCnlw0jf+JX8k+NCDwdtrw=
-X-Gm-Gg: AY/fxX4CFTuvJCdYhu5HPxMEOy1Jl03cri92tEhplwuDtiBia9CZkmFbS5HCsXu6Suo
-	uPKjv53XawYYb0jIIS4/XYhw6Ot5xokPHwIMVMQICQ/v3DONUu04hnZlv40JZ1yvWtNBazDGPO8
-	nZ1LwOQW0MJ09A3mLCbZ7PdqJ6sjWEv6ZtHu0qKstyhEXveQ8uddNcc6QH7vjfYVQVeWtFcaZTG
-	K+EpXGLbg9LdvqXhlICzyc294yZsc6h25hw0HwQZBtvIbCILq08bcFh7XEz/8KWmtmK9GCukNMB
-	Oasr7w==
-X-Google-Smtp-Source: AGHT+IEC49B23O+Bts6AqmLDVnvNNZzfpis9MhDL3XTVwpdReLOCpD6kqGv+rd67jG2Rx6ZXlmQ0phscGHJGzhjuEu4=
-X-Received: by 2002:a17:907:8686:b0:b6d:7288:973d with SMTP id
- a640c23a62f3a-b80371d670fmr3604915766b.56.1767033956266; Mon, 29 Dec 2025
- 10:45:56 -0800 (PST)
+        bh=bBs7yx3IH7rbuqikyv1k1RP3GLoN2h+HudwG/7Ey+ww=;
+        b=Pxeb4et1hLHYbvJnXu669eSKUEvvkTpqyXev1u50NBwUt/D6VAK+GoUMmiFpCXIiAP
+         0Ld8YD94GPVH/GnmMEs98Fr/95tU//qQEz0FHxerH8auGo9XF8eU6FbrsOKdhZgLKLYR
+         C7S/szdyhSL4e+5VXh1Xs+AIghWRoTiZw/zwTFxC+JbS72SmsQRHKM8da746d/x5EX0F
+         85tVvfw7U6OZnOV+SEbAwHb3IkRwzf87XvPHHEx91DqRkDlIBqPEY0ldZvdPTbrDN2m1
+         dueXH4HP12os+j/Nov8skDfeI3SREbtRS4d2xeG0ub9z5+YsNlq+Wb0f33mzBpb9BqsY
+         l1BQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWZUUl9AEk0s1iIWGHpJggst8C9X3Wrc5d8q+SrdMKWVFcYoL04uPKfBIZEzX54R/94ybGtMZ5/UMk=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx8TYErpQ6llt3lOO7Fs+yLJcvxqi6ymK1f7Av5Sx3Pv2CZFise
+	Zh5jZ4PhNUojz36RbZvrDk2gBY9Ygj8eq4Ldj/XpfKBOcneSSWXGPzZiDR0+1gFsLh8oJWeSfX6
+	VBqiUG7wjRt4LIwIZ634/7vl1WrOygxg=
+X-Gm-Gg: AY/fxX4y7fd1W85wUIb0WR48gbXLrUbdDiBRyP+vhfoGp8rUm4Waxd3UUX9G3knRS1W
+	Pll6NOg+LbqGDeYtgvioTG2/h/g3zCvkZ7JL4vBxG2tVqCjd18ho/YyKFzqHEfVJAieb82i22nx
+	7VCLdbin24M0fa26X8v0V4jvQN0Qc4oN4+VQa6f18No0URdO0XZvJ7zyFZ8MzFkLXhm39CgUkwG
+	cOSEROA9wjPjHq1q1R0fdh3+YZQvhPOAq0y4jJ/JtnW072QO8QZgbAbRZ/zDChd9sTNkDvJ
+X-Google-Smtp-Source: AGHT+IGYUCsj/IeFOwgAJyIiSuMBzRqRcmwFTxIdFlvnR9gSlQDZO+6tIch77v8HRL+X5/RRjI0Gp2Vg77Vtmx6PsGc=
+X-Received: by 2002:a05:6122:f8c:b0:55b:1aa5:bf88 with SMTP id
+ 71dfb90a1353d-5615bdc7190mr8170374e0c.7.1767056891522; Mon, 29 Dec 2025
+ 17:08:11 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251221083902.134098-1-raskar.shree97@gmail.com> <20251227174559.33539640@jic23-huawei>
-In-Reply-To: <20251227174559.33539640@jic23-huawei>
-From: Shrikant <raskar.shree97@gmail.com>
-Date: Tue, 30 Dec 2025 00:15:43 +0530
-X-Gm-Features: AQt7F2p-T1z0aWFMc6ZZeigVmg68IHmZFEwwaPJJdgjGaGINzoxIS_oDpv4nWG0
-Message-ID: <CAHc1_P6m11M=1bP-0k_ndgtkLtfnkSCMScznCC+HnWWQ1XtGHw@mail.gmail.com>
-Subject: Re: [PATCH v3 0/4] iio: proximity: Add interrupt support for RFD77402
-To: Jonathan Cameron <jic23@kernel.org>
-Cc: robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org, 
-	dlechner@baylibre.com, nuno.sa@analog.com, andy@kernel.org, heiko@sntech.de, 
-	neil.armstrong@linaro.org, skhan@linuxfoundation.org, 
-	david.hunter.linux@gmail.com, linux-iio@vger.kernel.org, 
+References: <20251224-add_ltc2305_driver-v2-0-061f78cf45a3@gmail.com>
+ <20251224-add_ltc2305_driver-v2-1-061f78cf45a3@gmail.com> <20251227-chubby-tomato-finch-24fecf@quoll>
+In-Reply-To: <20251227-chubby-tomato-finch-24fecf@quoll>
+From: Kyle Hsieh <kylehsieh1995@gmail.com>
+Date: Tue, 30 Dec 2025 09:08:00 +0800
+X-Gm-Features: AQt7F2rQtCn7wayoIhL7v4gwnPV5xG6DW46TC8ISdPNsUTfILJSJB9dEqyZqW2M
+Message-ID: <CAF7HswPViQh5qaHKtRQ+133jKa60Xh9+i8YTcdhfc9RohTOgYQ@mail.gmail.com>
+Subject: Re: [PATCH v2 1/2] dt-bindings: adc: ltc2497: add support for ltc2305
+To: Krzysztof Kozlowski <krzk@kernel.org>
+Cc: Lars-Peter Clausen <lars@metafoo.de>, Michael Hennerich <Michael.Hennerich@analog.com>, 
+	Jonathan Cameron <jic23@kernel.org>, David Lechner <dlechner@baylibre.com>, 
+	=?UTF-8?B?TnVubyBTw6E=?= <nuno.sa@analog.com>, 
+	Andy Shevchenko <andy@kernel.org>, Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Liam Beguin <liambeguin@gmail.com>, linux-iio@vger.kernel.org, 
 	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Sat, Dec 27, 2025 at 11:16=E2=80=AFPM Jonathan Cameron <jic23@kernel.org=
-> wrote:
+On Sat, Dec 27, 2025 at 8:39=E2=80=AFPM Krzysztof Kozlowski <krzk@kernel.or=
+g> wrote:
 >
-> On Sun, 21 Dec 2025 14:08:58 +0530
-> Shrikant Raskar <raskar.shree97@gmail.com> wrote:
+> On Wed, Dec 24, 2025 at 01:37:14PM +0800, Kyle Hsieh wrote:
+> > Add documentation for the 2-channel LTC2305 ADC in the
+> > existing ltc2497 binding.
+> > This enables automatic device tree matching for LTC2305
+> > while using the LTC2309 driver (drivers/iio/adc/ltc2309.c),
 >
-> > This patch series adds:
-> >  - Add RF Digital vendor prefix
-> >  - YAML binding for RFD77402
-> >  - Add OF device ID for enumeration via DT
-> >  - Use kernel helper for result polling
-> >  - Interrupt handling support
-> >
-> > These changes enable DT-based configuration and event-driven
-> > operation for the RFD77402 Time-of-Flight sensor.
+> Not relevant sentence. And if I disable automatic matching in the
+> kernel, does that invalidate binding? What about BSD?
 >
-> Hi Shrikant,
+> > since both ADCs share the same I2C interface and 12-bit SAR architectur=
+e.
+> > The main difference is the number of channels (LTC2305: 2, LTC2309: 8).
 >
-> I'm only seeing this cover letter (and lore doesn't seem
-> to have the patches either).  Probably need to resend them.
-Hello Jonathan,
-Apologies for the confusion. I have tried re-sending the patch
-series multiple times, but each time only the cover letter is getting
-delivered, while the individual patches do not seem to go through due
-to Gmail's daily sending limit.I haven't fully resolved the issue yet,
-but I'm trying to figure out a solution on my end. If you have
-any suggestions or best practices to avoid such delivery issues, I
-would really appreciate your guidance.
+> These two are fine. Just describe the hardware.
+Thanks for the review.
 
-Sorry for the inconvenience, and thank you for your patience.
-Regards,
-Shrikant
+I will remove the sentence about device tree matching and driver usage,
+and keep the binding documentation focused on hardware description only.
+
+Best regards,
+Kyle Hsieh
+>
+> Best regards,
+> Krzysztof
+>
 

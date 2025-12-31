@@ -1,45 +1,45 @@
-Return-Path: <linux-iio+bounces-27448-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-27449-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 19FB1CEC72F
-	for <lists+linux-iio@lfdr.de>; Wed, 31 Dec 2025 19:12:08 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 50D49CEC77E
+	for <lists+linux-iio@lfdr.de>; Wed, 31 Dec 2025 19:22:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id F1B7F3022F3F
-	for <lists+linux-iio@lfdr.de>; Wed, 31 Dec 2025 18:12:03 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id B5375300BD8B
+	for <lists+linux-iio@lfdr.de>; Wed, 31 Dec 2025 18:22:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67B832FA0EF;
-	Wed, 31 Dec 2025 18:12:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1DC32FFFB6;
+	Wed, 31 Dec 2025 18:22:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BwXzQ0kf"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KZnOwC6o"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1ADA32BD033;
-	Wed, 31 Dec 2025 18:12:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 654182F90D8;
+	Wed, 31 Dec 2025 18:22:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767204722; cv=none; b=sa7BocyvHSBzWUSiG0fAAox8GR5l5NgSkwoChZv8vP4NFQulRpqSjYANw0c7PI4QTDoMW0k770+lbP4BVkI9cE8DHfOdSjzBtPayrSjjG+jaiEBfGKD5iV9E5ArNaWp19cZhmt/96fe1myBQMUMSz2sIuO8PulD+r5gBBcGRtuE=
+	t=1767205328; cv=none; b=ETk7jiU3j9hqAPNvt7hCxQCVbHx/341YZA8XJnlPIshu+e+TA3TWim8bqgudW5Oqw+fvqcyzYG1VqXbngxrx3KXswhXZvPmbbrqZcwFE7wKapHS92LhhrkCwGGxKRHkYeZ+q4h+ce3TqoVayBKJYegRvJ/KluDKYD5RBJd0orjg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767204722; c=relaxed/simple;
-	bh=NtvlE+8EZBddqH9geff8v4rapWBE7FQ6RKa3xRqMNkQ=;
+	s=arc-20240116; t=1767205328; c=relaxed/simple;
+	bh=A1d9RAORZwu4IDSkx8Jgf0L0blgxSrsdFiT8Dr3rUJI=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=YMjj+ETtsn1XS8ulValj7aZCQ6zQEc+nnjSJzZhSHz/T9/spCVKCDNp9dJ0IP/n0rQ+0VneMpMFMi/KmE192dN7bRJGXTTbmkJ/0cjQRezKL0nYr/O7AABpGcUALXzpCHNSY0aPCoiOwQM/HhowXOfjLOOuNfI1wrUf0kwVGbpQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BwXzQ0kf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5629AC113D0;
-	Wed, 31 Dec 2025 18:11:57 +0000 (UTC)
+	 MIME-Version:Content-Type; b=rVcztX4hsfdp2vivms8X6iPs56xd4jFJbHurZbUZAlKauptB3sPrV/fdpDKevP3zmB3AZkvxCQv9m+6KgnQIB7RGIHYeDy9TMcLtdfBG94g1gFACJ1I2ltdBYRoNbl4a7HVXHbvt/Qr10yKi/31kwJJxfvAQsiMqEGn5tZxDaaQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KZnOwC6o; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4DF0C113D0;
+	Wed, 31 Dec 2025 18:22:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767204721;
-	bh=NtvlE+8EZBddqH9geff8v4rapWBE7FQ6RKa3xRqMNkQ=;
+	s=k20201202; t=1767205327;
+	bh=A1d9RAORZwu4IDSkx8Jgf0L0blgxSrsdFiT8Dr3rUJI=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=BwXzQ0kf38eJA7mADvyFAtuz+4phdJxWiJVAfQdOaUhxfzdarWyEuWbQnCCRPPKDE
-	 //r8w8nT/H0cwJnvYh/iMd529IRg4ngMv8f7t7Nqqs8asToaqVXXMGWc9X2HlaTaE4
-	 WkCwdLGvkF5FWNUhOV1qnFFRIpm0Y44uCzW6CQ8f+GTfw5h/BmLH7rLiEpOgyCj152
-	 77+vs1AWTq3WB8FEKJCcgznMT392vGK6XJtErO7/SDlv4usFm9/ym/J+HE5kMci4so
-	 idyBvwfcWVtl4uYHsb0ZXWrrB7Sw8KfZqZmSnOB1qesqa1bHq8V7ojeIEXj8tpNnfB
-	 i6OOvyR3F4V1Q==
-Date: Wed, 31 Dec 2025 18:11:53 +0000
+	b=KZnOwC6o1oNFODCt8cLcTW1a1xVQraUxvzh5Cl7kJNjVTcEyYZ7BV1ExrfZCWFfsl
+	 ZIsITgesp3hFKFG3j+BIsl560LZvhA8zYyYl+HG6GSNeVggUmWN25786UU3GD5TKgT
+	 FuWePRXgzx0ruzCnd3zpql4Ptr8bNuC69nTdocDL75SS6LD6PSaEiK85zTZaH/RbA4
+	 eppGE1HELe+WCzbgckazXY+CYl/4KA8t2gB49riEAzSehgjQURVRQgkrjVz6kAgVYo
+	 unocMsJBLZbp6joeiJvJW0557bCLjHNNvGFDygDItkdiVYDHgtqTBIhU+0Olq1VI3T
+	 NH0qETNMkxjxA==
+Date: Wed, 31 Dec 2025 18:21:58 +0000
 From: Jonathan Cameron <jic23@kernel.org>
 To: Tomas Borquez <tomasborquez13@gmail.com>
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Lars-Peter Clausen
@@ -48,12 +48,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Lars-Peter Clausen
  <nuno.sa@analog.com>, Andy Shevchenko <andy@kernel.org>,
  linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
  linux-staging@lists.linux.dev
-Subject: Re: [PATCH v2 4/6] staging: iio: ad9832: remove dds.h dependency
-Message-ID: <20251231181153.556f14fe@jic23-huawei>
-In-Reply-To: <20251231180939.422e9e62@jic23-huawei>
+Subject: Re: [PATCH v2 5/6] staging: iio: ad9832: convert to iio channels
+ and ext_info attrs
+Message-ID: <20251231182158.2cc7d4da@jic23-huawei>
+In-Reply-To: <20251230203459.28935-6-tomasborquez13@gmail.com>
 References: <20251230203459.28935-1-tomasborquez13@gmail.com>
-	<20251230203459.28935-5-tomasborquez13@gmail.com>
-	<20251231180939.422e9e62@jic23-huawei>
+	<20251230203459.28935-6-tomasborquez13@gmail.com>
 X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -64,101 +64,111 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Wed, 31 Dec 2025 18:09:39 +0000
-Jonathan Cameron <jic23@kernel.org> wrote:
+On Tue, 30 Dec 2025 17:34:58 -0300
+Tomas Borquez <tomasborquez13@gmail.com> wrote:
 
-> On Tue, 30 Dec 2025 17:34:57 -0300
-> Tomas Borquez <tomasborquez13@gmail.com> wrote:
+> Convert ad9832 from sysfs attributes to standard channel interface
+> using a single IIO_ALTCURRENT channel with ext_info attributes, as this
+> device is a current source DAC with one output.
 > 
-> > Remove dependency on dds.h by converting custom macros to standard IIO
-> > attribute declarations.
-> > 
-> > Signed-off-by: Tomas Borquez <tomasborquez13@gmail.com>  
-> Hi Tomas,
-> 
-> Happy new year (almost)
-> 
-> > ---
-> >  drivers/staging/iio/frequency/ad9832.c | 37 +++++++++++---------------
-> >  1 file changed, 15 insertions(+), 22 deletions(-)
-> > 
-> > diff --git a/drivers/staging/iio/frequency/ad9832.c b/drivers/staging/iio/frequency/ad9832.c
-> > index 4bb203a67046..aa78973c3a3c 100644
-> > --- a/drivers/staging/iio/frequency/ad9832.c
-> > +++ b/drivers/staging/iio/frequency/ad9832.c
-> > @@ -24,8 +24,6 @@
-> >  #include <linux/iio/iio.h>
-> >  #include <linux/iio/sysfs.h>
-> >  
-> > -#include "dds.h"
-> > -
-> >  /* Registers */
-> >  #define AD9832_FREQ0LL		0x0
-> >  #define AD9832_FREQ0HL		0x1
-> > @@ -238,27 +236,22 @@ static ssize_t ad9832_write(struct device *dev, struct device_attribute *attr,
-> >  	}
-> >  }
-> >  
-> > -/*
-> > - * see dds.h for further information
-> > - */
-> > +static IIO_DEVICE_ATTR(out_altvoltage0_frequency0, 0200, NULL, ad9832_write, AD9832_FREQ0HM);
-> > +static IIO_DEVICE_ATTR(out_altvoltage0_frequency1, 0200, NULL, ad9832_write, AD9832_FREQ1HM);
-> > +
-> > +static IIO_DEVICE_ATTR(out_altvoltage0_frequencysymbol, 0200, NULL, ad9832_write, AD9832_FREQ_SYM);
-> > +static IIO_CONST_ATTR(out_altvoltage0_frequency_scale, "1"); /* 1Hz */  
-> 
-> This seems like a pointless attribute.  Default scaling for everything in IIO when
-> attributes don't tell us otherwise is 1 so should be fine dropping this one.
-> 
-> > +
-> > +static IIO_DEVICE_ATTR(out_altvoltage0_phase0, 0200, NULL, ad9832_write, AD9832_PHASE0H);
-> > +static IIO_DEVICE_ATTR(out_altvoltage0_phase1, 0200, NULL, ad9832_write, AD9832_PHASE1H);
-> > +static IIO_DEVICE_ATTR(out_altvoltage0_phase2, 0200, NULL, ad9832_write, AD9832_PHASE2H);
-> > +static IIO_DEVICE_ATTR(out_altvoltage0_phase3, 0200, NULL, ad9832_write, AD9832_PHASE3H);
-> > +
-> > +static IIO_DEVICE_ATTR(out_altvoltage0_phasesymbol, 0200, NULL, ad9832_write, AD9832_PHASE_SYM);
-> > +static IIO_CONST_ATTR(out_altvoltage0_phase_scale, "0.0015339808"); /* 2PI/2^12 rad */  
-> 
-> I can't immediately think of precedence for scaling of an attribute other than
-> _raw.  Whilst it's painful, this isn't a high perf path, so we should probably
-> just do fixed point inputs for phase0,phase1 etc and deal with the scaling
-> in the driver.  That avoids adding new ABI for this very rare case.
-> 
-> >  
-> > -static IIO_DEV_ATTR_FREQ(0, 0, 0200, NULL, ad9832_write, AD9832_FREQ0HM);
-> > -static IIO_DEV_ATTR_FREQ(0, 1, 0200, NULL, ad9832_write, AD9832_FREQ1HM);
-> > -static IIO_DEV_ATTR_FREQSYMBOL(0, 0200, NULL, ad9832_write, AD9832_FREQ_SYM);
-> > -static IIO_CONST_ATTR_FREQ_SCALE(0, "1"); /* 1Hz */
-> > -
-> > -static IIO_DEV_ATTR_PHASE(0, 0, 0200, NULL, ad9832_write, AD9832_PHASE0H);
-> > -static IIO_DEV_ATTR_PHASE(0, 1, 0200, NULL, ad9832_write, AD9832_PHASE1H);
-> > -static IIO_DEV_ATTR_PHASE(0, 2, 0200, NULL, ad9832_write, AD9832_PHASE2H);
-> > -static IIO_DEV_ATTR_PHASE(0, 3, 0200, NULL, ad9832_write, AD9832_PHASE3H);
-> > -static IIO_DEV_ATTR_PHASESYMBOL(0, 0200, NULL,
-> > -				ad9832_write, AD9832_PHASE_SYM);
-> > -static IIO_CONST_ATTR_PHASE_SCALE(0, "0.0015339808"); /* 2PI/2^12 rad*/
-> > -
-> > -static IIO_DEV_ATTR_PINCONTROL_EN(0, 0200, NULL,
-> > -				ad9832_write, AD9832_PINCTRL_EN);
-> > -static IIO_DEV_ATTR_OUT_ENABLE(0, 0200, NULL,
-> > -				ad9832_write, AD9832_OUTPUT_EN);
-> > +static IIO_DEVICE_ATTR(out_altvoltage0_pincontrol_en, 0200, NULL, ad9832_write, AD9832_PINCTRL_EN);  
-> 
-> I'm not that keen on having the documentation only several patches later. Drag that
-> before this patch or combine adding the new ABI and documentation in the same patch
-Ah. I'd missed that this is deliberately a no change patch with old abi.
+> Signed-off-by: Tomas Borquez <tomasborquez13@gmail.com>
 
-So ignore the stuff that doesn't make sense with that in mind!
+A couple of things inline.
 
-> 
-> Jonathan
-> 
-> 
-> > +static IIO_DEVICE_ATTR(out_altvoltage0_out_enable, 0200, NULL, ad9832_write, AD9832_OUTPUT_EN);
-> >  
-> >  static struct attribute *ad9832_attributes[] = {
-> >  	&iio_dev_attr_out_altvoltage0_frequency0.dev_attr.attr,  
-> 
 
+> +
+> @@ -230,42 +321,111 @@ static ssize_t ad9832_write(struct device *dev, struct device_attribute *attr,
+
+> +	case AD9832_PINCTRL_EN:
+> +		if (val != 1 && val != 0)
+> +			return -EINVAL;
+> +
+> +		st->ctrl_ss &= ~AD9832_SELSRC;
+> +		st->ctrl_ss |= FIELD_PREP(AD9832_SELSRC, !val);
+It's not particularly important as this pattern is common, but there is
+FIELD_MODIFY() available to make the above a single thing without
+needing the mask twice
+
+> +
+> +		st->data = cpu_to_be16(FIELD_PREP(AD9832_CMD_MSK, AD9832_CMD_SYNCSELSRC) |
+> +						 st->ctrl_ss);
+> +		ret = spi_sync(st->spi, &st->msg);
+> +		if (ret)
+> +			return ret;
+> +
+> +		st->pinctrl_en = val;
+> +		break;
+>  	default:
+>  		return -ENODEV;
+>  	}
+> +
+> +	return len;
+>  }
+>
+> -static IIO_DEVICE_ATTR(out_altvoltage0_phasesymbol, 0200, NULL, ad9832_write, AD9832_PHASE_SYM);
+> -static IIO_CONST_ATTR(out_altvoltage0_phase_scale, "0.0015339808"); /* 2PI/2^12 rad */
+> +static const struct iio_chan_spec_ext_info ad9832_ext_info[] = {
+> +	AD9832_CHAN_FREQ("frequency0", 0),
+> +	AD9832_CHAN_FREQ("frequency1", 1),
+> +	AD9832_CHAN_PHASE("phase0", 0),
+> +	AD9832_CHAN_PHASE("phase1", 1),
+> +	AD9832_CHAN_PHASE("phase2", 2),
+> +	AD9832_CHAN_PHASE("phase3", 3),
+> +	{ }
+> +};
+>  
+> -static IIO_DEVICE_ATTR(out_altvoltage0_pincontrol_en, 0200, NULL, ad9832_write, AD9832_PINCTRL_EN);
+> -static IIO_DEVICE_ATTR(out_altvoltage0_out_enable, 0200, NULL, ad9832_write, AD9832_OUTPUT_EN);
+> +static const struct iio_chan_spec ad9832_channels[] = {
+> +	{
+> +		.type = IIO_ALTCURRENT,
+> +		.output = 1,
+> +		.indexed = 1,
+> +		.channel = 0,
+> +		.ext_info = ad9832_ext_info,
+> +	},
+> +};
+> +
+> +static IIO_DEVICE_ATTR(out_altcurrent0_frequency_symbol, 0644,
+> +		       ad9832_show, ad9832_store, AD9832_FREQ_SYM);
+> +static IIO_DEVICE_ATTR(out_altcurrent0_phase_symbol, 0644,
+> +		       ad9832_show, ad9832_store, AD9832_PHASE_SYM);
+Why not do these two via ext_info? 
+
+> +static IIO_DEVICE_ATTR(out_altcurrent0_enable, 0644,
+
+This one can be done with standard ABI + infomask element at read_raw
+so do it that way rather than via IIO_DEVICE_ATTR() which should be
+used only when none of the standard stuff is possible because these
+direct attr declarations hide things from internal kernel usage and
+mean we have to much more carefully check them against ABI documentation.
+
+> +		       ad9832_show, ad9832_store, AD9832_OUTPUT_EN);
+> +
+> +/*
+> + * TODO: Convert to DT property when graduating from staging.
+> + * Pin control configuration depends on hardware wiring.
+> + */
+> +static IIO_DEVICE_ATTR(out_altcurrent0_pincontrol_en, 0644,
+> +		       ad9832_show, ad9832_store, AD9832_PINCTRL_EN);
+>  
+>  static struct attribute *ad9832_attributes[] = {
+> -	&iio_dev_attr_out_altvoltage0_frequency0.dev_attr.attr,
+> -	&iio_dev_attr_out_altvoltage0_frequency1.dev_attr.attr,
+> -	&iio_const_attr_out_altvoltage0_frequency_scale.dev_attr.attr,
+> -	&iio_dev_attr_out_altvoltage0_phase0.dev_attr.attr,
+> -	&iio_dev_attr_out_altvoltage0_phase1.dev_attr.attr,
+> -	&iio_dev_attr_out_altvoltage0_phase2.dev_attr.attr,
+> -	&iio_dev_attr_out_altvoltage0_phase3.dev_attr.attr,
+> -	&iio_const_attr_out_altvoltage0_phase_scale.dev_attr.attr,
+> -	&iio_dev_attr_out_altvoltage0_pincontrol_en.dev_attr.attr,
+> -	&iio_dev_attr_out_altvoltage0_frequencysymbol.dev_attr.attr,
+> -	&iio_dev_attr_out_altvoltage0_phasesymbol.dev_attr.attr,
+> -	&iio_dev_attr_out_altvoltage0_out_enable.dev_attr.attr,
+> +	&iio_dev_attr_out_altcurrent0_frequency_symbol.dev_attr.attr,
+> +	&iio_dev_attr_out_altcurrent0_phase_symbol.dev_attr.attr,
+> +	&iio_dev_attr_out_altcurrent0_enable.dev_attr.attr,
+> +	&iio_dev_attr_out_altcurrent0_pincontrol_en.dev_attr.attr,
+>  	NULL,
+>  };
 

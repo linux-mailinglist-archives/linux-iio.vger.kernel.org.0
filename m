@@ -1,115 +1,93 @@
-Return-Path: <linux-iio+bounces-27454-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-27455-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id D30A5CEC914
-	for <lists+linux-iio@lfdr.de>; Wed, 31 Dec 2025 22:15:23 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 504C5CEC981
+	for <lists+linux-iio@lfdr.de>; Wed, 31 Dec 2025 22:37:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 028283031CEB
-	for <lists+linux-iio@lfdr.de>; Wed, 31 Dec 2025 21:14:36 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 2D7C1301A184
+	for <lists+linux-iio@lfdr.de>; Wed, 31 Dec 2025 21:37:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A197530DEC0;
-	Wed, 31 Dec 2025 21:14:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2448330E84B;
+	Wed, 31 Dec 2025 21:37:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OE1s0UBq"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="S/myJmuv"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE0952F1FD5;
-	Wed, 31 Dec 2025 21:14:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEC1C30C611
+	for <linux-iio@vger.kernel.org>; Wed, 31 Dec 2025 21:37:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767215675; cv=none; b=BsK64v4B3mENjFd7bR4dqfIyFqV9Ps/uk4b78gA7nQvu1RnTuL8j/xX8V+tK4I704b+LsvNy9xpivpiN3xGL27T+vi6dP5r1Q3X3d41B6DOBqsYfiYjf+n71SQAjCuZ6FdPAT4M066GqURa03IveMT311Zu9QlhCQG6VZ1qyGQ8=
+	t=1767217047; cv=none; b=CICYcFXYp46kA9NwnS3NYtw/OwCeuK8dHbeOzcufX2vDVnbQE0OlDQWY3GB62HZEWW4rLESMsMKOXNfzkHKIwNWYbrb1wwPGDzQeqU+U95isrhlalSULJq6h4uuIMTmb0LX5KjbCL6WeKvalQH1hLT396OsCEM7ytuT0xiIOOM4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767215675; c=relaxed/simple;
-	bh=whyQymEuKoQPya6K6m/OkXij0pAB0J+H6jrBiCCUzB0=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=UM2j3yjVpsjkusZcaKtIzfFEHecw5JEs3TKHPrv8c1NPUHqjBaIdNSOWhPyIbBvFfravyRA42wtvZIkXyFxIfsRIv3CjutfN1pYjfcXJuSN2IIeE0XhyrBXZcr8GKQz25nxKk+1en041JzIqtkwUY0B+KoBHOd46np5MzbsCxDQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OE1s0UBq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99B53C16AAE;
-	Wed, 31 Dec 2025 21:14:30 +0000 (UTC)
+	s=arc-20240116; t=1767217047; c=relaxed/simple;
+	bh=3Rfnf2qhGGwgV00DUgX+jw89Q5Q97DzPe9bYdiAb1ps=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=QKF5wIFuX5j2Kvw4LiRW/FHRTbGYD+GtUQxbDeq6kPyaS2/J0Y/bJbWho7FBIt3cLKF0R/6l0HvESOjTbRE0yXmwnBEU1grj/BVcy8LYXv+9Nf9CR05XjzCrt33m7q4Fh8a7uKV5eqFSy7vha7he4OtiLbDRVd0PPC8qveyImRA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=S/myJmuv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C323C2BCB0
+	for <linux-iio@vger.kernel.org>; Wed, 31 Dec 2025 21:37:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767215674;
-	bh=whyQymEuKoQPya6K6m/OkXij0pAB0J+H6jrBiCCUzB0=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=OE1s0UBqkbN26uFy3VYYZD1mXU1YaulOdCTNWR7lPxHyOl96twJ20ZlX+bB/7QC+b
-	 TsYXvm95nlsa+FTxwdDG0qYtB8tifBwWB97untRgmb2kAFlNVAn1WqbZHNkeT8Vdw/
-	 tDbaAti6YAbRQGVknBNFyDaoWguswu/SJfsdT99ISKDp/ejTNGcCQLv4b72SNk5vDq
-	 8t0U3ok5hJ2AW4S6acx8NstFCP8q+SAjveQEkNl1cMV1pX+YUUNwVAdYvB8rZR81eL
-	 rjzuuTaHs1AVnQ3gjMgik7Y/oLdt2ARYwtUFYHXBnpRYrmO2NRxFTkyEjgDypAZIGM
-	 +hmJTJ4n2sp1w==
-From: akemnade@kernel.org
-Date: Wed, 31 Dec 2025 22:14:17 +0100
-Subject: [PATCH 2/2] ARM: dts: ti/omap: omap4-epson-embt2ws: fix typo in
- iio device property
+	s=k20201202; t=1767217047;
+	bh=3Rfnf2qhGGwgV00DUgX+jw89Q5Q97DzPe9bYdiAb1ps=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=S/myJmuvkQhoJ8EppRf3vex1oHqN6qlqOFLVY9fq6nDRgajD26aH7kRPXmgv928XN
+	 DF+TI78MG0UkXzZMdQuw/GlDgWSTvvxshjuoWDv9HPqT/ygN9fSm4tM6/4gtAfbWRo
+	 QzgG3od32ACcdrA4U/CqlZorWWrLyM+hVKKc9JprOQAISIoIWyWLrac6n3tEKlvdbz
+	 pn7SDd/cIIVAUBaCaNAtbKkHkMk4EWxb3ubqdSGLJYW7BHJG77tQL9PBBKd5n9kxil
+	 vefx2gkquaNmsHtp/u9YwXN07/1/wFU4m8CwszxqBuN+8dVBrt7VZWgJ48dhsHZj/v
+	 RFgKGQWveyeJQ==
+Received: by mail-yw1-f173.google.com with SMTP id 00721157ae682-786d1658793so98451917b3.1
+        for <linux-iio@vger.kernel.org>; Wed, 31 Dec 2025 13:37:27 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCXIxqtlhZXSQ55M3J3Sy2xWoreBtLqy/TfOYhPcY3h0SFDNIAjAReWzNLP946mVL/IEMTkptcIWn9w=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxgtNYkeZX6ZAOZsnEzjgmQQJRRSf643gYHQ/Nypfcq71jqjV+z
+	Fkr8awD/vV7+h2OgWFYi07+XC4vF1DkhRn0c65hNLKlc1CviqOVqPQdvmWsk0EIIbH4gGG/ro+f
+	PgEVzt69MOAIKAt+QH+wnz11rwvGfE+g=
+X-Google-Smtp-Source: AGHT+IHHeH8zJG7rfiI2GFfedkzIC0YK/SbYafxSnkK2MFdRLnSCHEYor5QZDiE7b0zGilhY27fuPDjyGexn5uPgcoQ=
+X-Received: by 2002:a05:690c:3803:b0:78f:984b:4bb5 with SMTP id
+ 00721157ae682-78fb40c5f09mr590051547b3.64.1767217046540; Wed, 31 Dec 2025
+ 13:37:26 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20251231-mpu9150-v1-2-08ecf085c4ae@kernel.org>
-References: <20251231-mpu9150-v1-0-08ecf085c4ae@kernel.org>
-In-Reply-To: <20251231-mpu9150-v1-0-08ecf085c4ae@kernel.org>
-To: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>, 
- Jonathan Cameron <jic23@kernel.org>, David Lechner <dlechner@baylibre.com>, 
- =?utf-8?q?Nuno_S=C3=A1?= <nuno.sa@analog.com>, 
- Andy Shevchenko <andy@kernel.org>, Aaro Koskinen <aaro.koskinen@iki.fi>, 
- Andreas Kemnade <andreas@kemnade.info>, Kevin Hilman <khilman@baylibre.com>, 
- Roger Quadros <rogerq@kernel.org>, Tony Lindgren <tony@atomide.com>, 
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>
-Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>, 
- linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, 
- linux-omap@vger.kernel.org, devicetree@vger.kernel.org, 
- Andreas Kemnade <akemnade@kernel.org>
-X-Mailer: b4 0.15-dev-a6db3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1141; i=akemnade@kernel.org;
- h=from:subject:message-id; bh=z+7X+G6XUh0LFLv4u0xBI8oqiZVKwYqo5TbWTH8Z7tQ=;
- b=owGbwMvMwCUm/rzkS6lq2x3G02pJDJmhk/QeffEXCdvNdL3rtq7Whx/dVdtuvPqo32wx4d7q/
- 9cUtlz17ChlYRDjYpAVU2T5Za3g9knlWW7w1Ah7mDmsTCBDGLg4BWAizm4M/30skpzfafnOruyR
- CNfc0Ke7gCH+h9rB/c15FzqkBHJOyTL84Tn0iPNCyNzUyX0aRuzRN/flSOsl18ion/q9O1e0zW0
- lCwA=
-X-Developer-Key: i=akemnade@kernel.org; a=openpgp;
- fpr=EEC0DB858E66C0DA70620AC07DBD6AC74DE29324
+References: <20251211-dev-dt-warnings-all-v1-0-21b18b9ada77@codeconstruct.com.au>
+ <20251211-dev-dt-warnings-all-v1-2-21b18b9ada77@codeconstruct.com.au>
+In-Reply-To: <20251211-dev-dt-warnings-all-v1-2-21b18b9ada77@codeconstruct.com.au>
+From: Linus Walleij <linusw@kernel.org>
+Date: Wed, 31 Dec 2025 22:37:15 +0100
+X-Gmail-Original-Message-ID: <CAD++jLmNGrDt3_w=DFnBnjEuz3LN-=uc1o9KHv1j=4gbGPoPQg@mail.gmail.com>
+X-Gm-Features: AQt7F2oNijhkSY2l2xLUahhHBTqPWX5BBKamnMGV8HdX2c29O6a9KTnJl-DXNNE
+Message-ID: <CAD++jLmNGrDt3_w=DFnBnjEuz3LN-=uc1o9KHv1j=4gbGPoPQg@mail.gmail.com>
+Subject: Re: [PATCH RFC 02/16] pinctrl: aspeed: g5: Constrain LPC binding
+ revision workaround to AST2500
+To: Andrew Jeffery <andrew@codeconstruct.com.au>
+Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+	Conor Dooley <conor+dt@kernel.org>, Joel Stanley <joel@jms.id.au>, linux-hwmon@vger.kernel.org, 
+	devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+	linux-aspeed@lists.ozlabs.org, linux-kernel@vger.kernel.org, 
+	openbmc@lists.ozlabs.org, linux-gpio@vger.kernel.org, 
+	linux-mmc@vger.kernel.org, linux-crypto@vger.kernel.org, 
+	linux-iio@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-From: Andreas Kemnade <andreas@kemnade.info>
+On Thu, Dec 11, 2025 at 9:46=E2=80=AFAM Andrew Jeffery
+<andrew@codeconstruct.com.au> wrote:
 
-Define interrupts properly. Unfortunately, this hides a bug in the linux
-driver, so it needs to be used with the driver fixed only.
+> Discovering a phandle to an AST2400 or AST2600 LPC node indicates an
+> error for the purpose of the AST2500 pinctrl driver.
+>
+> Signed-off-by: Andrew Jeffery <andrew@codeconstruct.com.au>
 
-Signed-off-by: Andreas Kemnade <andreas@kemnade.info>
----
- arch/arm/boot/dts/ti/omap/omap4-epson-embt2ws.dts | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+Reviewed-by: Linus Walleij <linusw@kernel.org>
 
-diff --git a/arch/arm/boot/dts/ti/omap/omap4-epson-embt2ws.dts b/arch/arm/boot/dts/ti/omap/omap4-epson-embt2ws.dts
-index c90f43cc2fae9..a9f0cfd7c999d 100644
---- a/arch/arm/boot/dts/ti/omap/omap4-epson-embt2ws.dts
-+++ b/arch/arm/boot/dts/ti/omap/omap4-epson-embt2ws.dts
-@@ -346,7 +346,7 @@ mpu9150h: imu@68 {
- 		pinctrl-names = "default";
- 		pinctrl-0 = <&mpu9150h_pins>;
- 		interrupt-parent = <&gpio2>;
--		interrupt = <19 IRQ_TYPE_LEVEL_HIGH>;
-+		interrupts = <19 IRQ_TYPE_LEVEL_HIGH>;
- 	};
- };
- 
-@@ -408,7 +408,7 @@ mpu9150: imu@68 {
- 		pinctrl-names = "default";
- 		pinctrl-0 = <&mpu9150_pins>;
- 		interrupt-parent = <&gpio2>;
--		interrupt = <7 IRQ_TYPE_LEVEL_HIGH>;
-+		interrupts = <7 IRQ_TYPE_LEVEL_HIGH>;
- 		vddio-supply = <&cb_v18>;
- 		vdd-supply = <&cb_v33>;
- 		invensense,level-shifter;
+Also pretty obviously correct, can't I just apply this one?
 
--- 
-2.47.3
-
+Yours,
+Linus Walleij
 

@@ -1,58 +1,59 @@
-Return-Path: <linux-iio+bounces-27450-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-27451-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9C8ADCEC796
-	for <lists+linux-iio@lfdr.de>; Wed, 31 Dec 2025 19:35:15 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 467BBCEC7A2
+	for <lists+linux-iio@lfdr.de>; Wed, 31 Dec 2025 19:37:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 4B4753025337
-	for <lists+linux-iio@lfdr.de>; Wed, 31 Dec 2025 18:35:11 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 6E585300A291
+	for <lists+linux-iio@lfdr.de>; Wed, 31 Dec 2025 18:37:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 863773064A9;
-	Wed, 31 Dec 2025 18:35:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C6DB3064B2;
+	Wed, 31 Dec 2025 18:37:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YTIeLiGG"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tFs4fIBp"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E5F930596D;
-	Wed, 31 Dec 2025 18:35:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11C9C2C0F91;
+	Wed, 31 Dec 2025 18:37:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767206109; cv=none; b=R5Wbx8totVSk2k2QHLJW1ziP31SpSAnF/o1jw5A2zuqyMd7uwb9Am2zn6TKGfsHPKxz7f04OaQhzn9+9XCsJs91ywJ3+6bQyT2oOFWRmhhVKan503TT7R2ZSBEX/kUy+L9eK3MW/BAdbD3Ii5S668P7Bcv6tRkg7KhTIHiCxPlo=
+	t=1767206246; cv=none; b=dI7HERih9aC3Mq7l+g3LiOp4xhdrwch39x1Q7LM2P3Ibw4rObvb7cPc20fxbmklvfFWCGNjDtFZWRKZI4TClvztXgxSEgb+yccQY0RYfVzz9z0oGDEIDu/jwsCXlueW2PX4suHUMuKeNjmJRTmQaBN3dtHu218lFU/HfNt3oCxU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767206109; c=relaxed/simple;
-	bh=1gKaAaDWngc09h7jLSPvqo8YVe3MpyDLC3yRlnMdTcQ=;
+	s=arc-20240116; t=1767206246; c=relaxed/simple;
+	bh=c2K1GWVI6aXv/1sOYiUUB3P0u920WK8ZhX9MIYwbrWw=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=VvzQdBAvk7AIIuT13OUWm4tPtx7zzhE3dADMrp1EmLyqCjOfznYe5uHa28MQ3ud06Bbq129KDCrr1tW2VQaX2akFadyuXp5v0PWX+rcWgb7DNxa9/rsTv+91HG48rJW7MYr4wZ284VuJlKUkorzD+Yj7Ntz3XPncFe/K/rlX5YE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YTIeLiGG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81423C113D0;
-	Wed, 31 Dec 2025 18:35:06 +0000 (UTC)
+	 MIME-Version:Content-Type; b=SWznMhsTxQYpPiZhWayCyEtU2Xv5EvbSJungU1dOLO1LXwMx5djNvlFB/JL9vus7/7TuKwmJ5x2V2VyH1wf8Hxc33UKOBkO2qBmpR/CD0GzF2gnYFHgOsQOc6b9rm2QibFRxKvoabknc6s7o5rPNYM/Crkkptx1otkvKpLkz50o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tFs4fIBp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44A09C113D0;
+	Wed, 31 Dec 2025 18:37:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767206108;
-	bh=1gKaAaDWngc09h7jLSPvqo8YVe3MpyDLC3yRlnMdTcQ=;
+	s=k20201202; t=1767206245;
+	bh=c2K1GWVI6aXv/1sOYiUUB3P0u920WK8ZhX9MIYwbrWw=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=YTIeLiGGlekT1Tv9H3QaPix3UnDY2ZijzrDhsDUuLFuG8DW9fMffaMlnW28Vv+gcg
-	 X56zF0Xb/X0sjrgHhDtB86m7CI9O721SlgkaKjUbl6nDerrz+BUSQ1sh3BCGBfnv7b
-	 YHLhRHfK2nvSOij4EBngZ6OCdxEDrt6PmROhmn20v74oYqoFvQzIZl/AvqosRr9ZY0
-	 1NjxD+SefxApNGXAwFukqsKSqI/W53QG4G9DeX77gJ0VNRftY8Emuh84CT/8RBMRSF
-	 NsXhBQbHyjvsvF7wR0VA63izyOyeFD1UEug4+8dHK+fxDQtRXAO44u0wYp7i+hZHvR
-	 k/uUIjXI5AtgQ==
-Date: Wed, 31 Dec 2025 18:35:02 +0000
+	b=tFs4fIBpphVbbuBGpaNgn5rLItGPNsCmZ/PROr0gKyZSinxsuixSctrMGXuWbrgSZ
+	 3RvTpkkKTDs3L895s6DeGJD5cLvekgaJI65lwkKpncDp0i4vgmnGiaJaLDJupH2Spz
+	 RY85K746YXcjTa9Vah6cxPMRldHUS97WazsdY556QSOp1aKoen2ptwR2TasQisl8Wu
+	 DQagCxCYsoh1ILl3IpTve7rDImNW1lB6Yxty7+2D392oxeqCr7i0mLIZfbmIgtgWXN
+	 Bc2vDyykVojmmUq1775695B5ywdpnIPqiuAuqIilYdZQV2YRC4ERiK5YWosRDx07nX
+	 F5J01+UtNXcuA==
+Date: Wed, 31 Dec 2025 18:37:16 +0000
 From: Jonathan Cameron <jic23@kernel.org>
-To: Tomas Borquez <tomasborquez13@gmail.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Lars-Peter Clausen
- <lars@metafoo.de>, Michael Hennerich <Michael.Hennerich@analog.com>, David
- Lechner <dlechner@baylibre.com>, Nuno =?UTF-8?B?U8Oh?=
- <nuno.sa@analog.com>, Andy Shevchenko <andy@kernel.org>,
- linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
- linux-staging@lists.linux.dev
-Subject: Re: [PATCH v2 6/6] staging: iio: ad9832: add sysfs documentation
-Message-ID: <20251231183502.26182f0c@jic23-huawei>
-In-Reply-To: <20251230203459.28935-7-tomasborquez13@gmail.com>
-References: <20251230203459.28935-1-tomasborquez13@gmail.com>
-	<20251230203459.28935-7-tomasborquez13@gmail.com>
+To: Andy Shevchenko <andriy.shevchenko@intel.com>
+Cc: Petre Rodan <petre.rodan@subdimension.ro>, David Lechner
+ <dlechner@baylibre.com>, Nuno =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>, Andy
+ Shevchenko <andy@kernel.org>, Rob Herring <robh@kernel.org>, Krzysztof
+ Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>,
+ linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v4 2/2] iio: pressure: add Honeywell ABP2 driver
+Message-ID: <20251231183716.32094776@jic23-huawei>
+In-Reply-To: <aVKXyQRczcv64jUO@smile.fi.intel.com>
+References: <20251207-honeywell_abp2_driver-v4-0-b52a4b96bbf7@subdimension.ro>
+	<20251207-honeywell_abp2_driver-v4-2-b52a4b96bbf7@subdimension.ro>
+	<aVKXyQRczcv64jUO@smile.fi.intel.com>
 X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -63,86 +64,52 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Tue, 30 Dec 2025 17:34:59 -0300
-Tomas Borquez <tomasborquez13@gmail.com> wrote:
+On Mon, 29 Dec 2025 17:01:29 +0200
+Andy Shevchenko <andriy.shevchenko@intel.com> wrote:
 
-> Add sysfs ABI documentation for the AD9832/AD9835 Direct Digital
-> Synthesizer chips, documenting frequency, phase, output control,
-> and pin control attributes.
+> On Sun, Dec 07, 2025 at 08:00:48AM +0200, Petre Rodan wrote:
+> > Adds driver for digital Honeywell ABP2 series of board mount
+> > pressure and temperature sensors.
+> > 
+> > This driver covers 113 different pressure ranges and units on
+> > both i2c and SPI buses.
+> > 
+> > The communication protocol involves sending two simple commands
+> > to the sensor and there is no register access or a memory map.
+> > For this reason the regmap API was not used.
+> > 
+> > The i2c address is hardcoded and depends on the part number.
+> > 
+> > Optional end of conversion interrupt control is present on the
+> > i2c variants of the chips.
+> > The EOC can also be defined for the SPI variants if a non-ABP2
+> > but compatible chip is to be driven.
+> > 
+> > Tested on two sensors (ABP2MRRT001PDSA3 and ABP2DANT001BA2A3).  
 > 
-> Signed-off-by: Tomas Borquez <tomasborquez13@gmail.com>
-Hi Tomas,
-
-Good docs, one entry of which reminded me we tend to use powerdown for
-output devices rather than _en (for enable)
+> LGTM, one minor thing below,
+> Reviewed-by: Andy Shevchenko <andriy.shevchenko@intel.com>
+> 
+> ...
+> 
+> > +		ret = devm_request_irq(dev, irq, abp2_eoc_handler, IRQF_ONESHOT,
+> > +				       dev_name(dev), data);
+> > +		if (ret)  
+> 
+> > +			return dev_err_probe(dev, ret, "request irq %d failed\n", data->irq);  
+> 
+> Just
+> 
+> 			return ret;
+> 
+> as above call already prints an error message.
+> 
+I've had this one queued for a while now, so Petre, if you don't mind
+spinning a patch on top to drop that print that would be great.
 
 Jonathan
 
-> ---
->  .../iio/Documentation/sysfs-bus-iio-frequency | 40 +++++++++++++++++++
->  1 file changed, 40 insertions(+)
->  create mode 100644 drivers/staging/iio/Documentation/sysfs-bus-iio-frequency
+> > +	}  
 > 
-> diff --git a/drivers/staging/iio/Documentation/sysfs-bus-iio-frequency b/drivers/staging/iio/Documentation/sysfs-bus-iio-frequency
-> new file mode 100644
-> index 000000000000..10627c19bdb7
-> --- /dev/null
-> +++ b/drivers/staging/iio/Documentation/sysfs-bus-iio-frequency
-> @@ -0,0 +1,40 @@
-> +What:		/sys/bus/iio/devices/iio:deviceX/out_altcurrentY_frequencyZ
-> +KernelVersion:	6.19
-> +Contact:	linux-iio@vger.kernel.org
-> +Description:
-> +    Frequency in Hz for symbol Z of channel Y. The active
-> +    frequency symbol is selected via out_altcurrentY_frequency_symbol.
-> +
-> +What:		/sys/bus/iio/devices/iio:deviceX/out_altcurrentY_phaseZ
-> +KernelVersion:	6.19
-> +Contact:	linux-iio@vger.kernel.org
-> +Description:
-> +    Phase offset in radians for symbol Z of channel Y. Valid range
-> +    is 0 to 2*PI (exclusive). The active phase symbol is selected
-> +    via out_altcurrentY_phase_symbol.
-> +
-> +What:		/sys/bus/iio/devices/iio:deviceX/out_altcurrentY_frequency_symbol
-> +KernelVersion:	6.19
-> +Contact:	linux-iio@vger.kernel.org
-> +Description:
-> +    Selects which frequency symbol is active for channel Y.
-> +
-> +What:		/sys/bus/iio/devices/iio:deviceX/out_altcurrentY_phase_symbol
-> +KernelVersion:	6.19
-> +Contact:	linux-iio@vger.kernel.org
-> +Description:
-> +    Selects which phase symbol is active for channel Y.
-> +
-> +What:		/sys/bus/iio/devices/iio:deviceX/out_altcurrentY_enable
-
-Ah. I probably led you astray on this in an earlier review. Would be _en
-and added to the standard docs in sysfs-bus-iio in the block that starts with in_energyY_en
-
-However, I think that might not be the right attribute to use based on this
-being more similar to a DAC channel than those which are about enabling internal
-accumulators. For a DAC the common terminology is about powerdown  (so effectively !enable).
-That lines up with the use of SLEEP here on the datasheet.
-
-So I think this should be out_altcurrentY_powerdown and documented in the block
-with out_altvoltageY_powerdown in sysfs-bus-iio with a tweak to make the descriptive
-text cover currents as well as voltages.
-
-Obviously remember to flip the sense of the control though.
-
-> +KernelVersion:	6.19
-> +Contact:	linux-iio@vger.kernel.org
-> +Description:
-> +    Enables (1) or disables (0) the output for channel Y.
-> +
-> +What:		/sys/bus/iio/devices/iio:deviceX/out_altcurrentY_pincontrol_en
-> +KernelVersion:	6.19
-> +Contact:	linux-iio@vger.kernel.org
-> +Description:
-> +    Enables (1) or disables (0) hardware pin control for frequency
-> +    and phase symbol selection on channel Y. When enabled, external
-> +    pins control symbol selection instead of software.
 
 

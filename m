@@ -1,56 +1,59 @@
-Return-Path: <linux-iio+bounces-27445-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-27446-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 22640CEC6D8
-	for <lists+linux-iio@lfdr.de>; Wed, 31 Dec 2025 19:01:10 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 453F2CEC6DE
+	for <lists+linux-iio@lfdr.de>; Wed, 31 Dec 2025 19:02:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 03322300B680
-	for <lists+linux-iio@lfdr.de>; Wed, 31 Dec 2025 18:01:09 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id F3577300E00A
+	for <lists+linux-iio@lfdr.de>; Wed, 31 Dec 2025 18:02:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B12A12F1FCF;
-	Wed, 31 Dec 2025 18:01:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B0632F363F;
+	Wed, 31 Dec 2025 18:02:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="L6yfYu81"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="J0J2XXuq"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B81B1EEE6;
-	Wed, 31 Dec 2025 18:01:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31A812F362A;
+	Wed, 31 Dec 2025 18:02:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767204067; cv=none; b=FQEtYaUbYgFuh89jT1yQ2VZHSWzHDNbHIFQvGtphaBTz+qxy1meH+p9dy0sh2PD2FE4eEFpmnc/h6wPJOeRoSdbSX2JXgoY3b/oHOz2YlUDgMh95FvSflOvEQk+YZPk5NvyF4mrtI7YuKXubXnxittqYgAeT9TbdyAVC5RE9pn0=
+	t=1767204169; cv=none; b=mhYonThjI6KzqwYUFlRbeAgUi42OpSOBq5q1OrFgcE3Fl0u5kQXl1sXyFiremdAu55wqvxL5hnP/T115RfJ7G74/NXLOaM9JOmgcXGPJBFmBzAe4nGYtEgkWaSDFo0EaOtR6ucDavwP/J1flJc+8CGkK0O6hwylR43TEoPgPC3Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767204067; c=relaxed/simple;
-	bh=/JUAVuEmQnPRLOOrpsu9HYFaAs5yrYb5Mj8cMTlUK4k=;
+	s=arc-20240116; t=1767204169; c=relaxed/simple;
+	bh=ewgo0adcXH5/I9G/WqgEK2faT1M8lpN+HzKypGXF5PU=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Reks7gh0KxBC/exL0OfmoMaAnp1ztTSx7OclK0nzTgJJQNdcM4KMefth5f7j43vcN6AwuaWU2od5pfhKjvqlyV8e+zKK9s+QovLqk4FI8GE5AEMfOKm9UQOptr3qliLeFPGJAaA4mucrDXe0/K7UwI1NFsRP0gdOhzv7kxbFeJI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=L6yfYu81; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5DBFCC113D0;
-	Wed, 31 Dec 2025 18:01:01 +0000 (UTC)
+	 MIME-Version:Content-Type; b=N76Zdo3iYVzQegXNSM/ZriVHYu786sjFd9m9J7ZId4g6RFD0HOi8faOUWygyRKrYZIbkrAX70gkQAVuuz1lxLnb9486Fg5cNzzxkIIAPnPo2O59I1WA0Z9r2JBHl2ijUYIicwjz64ruZ12TKxeDwhsUQr34REiF6oqzrH/YtUfI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=J0J2XXuq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A917BC113D0;
+	Wed, 31 Dec 2025 18:02:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767204064;
-	bh=/JUAVuEmQnPRLOOrpsu9HYFaAs5yrYb5Mj8cMTlUK4k=;
+	s=k20201202; t=1767204168;
+	bh=ewgo0adcXH5/I9G/WqgEK2faT1M8lpN+HzKypGXF5PU=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=L6yfYu811L7qyATLwGj9wW+RHjvw0j3EVY3aUeXpIg4NaPgki9Cs4wjGwNErb6Txo
-	 Ia0qL+Qr2r3uw0jYEMi7x7gUcsBf/mA3G88cYpfbwm5G6p0biM3oNUqIZH1QsQJoKK
-	 vEVF63TCfu2/huRnmoYngh4hG04msyN2ZYsuATI05ptyX7TQ2jQP2ZxVmB7MkygaRl
-	 LIYMwRgZCSVtxYAurOLT5Q+aGqVpxJqnGLWzF3ivbY2nMVwIBCzZk6RLsoJ+mrzPIf
-	 /M+SdL45UtSmXgcjaeNqxoCoewd6QUutCuznvTBmewkB1upgbd/wXJjKW0BI2x4+HH
-	 qfNS3PFEWMwHw==
-Date: Wed, 31 Dec 2025 18:00:57 +0000
+	b=J0J2XXuqemsVfIV1idpFoQEOgEQOLe0ExeQf03tcJyko3mK2UKfEZ3Y/owXeoZoMq
+	 Vv3WmSBXjuJbejnNPSzpskN3XCdO+B70ABhm7J1pm8dvg9XvJ03V4oLr/UeyqVKsa8
+	 quEX/hnWh5vSv4xtjnGL6B7HL5Qj732kHEotK5hUINym3E5rUGG7sgbp57MvPxOKhb
+	 lTH5TP3MeIkfUKpK3ghA2L1XuWm8m9s6o6D+9zQ0La+2wh5njVAS5CPJ+GZidru4tJ
+	 QgLEq6Kfhqgq2jT0yN2hJRtzddlry6DWQylTgJ4g+aoL98+fTaHRngqCRutgLUrmb8
+	 tydxBtbw6Hhyg==
+Date: Wed, 31 Dec 2025 18:02:38 +0000
 From: Jonathan Cameron <jic23@kernel.org>
-To: Javier Rodriguez <josejavier.rodriguez@duagon.com>
-Cc: linux-kernel@vger.kernel.org, Jose Javier Rodriguez Barbarin
- <dev-josejavier.rodriguez@duagon.com>, Jorge Sanjuan Garcia
- <dev-jorge.sanjuangarcia@duagon.com>, Andy Shevchenko
- <andriy.shevchenko@intel.com>, linux-iio@vger.kernel.org
-Subject: Re: [PATCH 3/5] iio: adc: men_z188_adc: drop unneeded MODULE_ALIAS
-Message-ID: <20251231180057.7be409a8@jic23-huawei>
-In-Reply-To: <20251230215928.62258-4-josejavier.rodriguez@duagon.com>
-References: <20251230215928.62258-1-josejavier.rodriguez@duagon.com>
-	<20251230215928.62258-4-josejavier.rodriguez@duagon.com>
+To: Andy Shevchenko <andy.shevchenko@gmail.com>
+Cc: Tomas Borquez <tomasborquez13@gmail.com>, Greg Kroah-Hartman
+ <gregkh@linuxfoundation.org>, Lars-Peter Clausen <lars@metafoo.de>, Michael
+ Hennerich <Michael.Hennerich@analog.com>, David Lechner
+ <dlechner@baylibre.com>, Nuno =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>, Andy
+ Shevchenko <andy@kernel.org>, linux-kernel@vger.kernel.org,
+ linux-iio@vger.kernel.org, linux-staging@lists.linux.dev
+Subject: Re: [PATCH v2 1/6] staging: iio: ad9832: cleanup dev_err_probe()
+Message-ID: <20251231180238.7d564a7f@jic23-huawei>
+In-Reply-To: <CAHp75VfBwsKMdksib_UDMGraoPREBHF-ttcxxBpKvpyV2bEQjw@mail.gmail.com>
+References: <20251230203459.28935-1-tomasborquez13@gmail.com>
+	<20251230203459.28935-2-tomasborquez13@gmail.com>
+	<CAHp75VfBwsKMdksib_UDMGraoPREBHF-ttcxxBpKvpyV2bEQjw@mail.gmail.com>
 X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -58,46 +61,25 @@ List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, 30 Dec 2025 22:59:26 +0100
-Javier Rodriguez <josejavier.rodriguez@duagon.com> wrote:
+On Wed, 31 Dec 2025 00:47:43 +0200
+Andy Shevchenko <andy.shevchenko@gmail.com> wrote:
 
-> From: Jose Javier Rodriguez Barbarin <dev-josejavier.rodriguez@duagon.com>
+> On Tue, Dec 30, 2025 at 10:35=E2=80=AFPM Tomas Borquez <tomasborquez13@gm=
+ail.com> wrote:
+> >
+> > Cleanup dev_err_probe() by keeping messages consistent and adding
+> > error message for clock acquisition failure. =20
 >=20
-> The MODULE_ALIAS() is redundant since the module alias is now
-> automatically generated from the MODULE_DEVICE_TABLE().
+> AFAICS this does two things, the second one is reuse of the temporary
+> variable for struct device.
 >=20
-> Remove the explicit alias.
->=20
-> No functional change intended.
->=20
-> Fixes: 1f4ea4838b13 ("mcb: Add missing modpost build support")
+Agreed. Ideal patch break up would be to not just mention
+them but do the struct device *dev first, then the dev_err_probe()
+change.
 
-=46rom the patch description I'm not seeing how this is a fix?
-Seems like cleanup of unnecessary code given what you have written above.
 
-> Reviewed-by: Jorge Sanjuan Garcia <dev-jorge.sanjuangarcia@duagon.com>
-> Cc: Jonathan Cameron <jic23@kernel.org>
-> Cc: Andy Shevchenko <andriy.shevchenko@intel.com>
-> Cc: linux-iio@vger.kernel.org
-> Signed-off-by: Jose Javier Rodriguez Barbarin <dev-josejavier.rodriguez@d=
-uagon.com>
-> ---
->  drivers/iio/adc/men_z188_adc.c | 1 -
->  1 file changed, 1 deletion(-)
->=20
-> diff --git a/drivers/iio/adc/men_z188_adc.c b/drivers/iio/adc/men_z188_ad=
-c.c
-> index cf8a8c0412ec..90919d282e7b 100644
-> --- a/drivers/iio/adc/men_z188_adc.c
-> +++ b/drivers/iio/adc/men_z188_adc.c
-> @@ -171,5 +171,4 @@ module_mcb_driver(men_z188_driver);
->  MODULE_AUTHOR("Johannes Thumshirn <johannes.thumshirn@men.de>");
->  MODULE_LICENSE("GPL");
->  MODULE_DESCRIPTION("IIO ADC driver for MEN 16z188 ADC Core");
-> -MODULE_ALIAS("mcb:16z188");
->  MODULE_IMPORT_NS("MCB");
 
 

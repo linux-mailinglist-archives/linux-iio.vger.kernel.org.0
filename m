@@ -1,98 +1,135 @@
-Return-Path: <linux-iio+bounces-27456-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-27458-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7EB9BCEC993
-	for <lists+linux-iio@lfdr.de>; Wed, 31 Dec 2025 22:38:35 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id AA737CED275
+	for <lists+linux-iio@lfdr.de>; Thu, 01 Jan 2026 17:18:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 86FC730169B3
-	for <lists+linux-iio@lfdr.de>; Wed, 31 Dec 2025 21:38:26 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C0836300BBAD
+	for <lists+linux-iio@lfdr.de>; Thu,  1 Jan 2026 16:18:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE11F30E858;
-	Wed, 31 Dec 2025 21:38:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3BB122EDD57;
+	Thu,  1 Jan 2026 16:18:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ud1JCDQ6"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NripT5A5"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CE842FFF9F
-	for <linux-iio@vger.kernel.org>; Wed, 31 Dec 2025 21:38:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E15172580DE;
+	Thu,  1 Jan 2026 16:18:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767217104; cv=none; b=BN+wf6QP7ixYruA5SIS5MjKhjXQESLDe1rnfkK2Hd35Q5MoOaSmrFZcaEEybLVDRwT3IgyAOY2R3SfLycInqGYMgm+C8ixud4m64IdT35ZXQSXwEUp6AWlw7IhUPfHYkAE6DJ5K9aAsXOuzlqxbiTYvGpmV9BYaLYwV2AFSVhGg=
+	t=1767284293; cv=none; b=uKuPB+sTXMpJ6cWEU46mS8XPtA0XPZhPOkreZqZ646MYdIoOQ6gxwRjT0TdntGhl5xvrQKu45Slh4kCE67eK0VVt76Id1/4K6URa66F09zZtYIXbnauF1jchEmA68P1wOb3ccvYPpeUSNzq8evgwh1lJjZrubPusSkTyEjTvjPM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767217104; c=relaxed/simple;
-	bh=bNI4moxHzlL6mKNWIZsVYWKbjwRce0cuGLHEF0rQIaQ=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=hKSK9R3p4iovxrasra8xVM45fRknDTybaSkhbAbbQ8TWNKXXtpoK7eDSY5bQMCowy+1L9rSTEIsgtARUIJjtzqzLCHVd/5d5GgrgVW5JGVmqf1AdRicJJRTRLlqqtd64TDfstX2ewcw4Mjff113mCCBrFrbjIDOfXqvRh3+9LDU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ud1JCDQ6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30620C113D0
-	for <linux-iio@vger.kernel.org>; Wed, 31 Dec 2025 21:38:24 +0000 (UTC)
+	s=arc-20240116; t=1767284293; c=relaxed/simple;
+	bh=uKMD+YVerNdxBNPgulQjVdLKZtk3V9JT3BlPXYGr/IM=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=aPe5Vu4XrE9JMsjqtFVmJx3DQ8h+weFJDG9ww3JHPdzVbLTIUNLdK3d6uIL5WuQFPA9RxVwprI27/S2Mt5esHHHD3RMCsmwWh83GR4AJf8CP2hVCv2kHiOPA0D7Rn3FAvJYbNjbk8WBwcrkZ3s/eKLwekDYbpQGHTbe44W+gZyo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NripT5A5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 57868C4CEF7;
+	Thu,  1 Jan 2026 16:18:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767217104;
-	bh=bNI4moxHzlL6mKNWIZsVYWKbjwRce0cuGLHEF0rQIaQ=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=Ud1JCDQ6O191m3kYD44vkt1ShFs9vgo4JobjnhWd+evWDfkmkNYuJI5wcSNL4tWrL
-	 0Z7WpJ+bn7kwco/mfx1YQUb+Cf2JEoE/aLmZRvF04wFMC+yaiiiu1Wrne8U3CLXW7m
-	 rlf4vA2wklUadaJzq65C3YgpX5x29MdV+ltwo/Vd2zN8HofhUcqV8WbtJ0uksC688J
-	 ++6tS4KWFBNxOPHIOXyel+T5t0WvUdmHTbHNbqpkG920NCyjtE7n4FDHgl2Y4TBj64
-	 W6M7ykqRfovFexXy0AhEWH8mXR/2CkOb0cvGL234hY0g3gpG0VTXQnHhEZE4eY7Nqc
-	 84vzL6TQKrNEA==
-Received: by mail-yw1-f173.google.com with SMTP id 00721157ae682-78a712cfbc0so101524417b3.1
-        for <linux-iio@vger.kernel.org>; Wed, 31 Dec 2025 13:38:24 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCXcr9xSCQKChb+XJmz8Ob6MY00PBW43xqq2uZENoYJ1XTjB1BakS+52qSNMRCAwxlUCW8T8gZ+seZQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yyepqp4nVDyNi6Y9wTAwnK4DQl0foFyfJvh0xB0gkA+fMbLspmt
-	S/kJmyqh4bqjWLA6jmNJ1U8MsaJVJKugJKkfxHkcC33HrXrdmqNIg8REJcmBDN/zfgb+w9wa+j8
-	goe72J0On7ydcN7ksTl8fKS9k+FDKaSI=
-X-Google-Smtp-Source: AGHT+IHGZ+h0d0MHZDCxvMCHygNM5e2LD8BSbr6KIbsOXsE3Z3p+Mpa0Okg+bD8neauLjOFoWJ8WBhGUbfiIcHde2OA=
-X-Received: by 2002:a05:690c:90:b0:78f:a9e9:f784 with SMTP id
- 00721157ae682-78fb3f5d4f4mr320728627b3.31.1767217103495; Wed, 31 Dec 2025
- 13:38:23 -0800 (PST)
+	s=k20201202; t=1767284292;
+	bh=uKMD+YVerNdxBNPgulQjVdLKZtk3V9JT3BlPXYGr/IM=;
+	h=From:Subject:Date:To:Cc:Reply-To:From;
+	b=NripT5A5OiQXwG901sjdHBgdv/lMgAjxc074gYhOOKj+MfH1oAyLO2v1LjUc5StsL
+	 yj9HHQkIV9zV2EJ8KSmrITE/MklozaD2TmQfzKX+jmNXQuUFydczV4293U20fMOniK
+	 K4vZ2HlWplvsE7qLxMFuz+Yvp+rtmtX8e0rzSsPmuj5flsSLAsR8QlqoYwEf8E0VL3
+	 3jjAGtRzyBaANAHb9CacEdBoRgUIvEFoBBtTpn2FGBDYQEG3mPQn4vnIW4J4+kzxSm
+	 NMNr+PCSJqNuTrDcN2iYfj5IwwQpn/W8UuPjK+3wmBZPT5BZQt+LlTlJMr1g33X6Et
+	 SC2E/B23maQhg==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 43003EED615;
+	Thu,  1 Jan 2026 16:18:12 +0000 (UTC)
+From: Shrikant Raskar via B4 Relay <devnull+raskar.shree97.gmail.com@kernel.org>
+Subject: [PATCH v4 0/4] iio: proximity: Add interrupt support for RFD77402
+Date: Thu, 01 Jan 2026 21:47:37 +0530
+Message-Id: <20260101-b4-rfd77402_irq-v4-0-42cd54359e9f@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251211-dev-dt-warnings-all-v1-0-21b18b9ada77@codeconstruct.com.au>
- <20251211-dev-dt-warnings-all-v1-3-21b18b9ada77@codeconstruct.com.au>
-In-Reply-To: <20251211-dev-dt-warnings-all-v1-3-21b18b9ada77@codeconstruct.com.au>
-From: Linus Walleij <linusw@kernel.org>
-Date: Wed, 31 Dec 2025 22:38:12 +0100
-X-Gmail-Original-Message-ID: <CAD++jL=TXQyGD5nSdg37KK=OrUJDwi=2pXQciLr+udC9hjCVkw@mail.gmail.com>
-X-Gm-Features: AQt7F2oBzR1qfgGQMAe5k9Xw2nDJvErMxOKzOVsHNn8uiB-Wg9Ho6D3OL063WYs
-Message-ID: <CAD++jL=TXQyGD5nSdg37KK=OrUJDwi=2pXQciLr+udC9hjCVkw@mail.gmail.com>
-Subject: Re: [PATCH RFC 03/16] pinctrl: aspeed: g5: Allow use of LPC node
- instead of LPC host controller
-To: Andrew Jeffery <andrew@codeconstruct.com.au>
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
-	Conor Dooley <conor+dt@kernel.org>, Joel Stanley <joel@jms.id.au>, linux-hwmon@vger.kernel.org, 
-	devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
-	linux-aspeed@lists.ozlabs.org, linux-kernel@vger.kernel.org, 
-	openbmc@lists.ozlabs.org, linux-gpio@vger.kernel.org, 
-	linux-mmc@vger.kernel.org, linux-crypto@vger.kernel.org, 
-	linux-iio@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIACGeVmkC/x3MTQqAIBBA4avErBMmlYSuEhGaY82mnxEiCO+et
+ PwW772QSZgyDM0LQjdnPvYK2zawbH5fSXGsBo26xw47FaySFJ2zqGeWS5kYfR980sYh1OoUSvz
+ 8x3Eq5QNLQss4YQAAAA==
+X-Change-ID: 20260101-b4-rfd77402_irq-3dda6baf2370
+To: Jonathan Cameron <jic23@kernel.org>, 
+ David Lechner <dlechner@baylibre.com>, 
+ =?utf-8?q?Nuno_S=C3=A1?= <nuno.sa@analog.com>, 
+ Andy Shevchenko <andy@kernel.org>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>
+Cc: raskar.shree97@gmail.com, skhan@linuxfoundation.org, 
+ david.hunter.linux@gmail.com, linux-iio@vger.kernel.org, 
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1767284290; l=2057;
+ i=raskar.shree97@gmail.com; s=20260101; h=from:subject:message-id;
+ bh=uKMD+YVerNdxBNPgulQjVdLKZtk3V9JT3BlPXYGr/IM=;
+ b=QeBOXo7QsqTkrTgk2V4poG9kBTJvzCdU4jyE/bmrqDdzRTYLWqw/gnH3IbgI2UydC8unw7f3Q
+ Dv/AMHop7ULBrKzR938Qp6AvVvcA06b0/BSEMhAHe7IYkeds5umHHst
+X-Developer-Key: i=raskar.shree97@gmail.com; a=ed25519;
+ pk=4m2wXDvY0vlXefvRRzawNcNAif88Cy4XvbLkU6iMG/Y=
+X-Endpoint-Received: by B4 Relay for raskar.shree97@gmail.com/20260101 with
+ auth_id=589
+X-Original-From: Shrikant Raskar <raskar.shree97@gmail.com>
+Reply-To: raskar.shree97@gmail.com
 
-On Thu, Dec 11, 2025 at 9:46=E2=80=AFAM Andrew Jeffery
-<andrew@codeconstruct.com.au> wrote:
+This patch series adds:
+ - Add RF Digital vendor prefix
+ - YAML binding for RFD77402
+ - Add OF device ID for enumeration via DT
+ - Use kernel helper for result polling
+ - Interrupt handling support
 
-> There's currently a wart where the Aspeed LPC host controller has no
-> binding specified, but the pinctrl binding depends on referencing its
-> node.
->
-> Allow specification of a phandle to the parent LPC controller instead.
-> Fall back to testing for a compatible parent node if the provided
-> phandle doesn't directly resolve to the LPC controller node.
->
-> Signed-off-by: Andrew Jeffery <andrew@codeconstruct.com.au>
+These changes enable DT-based configuration and event-driven
+operation for the RFD77402 Time-of-Flight sensor.
 
-Reviewed-by: Linus Walleij <linusw@kernel.org>
+Changelog:
+- Resend the patch series as v4 since not all patches were delivered
+in v3 due to SMTP daily sending limits.
+- Add 'Reviewed-by' tag to dt-binding patch.
+- Update commit message in OF device ID patch.
+- Update commit message in the third patch.
+- Replace rfd77402_result_polling() with read_poll_timeout().
+- Add 'struct rfd77402_data' details in kernel-doc format.
+- Arrange includes in order.
+- Add comment for completion timeout value.
+- Remove blank lines.
+- Indent the comments to code.
+- Convert mutex_init() to devm_mutex_init().
+- Remove 'IRQF_TRIGGER_FALLING' flag from devm_request_threaded_irq().
+- Drop the duplicate message.
+- Replace 'dev_info' with 'dev_dbg()'.
+- Update 'dev_id' to 'pdata' in rfd77402_interrupt_handler().
+- Drop 'interrupt mode' comment
+- Use 'if(ret)' instead of 'if(ret < 0) for consistency.
+- Use 'return i2c_smbus_write_byte_data()' in 'rfd77402_config_irq'.
 
-I guess when this is non-RFC I will just apply these two patches.
+Signed-off-by: Shrikant Raskar <raskar.shree97@gmail.com>
+---
+Shrikant Raskar (4):
+      dt-bindings: iio: proximity: Add RF Digital RFD77402 ToF sensor
+      iio: proximity: rfd77402: Add OF device ID for enumeration via DT
+      iio: proximity: rfd77402: Use kernel helper for result polling
+      iio: proximity: rfd77402: Add interrupt handling support
 
-Yours,
-Linus Walleij
+ .../bindings/iio/proximity/rfdigital,rfd77402.yaml |  53 ++++++++
+ .../devicetree/bindings/vendor-prefixes.yaml       |   2 +
+ drivers/iio/proximity/rfd77402.c                   | 149 ++++++++++++++++++---
+ 3 files changed, 183 insertions(+), 21 deletions(-)
+---
+base-commit: d8ba32c5a460837a5f0b9619dac99fafb6faef07
+change-id: 20260101-b4-rfd77402_irq-3dda6baf2370
+
+Best regards,
+-- 
+Shrikant Raskar <raskar.shree97@gmail.com>
+
+
 

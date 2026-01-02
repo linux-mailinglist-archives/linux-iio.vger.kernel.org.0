@@ -1,226 +1,123 @@
-Return-Path: <linux-iio+bounces-27467-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-27468-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 87D29CEE8C2
-	for <lists+linux-iio@lfdr.de>; Fri, 02 Jan 2026 13:34:27 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 134B1CEE8F1
+	for <lists+linux-iio@lfdr.de>; Fri, 02 Jan 2026 13:42:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 66EA73012DF8
-	for <lists+linux-iio@lfdr.de>; Fri,  2 Jan 2026 12:34:24 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id E5BF43007DA4
+	for <lists+linux-iio@lfdr.de>; Fri,  2 Jan 2026 12:42:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 860472E8B8B;
-	Fri,  2 Jan 2026 12:34:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D11BA30FC23;
+	Fri,  2 Jan 2026 12:42:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="SRPOQG/X"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="DJhxJsoj"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B880F7262A;
-	Fri,  2 Jan 2026 12:34:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.13
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D050E30F930
+	for <linux-iio@vger.kernel.org>; Fri,  2 Jan 2026 12:42:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767357263; cv=none; b=UYnCLsObtqT55RxahmkMs83ymCBmgUjDrLTpfY5EnJ6jp+0qftqr6UBsoyrOtRvhPkCnS87Fw/tbQ7CGmSkulUWADquqqUjQx8XvJBg0jg3pnGN1lMWh9nKP1YMbZx3n+vqFqopiEiFG01FNcxRuNC9ADQmF9QZ3foEDE+Fyw6U=
+	t=1767357761; cv=none; b=H/d3XziA+5vSBLTYS3L4QQIAqNGxt01pA+RR1qh/zj5V5sXUgoSF6bXLB3buoVdsclO2DReRW4d5GTOTncw8/gGG+uTGzaypb110oCxpaidnnF+ojluMiljoUsfuCfwEm2KoO6YmTS3HTXj2bB7fsoaXv8har+Uhf0wABH3zL2k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767357263; c=relaxed/simple;
-	bh=Q4DM2XFHhXSfD4G/rmWG1+RJvma9k4Igb/0cDI84WQg=;
+	s=arc-20240116; t=1767357761; c=relaxed/simple;
+	bh=HOm2IqfYzkNKgPwQOHGaizp/0DxRn/rEw1rMl9/sFrI=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=IRLn4wdUN64nswYsJ313rqqflbp6po2WfZq1vsEoYYhjG3Y1nfWZGAfhKyQpPUnA0cBQkuUdqd7s5wl9Pa6zHl7eVaz+hfv0lfV4n6dY1rTK0A1McKUwzmAFQaHCGApsPIh2LgkD6zBU6RQ3WrpWG/ot6MLzpjefd5UmBeaQUc8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=SRPOQG/X; arc=none smtp.client-ip=192.198.163.13
+	 Content-Type:Content-Disposition:In-Reply-To; b=eH0+pHX8b5XOfQ/pqlzD4rxLJrwoThv0AUDGNmPEizE9HbOhvAU2gxfBCwCR9ix+iUWSoFJYczzRK70HsOUSCGMlO3Ee32EGyivxv8eSVMwByougWPmisFsj15SlFkGDZnmtcVVu5cdk6/VPeH/qQZt1AvBTqlbAzoW3+Swf8ZA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=DJhxJsoj; arc=none smtp.client-ip=192.198.163.14
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1767357262; x=1798893262;
+  t=1767357760; x=1798893760;
   h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=Q4DM2XFHhXSfD4G/rmWG1+RJvma9k4Igb/0cDI84WQg=;
-  b=SRPOQG/XZz207CXvNPBAUPokplSsUEXkcZbBFaMZY011YUL+mSnQk+Nn
-   MmU5wVKIgcg7sClU7WSc2VI+EYon3vrKo3KdvNs+6zcb9XpXof6vPMLza
-   Sd7aD/2H2RLETEMBVQBt/LCVc+ankwaARCV4rRaC/BTBp2Jl+37qRtrOT
-   fgxKHVmTK9abQ8C+e8Vn/mlIAaxGgibIIQNPZkByzhQRRehM0137bSYxg
-   vcOB9Lib7xRVuu1bgkvkNCt3ZDzAYdBgVrqcviitdbf2nmreob4TUXaHJ
-   zIVjmNVuaTJ2dN267N3AVJz67ucViMorj3ztGejINspHvCszRvArr2fWe
-   A==;
-X-CSE-ConnectionGUID: 9M6wkN6JQsqa4uj86sRvlg==
-X-CSE-MsgGUID: vxt3Mc6aTuifKEqT2Uxpow==
-X-IronPort-AV: E=McAfee;i="6800,10657,11658"; a="71432061"
+   mime-version:content-transfer-encoding:in-reply-to;
+  bh=HOm2IqfYzkNKgPwQOHGaizp/0DxRn/rEw1rMl9/sFrI=;
+  b=DJhxJsojQAKXIH6vHjR6z5+mPsJ/ReQJIdFdMzWkMgA4GUrCfQ+Ilfi1
+   mQ0AonfkuA53mjNPWuVfBT5emV7uoVLxqp14buIi9mA/HyHISoLYzl1hG
+   IWInOZTtalg/M8FxbPL+pAh5ZHt3hbGSCi59RKuh3FG8sFwyHA54f7zhq
+   kfplodhn6z3gX57PHBU1oZYhfYIdzzLgtykBlwUpqBDLl7L79qLCj1AWj
+   ojnfUgUlqqf/HBURl3w8QQlXkmRdzLG8SktMATcOEeWhiXl5Kk4dBJ6dm
+   leeIm+SJguguSdOOGHVSuo7/R6chSLTgJVrcGcjoOqprIOwDqTdtsbeUI
+   w==;
+X-CSE-ConnectionGUID: yAsX6Zu4TJed3WLZ+SR1rg==
+X-CSE-MsgGUID: QbVgMbYOT92QNpJRJjlWjg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11658"; a="68887999"
 X-IronPort-AV: E=Sophos;i="6.21,197,1763452800"; 
-   d="scan'208";a="71432061"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
-  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Jan 2026 04:34:21 -0800
-X-CSE-ConnectionGUID: 6UD8Z8RcTbmQooNHNOxIJQ==
-X-CSE-MsgGUID: M2rzRvqeTPKqCyiVKx7e7w==
+   d="scan'208";a="68887999"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Jan 2026 04:42:39 -0800
+X-CSE-ConnectionGUID: ymCxGoXpTsKQNsdJdorXWQ==
+X-CSE-MsgGUID: Hvg2IWDgR9+ew9tOYAHGVw==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.21,197,1763452800"; 
-   d="scan'208";a="206299625"
+   d="scan'208";a="201571676"
 Received: from ncintean-mobl1.ger.corp.intel.com (HELO localhost) ([10.245.244.46])
-  by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Jan 2026 04:34:18 -0800
-Date: Fri, 2 Jan 2026 14:34:16 +0200
+  by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Jan 2026 04:42:36 -0800
+Date: Fri, 2 Jan 2026 14:42:31 +0200
 From: Andy Shevchenko <andriy.shevchenko@intel.com>
-To: raskar.shree97@gmail.com
-Cc: Jonathan Cameron <jic23@kernel.org>,
+To: Nuno =?iso-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
+Cc: Andy Shevchenko <andy.shevchenko@gmail.com>, nuno.sa@analog.com,
+	linux-iio@vger.kernel.org, Jonathan Cameron <jic23@kernel.org>,
 	David Lechner <dlechner@baylibre.com>,
-	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
-	Andy Shevchenko <andy@kernel.org>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, skhan@linuxfoundation.org,
-	david.hunter.linux@gmail.com, linux-iio@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v4 4/4] iio: proximity: rfd77402: Add interrupt handling
- support
-Message-ID: <aVe7SP914oI-jAam@smile.fi.intel.com>
-References: <20260101-b4-rfd77402_irq-v4-0-42cd54359e9f@gmail.com>
- <20260101-b4-rfd77402_irq-v4-4-42cd54359e9f@gmail.com>
+	Andy Shevchenko <andy@kernel.org>
+Subject: Re: [PATCH 3/6] iio: buffer-dma: Turn iio_dma_buffer_init() void
+Message-ID: <aVe9N4rvCEaI6OyP@smile.fi.intel.com>
+References: <20251203-iio-dmabuf-improvs-v1-0-0e4907ce7322@analog.com>
+ <20251203-iio-dmabuf-improvs-v1-3-0e4907ce7322@analog.com>
+ <aTBmriwVrMwlKiXX@smile.fi.intel.com>
+ <760dce5b5721ae6e46daeac03b96df7b009db3ce.camel@gmail.com>
+ <CAHp75Ve5TF76gOVgxxW_RGqD10L40EC+gu3URfwrKk-gkh7Q4g@mail.gmail.com>
+ <9b92a721cefe9ace63b15d049c463f4c26079d9d.camel@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20260101-b4-rfd77402_irq-v4-4-42cd54359e9f@gmail.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <9b92a721cefe9ace63b15d049c463f4c26079d9d.camel@gmail.com>
 Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
  krs, Bertel Jungin Aukio 5, 02600 Espoo
 
-On Thu, Jan 01, 2026 at 09:47:41PM +0530, Shrikant Raskar via B4 Relay wrote:
-
-> Add interrupt handling support to enable event-driven data acquisition
-> instead of continuous polling. This improves responsiveness, reduces
-> CPU overhead, and supports low-power operation by allowing the system
-> to remain idle until an interrupt occurs.
-
-...
-
->  #include <linux/module.h>
->  #include <linux/i2c.h>
->  #include <linux/delay.h>
-> +#include <linux/interrupt.h>
-> +#include <linux/completion.h>
->  #include <linux/iopoll.h>
-
-Same comment as per previous patch. Do not add even more misordering, please.
+On Fri, Jan 02, 2026 at 10:25:20AM +0000, Nuno Sá wrote:
+> On Sat, 2025-12-27 at 16:02 +0200, Andy Shevchenko wrote:
+> > On Fri, Dec 19, 2025 at 5:03 PM Nuno Sá <noname.nuno@gmail.com> wrote:
+> > > On Wed, 2025-12-03 at 18:34 +0200, Andy Shevchenko wrote:
+> > > > On Wed, Dec 03, 2025 at 03:11:38PM +0000, Nuno Sá via B4 Relay wrote:
 
 ...
 
-> +/**
-> + * struct rfd77402_data - device-specific data for the RFD77402 sensor
-> + * @client: I2C client handle
-> + * @lock: mutex to serialize sensor reads
-> + * @completion: completion used for interrupt-driven measurements
-> + * @irq_en: indicates whether interrupt mode is enabled
-> + */
->  struct rfd77402_data {
->  	struct i2c_client *client;
-> -	/* Serialize reads from the sensor */
->  	struct mutex lock;
-> +	struct completion completion;
-> +	bool irq_en;
->  };
+> > > > > While at it, fix a mismatch between the function declaration and definition
+> > > > > regarding the struct device (dma_dev != dev).
+> > > > 
+> > > > So, all others use simple dev?
+> > > 
+> > > Totally forgot about this. What do you mean by the above? If other functions in the
+> > > header use just dev? If so, the one I changed is the only one that uses struct device
+> > > (in that header). It is also consistent with what we have for the devm_iio_dmaengine_*
+> > > APIs.
+> > 
+> > Does the device, that is physical, DMA? Or is it a separate device for
+> > that purpose? I mean that naming may suggest that they are different
+> > devices. The original Q was about APIs. Are all of them, after your
+> > patch, use the same device semantically?
+> 
+> This device is the DMA capable device which provides the DMA chan
 
-The kernel-doc conversion can be a separate patch, but I'm not insisting.
+A side note, DMA capable device and device that provides DMA chan depending on
+the topology can be still different devices. So, the sentence above makes a
+little sense to me due to "DMA capable device which provides DMA chan" passage.
 
-...
+> which indeed is not the same as the struct device in the devm APIs (that one
+> is the consumer). So dma_dev might be a better name even though the docs
+> already make it clear.
 
-> +static irqreturn_t rfd77402_interrupt_handler(int irq, void *pdata)
-> +{
-> +	struct rfd77402_data *data = pdata;
-> +	int ret;
-
-> +	if (!data || !data->client)
-> +		return IRQ_NONE;
-
-How is this possible to be non-dead code?
-
-> +	ret = i2c_smbus_read_byte_data(data->client, RFD77402_ICSR);
-> +	if (ret < 0)
-> +		return IRQ_NONE;
-> +
-> +	/* Check if the interrupt is from our device */
-> +	if (!(ret & RFD77402_ICSR_RESULT))
-> +		return IRQ_NONE;
-> +
-> +	/* Signal completion of measurement */
-> +	complete(&data->completion);
-> +	return IRQ_HANDLED;
-> +}
-
-...
-
-> +static int rfd77402_wait_for_irq(struct rfd77402_data *data)
-> +{
-> +	int ret;
-
-Missed blank line. Doesn't checkpatch complain?
-
-> +	/* As per datasheet, single measurement flow takes 100ms */
-
-Please, be more specific about datasheet, i.e. which Chapter/Section (with its
-number and possible name) or Table specifies this.
-
-> +	ret = wait_for_completion_timeout(&data->completion,
-> +					  msecs_to_jiffies(100));
-> +	if (ret == 0)
-> +		return -ETIMEDOUT;
-> +
-> +	return 0;
-> +}
-
-...
-
-> +static int rfd77402_measure(struct rfd77402_data *data)
->  {
-> +	struct i2c_client *client = data->client;
-
-This (conversion to data instead of client) can be split into a separate
-precursor change.a but it seems not a big deal. Up to maintainers.
-
-...
-
-> -	/* Poll ICSR until RESULT bit is set */
-> -	ret = read_poll_timeout(i2c_smbus_read_byte_data, ret,
-> -				ret & RFD77402_ICSR_RESULT,
-> -				10000,    /* sleep: 10ms */
-> -				100000,   /* timeout: 100ms */
-> -				false,
-> -				client, RFD77402_ICSR);
-> +	if (data->irq_en) {
-> +		/* Re-initialize completion and wait for interrupt */
-> +		reinit_completion(&data->completion);
-> +		ret = rfd77402_wait_for_irq(data);
-> +	} else {
-> +		/* Poll ICSR until RESULT bit is set */
-> +		ret = read_poll_timeout(i2c_smbus_read_byte_data, ret,
-> +					ret & RFD77402_ICSR_RESULT,
-> +					10000,      /* sleep 10ms */
-> +					100000,     /* timeout 100ms */
-> +					false,
-> +					client, RFD77402_ICSR);
-> +	}
-
-This is ping-pong type of change. You just introduced it a patch ago. Make sure
-you don't remove/modify (too much at least) the lines that were just added.
-
-One of the possible technique to achieve this is to use a helper function.
-
-...
-
->  static int rfd77402_init(struct i2c_client *client)
->  {
-> +	struct iio_dev *indio_dev = i2c_get_clientdata(client);
-> +	struct rfd77402_data *data = iio_priv(indio_dev);
-
-Can't this now take the data as above modified functon?
-
-...
-
-> -	mutex_init(&data->lock);
-> +	ret = devm_mutex_init(&client->dev, &data->lock);
-> +	if (ret)
-> +		return ret;
-
-In my opinion this deserves a separate change.
+Thanks for confirming this!
 
 -- 
 With Best Regards,

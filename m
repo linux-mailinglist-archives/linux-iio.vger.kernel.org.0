@@ -1,182 +1,135 @@
-Return-Path: <linux-iio+bounces-27463-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-27464-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id CCAC2CEDEBC
-	for <lists+linux-iio@lfdr.de>; Fri, 02 Jan 2026 08:14:01 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 26FF6CEE290
+	for <lists+linux-iio@lfdr.de>; Fri, 02 Jan 2026 11:24:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id F190030006C0
-	for <lists+linux-iio@lfdr.de>; Fri,  2 Jan 2026 07:13:58 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D43093007C75
+	for <lists+linux-iio@lfdr.de>; Fri,  2 Jan 2026 10:24:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 97CF72D2496;
-	Fri,  2 Jan 2026 07:13:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19BF52D8DD9;
+	Fri,  2 Jan 2026 10:24:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FqEkGRag"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="eFy5F7c5"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-lf1-f43.google.com (mail-lf1-f43.google.com [209.85.167.43])
+Received: from mail-wr1-f46.google.com (mail-wr1-f46.google.com [209.85.221.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49BBD2D23A5
-	for <linux-iio@vger.kernel.org>; Fri,  2 Jan 2026 07:13:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 412DE25BF13
+	for <linux-iio@vger.kernel.org>; Fri,  2 Jan 2026 10:24:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767338037; cv=none; b=OVpTtxXgQ1qDuDZLjCmXcrzN1IBkRtAY0pqLa+ropFG4c3YchmbzG3njVmm5GfBUUFVs7ePGB+UVxiZAjXFGCIRM+UPrEXYQ9KVdeHQ5fPBdDiXtJ2GjhkJE76bKWWddu3Uy9bndVDxzBozDEfh1m41b54WVYZr34Ku6GqKd4YQ=
+	t=1767349482; cv=none; b=YlvR4U24qdu2/8fnbGRTN0+tXlEo+Abuq31QitH7d+WY1yIl/Ydhf8RT6RHQfU06DFzgo/me2wffifueY0lBfdG0W6EEVzDV4BAbXqqyysX1/xZOeYS4id87DD1d9Ah7vr1n//6Hloq5F0FRg02js1OkgwX+OOgcfPEaoSKnsds=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767338037; c=relaxed/simple;
-	bh=qKiyom99dAPdhTsRHOQbDoHAlx2my9yh+xilqEmgxj0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=b5ZAbMGQL0pP/KvRrzJO+7Bz0CYMIjDQnx1sp6XulUCQcU7qExulw0HpTlKTOx35kByV6rAwS9Or4Cw/TQPj4Kx+lIIjnepwwy2evyntOcgBvOHg9WdNFYlAj1vMXe4Bzcd9+mg665KJAhoLORZMW6WPzUFbS76dHJ/P+eFBAa8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FqEkGRag; arc=none smtp.client-ip=209.85.167.43
+	s=arc-20240116; t=1767349482; c=relaxed/simple;
+	bh=Inf6vFoMr7AeWr71RodfHSvYSwpzt/uXSmUX8arDCWE=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=FFWaqlTQuVlc+UTHc+SzklZLb2/KeyOc22fornOBfe0FHOJDJi6Q2iMm0MdqCyzIQz2NP7++Vp6ltqzq5BDm/fE1qN9ucS89usf+ggIZ1P5uRVMD8oZTjWPyIKthrH/bhMGK28kNPbL0oLeL09lT5dUfLrf+rDejFCCjX0Hhu/k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=eFy5F7c5; arc=none smtp.client-ip=209.85.221.46
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lf1-f43.google.com with SMTP id 2adb3069b0e04-59a10df8027so15310566e87.0
-        for <linux-iio@vger.kernel.org>; Thu, 01 Jan 2026 23:13:55 -0800 (PST)
+Received: by mail-wr1-f46.google.com with SMTP id ffacd0b85a97d-42e2e3c0dccso7193984f8f.2
+        for <linux-iio@vger.kernel.org>; Fri, 02 Jan 2026 02:24:40 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1767338033; x=1767942833; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=tg52KgPh/NvG5/ca0UMnjXjSLLXRaw8PfZe/uXtCJoM=;
-        b=FqEkGRag1hR7wDZXO8P1cTExbsCozjqpRS8cGrvc2SL+7O7ZANt4juPrrJ6W2307CD
-         ZcpcMqw/Fs2w4nONIkXFfa1t0EsWT8m5POsQMQXb1owviIep5RDx7RgI2nErcGBsqk1A
-         u3RfDzVSoNPUcJSpvsKjAZIEO9WQL7J5SPNYcYpZckG7s/TOHbK73M0D0d4yO6sVnlRH
-         DwJ4XBApvi8FcZWdmNFddYuTpvrp+HUI69R4Wm7uP8oZqCdWSjmUMghxP7RyzrDXSO/o
-         Msxn/KRw9zL9inzpWxbOiK1hUSwebiRY3GxBOv2I4UF4yD4amJRyANe1i+Q0+5rDQGfI
-         cJ+Q==
+        d=gmail.com; s=20230601; t=1767349479; x=1767954279; darn=vger.kernel.org;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=Inf6vFoMr7AeWr71RodfHSvYSwpzt/uXSmUX8arDCWE=;
+        b=eFy5F7c5eEgzyeC92gW5cQmJFNNJvt9scx7hdnKpCwcLD45tnN/xasvLXH21Lc6owE
+         QhcAS8a1IRWWl41ASleC66TfzAzbd3dFE20KfRFIqzgpMv2DdWR6A7WiBnqqgZ5E6QbY
+         XLInDsT5pksM3j6DSgSyWPlY/dsAOg7EVXZ+7j0692G4i7st4DUAfTUiQfE5fbvNiBLr
+         WopwLRTU80aRxufzhVBSpTzEEh9HbM4NMs17vpwbpjOQZ09MXBhcZHbeNDAdCKWqpW2r
+         1c2JRefoItqLx1PjJQCYglCcgXY3mx4L/U0/mcrPMDxi+akNbnsxOXDRnaEF05xxkmym
+         hUqg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767338033; x=1767942833;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=tg52KgPh/NvG5/ca0UMnjXjSLLXRaw8PfZe/uXtCJoM=;
-        b=ttt52NKI5XEPJsYSL5VbbuWzwvw8pn0Oa9lifJyRT1/Ptn6ix54FFTAFy3rsJjej8A
-         HzylRtRvkRlln5SOLMcHJNiG3AD1zPwDMHXpJu6E6iwizSYNXA4hnvHgCdF8JfA/LvBA
-         VQ7yX4d+yvPmMdB7Z/Jcf5JNmkpmuHH4ICT//a/7a+Fci44AIfiE8s4U+ME4zouV5kzL
-         +EUgSy9nh5YAoSOg5j2nqG7s8U6XUh3eMVOF69Zp0AZg9zd4dcgJ5Q1ASJ18HFzY2wWW
-         Hw85rnYJfFrGuNqtpSWIxPwRno2cl9iFZmbqs1pgm1ghW6xgbNfXbgpJb7ME1yiM2fOw
-         50iw==
-X-Forwarded-Encrypted: i=1; AJvYcCXtwWlWbKVEw5s3u/r/xVmGYz0yckDv5stvFFIpnCU4msBPj7PUfVSPVx7M21VxTyuQMxHVH1QZKhU=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz6oVFNEnENHZ6ZSbGkUi7SUeKQJGs9gv+EqKXcft8TeeyIgGCy
-	pAbUcMoCOZmanF1RCqVb0EVupE/s+Eiov9OsfDlZt3jPtyk7I+xPdGBz
-X-Gm-Gg: AY/fxX6JhlW2NAoJw/thVOQoQzqK8fbYv1KRI3dnYbbZFzvJZxbXtEMBRWvdRXvNBwm
-	uX2FMZ/59Z3tyPXFWjqaBdgdyU7oVW1nPQjGtLAMQWekZTU9BrZ8ctY963v44GHv8C1XyVlfFtg
-	TAbbeimNn6cD1rc1dsSYWLnWvsHI84c2KyyU+F96eTPHmAAjxoHQNzHJQ9fbt8VmsFpdWkVOIVc
-	9va4FKkcoXku1GbzJmxDQDTB0jZn7inW8CHDFKug20UCyeKrDrtYwaagwMvclkvwoAgZPT7/Jzq
-	SgWW/yFC2xSqJlJ2CgoY1yEymrIp9dVZkU5m5Xcca6kkNPzJnyKVARkoQwA2D524CetNSrf7sMi
-	zbWMsAGnnBwJyJiYur3IE3xNZw3S8yzU+TWOFeGDbWpk3MPPY7oZK4ocZSkP9XHeSA2DFF088k8
-	8JpZHIk7rNEyffE1YTSi6D8QLuQlpYQ0GEqkuCdQHPlTPba1JE0NsW/MJ9o1MtGwQmo1ZbDd3vu
-	3UYRQo=
-X-Google-Smtp-Source: AGHT+IG75hLZGe23C83lYw1IAkO8e8F0HYc9BVU+2CL/EGVHlCP9ievAZqLOw92DkpoMu4U19kPL3Q==
-X-Received: by 2002:ac2:4c47:0:b0:598:a597:62f8 with SMTP id 2adb3069b0e04-59a17d24978mr15276452e87.17.1767338033039;
-        Thu, 01 Jan 2026 23:13:53 -0800 (PST)
-Received: from ?IPV6:2a10:a5c0:800d:dd00:8fdf:935a:2c85:d703? ([2a10:a5c0:800d:dd00:8fdf:935a:2c85:d703])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-59a185d5ea6sm12019590e87.5.2026.01.01.23.13.51
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 01 Jan 2026 23:13:52 -0800 (PST)
-Message-ID: <286a032d-7a14-409d-9bb3-6033c35f8e99@gmail.com>
-Date: Fri, 2 Jan 2026 09:13:51 +0200
+        d=1e100.net; s=20230601; t=1767349479; x=1767954279;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=Inf6vFoMr7AeWr71RodfHSvYSwpzt/uXSmUX8arDCWE=;
+        b=Ndu0v/9fpSa0YZKV/Hwklt2DHocxyHav46pHxF5dq+I98eCYv9ys1E2ZL+QCSNOAUr
+         P0g/5OW41X7vQSH77Nd6y7URliJyc3mYHU+0KBJA+JoU08Wh/op08zLrXzdztncRyEO6
+         IwwuLaKdsF1fTwLMqamHmsRnhNUrbweGAYeerzwu0RG1ntBUx+9Tlhk4fmmw9WCAM7xA
+         icBIIVL4bg39FJm5TmsIrWvC2YnbK6xuN1ryY0v6R4CESNW/s5zVi0nCnPa9Sz9/cisF
+         SgeF11tDCJcxRXOvv8kr2jI/MHRgsD9+LTBX0LMbn3rCrDLX3Tc/NgCvPEUAOFNNJRxb
+         0XnA==
+X-Forwarded-Encrypted: i=1; AJvYcCX03iUI5a+my7JOc7rdZHp2ggY04W9H+zzrKHxu8I8sdTrpgAbuW5ev1w+jlGPdGOiHFhTy5BmROgo=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzaIt7C+5KkAZe+ya7k5d5NVESYuUNye9OX6YHnHkyo5f6wQnJ8
+	n4B36R4xPXTMB2SHT/CrrWuS2YjD8tNV1bis8FGpsTSJ/g6M3+nVudIf9QQUfw==
+X-Gm-Gg: AY/fxX7ayEPlWX9rw0EM2xPzIwW+ENFMp+bPMRSuZJr3DQ7Te16B+VpwdwUJe/JVIas
+	Z5QC5wIqf5G3h0kMlTFRI3BzTT4/04nO4aPP9hxCedCbfSaJhF+ldGLIiDhMVu4HoTQl/1pQckO
+	iXDjqwUaC3gHqZsj2vm6eDYj74uZoCfBgC/61JXfN0Mj4ARR5h4w578htsfweNwkF2QAs1YY5Iz
+	bSkC/XvYP+z8dOt9E/BP0/LjY0HLS4Z24bolnzUTCmMqh1DSNyRMCygq8jNf5b6KSSCzjSHsWqH
+	DSzOcF7FX3Wezs7k3UWbczsk7Z4nVdHa6kROcaaAwD/8Ko7KFdz5ymgChCmvsJ+YskMCeUc+UFB
+	scfzsQaDU1krmhtWHdQEzKW4BDTegzMSzFAV5gMQ99g+eJDhR9dkE6i1WWmUMQ4T+a3S0Almn4o
+	md0T3m1g2tFIBFsARkalFeNzI2/qG7Kw==
+X-Google-Smtp-Source: AGHT+IEbWTlbn3sMz1WvkvC70j6Yrk4Syhk4VJsVpP3UvOR5dQyrK+j7xHFMD0t8mVZa9KJOeuUcFA==
+X-Received: by 2002:a5d:5f46:0:b0:431:9b2:61c4 with SMTP id ffacd0b85a97d-4324e50d540mr57964389f8f.45.1767349479286;
+        Fri, 02 Jan 2026 02:24:39 -0800 (PST)
+Received: from [192.168.1.187] ([161.230.67.253])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4324ea1aef7sm83919335f8f.7.2026.01.02.02.24.38
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 02 Jan 2026 02:24:38 -0800 (PST)
+Message-ID: <9b92a721cefe9ace63b15d049c463f4c26079d9d.camel@gmail.com>
+Subject: Re: [PATCH 3/6] iio: buffer-dma: Turn iio_dma_buffer_init() void
+From: Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
+To: Andy Shevchenko <andy.shevchenko@gmail.com>
+Cc: Andy Shevchenko <andriy.shevchenko@intel.com>, nuno.sa@analog.com, 
+	linux-iio@vger.kernel.org, Jonathan Cameron <jic23@kernel.org>, David
+ Lechner	 <dlechner@baylibre.com>, Andy Shevchenko <andy@kernel.org>
+Date: Fri, 02 Jan 2026 10:25:20 +0000
+In-Reply-To: <CAHp75Ve5TF76gOVgxxW_RGqD10L40EC+gu3URfwrKk-gkh7Q4g@mail.gmail.com>
+References: <20251203-iio-dmabuf-improvs-v1-0-0e4907ce7322@analog.com>
+	 <20251203-iio-dmabuf-improvs-v1-3-0e4907ce7322@analog.com>
+	 <aTBmriwVrMwlKiXX@smile.fi.intel.com>
+	 <760dce5b5721ae6e46daeac03b96df7b009db3ce.camel@gmail.com>
+	 <CAHp75Ve5TF76gOVgxxW_RGqD10L40EC+gu3URfwrKk-gkh7Q4g@mail.gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.58.2 
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/2] iio: adc: add driver for Texas Instruments TLA2528
- adc
-To: Jonathan Cameron <jic23@kernel.org>
-Cc: Maxime Chevallier <maxime.chevallier@bootlin.com>,
- David Lechner <dlechner@baylibre.com>, nuno.sa@analog.com,
- Andy Shevchenko <andy@kernel.org>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Marcelo Schmitt <marcelo.schmitt@analog.com>,
- Antoniu Miclaus <antoniu.miclaus@analog.com>,
- Angelo Dureghello <adureghello@baylibre.com>,
- Tobias Sperling <tobias.sperling@softing.com>,
- Eason Yang <j2anfernee@gmail.com>,
- Marilene Andrade Garcia <marilene.agarcia@gmail.com>,
- Cosmin Tanislav <cosmin-gabriel.tanislav.xa@renesas.com>,
- duje@dujemihanovic.xyz, herve.codina@bootlin.com,
- Rodolfo Giometti <giometti@enneenne.com>, linux-iio@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- thomas.petazzoni@bootlin.com
-References: <20251223155534.220504-1-maxime.chevallier@bootlin.com>
- <20251223155534.220504-3-maxime.chevallier@bootlin.com>
- <efbe9720-0974-4d5e-9a03-fefd3c86e275@gmail.com>
- <20251231171220.1f99e36d@jic23-huawei>
-Content-Language: en-US, en-AU, en-GB, en-BW
-From: Matti Vaittinen <mazziesaccount@gmail.com>
-In-Reply-To: <20251231171220.1f99e36d@jic23-huawei>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
 
-On 31/12/2025 19:12, Jonathan Cameron wrote:
-> On Mon, 29 Dec 2025 10:20:23 +0200
-> Matti Vaittinen <mazziesaccount@gmail.com> wrote:
-> 
->> On 23/12/2025 17:55, Maxime Chevallier wrote:
->>> This adds a new driver for the TI TLA2528 ADC chip. It ha 8 12-bit
->>> channels, that can also be configured as 16-bit averaging channels.
->>>
->>> Add a very simple driver for it, allowing reading raw values for each
->>> channel.
->>>
->>> Signed-off-by: Rodolfo Giometti <giometti@enneenne.com>
->>> Signed-off-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
->>> ---
->>>    MAINTAINERS                  |   7 ++
->>>    drivers/iio/adc/Kconfig      |  10 ++
->>>    drivers/iio/adc/Makefile     |   1 +
->>>    drivers/iio/adc/ti-tla2528.c | 209 +++++++++++++++++++++++++++++++++++
->>>    4 files changed, 227 insertions(+)
->>>    create mode 100644 drivers/iio/adc/ti-tla2528.c
->>>
->>> diff --git a/MAINTAINERS b/MAINTAINERS
->>> index dc731d37c8fe..5c382ae216c7 100644
->>> --- a/MAINTAINERS
->>> +++ b/MAINTAINERS
->>> @@ -25866,6 +25866,13 @@ F:	include/dt-bindings/soc/ti,sci_pm_domain.h
->>>    F:	include/linux/soc/ti/ti_sci_inta_msi.h
->>>    F:	include/linux/soc/ti/ti_sci_protocol.h
->>>    
->>> +TEXAS INSTRUMENTS' TLA2528 ADC DRIVER
->>> +M:	Maxime Chevallier <maxime.chevallier@bootlin.com>
->>> +L:	linux-iio@vger.kernel.org
->>> +S:	Supported
->>> +F:	Documentation/devicetree/bindings/iio/adc/ti,tla2528.yaml
->>> +F:	drivers/iio/adc/ti-tla2528.c
->>> +
->>>    TEXAS INSTRUMENTS' TMP117 TEMPERATURE SENSOR DRIVER
->>>    M:	Puranjay Mohan <puranjay@kernel.org>
->>>    L:	linux-iio@vger.kernel.org
->>> diff --git a/drivers/iio/adc/Kconfig b/drivers/iio/adc/Kconfig
->>> index 58da8255525e..67376de410bf 100644
->>
->> Hmm. Would it ease merging if MAINTAINERS changes were in their own patch?
-> 
-> Not particularly.  Though I personally slightly prefer the logic
-> of bringing the entry in with the first file, then adding additional files
-> in later patches.
-> 
-> Given it is huge and in alphabetical order, conflicts in MAINTAINERS are
-> fairly rare and trivial to resolve.
-> 
+On Sat, 2025-12-27 at 16:02 +0200, Andy Shevchenko wrote:
+> On Fri, Dec 19, 2025 at 5:03=E2=80=AFPM Nuno S=C3=A1 <noname.nuno@gmail.c=
+om> wrote:
+> > On Wed, 2025-12-03 at 18:34 +0200, Andy Shevchenko wrote:
+> > > On Wed, Dec 03, 2025 at 03:11:38PM +0000, Nuno S=C3=A1 via B4 Relay w=
+rote:
+>=20
+> ...
+>=20
+> > > > While at it, fix a mismatch between the function declaration and de=
+finition
+> > > > regarding the struct device (dma_dev !=3D dev).
+> > >=20
+> > > So, all others use simple dev?
+> >=20
+> > Totally forgot about this. What do you mean by the above? If other func=
+tions in the
+> > header use just dev? If so, the one I changed is the only one that uses=
+ struct device
+> > (in that header). It is also consistent with what we have for the devm_=
+iio_dmaengine_*
+> > APIs.
+>=20
+> Does the device, that is physical, DMA? Or is it a separate device for
+> that purpose? I mean that naming may suggest that they are different
+> devices. The original Q was about APIs. Are all of them, after your
+> patch, use the same device semantically?
+>=20
 
-Thanks for this clarification :)
+This device is the DMA capable device which provides the DMA chan which ind=
+eed is not the same
+as the struct device in the devm APIs (that one is the consumer). So dma_de=
+v might be a better name
+even though the docs already make it clear.
 
-I don't know where I had picked up this idea, but I thought that the 
-volume of changes in MAINTAINERs was somewhat annoying source of 
-conflicts. I sit and type corrected :)
-
-
-Yours,
-	-- Matti
-
----
-Matti Vaittinen
-Linux kernel developer at ROHM Semiconductors
-Oulu Finland
-
-~~ When things go utterly wrong vim users can always type :help! ~~
+- Nuno S=C3=A1
 

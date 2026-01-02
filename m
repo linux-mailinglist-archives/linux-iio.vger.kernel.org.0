@@ -1,103 +1,182 @@
-Return-Path: <linux-iio+bounces-27462-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-27463-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 66F15CED28D
-	for <lists+linux-iio@lfdr.de>; Thu, 01 Jan 2026 17:25:57 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id CCAC2CEDEBC
+	for <lists+linux-iio@lfdr.de>; Fri, 02 Jan 2026 08:14:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 7D2C43000EAC
-	for <lists+linux-iio@lfdr.de>; Thu,  1 Jan 2026 16:25:56 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id F190030006C0
+	for <lists+linux-iio@lfdr.de>; Fri,  2 Jan 2026 07:13:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B34902ED84C;
-	Thu,  1 Jan 2026 16:25:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 97CF72D2496;
+	Fri,  2 Jan 2026 07:13:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gS36cKCF"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FqEkGRag"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ej1-f65.google.com (mail-ej1-f65.google.com [209.85.218.65])
+Received: from mail-lf1-f43.google.com (mail-lf1-f43.google.com [209.85.167.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA2EF2D46DD
-	for <linux-iio@vger.kernel.org>; Thu,  1 Jan 2026 16:25:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.65
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49BBD2D23A5
+	for <linux-iio@vger.kernel.org>; Fri,  2 Jan 2026 07:13:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767284754; cv=none; b=sWYVZo80ZJUFEvW3C3l1X0DjdBUvo+DLLmI6Hw546Bj2hR+/7pFp06SbANH8vxYw94wtl39v5vVUVIM2Sjpx3spGrgFxbXW+x3lij8T0LMGhHD9AYtpekB6D4t2yfvwNgN1CQZcJFv547lFONy9jazxJNEmGensudANlAAXQywc=
+	t=1767338037; cv=none; b=OVpTtxXgQ1qDuDZLjCmXcrzN1IBkRtAY0pqLa+ropFG4c3YchmbzG3njVmm5GfBUUFVs7ePGB+UVxiZAjXFGCIRM+UPrEXYQ9KVdeHQ5fPBdDiXtJ2GjhkJE76bKWWddu3Uy9bndVDxzBozDEfh1m41b54WVYZr34Ku6GqKd4YQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767284754; c=relaxed/simple;
-	bh=2r4VTLT9xan+mgLSR2xWbBRlHL+FGtUT3aWVAlc1cS4=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=gesHA7jMtEFb7FLSA6jixdmUX1XAUB4ERuZlWi5np2lFD0kUkLS2JbppNSgUzNpEp5cqPaiaC5QCYjIZyX+9g6YmdoHORXpzCSjwMBPtbKvr+sfPmQEHG7YS1e0WJLeaKmgtds/JVDUeqSp7Gck5pgeJqdTQvr69NuN3aRni4kE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gS36cKCF; arc=none smtp.client-ip=209.85.218.65
+	s=arc-20240116; t=1767338037; c=relaxed/simple;
+	bh=qKiyom99dAPdhTsRHOQbDoHAlx2my9yh+xilqEmgxj0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=b5ZAbMGQL0pP/KvRrzJO+7Bz0CYMIjDQnx1sp6XulUCQcU7qExulw0HpTlKTOx35kByV6rAwS9Or4Cw/TQPj4Kx+lIIjnepwwy2evyntOcgBvOHg9WdNFYlAj1vMXe4Bzcd9+mg665KJAhoLORZMW6WPzUFbS76dHJ/P+eFBAa8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FqEkGRag; arc=none smtp.client-ip=209.85.167.43
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f65.google.com with SMTP id a640c23a62f3a-b83b72508f3so143245766b.2
-        for <linux-iio@vger.kernel.org>; Thu, 01 Jan 2026 08:25:52 -0800 (PST)
+Received: by mail-lf1-f43.google.com with SMTP id 2adb3069b0e04-59a10df8027so15310566e87.0
+        for <linux-iio@vger.kernel.org>; Thu, 01 Jan 2026 23:13:55 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1767284751; x=1767889551; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=2r4VTLT9xan+mgLSR2xWbBRlHL+FGtUT3aWVAlc1cS4=;
-        b=gS36cKCFinc87Dfh4Imjym0wPJokOyI6zr6kex3LATuW3/y/dJbziCVrB77zfzTz4A
-         4V7UOcyh5Tvntn6qOHZoF8zZFjZTz/KJ9R/8RGw1L5YXHnsi+FzLWpMuRBBs7DjR0dI2
-         D0zSjEJhsYhNcSJQxu0rqGH9gWvru/zxXD3QopuBonHN/pa1aJavOXbNYfXRAqyarbal
-         VXpndEIwWX0S69rGxMlqGUtck+dUIDn1Zm1xz3dqa1SaCMS7TtM+f3rjxDEzRowsqCoI
-         U4EWtPM6NYa+efhTtkON/ZHkKbras0XvHpGAGTBtryEjyQRMe9h9wu19kp1blY8PhUqN
-         Arow==
+        d=gmail.com; s=20230601; t=1767338033; x=1767942833; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=tg52KgPh/NvG5/ca0UMnjXjSLLXRaw8PfZe/uXtCJoM=;
+        b=FqEkGRag1hR7wDZXO8P1cTExbsCozjqpRS8cGrvc2SL+7O7ZANt4juPrrJ6W2307CD
+         ZcpcMqw/Fs2w4nONIkXFfa1t0EsWT8m5POsQMQXb1owviIep5RDx7RgI2nErcGBsqk1A
+         u3RfDzVSoNPUcJSpvsKjAZIEO9WQL7J5SPNYcYpZckG7s/TOHbK73M0D0d4yO6sVnlRH
+         DwJ4XBApvi8FcZWdmNFddYuTpvrp+HUI69R4Wm7uP8oZqCdWSjmUMghxP7RyzrDXSO/o
+         Msxn/KRw9zL9inzpWxbOiK1hUSwebiRY3GxBOv2I4UF4yD4amJRyANe1i+Q0+5rDQGfI
+         cJ+Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767284751; x=1767889551;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=2r4VTLT9xan+mgLSR2xWbBRlHL+FGtUT3aWVAlc1cS4=;
-        b=uI/djf7IWCN95aoTqsRoV6ZGJiZ0QIr+3z+j/EMx19JGfwobUPny6HfgXDG5/FIkKk
-         7O5hXsejwZQ9otksq1q1U2K1y8ypra/VedIFgMWlwZD4b3MJ9efRVmdlMpWq3glumvd/
-         gBZwVDD2qbuJWWtTM7EnS91yahog47VhhjvFmyqHneq7Ey1fysvZUCNe6HHT3qtvV0pY
-         On3+8voxUITvra7DRBMhHthNCWzcx6PSQJo3fNtHVHNCEWjIiACKffIG3JGpctBMvwmH
-         9Uf+JLq/iz+roowNvb+NbAScJEQEWeEURKA5YN8kxHwVYgNvENQ7MTu6kmwIlFoS8Otx
-         ZCGw==
-X-Forwarded-Encrypted: i=1; AJvYcCXDRaaGNhRBjPfSsJt7kpIttIJq3U7PbTO1FgMWoRklVzbJmwdzKu7kL/SncUvVBd4+xwwzAYmybaY=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxhCuJl5qtGQrh5LxK2KbEs0CpiAJMeKZ8SE3jba5b3PiOu2w++
-	E8gfkOF52dlWFopOSVBmbJRJKQ1QCZC+TEa9nJdTGE6eStnlSDJZIrRc3IMZiZWyJ4hou5WoDP/
-	YokwA9aim2QlAiUbyjDTFh+9PMfjknMw=
-X-Gm-Gg: AY/fxX7AQk84MLGTS02osbcEv3QD9nN0EMT27hunlMYMTE/t9PZr1/s6RplDU5yrjAP
-	p5++kmplmhK4padm+hjALwzKY21RZ9ydlHbgwh1+xjj6ubTOppfsVSO3AIzmJ7CKeBNeoW3Iy3N
-	GYNWi8oJS13Lc1UNdwPPEqamrXVEnbGty8wU/69qsLkQN0CvVEh1CZrL/BGXnMeVMjwr9SfiZyf
-	FcrA91avDVF2mQiyqBpIcfqBycAHZCAYJmTylBsfhUg8KkCoa37oCmdB484pjJvQyWOl6Y=
-X-Google-Smtp-Source: AGHT+IEjVDdR44NrCRbTMZck7fShtWvQJES837s/kqS3/7QCo/r7wj5KNn22/vOnGrhf6Fau3jxa7OrP0/qvVBOFOJA=
-X-Received: by 2002:a17:906:730f:b0:b73:9937:e96b with SMTP id
- a640c23a62f3a-b8037183903mr4408428666b.52.1767284750947; Thu, 01 Jan 2026
- 08:25:50 -0800 (PST)
+        d=1e100.net; s=20230601; t=1767338033; x=1767942833;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=tg52KgPh/NvG5/ca0UMnjXjSLLXRaw8PfZe/uXtCJoM=;
+        b=ttt52NKI5XEPJsYSL5VbbuWzwvw8pn0Oa9lifJyRT1/Ptn6ix54FFTAFy3rsJjej8A
+         HzylRtRvkRlln5SOLMcHJNiG3AD1zPwDMHXpJu6E6iwizSYNXA4hnvHgCdF8JfA/LvBA
+         VQ7yX4d+yvPmMdB7Z/Jcf5JNmkpmuHH4ICT//a/7a+Fci44AIfiE8s4U+ME4zouV5kzL
+         +EUgSy9nh5YAoSOg5j2nqG7s8U6XUh3eMVOF69Zp0AZg9zd4dcgJ5Q1ASJ18HFzY2wWW
+         Hw85rnYJfFrGuNqtpSWIxPwRno2cl9iFZmbqs1pgm1ghW6xgbNfXbgpJb7ME1yiM2fOw
+         50iw==
+X-Forwarded-Encrypted: i=1; AJvYcCXtwWlWbKVEw5s3u/r/xVmGYz0yckDv5stvFFIpnCU4msBPj7PUfVSPVx7M21VxTyuQMxHVH1QZKhU=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz6oVFNEnENHZ6ZSbGkUi7SUeKQJGs9gv+EqKXcft8TeeyIgGCy
+	pAbUcMoCOZmanF1RCqVb0EVupE/s+Eiov9OsfDlZt3jPtyk7I+xPdGBz
+X-Gm-Gg: AY/fxX6JhlW2NAoJw/thVOQoQzqK8fbYv1KRI3dnYbbZFzvJZxbXtEMBRWvdRXvNBwm
+	uX2FMZ/59Z3tyPXFWjqaBdgdyU7oVW1nPQjGtLAMQWekZTU9BrZ8ctY963v44GHv8C1XyVlfFtg
+	TAbbeimNn6cD1rc1dsSYWLnWvsHI84c2KyyU+F96eTPHmAAjxoHQNzHJQ9fbt8VmsFpdWkVOIVc
+	9va4FKkcoXku1GbzJmxDQDTB0jZn7inW8CHDFKug20UCyeKrDrtYwaagwMvclkvwoAgZPT7/Jzq
+	SgWW/yFC2xSqJlJ2CgoY1yEymrIp9dVZkU5m5Xcca6kkNPzJnyKVARkoQwA2D524CetNSrf7sMi
+	zbWMsAGnnBwJyJiYur3IE3xNZw3S8yzU+TWOFeGDbWpk3MPPY7oZK4ocZSkP9XHeSA2DFF088k8
+	8JpZHIk7rNEyffE1YTSi6D8QLuQlpYQ0GEqkuCdQHPlTPba1JE0NsW/MJ9o1MtGwQmo1ZbDd3vu
+	3UYRQo=
+X-Google-Smtp-Source: AGHT+IG75hLZGe23C83lYw1IAkO8e8F0HYc9BVU+2CL/EGVHlCP9ievAZqLOw92DkpoMu4U19kPL3Q==
+X-Received: by 2002:ac2:4c47:0:b0:598:a597:62f8 with SMTP id 2adb3069b0e04-59a17d24978mr15276452e87.17.1767338033039;
+        Thu, 01 Jan 2026 23:13:53 -0800 (PST)
+Received: from ?IPV6:2a10:a5c0:800d:dd00:8fdf:935a:2c85:d703? ([2a10:a5c0:800d:dd00:8fdf:935a:2c85:d703])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-59a185d5ea6sm12019590e87.5.2026.01.01.23.13.51
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 01 Jan 2026 23:13:52 -0800 (PST)
+Message-ID: <286a032d-7a14-409d-9bb3-6033c35f8e99@gmail.com>
+Date: Fri, 2 Jan 2026 09:13:51 +0200
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251221083902.134098-1-raskar.shree97@gmail.com>
- <20251227174559.33539640@jic23-huawei> <CAHc1_P6m11M=1bP-0k_ndgtkLtfnkSCMScznCC+HnWWQ1XtGHw@mail.gmail.com>
- <20251231170819.0365d731@jic23-huawei>
-In-Reply-To: <20251231170819.0365d731@jic23-huawei>
-From: Shrikant <raskar.shree97@gmail.com>
-Date: Thu, 1 Jan 2026 21:55:39 +0530
-X-Gm-Features: AQt7F2r-A_88P4yhFxjZCiTWn8IBbIceztKgquaZJfVxkPOxlc5xnP_KYHRZcm4
-Message-ID: <CAHc1_P4TPzWVMrcrn-Jt23a2GF6+a2BDrFyt99b6m7ao98PKuw@mail.gmail.com>
-Subject: Re: [PATCH v3 0/4] iio: proximity: Add interrupt support for RFD77402
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 2/2] iio: adc: add driver for Texas Instruments TLA2528
+ adc
 To: Jonathan Cameron <jic23@kernel.org>
-Cc: robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org, 
-	dlechner@baylibre.com, nuno.sa@analog.com, andy@kernel.org, heiko@sntech.de, 
-	neil.armstrong@linaro.org, skhan@linuxfoundation.org, 
-	david.hunter.linux@gmail.com, linux-iio@vger.kernel.org, 
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Cc: Maxime Chevallier <maxime.chevallier@bootlin.com>,
+ David Lechner <dlechner@baylibre.com>, nuno.sa@analog.com,
+ Andy Shevchenko <andy@kernel.org>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Marcelo Schmitt <marcelo.schmitt@analog.com>,
+ Antoniu Miclaus <antoniu.miclaus@analog.com>,
+ Angelo Dureghello <adureghello@baylibre.com>,
+ Tobias Sperling <tobias.sperling@softing.com>,
+ Eason Yang <j2anfernee@gmail.com>,
+ Marilene Andrade Garcia <marilene.agarcia@gmail.com>,
+ Cosmin Tanislav <cosmin-gabriel.tanislav.xa@renesas.com>,
+ duje@dujemihanovic.xyz, herve.codina@bootlin.com,
+ Rodolfo Giometti <giometti@enneenne.com>, linux-iio@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ thomas.petazzoni@bootlin.com
+References: <20251223155534.220504-1-maxime.chevallier@bootlin.com>
+ <20251223155534.220504-3-maxime.chevallier@bootlin.com>
+ <efbe9720-0974-4d5e-9a03-fefd3c86e275@gmail.com>
+ <20251231171220.1f99e36d@jic23-huawei>
+Content-Language: en-US, en-AU, en-GB, en-BW
+From: Matti Vaittinen <mazziesaccount@gmail.com>
+In-Reply-To: <20251231171220.1f99e36d@jic23-huawei>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-> If you continue having problems, take a look at the b4 tool
-> and it's options for using a web gateway.
->
-> https://b4.docs.kernel.org/en/latest/
-> sending your work.
-Hello Jonathan,
-Thank you so much for sharing the b4 documentation. I have successfully
-submitted the v4 patch-series using the b4 tool.
+On 31/12/2025 19:12, Jonathan Cameron wrote:
+> On Mon, 29 Dec 2025 10:20:23 +0200
+> Matti Vaittinen <mazziesaccount@gmail.com> wrote:
+> 
+>> On 23/12/2025 17:55, Maxime Chevallier wrote:
+>>> This adds a new driver for the TI TLA2528 ADC chip. It ha 8 12-bit
+>>> channels, that can also be configured as 16-bit averaging channels.
+>>>
+>>> Add a very simple driver for it, allowing reading raw values for each
+>>> channel.
+>>>
+>>> Signed-off-by: Rodolfo Giometti <giometti@enneenne.com>
+>>> Signed-off-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
+>>> ---
+>>>    MAINTAINERS                  |   7 ++
+>>>    drivers/iio/adc/Kconfig      |  10 ++
+>>>    drivers/iio/adc/Makefile     |   1 +
+>>>    drivers/iio/adc/ti-tla2528.c | 209 +++++++++++++++++++++++++++++++++++
+>>>    4 files changed, 227 insertions(+)
+>>>    create mode 100644 drivers/iio/adc/ti-tla2528.c
+>>>
+>>> diff --git a/MAINTAINERS b/MAINTAINERS
+>>> index dc731d37c8fe..5c382ae216c7 100644
+>>> --- a/MAINTAINERS
+>>> +++ b/MAINTAINERS
+>>> @@ -25866,6 +25866,13 @@ F:	include/dt-bindings/soc/ti,sci_pm_domain.h
+>>>    F:	include/linux/soc/ti/ti_sci_inta_msi.h
+>>>    F:	include/linux/soc/ti/ti_sci_protocol.h
+>>>    
+>>> +TEXAS INSTRUMENTS' TLA2528 ADC DRIVER
+>>> +M:	Maxime Chevallier <maxime.chevallier@bootlin.com>
+>>> +L:	linux-iio@vger.kernel.org
+>>> +S:	Supported
+>>> +F:	Documentation/devicetree/bindings/iio/adc/ti,tla2528.yaml
+>>> +F:	drivers/iio/adc/ti-tla2528.c
+>>> +
+>>>    TEXAS INSTRUMENTS' TMP117 TEMPERATURE SENSOR DRIVER
+>>>    M:	Puranjay Mohan <puranjay@kernel.org>
+>>>    L:	linux-iio@vger.kernel.org
+>>> diff --git a/drivers/iio/adc/Kconfig b/drivers/iio/adc/Kconfig
+>>> index 58da8255525e..67376de410bf 100644
+>>
+>> Hmm. Would it ease merging if MAINTAINERS changes were in their own patch?
+> 
+> Not particularly.  Though I personally slightly prefer the logic
+> of bringing the entry in with the first file, then adding additional files
+> in later patches.
+> 
+> Given it is huge and in alphabetical order, conflicts in MAINTAINERS are
+> fairly rare and trivial to resolve.
+> 
 
-Regards,
-Shrikant
+Thanks for this clarification :)
+
+I don't know where I had picked up this idea, but I thought that the 
+volume of changes in MAINTAINERs was somewhat annoying source of 
+conflicts. I sit and type corrected :)
+
+
+Yours,
+	-- Matti
+
+---
+Matti Vaittinen
+Linux kernel developer at ROHM Semiconductors
+Oulu Finland
+
+~~ When things go utterly wrong vim users can always type :help! ~~
 

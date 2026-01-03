@@ -1,1045 +1,311 @@
-Return-Path: <linux-iio+bounces-27471-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-27472-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 91763CEFAC7
-	for <lists+linux-iio@lfdr.de>; Sat, 03 Jan 2026 05:44:30 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 95170CEFC89
+	for <lists+linux-iio@lfdr.de>; Sat, 03 Jan 2026 09:00:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 24C70300F321
-	for <lists+linux-iio@lfdr.de>; Sat,  3 Jan 2026 04:44:12 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 72ACE30133B0
+	for <lists+linux-iio@lfdr.de>; Sat,  3 Jan 2026 08:00:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C70CB2571C7;
-	Sat,  3 Jan 2026 04:44:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1CFD32E54BD;
+	Sat,  3 Jan 2026 08:00:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=subdimension.ro header.i=@subdimension.ro header.b="zRgvMvtW"
+	dkim=pass (2048-bit key) header.d=subdimension.ro header.i=@subdimension.ro header.b="lWyr6844"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from mail.subdimension.ro (nalicastle.subdimension.ro [172.105.74.154])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C6F21FC8;
-	Sat,  3 Jan 2026 04:44:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07AD92DFA32;
+	Sat,  3 Jan 2026 08:00:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=172.105.74.154
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767415448; cv=none; b=TtTjVnzx30Tyk+CvLg3k6lqQaB/26UNYf8qza12KHr88wTDblqQ6yjE5d/vPmklrDkow2refAxJfdXoMi6caMhEtEa+6cAwugKPQIF+KPkgztcxAKcrjPxQ3g9l3stjTMfH2p0adQvapO40aEPKA+LKfgTB2jdxA5RdBeEkoxbo=
+	t=1767427230; cv=none; b=Rgy+RrxGJ2fsE8sZ2IODqDv5D6NtxIF+VFpHJ/dQFefuI+BAdy19+x3W57o0A09WMMnVwW+7JtH0FBcIhv/SL96pVY/n/c3puKHXiahtKYqoSNx/tgO09FURgJwCIONM5ons4CyOiSiQrstS8VwGJVaQq/MdLxo/JZikvCGEbe4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767415448; c=relaxed/simple;
-	bh=+bcDn3WPyQA03yaZaE7ed9+tD4axVkY5m8yPepms194=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=SsPKBDFubUbKaEiBvaVV9n2ZpHjW3xEC041xVaBrMTJgscYmmA6AHYQoYd4ogUX24KRINXWE8txZUwiuZPHrnX+N4hTOPognpZBZXyXRGrPDpeVX3IaF9HpWyqxnWyoDIDc5kXx63fX63EluWAD0c6d4LbHApcdyqHhfPxj2PdA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=subdimension.ro; spf=pass smtp.mailfrom=subdimension.ro; dkim=pass (2048-bit key) header.d=subdimension.ro header.i=@subdimension.ro header.b=zRgvMvtW; arc=none smtp.client-ip=172.105.74.154
+	s=arc-20240116; t=1767427230; c=relaxed/simple;
+	bh=JZnJ4gyUynf+J30sBNEu6DJ2euZrnh6O3tBwAExw0rI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Q8m0aFXh8lCe01DnDD0DNmFbUcAdnMBxmYZvuSHas3onaQ4idwqpNQaUTD7GRyYlC7JX2UmDgXAf1KjG3I0kv3FMwW9N3oegZsE8Yr3coO5M/GFLrGEKZjrl2eYpu32an2R2tEyqkcuFrfp6DVXgz/bNGXFXUyntyIuIDSp97aQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=subdimension.ro; spf=pass smtp.mailfrom=subdimension.ro; dkim=pass (2048-bit key) header.d=subdimension.ro header.i=@subdimension.ro header.b=lWyr6844; arc=none smtp.client-ip=172.105.74.154
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=subdimension.ro
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=subdimension.ro
 Received: from sunspire.home.arpa (unknown [IPv6:2a02:2f0e:710:a300:e2d5:5eff:fed9:f1c4])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	 key-exchange secp256r1 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(Client did not present a certificate)
-	by mail.subdimension.ro (Postfix) with ESMTPSA id 57A5416020B;
-	Sat, 03 Jan 2026 06:35:56 +0200 (EET)
+	by mail.subdimension.ro (Postfix) with ESMTPSA id 2272F160209;
+	Sat, 03 Jan 2026 10:00:22 +0200 (EET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=subdimension.ro;
-	s=mail; t=1767414956;
+	s=mail; t=1767427222;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=oSL00tumB4+EAYVoZNtEQELq/XaQyFyBg5qj1eorlHs=;
-	b=zRgvMvtWLCB7Zu+j1rfY0CwPhm00CU5SshqYqRgoMqadd6615gJZS2emQ5J+2lqGfcTo3q
-	viOpLXMhvJ49TpiuieOixDJ33efWX6fPmzPYbYibTO34BXmSXAY8jbUFpPsy4bbGI2C/9G
-	pXmw2fv5i+qbzas887EuUE9legdSiYG/erJRhnBGaaxBlwCWUMTt8rUpxv77OUcUqRZoc3
-	+NiZuL75SEwn6rE2odlxlXom6fMF5cxIcSa3IQmC909SpauabpizZu51y2s4HhIaYR6I1m
-	cWpjopbDfGBlySV677lXlyCjmuUANvkLPhIHnHccLLTf1s3pGsBvyquWhXuQkg==
+	bh=23PRcUbud6D/e7jm7WAHAM2kHkvTo6rhAG0Nux+vzgw=;
+	b=lWyr6844yxATQXqGnSZlbaI2/3XFyFp49130CIok52be9NwFJCjj7I9w+8rbjgz5IaLLji
+	2OFeO/wqpmedKDu962povvtJaQWOoUM5+KxX1eo4lWoYA3WpIDIO8Pcesezd9lRJuELOwL
+	hDQerODnihz9zvDPfFsKcshGgK3cHqx2yIDZHiZxl3hrAqe+D+NG0zVof5mUtkGgZ8WQ/A
+	deRSo27wt53ArnHfSst78jhHUIIrRfKNdlUpQb2eyoY5cezgVCBAuWLE10o5qFaD1vFaRz
+	wURIaS2cJvn9EJpjCnonMQekBU/Rc42eY9/ctEOzyEXcUPJuuS4j8iESgE1uKA==
+Date: Sat, 3 Jan 2026 10:00:19 +0200
 From: Petre Rodan <petre.rodan@subdimension.ro>
-Date: Sat, 03 Jan 2026 06:35:17 +0200
-Subject: [PATCH v5 2/2] iio: pressure: add Honeywell ABP2 driver
+To: Jonathan Cameron <jic23@kernel.org>
+Cc: Marcelo Schmitt <marcelo.schmitt1@gmail.com>,
+	David Lechner <dlechner@baylibre.com>,
+	Nuno S?? <nuno.sa@analog.com>, Andy Shevchenko <andy@kernel.org>,
+	Andreas Klinger <ak@it-klinger.de>, linux-iio@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: Re: [PATCH 06/14] iio: pressure: mprls0025pa: memset rx_buf before
+ reading new data
+Message-ID: <aVjMk4Z-VRaRYYeK@sunspire.home.arpa>
+References: <20251218-mprls_cleanup-v1-0-b36a170f1a5c@subdimension.ro>
+ <20251218-mprls_cleanup-v1-6-b36a170f1a5c@subdimension.ro>
+ <aUYqSUvA9fF_n-0Y@debian-BULLSEYE-live-builder-AMD64>
+ <aUZdb9R9BLMfBpLJ@sunspire.home.arpa>
+ <20251221182151.288a6da4@jic23-huawei>
+ <aUjd5AJHohyW_kXM@lipo.home.arpa>
+ <aUlQTxtWo0VUi4Yh@debian-BULLSEYE-live-builder-AMD64>
+ <20251227143149.4d2f43fa@jic23-huawei>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260103-honeywell_abp2_driver-v5-2-0435afcf306d@subdimension.ro>
-References: <20260103-honeywell_abp2_driver-v5-0-0435afcf306d@subdimension.ro>
-In-Reply-To: <20260103-honeywell_abp2_driver-v5-0-0435afcf306d@subdimension.ro>
-To: Jonathan Cameron <jic23@kernel.org>, 
- David Lechner <dlechner@baylibre.com>, 
- =?utf-8?q?Nuno_S=C3=A1?= <nuno.sa@analog.com>, 
- Andy Shevchenko <andy@kernel.org>, Rob Herring <robh@kernel.org>, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>
-Cc: linux-iio@vger.kernel.org, devicetree@vger.kernel.org, 
- linux-kernel@vger.kernel.org, Andy Shevchenko <andriy.shevchenko@intel.com>
-X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=33021;
- i=petre.rodan@subdimension.ro; h=from:subject:message-id;
- bh=+bcDn3WPyQA03yaZaE7ed9+tD4axVkY5m8yPepms194=;
- b=LS0tLS1CRUdJTiBQR1AgTUVTU0FHRS0tLS0tCgpvd0o0bkFGdEFwTDlrQTBEQUFvQmRDc25wM
- k02U1dNQnl5WmlBR2xZbktpL1hucldsc1lCdlp4eDZ5N1p4VHFaCkdqQWd0QmgxR1J6TTlhMC9X
- eFFzeW9rQ013UUFBUW9BSFJZaEJCb2ltQncrRGJ4UXBFNmlkM1FySjZkak9rbGoKQlFKcFdKeW9
- BQW9KRUhRcko2ZGpPa2xqNlBJUC8yWW9GRWlNNklnNHE3YlM4WWlwZExNWk1ES1ptbzJXaURkVQ
- pmNkdYK1lFTjByVjJ0aDhwdkZacXF5Qit0YTQ1NlpDZXJGV1dyeVdka2dzNFNFZDRNc1RVQmI3Y
- U8wSXMrUWZjCkkyM3dERElyRGlDcTZlenNZdm83SEJVdmhVbWFVWVUrZFhjRmpFMzlneVVqNkFw
- SGIxZnp6d0wzSE5kNnEvMGwKYndHYTZJUjVaeXNWY1BYNnY4VGRXVVVkNzgyRmE3TWUzeFZGQkh
- pRnp3TTJja29xVUtmaDhSRXcvRi9xRkd6NgpxM3dzVnNoVmwvSWxsRXFkSDFoM2tQd2tqenVZNW
- gxcmpsekpPQWRKcGpvSnpVSnlGVmJxZHdZSW45NU9EUUtzCjIxd21aZDVrcWNld3FRa1dHM0l1S
- DgwQ09naEpkRkZzeE9FOXdoR3lodmRReDNLWWthOUNObGdqUkxjOFdvejMKNVJUNGQzMjJvcmZ6
- SWNLRmFQV1BXK3E0bVI3dUlLTzZkWDhGeGx4YXlsMDh2bmRJRFhPVmdUUC9rMGZuQkYwYwpXU2F
- wQWE5aFlZVi9iVWpzS1lZSHZXWTFIN3JFWFRrOGloSHVoSGVzalpRWTZMQndJNjRDZ01OallNcG
- NlRlU3CnZUSWJFR21XWmRlbC94blpCNzlGeEV4d1I2YndlYUJsT1dpNEVoQ0dURzRsQ2haclJ4b
- VkzQVZ0N0VadVMzZ3cKN3JVR0s5aXdyL1d2N0FnSkF4VHdiaXR1WEVITGd2YXpoZmliOGRhTHR3
- L0VxU0MyYkJyT0ZRdFFNazVOQWQ0LwptK1RpYVFoSzhlN3NRUDZJRUQwa2FtS3FLb3BQUHg1TmV
- NVzJSNHlxdnpJMU4zNnVZaHUzMVJsdjJvbzV4MkZYCjRjSlBiQ3Qwa09jVUhBPT0KPTV5L3oKLS
- 0tLS1FTkQgUEdQIE1FU1NBR0UtLS0tLQo=
-X-Developer-Key: i=petre.rodan@subdimension.ro; a=openpgp;
- fpr=D80A7FC176151935EC3E5FA9CF269999844E7F30
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="50v4DT4MasXCZ5an"
+Content-Disposition: inline
+In-Reply-To: <20251227143149.4d2f43fa@jic23-huawei>
 
-Adds driver for digital Honeywell ABP2 series of board mount
-pressure and temperature sensors.
 
-This driver covers 113 different pressure ranges and units on
-both i2c and SPI buses.
+--50v4DT4MasXCZ5an
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-The communication protocol involves sending two simple commands
-to the sensor and there is no register access or a memory map.
-For this reason the regmap API was not used.
 
-The i2c address is hardcoded and depends on the part number.
+Hello and a Happy New Year!
 
-Optional end of conversion interrupt control is present on the
-i2c variants of the chips.
-The EOC can also be defined for the SPI variants if a non-ABP2
-but compatible chip is to be driven.
+On Sat, Dec 27, 2025 at 02:31:49PM +0000, Jonathan Cameron wrote:
+> On Mon, 22 Dec 2025 11:06:07 -0300
+> Marcelo Schmitt <marcelo.schmitt1@gmail.com> wrote:
+>=20
+> > Hi Petre,
+> >=20
+> > On 12/22, Petre Rodan wrote:
+> > >=20
+> > > hello Jonathan,
+> > >=20
+> > > thank you for the review.
+> > >=20
+> > > On Sun, Dec 21, 2025 at 06:21:51PM +0000, Jonathan Cameron wrote: =20
+> > > > On Sat, 20 Dec 2025 10:25:19 +0200
+> > > > Petre Rodan <petre.rodan@subdimension.ro> wrote:
+> > > >  =20
+> > > > > Hello,
+> > > > >=20
+> > > > > On Sat, Dec 20, 2025 at 01:47:05AM -0300, Marcelo Schmitt wrote: =
+=20
+> > > > > > On 12/18, Petre Rodan wrote:   =20
+> > > > > > > Zero out input buffer before reading the new conversion.
+> > > > > > > Perform this operation in core instead of in the bus specific=
+ code.
+> > > > > > >=20
+> > > > > > > Signed-off-by: Petre Rodan <petre.rodan@subdimension.ro>
+> > > > > > > ---
+> > > > > > >  drivers/iio/pressure/mprls0025pa.c     | 2 ++
+> > > > > > >  drivers/iio/pressure/mprls0025pa_i2c.c | 1 -
+> > > > > > >  2 files changed, 2 insertions(+), 1 deletion(-)
+> > > > > > >=20
+> > > > > > > diff --git a/drivers/iio/pressure/mprls0025pa.c b/drivers/iio=
+/pressure/mprls0025pa.c
+> > > > > > > index 00b1ff1e50a8..7cc8dd0d8476 100644
+> > > > > > > --- a/drivers/iio/pressure/mprls0025pa.c
+> > > > > > > +++ b/drivers/iio/pressure/mprls0025pa.c
+> > > > > > > @@ -16,6 +16,7 @@
+> > > > > > >  #include <linux/mod_devicetable.h>
+> > > > > > >  #include <linux/module.h>
+> > > > > > >  #include <linux/property.h>
+> > > > > > > +#include <linux/string.h>
+> > > > > > >  #include <linux/units.h>
+> > > > > > > =20
+> > > > > > >  #include <linux/gpio/consumer.h>
+> > > > > > > @@ -239,6 +240,7 @@ static int mpr_read_pressure(struct mpr_d=
+ata *data, s32 *press)
+> > > > > > >  		}
+> > > > > > >  	}
+> > > > > > > =20
+> > > > > > > +	memset(data->rx_buf, 0, sizeof(data->rx_buf));   =20
+> > > > > > This is unusual and I don't think it's needed for the SPI path.=
+ Doesn't the I2C
+> > > > > > subsystem overwrite the rx buffer with what it reads from the d=
+evice?   =20
+> > > > >=20
+> > > > > I thought it's best practice to ensure that old conversions are n=
+ot accidentally re-used in case the read operation fell thru the cracks.
+> > > > > that's exactly why in this particular case the BUSY flag is imple=
+mented on the hardware side.
+> > > > >=20
+> > > > > please tell me how a few byte memset() would be detrimental. =20
+> > > >=20
+> > > > We don't normally do this as old data isn't a potential leak of any=
+thing
+> > > > sensitive. =20
+> > >=20
+> > > from my point of view as someone writing drivers for chemistry lab in=
+struments, stale readings are to be avoided at all costs.
+> > > it's not about leaking sensitive data, it's about providing a warning=
+ sign if the read operation fails silently.
+> > >=20
+> > > as an extreme (but fictional) example, a pilot looking at an altimete=
+r would immediately recognize that something is wrong with it's pitot tube =
+if it's giving out an off-scale static reading. if instead the output is be=
+lievable (which would be the case when older readings are repeated due to a=
+n uncaught intermittent read error) then there would be some uncertainty an=
+d he would not know to definitely ignore the output of this particular inst=
+rument and trust another one instead.
+> > >=20
+> > > the same logic applies to any instrument in a lab setting.=20
+> > > a digital titration system that mixes multiple reagents needs to rely=
+ on fresh conversions to know when to stop a process. some advanced sensors=
+ even provide an incrementing conversion counter, others simply signal that=
+ a measurement is ongoing/not fresh via a BUSY flag and these are designed =
+so that the driver can avoid a stale reading.
+> > >=20
+> > > getting back to my driver, some pressure sensor series have a latch-u=
+p sensitivity and they misbehave during reads in various ways under certain=
+ conditions. I understand that you say that silent fails are unlikely but I=
+'d like to keep the memset, for peace of mind. =20
+> >=20
+> > I agree with you that old conversions should not be accidentally re-use=
+d nor
+> > errors silently be ignored. But, to me, memset the read buffer to zero =
+looks
+> > like we don't trust the underlying I2C and SPI layers. In that case, we=
+ should
+> > fix data read in those subsystems (if there is anyhting be fixed there).
+> > Though probably unlikely scenario to happen, how would one trust the se=
+nsor
+> > reading in a scenario where the extected measurement would be close to =
+zero.
+>=20
+> There are two different ways to get stale data in these buffers.
+> 1) read fail. Those we absolutely should trust to be handled correctly by=
+ lower layer
+>    with errors reported and the data therefore not used.  Whether it is s=
+tale or random
+>    garbage doesn't really matter.  0 is often a perfectly valid reading s=
+o no extra
+>    info from seeing that in the buffer.
 
-Tested on two sensors (ABP2MRRT001PDSA3 and ABP2DANT001BA2A3).
+for this sensor a raw conversion of 0 is out of bounds. valid values are be=
+tween
+ output_min and output_max:
 
-ocuments/sps-siot-abp2-series-datasheet-32350268-en.pdf
+	[MPR_FUNCTION_A] =3D { .output_min =3D 1677722, .output_max =3D 15099494 },
+	[MPR_FUNCTION_B] =3D { .output_min =3D  419430, .output_max =3D  3774874 },
+	[MPR_FUNCTION_C] =3D { .output_min =3D 3355443, .output_max =3D 13421773 },
 
-Datasheet: https://prod-edam.honeywell.com/content/dam/honeywell-edam/sps/siot/en-us/products/sensors/pressure-sensors/board-mount-pressure-sensors/basic-abp2-series/d
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@intel.com>
-Signed-off-by: Petre Rodan <petre.rodan@subdimension.ro>
----
-v1 -> v2 changes based on Andy's review
-commit msg:
-   - Datasheet tag
-   - mention the lack of regmap use
-Kconfig:
-   - user can nicely select bus drivers separately
-abp2030pa.c:
-   - add a few includes
-   - blank line trimming
-   - enum without assignments
-   - use the recommended trailing in the arrays
-   - less const
-   - comment for the 5 * USEC_PER_MSEC fsleep()
-   - curly braces for else branch
-   - improved error codes
-   - remove INDIO_DIRECT_MODE line
-   - remove call to _ops->init
-abp2030pa.h:
-   - add completion header
-   - remove a few structs
-   - rename buffer -> rx_buf in abp2_data struct
-   - add tx_buf to abp2_data struct
-abp2030pa_i2c.c, abp2030pa_spi.c:
-   - remove _init() ops
-   - remove redundant else
-   - remove device.h include from _spi.c
-v2 -> v3 changes based on Andy's review
-   - move a few private constants from .h to .c
-   - replace ABP2_VARIANTS_MAX with a static_assert
-   - Kconfig select dependencies in _core symbol
-   - move memset call
-   - rename jump label
-   - change indentation
-   - s/IRQF_TRIGGER_RISING/IRQF_ONESHOT/
-   - add comment about latch-up sensitivity right above the invalid status
-  error
-v3 -> v4 changes based on Jonathan's review
-   - remove sysfs include
-   - add back INDIO_DIRECT_MODE
-   - add available_scan_masks
-   - tweak cacheline alignment as per Jonathan's input
-   - change abp2_i2c_write() to be more generic, just as it's spi counterpart
-   - zero out xfer struct in abp2_spi_xfer()
-v4 -> v5
-   - fix typo in Kconfig 'I2C bus support' -> 'SPI bus support' in SPI block
-   - add Andy's review tag and remove print during error branch
----
- MAINTAINERS                          |   1 +
- drivers/iio/pressure/Kconfig         |  29 ++
- drivers/iio/pressure/Makefile        |   3 +
- drivers/iio/pressure/abp2030pa.c     | 544 +++++++++++++++++++++++++++++++++++
- drivers/iio/pressure/abp2030pa.h     |  73 +++++
- drivers/iio/pressure/abp2030pa_i2c.c |  90 ++++++
- drivers/iio/pressure/abp2030pa_spi.c |  67 +++++
- 7 files changed, 807 insertions(+)
+I expect that the user will recognize such an abnormal reading.
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 15b92300acbc..0aa9cba68137 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -11409,6 +11409,7 @@ M:	Petre Rodan <petre.rodan@subdimension.ro>
- L:	linux-iio@vger.kernel.org
- S:	Maintained
- F:	Documentation/devicetree/bindings/iio/pressure/honeywell,abp2030pa.yaml
-+F:	drivers/iio/pressure/abp2030pa*
- 
- HONEYWELL HSC030PA PRESSURE SENSOR SERIES IIO DRIVER
- M:	Petre Rodan <petre.rodan@subdimension.ro>
-diff --git a/drivers/iio/pressure/Kconfig b/drivers/iio/pressure/Kconfig
-index 2fe9dc90cceb..8ca4cb5a91fa 100644
---- a/drivers/iio/pressure/Kconfig
-+++ b/drivers/iio/pressure/Kconfig
-@@ -16,6 +16,35 @@ config ABP060MG
- 	  To compile this driver as a module, choose M here: the module
- 	  will be called abp060mg.
- 
-+config ABP2030PA
-+	tristate
-+	select IIO_BUFFER
-+	select IIO_TRIGGERED_BUFFER
-+
-+config ABP2030PA_I2C
-+	tristate "Honeywell ABP2 pressure sensor series I2C driver"
-+	depends on I2C
-+	select ABP2030PA
-+	help
-+	  Say Y here to build I2C bus support for the Honeywell ABP2
-+	  series pressure and temperature digital sensor.
-+
-+	  To compile this driver as a module, choose M here: the module
-+	  will be called abp2030pa_i2c and you will also get abp2030pa
-+	  for the core module.
-+
-+config ABP2030PA_SPI
-+	tristate "Honeywell ABP2 pressure sensor series SPI driver"
-+	depends on SPI_MASTER
-+	select ABP2030PA
-+	help
-+	  Say Y here to build SPI bus support for the Honeywell ABP2
-+	  series pressure and temperature digital sensor.
-+
-+	  To compile this driver as a module, choose M here: the module
-+	  will be called abp2030pa_spi and you will also get abp2030pa
-+	  for the core module.
-+
- config ROHM_BM1390
- 	tristate "ROHM BM1390GLV-Z pressure sensor driver"
- 	depends on I2C
-diff --git a/drivers/iio/pressure/Makefile b/drivers/iio/pressure/Makefile
-index a21443e992b9..bc0d11a20acc 100644
---- a/drivers/iio/pressure/Makefile
-+++ b/drivers/iio/pressure/Makefile
-@@ -5,6 +5,9 @@
- 
- # When adding new entries keep the list in alphabetical order
- obj-$(CONFIG_ABP060MG) += abp060mg.o
-+obj-$(CONFIG_ABP2030PA) += abp2030pa.o
-+obj-$(CONFIG_ABP2030PA_I2C) += abp2030pa_i2c.o
-+obj-$(CONFIG_ABP2030PA_SPI) += abp2030pa_spi.o
- obj-$(CONFIG_ADP810) += adp810.o
- obj-$(CONFIG_ROHM_BM1390) += rohm-bm1390.o
- obj-$(CONFIG_BMP280) += bmp280.o
-diff --git a/drivers/iio/pressure/abp2030pa.c b/drivers/iio/pressure/abp2030pa.c
-new file mode 100644
-index 000000000000..4ca056a73cef
---- /dev/null
-+++ b/drivers/iio/pressure/abp2030pa.c
-@@ -0,0 +1,544 @@
-+// SPDX-License-Identifier: GPL-2.0-or-later
-+/*
-+ * Honeywell ABP2 series pressure sensor driver
-+ *
-+ * Copyright (c) 2025 Petre Rodan <petre.rodan@subdimension.ro>
-+ *
-+ * Datasheet: https://prod-edam.honeywell.com/content/dam/honeywell-edam/sps/siot/en-us/products/sensors/pressure-sensors/board-mount-pressure-sensors/basic-abp2-series/documents/sps-siot-abp2-series-datasheet-32350268-en.pdf
-+ */
-+
-+#include <linux/array_size.h>
-+#include <linux/bits.h>
-+#include <linux/completion.h>
-+#include <linux/delay.h>
-+#include <linux/dev_printk.h>
-+#include <linux/device.h>
-+#include <linux/errno.h>
-+#include <linux/export.h>
-+#include <linux/gpio/consumer.h>
-+#include <linux/interrupt.h>
-+#include <linux/jiffies.h>
-+#include <linux/math64.h>
-+#include <linux/module.h>
-+#include <linux/property.h>
-+#include <linux/regulator/consumer.h>
-+#include <linux/string.h>
-+#include <linux/time.h>
-+#include <linux/types.h>
-+#include <linux/unaligned.h>
-+#include <linux/units.h>
-+
-+#include <linux/iio/buffer.h>
-+#include <linux/iio/iio.h>
-+#include <linux/iio/trigger_consumer.h>
-+#include <linux/iio/triggered_buffer.h>
-+
-+#include "abp2030pa.h"
-+
-+/* Status byte flags */
-+#define ABP2_ST_POWER     BIT(6) /* 1 if device is powered */
-+#define ABP2_ST_BUSY      BIT(5) /* 1 if device is busy */
-+
-+#define ABP2_CMD_NOP      0xf0
-+#define ABP2_CMD_SYNC     0xaa
-+#define ABP2_PKT_SYNC_LEN 3
-+#define ABP2_PKT_NOP_LEN  ABP2_MEASUREMENT_RD_SIZE
-+
-+struct abp2_func_spec {
-+	u32 output_min;
-+	u32 output_max;
-+};
-+
-+/* transfer function A: 10%   to 90%   of 2^24 */
-+static const struct abp2_func_spec abp2_func_spec[] = {
-+	[ABP2_FUNCTION_A] = { .output_min = 1677722, .output_max = 15099494 },
-+};
-+
-+enum abp2_variants {
-+	ABP2001BA, ABP21_6BA, ABP22_5BA, ABP2004BA, ABP2006BA, ABP2008BA,
-+	ABP2010BA, ABP2012BA, ABP2001BD, ABP21_6BD, ABP22_5BD, ABP2004BD,
-+	ABP2001BG, ABP21_6BG, ABP22_5BG, ABP2004BG, ABP2006BG, ABP2008BG,
-+	ABP2010BG, ABP2012BG, ABP2001GG, ABP21_2GG, ABP2100KA, ABP2160KA,
-+	ABP2250KA, ABP2001KD, ABP21_6KD, ABP22_5KD, ABP2004KD, ABP2006KD,
-+	ABP2010KD, ABP2016KD, ABP2025KD, ABP2040KD, ABP2060KD, ABP2100KD,
-+	ABP2160KD, ABP2250KD, ABP2400KD, ABP2001KG, ABP21_6KG, ABP22_5KG,
-+	ABP2004KG, ABP2006KG, ABP2010KG, ABP2016KG, ABP2025KG, ABP2040KG,
-+	ABP2060KG, ABP2100KG, ABP2160KG, ABP2250KG, ABP2400KG, ABP2600KG,
-+	ABP2800KG, ABP2250LD, ABP2600LD, ABP2600LG, ABP22_5MD, ABP2006MD,
-+	ABP2010MD, ABP2016MD, ABP2025MD, ABP2040MD, ABP2060MD, ABP2100MD,
-+	ABP2160MD, ABP2250MD, ABP2400MD, ABP2600MD, ABP2006MG, ABP2010MG,
-+	ABP2016MG, ABP2025MG, ABP2040MG, ABP2060MG, ABP2100MG, ABP2160MG,
-+	ABP2250MG, ABP2400MG, ABP2600MG, ABP2001ND, ABP2002ND, ABP2004ND,
-+	ABP2005ND, ABP2010ND, ABP2020ND, ABP2030ND, ABP2002NG, ABP2004NG,
-+	ABP2005NG, ABP2010NG, ABP2020NG, ABP2030NG, ABP2015PA, ABP2030PA,
-+	ABP2060PA, ABP2100PA, ABP2150PA, ABP2175PA, ABP2001PD, ABP2005PD,
-+	ABP2015PD, ABP2030PD, ABP2060PD, ABP2001PG, ABP2005PG, ABP2015PG,
-+	ABP2030PG, ABP2060PG, ABP2100PG, ABP2150PG, ABP2175PG,
-+};
-+
-+static const char * const abp2_triplet_variants[] = {
-+	[ABP2001BA] = "001BA", [ABP21_6BA] = "1.6BA", [ABP22_5BA] = "2.5BA",
-+	[ABP2004BA] = "004BA", [ABP2006BA] = "006BA", [ABP2008BA] = "008BA",
-+	[ABP2010BA] = "010BA", [ABP2012BA] = "012BA", [ABP2001BD] = "001BD",
-+	[ABP21_6BD] = "1.6BD", [ABP22_5BD] = "2.5BD", [ABP2004BD] = "004BD",
-+	[ABP2001BG] = "001BG", [ABP21_6BG] = "1.6BG", [ABP22_5BG] = "2.5BG",
-+	[ABP2004BG] = "004BG", [ABP2006BG] = "006BG", [ABP2008BG] = "008BG",
-+	[ABP2010BG] = "010BG", [ABP2012BG] = "012BG", [ABP2001GG] = "001GG",
-+	[ABP21_2GG] = "1.2GG", [ABP2100KA] = "100KA", [ABP2160KA] = "160KA",
-+	[ABP2250KA] = "250KA", [ABP2001KD] = "001KD", [ABP21_6KD] = "1.6KD",
-+	[ABP22_5KD] = "2.5KD", [ABP2004KD] = "004KD", [ABP2006KD] = "006KD",
-+	[ABP2010KD] = "010KD", [ABP2016KD] = "016KD", [ABP2025KD] = "025KD",
-+	[ABP2040KD] = "040KD", [ABP2060KD] = "060KD", [ABP2100KD] = "100KD",
-+	[ABP2160KD] = "160KD", [ABP2250KD] = "250KD", [ABP2400KD] = "400KD",
-+	[ABP2001KG] = "001KG", [ABP21_6KG] = "1.6KG", [ABP22_5KG] = "2.5KG",
-+	[ABP2004KG] = "004KG", [ABP2006KG] = "006KG", [ABP2010KG] = "010KG",
-+	[ABP2016KG] = "016KG", [ABP2025KG] = "025KG", [ABP2040KG] = "040KG",
-+	[ABP2060KG] = "060KG", [ABP2100KG] = "100KG", [ABP2160KG] = "160KG",
-+	[ABP2250KG] = "250KG", [ABP2400KG] = "400KG", [ABP2600KG] = "600KG",
-+	[ABP2800KG] = "800KG", [ABP2250LD] = "250LD", [ABP2600LD] = "600LD",
-+	[ABP2600LG] = "600LG", [ABP22_5MD] = "2.5MD", [ABP2006MD] = "006MD",
-+	[ABP2010MD] = "010MD", [ABP2016MD] = "016MD", [ABP2025MD] = "025MD",
-+	[ABP2040MD] = "040MD", [ABP2060MD] = "060MD", [ABP2100MD] = "100MD",
-+	[ABP2160MD] = "160MD", [ABP2250MD] = "250MD", [ABP2400MD] = "400MD",
-+	[ABP2600MD] = "600MD", [ABP2006MG] = "006MG", [ABP2010MG] = "010MG",
-+	[ABP2016MG] = "016MG", [ABP2025MG] = "025MG", [ABP2040MG] = "040MG",
-+	[ABP2060MG] = "060MG", [ABP2100MG] = "100MG", [ABP2160MG] = "160MG",
-+	[ABP2250MG] = "250MG", [ABP2400MG] = "400MG", [ABP2600MG] = "600MG",
-+	[ABP2001ND] = "001ND", [ABP2002ND] = "002ND", [ABP2004ND] = "004ND",
-+	[ABP2005ND] = "005ND", [ABP2010ND] = "010ND", [ABP2020ND] = "020ND",
-+	[ABP2030ND] = "030ND", [ABP2002NG] = "002NG", [ABP2004NG] = "004NG",
-+	[ABP2005NG] = "005NG", [ABP2010NG] = "010NG", [ABP2020NG] = "020NG",
-+	[ABP2030NG] = "030NG", [ABP2015PA] = "015PA", [ABP2030PA] = "030PA",
-+	[ABP2060PA] = "060PA", [ABP2100PA] = "100PA", [ABP2150PA] = "150PA",
-+	[ABP2175PA] = "175PA", [ABP2001PD] = "001PD", [ABP2005PD] = "005PD",
-+	[ABP2015PD] = "015PD", [ABP2030PD] = "030PD", [ABP2060PD] = "060PD",
-+	[ABP2001PG] = "001PG", [ABP2005PG] = "005PG", [ABP2015PG] = "015PG",
-+	[ABP2030PG] = "030PG", [ABP2060PG] = "060PG", [ABP2100PG] = "100PG",
-+	[ABP2150PG] = "150PG", [ABP2175PG] = "175PG",
-+};
-+
-+/**
-+ * struct abp2_range_config - list of pressure ranges based on nomenclature
-+ * @pmin: lowest pressure that can be measured
-+ * @pmax: highest pressure that can be measured
-+ */
-+struct abp2_range_config {
-+	s32 pmin;
-+	s32 pmax;
-+};
-+
-+/* All min max limits have been converted to pascals */
-+static const struct abp2_range_config abp2_range_config[] = {
-+	[ABP2001BA] = { .pmin =       0, .pmax =  100000 },
-+	[ABP21_6BA] = { .pmin =       0, .pmax =  160000 },
-+	[ABP22_5BA] = { .pmin =       0, .pmax =  250000 },
-+	[ABP2004BA] = { .pmin =       0, .pmax =  400000 },
-+	[ABP2006BA] = { .pmin =       0, .pmax =  600000 },
-+	[ABP2008BA] = { .pmin =       0, .pmax =  800000 },
-+	[ABP2010BA] = { .pmin =       0, .pmax = 1000000 },
-+	[ABP2012BA] = { .pmin =       0, .pmax = 1200000 },
-+	[ABP2001BD] = { .pmin = -100000, .pmax =  100000 },
-+	[ABP21_6BD] = { .pmin = -160000, .pmax =  160000 },
-+	[ABP22_5BD] = { .pmin = -250000, .pmax =  250000 },
-+	[ABP2004BD] = { .pmin = -400000, .pmax =  400000 },
-+	[ABP2001BG] = { .pmin =       0, .pmax =  100000 },
-+	[ABP21_6BG] = { .pmin =       0, .pmax =  160000 },
-+	[ABP22_5BG] = { .pmin =       0, .pmax =  250000 },
-+	[ABP2004BG] = { .pmin =       0, .pmax =  400000 },
-+	[ABP2006BG] = { .pmin =       0, .pmax =  600000 },
-+	[ABP2008BG] = { .pmin =       0, .pmax =  800000 },
-+	[ABP2010BG] = { .pmin =       0, .pmax = 1000000 },
-+	[ABP2012BG] = { .pmin =       0, .pmax = 1200000 },
-+	[ABP2001GG] = { .pmin =       0, .pmax = 1000000 },
-+	[ABP21_2GG] = { .pmin =       0, .pmax = 1200000 },
-+	[ABP2100KA] = { .pmin =       0, .pmax =  100000 },
-+	[ABP2160KA] = { .pmin =       0, .pmax =  160000 },
-+	[ABP2250KA] = { .pmin =       0, .pmax =  250000 },
-+	[ABP2001KD] = { .pmin =   -1000, .pmax =    1000 },
-+	[ABP21_6KD] = { .pmin =   -1600, .pmax =    1600 },
-+	[ABP22_5KD] = { .pmin =   -2500, .pmax =    2500 },
-+	[ABP2004KD] = { .pmin =   -4000, .pmax =    4000 },
-+	[ABP2006KD] = { .pmin =   -6000, .pmax =    6000 },
-+	[ABP2010KD] = { .pmin =  -10000, .pmax =   10000 },
-+	[ABP2016KD] = { .pmin =  -16000, .pmax =   16000 },
-+	[ABP2025KD] = { .pmin =  -25000, .pmax =   25000 },
-+	[ABP2040KD] = { .pmin =  -40000, .pmax =   40000 },
-+	[ABP2060KD] = { .pmin =  -60000, .pmax =   60000 },
-+	[ABP2100KD] = { .pmin = -100000, .pmax =  100000 },
-+	[ABP2160KD] = { .pmin = -160000, .pmax =  160000 },
-+	[ABP2250KD] = { .pmin = -250000, .pmax =  250000 },
-+	[ABP2400KD] = { .pmin = -400000, .pmax =  400000 },
-+	[ABP2001KG] = { .pmin =       0, .pmax =    1000 },
-+	[ABP21_6KG] = { .pmin =       0, .pmax =    1600 },
-+	[ABP22_5KG] = { .pmin =       0, .pmax =    2500 },
-+	[ABP2004KG] = { .pmin =       0, .pmax =    4000 },
-+	[ABP2006KG] = { .pmin =       0, .pmax =    6000 },
-+	[ABP2010KG] = { .pmin =       0, .pmax =   10000 },
-+	[ABP2016KG] = { .pmin =       0, .pmax =   16000 },
-+	[ABP2025KG] = { .pmin =       0, .pmax =   25000 },
-+	[ABP2040KG] = { .pmin =       0, .pmax =   40000 },
-+	[ABP2060KG] = { .pmin =       0, .pmax =   60000 },
-+	[ABP2100KG] = { .pmin =       0, .pmax =  100000 },
-+	[ABP2160KG] = { .pmin =       0, .pmax =  160000 },
-+	[ABP2250KG] = { .pmin =       0, .pmax =  250000 },
-+	[ABP2400KG] = { .pmin =       0, .pmax =  400000 },
-+	[ABP2600KG] = { .pmin =       0, .pmax =  600000 },
-+	[ABP2800KG] = { .pmin =       0, .pmax =  800000 },
-+	[ABP2250LD] = { .pmin =    -250, .pmax =     250 },
-+	[ABP2600LD] = { .pmin =    -600, .pmax =     600 },
-+	[ABP2600LG] = { .pmin =       0, .pmax =     600 },
-+	[ABP22_5MD] = { .pmin =    -250, .pmax =     250 },
-+	[ABP2006MD] = { .pmin =    -600, .pmax =     600 },
-+	[ABP2010MD] = { .pmin =   -1000, .pmax =    1000 },
-+	[ABP2016MD] = { .pmin =   -1600, .pmax =    1600 },
-+	[ABP2025MD] = { .pmin =   -2500, .pmax =    2500 },
-+	[ABP2040MD] = { .pmin =   -4000, .pmax =    4000 },
-+	[ABP2060MD] = { .pmin =   -6000, .pmax =    6000 },
-+	[ABP2100MD] = { .pmin =  -10000, .pmax =   10000 },
-+	[ABP2160MD] = { .pmin =  -16000, .pmax =   16000 },
-+	[ABP2250MD] = { .pmin =  -25000, .pmax =   25000 },
-+	[ABP2400MD] = { .pmin =  -40000, .pmax =   40000 },
-+	[ABP2600MD] = { .pmin =  -60000, .pmax =   60000 },
-+	[ABP2006MG] = { .pmin =       0, .pmax =     600 },
-+	[ABP2010MG] = { .pmin =       0, .pmax =    1000 },
-+	[ABP2016MG] = { .pmin =       0, .pmax =    1600 },
-+	[ABP2025MG] = { .pmin =       0, .pmax =    2500 },
-+	[ABP2040MG] = { .pmin =       0, .pmax =    4000 },
-+	[ABP2060MG] = { .pmin =       0, .pmax =    6000 },
-+	[ABP2100MG] = { .pmin =       0, .pmax =   10000 },
-+	[ABP2160MG] = { .pmin =       0, .pmax =   16000 },
-+	[ABP2250MG] = { .pmin =       0, .pmax =   25000 },
-+	[ABP2400MG] = { .pmin =       0, .pmax =   40000 },
-+	[ABP2600MG] = { .pmin =       0, .pmax =   60000 },
-+	[ABP2001ND] = { .pmin =    -249, .pmax =     249 },
-+	[ABP2002ND] = { .pmin =    -498, .pmax =     498 },
-+	[ABP2004ND] = { .pmin =    -996, .pmax =     996 },
-+	[ABP2005ND] = { .pmin =   -1245, .pmax =    1245 },
-+	[ABP2010ND] = { .pmin =   -2491, .pmax =    2491 },
-+	[ABP2020ND] = { .pmin =   -4982, .pmax =    4982 },
-+	[ABP2030ND] = { .pmin =   -7473, .pmax =    7473 },
-+	[ABP2002NG] = { .pmin =       0, .pmax =     498 },
-+	[ABP2004NG] = { .pmin =       0, .pmax =     996 },
-+	[ABP2005NG] = { .pmin =       0, .pmax =    1245 },
-+	[ABP2010NG] = { .pmin =       0, .pmax =    2491 },
-+	[ABP2020NG] = { .pmin =       0, .pmax =    4982 },
-+	[ABP2030NG] = { .pmin =       0, .pmax =    7473 },
-+	[ABP2015PA] = { .pmin =       0, .pmax =  103421 },
-+	[ABP2030PA] = { .pmin =       0, .pmax =  206843 },
-+	[ABP2060PA] = { .pmin =       0, .pmax =  413685 },
-+	[ABP2100PA] = { .pmin =       0, .pmax =  689476 },
-+	[ABP2150PA] = { .pmin =       0, .pmax = 1034214 },
-+	[ABP2175PA] = { .pmin =       0, .pmax = 1206583 },
-+	[ABP2001PD] = { .pmin =   -6895, .pmax =    6895 },
-+	[ABP2005PD] = { .pmin =  -34474, .pmax =   34474 },
-+	[ABP2015PD] = { .pmin = -103421, .pmax =  103421 },
-+	[ABP2030PD] = { .pmin = -206843, .pmax =  206843 },
-+	[ABP2060PD] = { .pmin = -413685, .pmax =  413685 },
-+	[ABP2001PG] = { .pmin =       0, .pmax =    6895 },
-+	[ABP2005PG] = { .pmin =       0, .pmax =   34474 },
-+	[ABP2015PG] = { .pmin =       0, .pmax =  103421 },
-+	[ABP2030PG] = { .pmin =       0, .pmax =  206843 },
-+	[ABP2060PG] = { .pmin =       0, .pmax =  413685 },
-+	[ABP2100PG] = { .pmin =       0, .pmax =  689476 },
-+	[ABP2150PG] = { .pmin =       0, .pmax = 1034214 },
-+	[ABP2175PG] = { .pmin =       0, .pmax = 1206583 },
-+};
-+
-+static_assert(ARRAY_SIZE(abp2_triplet_variants) == ARRAY_SIZE(abp2_range_config));
-+
-+static int abp2_get_measurement(struct abp2_data *data)
-+{
-+	struct device *dev = data->dev;
-+	int ret;
-+
-+	reinit_completion(&data->completion);
-+
-+	ret = data->ops->write(data, ABP2_CMD_SYNC, ABP2_PKT_SYNC_LEN);
-+	if (ret < 0)
-+		return ret;
-+
-+	if (data->irq > 0) {
-+		ret = wait_for_completion_timeout(&data->completion, HZ);
-+		if (!ret) {
-+			dev_err(dev, "timeout waiting for EOC interrupt\n");
-+			return -ETIMEDOUT;
-+		}
-+	} else {
-+		fsleep(5 * USEC_PER_MSEC);
-+	}
-+
-+	memset(data->rx_buf, 0, sizeof(data->rx_buf));
-+	ret = data->ops->read(data, ABP2_CMD_NOP, ABP2_PKT_NOP_LEN);
-+	if (ret < 0)
-+		return ret;
-+
-+	/*
-+	 * Status byte flags
-+	 *  bit7 SANITY_CHK     - must always be 0
-+	 *  bit6 ABP2_ST_POWER  - 1 if device is powered
-+	 *  bit5 ABP2_ST_BUSY   - 1 if device has no new conversion ready
-+	 *  bit4 SANITY_CHK     - must always be 0
-+	 *  bit3 SANITY_CHK     - must always be 0
-+	 *  bit2 MEMORY_ERR     - 1 if integrity test has failed
-+	 *  bit1 SANITY_CHK     - must always be 0
-+	 *  bit0 MATH_ERR       - 1 during internal math saturation error
-+	 */
-+
-+	if (data->rx_buf[0] == (ABP2_ST_POWER | ABP2_ST_BUSY))
-+		return -EBUSY;
-+
-+	/*
-+	 * The ABP2 sensor series seem to have a noticeable latch-up sensitivity.
-+	 * A partial latch-up condition manifests as either
-+	 *   - output of invalid status bytes
-+	 *   - zeroed out conversions (despite a normal status byte)
-+	 *   - the MOSI line being pulled low randomly in sync with the SCLK
-+	 * signal (visible during the ABP2_CMD_NOP command).
-+	 * https://e2e.ti.com/support/processors-group/processors/f/processors-forum/1588325/am3358-spi-tx-data-corruption
-+	 */
-+
-+	if (data->rx_buf[0] != ABP2_ST_POWER) {
-+		dev_err(data->dev,
-+			"unexpected status byte 0x%02x\n", data->rx_buf[0]);
-+		return -EIO;
-+	}
-+
-+	return 0;
-+}
-+
-+static irqreturn_t abp2_eoc_handler(int irq, void *private)
-+{
-+	struct abp2_data *data = private;
-+
-+	complete(&data->completion);
-+
-+	return IRQ_HANDLED;
-+}
-+
-+static irqreturn_t abp2_trigger_handler(int irq, void *private)
-+{
-+	int ret;
-+	struct iio_poll_func *pf = private;
-+	struct iio_dev *indio_dev = pf->indio_dev;
-+	struct abp2_data *data = iio_priv(indio_dev);
-+
-+	ret = abp2_get_measurement(data);
-+	if (ret < 0)
-+		goto out_notify_done;
-+
-+	data->scan.chan[0] = get_unaligned_be24(&data->rx_buf[1]);
-+	data->scan.chan[1] = get_unaligned_be24(&data->rx_buf[4]);
-+
-+	iio_push_to_buffers_with_ts(indio_dev, &data->scan, sizeof(data->scan),
-+				    iio_get_time_ns(indio_dev));
-+
-+out_notify_done:
-+	iio_trigger_notify_done(indio_dev->trig);
-+
-+	return IRQ_HANDLED;
-+}
-+
-+/*
-+ * IIO ABI expects
-+ * value = (conv + offset) * scale
-+ *
-+ * temp[C] = conv * a + b
-+ *   where a = 200/16777215; b = -50
-+ *
-+ *  temp[C] = (conv + (b/a)) * a * (1000)
-+ *  =>
-+ *  scale = a * 1000 = .0000119209296 * 1000 = .01192092966562
-+ *  offset = b/a = -50 * 16777215 / 200 = -4194303.75
-+ *
-+ *  pressure = (conv - Omin) * Q + Pmin =
-+ *          ((conv - Omin) + Pmin/Q) * Q
-+ *  =>
-+ *  scale = Q = (Pmax - Pmin) / (Omax - Omin)
-+ *  offset = Pmin/Q - Omin = Pmin * (Omax - Omin) / (Pmax - Pmin) - Omin
-+ */
-+static int abp2_read_raw(struct iio_dev *indio_dev,
-+			 struct iio_chan_spec const *channel, int *val,
-+			 int *val2, long mask)
-+{
-+	struct abp2_data *data = iio_priv(indio_dev);
-+	int ret;
-+
-+	switch (mask) {
-+	case IIO_CHAN_INFO_RAW:
-+		ret = abp2_get_measurement(data);
-+		if (ret < 0)
-+			return ret;
-+
-+		switch (channel->type) {
-+		case IIO_PRESSURE:
-+			*val = get_unaligned_be24(&data->rx_buf[1]);
-+			return IIO_VAL_INT;
-+		case IIO_TEMP:
-+			*val = get_unaligned_be24(&data->rx_buf[4]);
-+			return IIO_VAL_INT;
-+		default:
-+			return -EINVAL;
-+		}
-+		return IIO_VAL_INT;
-+
-+	case IIO_CHAN_INFO_SCALE:
-+		switch (channel->type) {
-+		case IIO_TEMP:
-+			*val = 0;
-+			*val2 = 11920929;
-+			return IIO_VAL_INT_PLUS_NANO;
-+		case IIO_PRESSURE:
-+			*val = data->p_scale;
-+			*val2 = data->p_scale_dec;
-+			return IIO_VAL_INT_PLUS_NANO;
-+		default:
-+			return -EINVAL;
-+		}
-+
-+	case IIO_CHAN_INFO_OFFSET:
-+		switch (channel->type) {
-+		case IIO_TEMP:
-+			*val = -4194304;
-+			return IIO_VAL_INT;
-+		case IIO_PRESSURE:
-+			*val = data->p_offset;
-+			return IIO_VAL_INT;
-+		default:
-+			return -EINVAL;
-+		}
-+
-+	default:
-+		return -EINVAL;
-+	}
-+}
-+
-+static const struct iio_info abp2_info = {
-+	.read_raw = &abp2_read_raw,
-+};
-+
-+static const unsigned long abp2_scan_masks[] = {0x3, 0};
-+
-+static const struct iio_chan_spec abp2_channels[] = {
-+	{
-+		.type = IIO_PRESSURE,
-+		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) |
-+					BIT(IIO_CHAN_INFO_SCALE) |
-+					BIT(IIO_CHAN_INFO_OFFSET),
-+		.scan_index = 0,
-+		.scan_type = {
-+			.sign = 'u',
-+			.realbits = 24,
-+			.storagebits = 32,
-+			.endianness = IIO_CPU,
-+		},
-+	},
-+	{
-+		.type = IIO_TEMP,
-+		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) |
-+				      BIT(IIO_CHAN_INFO_SCALE) |
-+				      BIT(IIO_CHAN_INFO_OFFSET),
-+		.scan_index = 1,
-+		.scan_type = {
-+			.sign = 'u',
-+			.realbits = 24,
-+			.storagebits = 32,
-+			.endianness = IIO_CPU,
-+		},
-+	},
-+	IIO_CHAN_SOFT_TIMESTAMP(2),
-+};
-+
-+int abp2_common_probe(struct device *dev, const struct abp2_ops *ops, int irq)
-+{
-+	int ret;
-+	struct abp2_data *data;
-+	struct iio_dev *indio_dev;
-+	const char *triplet;
-+	s32 tmp;
-+	s64 odelta, pdelta;
-+
-+	indio_dev = devm_iio_device_alloc(dev, sizeof(*data));
-+	if (!indio_dev)
-+		return -ENOMEM;
-+
-+	data = iio_priv(indio_dev);
-+	data->dev = dev;
-+	data->ops = ops;
-+	data->irq = irq;
-+
-+	init_completion(&data->completion);
-+
-+	indio_dev->name = "abp2030pa";
-+	indio_dev->info = &abp2_info;
-+	indio_dev->channels = abp2_channels;
-+	indio_dev->num_channels = ARRAY_SIZE(abp2_channels);
-+	indio_dev->modes = INDIO_DIRECT_MODE;
-+	indio_dev->available_scan_masks = abp2_scan_masks;
-+
-+	ret = devm_regulator_get_enable(dev, "vdd");
-+	if (ret)
-+		return dev_err_probe(dev, ret, "can't get and enable vdd supply\n");
-+
-+	ret = device_property_read_string(dev, "honeywell,pressure-triplet",
-+					  &triplet);
-+	if (ret) {
-+		ret = device_property_read_u32(dev, "honeywell,pmin-pascal",
-+					       &data->pmin);
-+		if (ret)
-+			return dev_err_probe(dev, ret,
-+					     "honeywell,pmin-pascal could not be read\n");
-+
-+		ret = device_property_read_u32(dev, "honeywell,pmax-pascal",
-+					       &data->pmax);
-+		if (ret)
-+			return dev_err_probe(dev, ret,
-+					     "honeywell,pmax-pascal could not be read\n");
-+	} else {
-+		ret = device_property_match_property_string(dev,
-+							    "honeywell,pressure-triplet",
-+							    abp2_triplet_variants,
-+							    ARRAY_SIZE(abp2_triplet_variants));
-+		if (ret < 0)
-+			return dev_err_probe(dev, -EINVAL, "honeywell,pressure-triplet is invalid\n");
-+
-+		data->pmin = abp2_range_config[ret].pmin;
-+		data->pmax = abp2_range_config[ret].pmax;
-+	}
-+
-+	if (data->pmin >= data->pmax)
-+		return dev_err_probe(dev, -EINVAL, "pressure limits are invalid\n");
-+
-+	data->outmin = abp2_func_spec[data->function].output_min;
-+	data->outmax = abp2_func_spec[data->function].output_max;
-+
-+	odelta = data->outmax - data->outmin;
-+	pdelta = data->pmax - data->pmin;
-+
-+	data->p_scale = div_s64_rem(div_s64(pdelta * NANO, odelta), NANO, &tmp);
-+	data->p_scale_dec = tmp;
-+
-+	data->p_offset = div_s64(odelta * data->pmin, pdelta) - data->outmin;
-+
-+	if (data->irq > 0) {
-+		ret = devm_request_irq(dev, irq, abp2_eoc_handler, IRQF_ONESHOT,
-+				       dev_name(dev), data);
-+		if (ret)
-+			return ret;
-+	}
-+
-+	ret = devm_iio_triggered_buffer_setup(dev, indio_dev, NULL,
-+					      abp2_trigger_handler, NULL);
-+	if (ret)
-+		return dev_err_probe(dev, ret, "iio triggered buffer setup failed\n");
-+
-+	ret = devm_iio_device_register(dev, indio_dev);
-+	if (ret)
-+		return dev_err_probe(dev, ret, "unable to register iio device\n");
-+
-+	return 0;
-+}
-+EXPORT_SYMBOL_NS_GPL(abp2_common_probe, "IIO_HONEYWELL_ABP2030PA");
-+
-+MODULE_AUTHOR("Petre Rodan <petre.rodan@subdimension.ro>");
-+MODULE_DESCRIPTION("Honeywell ABP2 pressure sensor core driver");
-+MODULE_LICENSE("GPL");
-diff --git a/drivers/iio/pressure/abp2030pa.h b/drivers/iio/pressure/abp2030pa.h
-new file mode 100644
-index 000000000000..57e5ed784686
---- /dev/null
-+++ b/drivers/iio/pressure/abp2030pa.h
-@@ -0,0 +1,73 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+/*
-+ * Honeywell ABP2 series pressure sensor driver
-+ *
-+ * Copyright (c) 2025 Petre Rodan <petre.rodan@subdimension.ro>
-+ */
-+
-+#ifndef _ABP2030PA_H
-+#define _ABP2030PA_H
-+
-+#include <linux/completion.h>
-+#include <linux/types.h>
-+
-+#include <linux/iio/iio.h>
-+
-+#define ABP2_MEASUREMENT_RD_SIZE 7
-+
-+struct device;
-+
-+struct abp2_data;
-+struct abp2_ops;
-+
-+enum abp2_func_id {
-+	ABP2_FUNCTION_A,
-+};
-+
-+/**
-+ * struct abp2_data
-+ * @dev: current device structure
-+ * @ops: pointers for bus specific read and write functions
-+ * @pmin: minimal pressure in pascal
-+ * @pmax: maximal pressure in pascal
-+ * @outmin: minimum raw pressure in counts (based on transfer function)
-+ * @outmax: maximum raw pressure in counts (based on transfer function)
-+ * @function: transfer function
-+ * @p_scale: pressure scale
-+ * @p_scale_dec: pressure scale, decimal number
-+ * @p_offset: pressure offset
-+ * @irq: end of conversion - applies only to the i2c sensor
-+ * @completion: handshake from irq to read
-+ * @scan: channel values for buffered mode
-+ * @tx_buf: transmit buffer used during the SPI communication
-+ * @rx_buf: raw data provided by sensor
-+ */
-+struct abp2_data {
-+	struct device *dev;
-+	const struct abp2_ops *ops;
-+	s32 pmin;
-+	s32 pmax;
-+	u32 outmin;
-+	u32 outmax;
-+	enum abp2_func_id function;
-+	int p_scale;
-+	int p_scale_dec;
-+	int p_offset;
-+	int irq;
-+	struct completion completion;
-+	struct {
-+		u32 chan[2];
-+		aligned_s64 timestamp;
-+	} scan;
-+	u8 rx_buf[ABP2_MEASUREMENT_RD_SIZE] __aligned(IIO_DMA_MINALIGN);
-+	u8 tx_buf[ABP2_MEASUREMENT_RD_SIZE];
-+};
-+
-+struct abp2_ops {
-+	int (*read)(struct abp2_data *data, u8 cmd, u8 nbytes);
-+	int (*write)(struct abp2_data *data, u8 cmd, u8 nbytes);
-+};
-+
-+int abp2_common_probe(struct device *dev, const struct abp2_ops *ops, int irq);
-+
-+#endif
-diff --git a/drivers/iio/pressure/abp2030pa_i2c.c b/drivers/iio/pressure/abp2030pa_i2c.c
-new file mode 100644
-index 000000000000..9f1c1c8a9afb
---- /dev/null
-+++ b/drivers/iio/pressure/abp2030pa_i2c.c
-@@ -0,0 +1,90 @@
-+// SPDX-License-Identifier: GPL-2.0-or-later
-+/*
-+ * Honeywell ABP2 series pressure sensor driver
-+ *
-+ * Copyright (c) 2025 Petre Rodan <petre.rodan@subdimension.ro>
-+ */
-+
-+#include <linux/device.h>
-+#include <linux/errno.h>
-+#include <linux/i2c.h>
-+#include <linux/mod_devicetable.h>
-+#include <linux/module.h>
-+#include <linux/types.h>
-+
-+#include "abp2030pa.h"
-+
-+static int abp2_i2c_read(struct abp2_data *data, u8 unused, u8 nbytes)
-+{
-+	struct i2c_client *client = to_i2c_client(data->dev);
-+	int ret;
-+
-+	if (nbytes > ABP2_MEASUREMENT_RD_SIZE)
-+		return -EOVERFLOW;
-+
-+	ret = i2c_master_recv(client, data->rx_buf, nbytes);
-+	if (ret < 0)
-+		return ret;
-+	if (ret != nbytes)
-+		return -EIO;
-+
-+	return 0;
-+}
-+
-+static int abp2_i2c_write(struct abp2_data *data, u8 cmd, u8 nbytes)
-+{
-+	struct i2c_client *client = to_i2c_client(data->dev);
-+	int ret;
-+
-+	if (nbytes > ABP2_MEASUREMENT_RD_SIZE)
-+		return -EOVERFLOW;
-+
-+	data->tx_buf[0] = cmd;
-+	ret = i2c_master_send(client, data->tx_buf, nbytes);
-+	if (ret < 0)
-+		return ret;
-+	if (ret != nbytes)
-+		return -EIO;
-+
-+	return 0;
-+}
-+
-+static const struct abp2_ops abp2_i2c_ops = {
-+	.read = abp2_i2c_read,
-+	.write = abp2_i2c_write,
-+};
-+
-+static int abp2_i2c_probe(struct i2c_client *client)
-+{
-+	if (!i2c_check_functionality(client->adapter, I2C_FUNC_I2C))
-+		return -EOPNOTSUPP;
-+
-+	return abp2_common_probe(&client->dev, &abp2_i2c_ops, client->irq);
-+}
-+
-+static const struct of_device_id abp2_i2c_match[] = {
-+	{ .compatible = "honeywell,abp2030pa" },
-+	{ }
-+};
-+MODULE_DEVICE_TABLE(of, abp2_i2c_match);
-+
-+static const struct i2c_device_id abp2_i2c_id[] = {
-+	{ "abp2030pa" },
-+	{ }
-+};
-+MODULE_DEVICE_TABLE(i2c, abp2_i2c_id);
-+
-+static struct i2c_driver abp2_i2c_driver = {
-+	.driver = {
-+		.name = "abp2030pa",
-+		.of_match_table = abp2_i2c_match,
-+	},
-+	.probe = abp2_i2c_probe,
-+	.id_table = abp2_i2c_id,
-+};
-+module_i2c_driver(abp2_i2c_driver);
-+
-+MODULE_AUTHOR("Petre Rodan <petre.rodan@subdimension.ro>");
-+MODULE_DESCRIPTION("Honeywell ABP2 pressure sensor i2c driver");
-+MODULE_LICENSE("GPL");
-+MODULE_IMPORT_NS("IIO_HONEYWELL_ABP2030PA");
-diff --git a/drivers/iio/pressure/abp2030pa_spi.c b/drivers/iio/pressure/abp2030pa_spi.c
-new file mode 100644
-index 000000000000..eaea9a3ebf11
---- /dev/null
-+++ b/drivers/iio/pressure/abp2030pa_spi.c
-@@ -0,0 +1,67 @@
-+// SPDX-License-Identifier: GPL-2.0-only
-+/*
-+ * Honeywell ABP2 series pressure sensor driver
-+ *
-+ * Copyright (c) 2025 Petre Rodan <petre.rodan@subdimension.ro>
-+ */
-+
-+#include <linux/errno.h>
-+#include <linux/mod_devicetable.h>
-+#include <linux/module.h>
-+#include <linux/spi/spi.h>
-+#include <linux/types.h>
-+
-+#include "abp2030pa.h"
-+
-+static int abp2_spi_xfer(struct abp2_data *data, u8 cmd, u8 nbytes)
-+{
-+	struct spi_device *spi = to_spi_device(data->dev);
-+	struct spi_transfer xfer = { };
-+
-+	if (nbytes > ABP2_MEASUREMENT_RD_SIZE)
-+		return -EOVERFLOW;
-+
-+	data->tx_buf[0] = cmd;
-+	xfer.tx_buf = data->tx_buf;
-+	xfer.rx_buf = data->rx_buf;
-+	xfer.len = nbytes;
-+
-+	return spi_sync_transfer(spi, &xfer, 1);
-+}
-+
-+static const struct abp2_ops abp2_spi_ops = {
-+	.read = abp2_spi_xfer,
-+	.write = abp2_spi_xfer,
-+};
-+
-+static int abp2_spi_probe(struct spi_device *spi)
-+{
-+	return abp2_common_probe(&spi->dev, &abp2_spi_ops, spi->irq);
-+}
-+
-+static const struct of_device_id abp2_spi_match[] = {
-+	{ .compatible = "honeywell,abp2030pa" },
-+	{ }
-+};
-+MODULE_DEVICE_TABLE(of, abp2_spi_match);
-+
-+static const struct spi_device_id abp2_spi_id[] = {
-+	{ "abp2030pa" },
-+	{ }
-+};
-+MODULE_DEVICE_TABLE(spi, abp2_spi_id);
-+
-+static struct spi_driver abp2_spi_driver = {
-+	.driver = {
-+		.name = "abp2030pa",
-+		.of_match_table = abp2_spi_match,
-+	},
-+	.probe = abp2_spi_probe,
-+	.id_table = abp2_spi_id,
-+};
-+module_spi_driver(abp2_spi_driver);
-+
-+MODULE_AUTHOR("Petre Rodan <petre.rodan@subdimension.ro>");
-+MODULE_DESCRIPTION("Honeywell ABP2 pressure sensor spi driver");
-+MODULE_LICENSE("GPL");
-+MODULE_IMPORT_NS("IIO_HONEYWELL_ABP2030PA");
+for the SPI transfer specifically there is a latch-up scenario in which the=
+ MOSI
+signal is being clamped down by the sensor in sync with SCLK [1].
+I do not know how all SPI controllers act when MOSI is forced to GND, thus
+ provided the memset() for a hypothetical scenario in which the SPI control=
+ler
+ just resets during the xfer (due to a brownout) and if this condition is n=
+ot
+  recognized by the low level spi layer (I see no way to test this).
 
--- 
-2.51.2
+[1] https://e2e.ti.com/support/processors-group/processors/f/processors-for=
+um/1588325/am3358-spi-tx-data-corruption
+(my guess is that ABP2 and MPR series of sensors share the same silicon imp=
+lementation)
 
+> 2) Changes in configuration that move the holes around or create some.  T=
+his is the
+>    more interesting corner.  I don't think the stale data argument applie=
+s because
+>    any software reading the data in the holes and doing anything with it =
+is inherently
+>    buggy (plus as above, 0 is almost always a valid reading!)  Some drive=
+rs will
+>    even read other data into those holes (checksums etc are common).
+>=20
+> So I don't see either as being a particularly problem here.  I don't mind=
+ the buffer
+> being cleared on each read but it doesn't to me seem necessary for any co=
+rrectness
+> or security related reasons which are the two cases we need to make sure =
+we clear
+> data for.
+
+clamping an output signal to GND smells to me like 'undefined behaviour' wh=
+en
+one looks at a large number of SPI controller implementations and this mems=
+et
+would provide an early warning, at no cost.
+
+> Jonathan
+>=20
+> >=20
+> > My suggestion is to look for a way of ensuring the transfer timing requ=
+irements
+> > specified in data sheet page 18 [1]. See the dummy delay transfer sugge=
+stion to
+> > patch 09.
+> >=20
+> > [1]: https://4donline.ihs.com/images/VipMasterIC/IC/HWSC/HWSC-S-A001603=
+6563/HWSC-S-A0016036563-1.pdf?hkey=3DCECEF36DEECDED6468708AAF2E19C0C6
+
+yes, thank you Marcelo. your delay xfer idea works and it will be part of V=
+2.
+but that issue is completely unrelated to the memset modification.
+
+best regards,
+peter
+
+> > > > However in most drivers this only spills out at all as
+> > > > a result of say a change in configured channels and is normally har=
+mless
+> > > > as userspace knows to ignore stuff in the gaps anyway.  If there is
+> > > > another cases here (you mention the busy flag) then add a comment o=
+n why
+> > > > it makes sense. I don't in general want drivers to start doing this=
+ as
+> > > > it is in the fast path and sometimes the memset is non trivial (her=
+e it
+> > > > is probably irrelevant as the buffer is small).
+> > > >=20
+> > > > Thanks,
+> > > >=20
+> > > > Jonathan =20
+>=20
+
+--=20
+petre rodan
+
+--50v4DT4MasXCZ5an
+Content-Type: application/pgp-signature; name=signature.asc
+
+-----BEGIN PGP SIGNATURE-----
+
+iQJPBAABCgA5FiEEGiKYHD4NvFCkTqJ3dCsnp2M6SWMFAmlYzI0bFIAAAAAABAAO
+bWFudTIsMi41KzEuMTEsMiwyAAoJEHQrJ6djOkljq6AQAJlQPMdxlLQvZTULZOBc
+9gxrzlNwZQbe623PB/t14LSBH+Ue+E1usaznl9UDz9KAmJRgRXEWCZrGhNIQAu/P
+VC6sZREoXLYmXrcjK9aCobcZXtl/RI3u8hOZ5RTbODEF1SRLizGi5cbLYqvS7pa9
+m8d8fZoBy1m6RW1OfK+j1eT0/OJMRajSjLf681vAH+pDjWgP29a2tCnzgQ01FLsn
+yl6fyCvA+N5j1WvxoESlrZOeVjtXJoNPSH6MegVy5uDES4JlJ3H4WFZ7z0NuvYMi
+R152hPjAx7RV4fNwFnIVGQXTjzZUtb13q3UwbVNFBpmMEHdeoNckp7qnd/xQAR5H
+s9zAcxiA+j5pzOQ6TX0aSZe0DM/V1oST9sC+yynEi/Xsx2nZkHWzpkk/pwRQNq0A
+tEmymGLwAHSWWwEPbazpn9Krfk3kLY6YnRXaz6ZVwfpnrPlV8y0N+KhT80ZA9Qf2
+S7/DkwpAHmL85ghr4fuGiXDwr/DjUO9GzidpagWvJ/lIWx1V7b3zD61NUlGAll9O
+Bv+0lChZt3iaCICihQ+0s17bivnquKAHed1junatsqRRNSqginnoLhLe6CDHhbdS
+lzNy2kTo8Zu0dkXJS3gq+JJUg5meaN2t35JID3teX+ywxhGHZYdz3jf2WdCQ5aUL
+T0t/I0UBQaC39/KqwNYpMQqi
+=QMDt
+-----END PGP SIGNATURE-----
+
+--50v4DT4MasXCZ5an--
 

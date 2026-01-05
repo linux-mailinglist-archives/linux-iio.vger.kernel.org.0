@@ -1,53 +1,53 @@
-Return-Path: <linux-iio+bounces-27480-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-27481-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4EF63CF2BB4
-	for <lists+linux-iio@lfdr.de>; Mon, 05 Jan 2026 10:27:00 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 70900CF2B00
+	for <lists+linux-iio@lfdr.de>; Mon, 05 Jan 2026 10:18:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 311A7300876F
-	for <lists+linux-iio@lfdr.de>; Mon,  5 Jan 2026 09:26:52 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 8BAF43002842
+	for <lists+linux-iio@lfdr.de>; Mon,  5 Jan 2026 09:18:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1DDE932ED43;
-	Mon,  5 Jan 2026 09:18:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0DCF332FA32;
+	Mon,  5 Jan 2026 09:18:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="EFMrWkWv"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="ig2D00nS"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90B6D32E6BC;
-	Mon,  5 Jan 2026 09:17:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1B4F32FA2D;
+	Mon,  5 Jan 2026 09:18:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767604679; cv=none; b=Q9/NW/nBI5sXo7ch7JMHX16auUHknY781ZVhljge1XUABTxgJTLhqsoS3v3u/GwOMaYcKFMZXvf3XRDmhuZRf421vXwdZUfgNraQkLhYoQWsnvGjNg2fM82U5aiXSUSz+55dVtccuMhd6uYvoVdwWEKzp1tlOabMWCgpC/xiUMQ=
+	t=1767604727; cv=none; b=DYRW/nLv9ScTDwJKw5LP9FrXpuG284aRYXc32LDFT86Y4Vfu3y0cjlYqijVJtmfHmKKks2YE9PI4U+0fOlVGapi+PDhy8gsUq7Opj/h3gcnR+WjWmCwfqkqGzllDbUqIcA0wElUE9Wir+q0J3xBtnOVDoFXWtTwLT6WJseehFow=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767604679; c=relaxed/simple;
-	bh=6ykOa+xb1GhM+5QHERy/hBs2W8wwASApjH1/PuJz65g=;
+	s=arc-20240116; t=1767604727; c=relaxed/simple;
+	bh=vNkwR1Ju/CZyGHDrg1qDw3LgoH8NLYBIB7LXXhcsPPE=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=dmxw5u6WC5EBtEGMDFyESHb+cYsvjhLAZimWv2A3aaYY5EKbpXG4li0neG2o1jCpSSnWob6czFKWYHfiXqa7sKlIJ6iS+c/Eyobd8Obee6NMA6OU7hjrlaw+m1psi/OqjHYHEO3xN8yqU+944ez71wJyLzKsUm58rdLSM8Fhk/E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=EFMrWkWv; arc=none smtp.client-ip=185.246.84.56
+	 In-Reply-To:Content-Type; b=tTW8AmnRMAmP6PT9Zj+CYLwc2urSW23P/UjW2eGbjCNYoLGushFSvDQsMMK5HvP3+p8mu+gGigXzsRNxD9gVfwF3+3tMZ6kHUEeGXHVNwo4iY3r87vGBArmyc7k6Whi6tuC0xQxya+R/rETqna/CL70Nb25H3oXSKovbvZcvhkg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=ig2D00nS; arc=none smtp.client-ip=185.246.84.56
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-02.galae.net (Postfix) with ESMTPS id 4F28B1A264A;
-	Mon,  5 Jan 2026 09:17:47 +0000 (UTC)
+	by smtpout-02.galae.net (Postfix) with ESMTPS id 53E6C1A264A;
+	Mon,  5 Jan 2026 09:18:44 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 1BC4460726;
-	Mon,  5 Jan 2026 09:17:47 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 590D8103C8475;
-	Mon,  5 Jan 2026 10:17:39 +0100 (CET)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 2961060726;
+	Mon,  5 Jan 2026 09:18:44 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 66EE3103C84B1;
+	Mon,  5 Jan 2026 10:18:40 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1767604666; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	t=1767604723; h=from:subject:date:message-id:to:cc:mime-version:content-type:
 	 content-transfer-encoding:content-language:in-reply-to:references;
-	bh=W9ayyFGLkXRbUavp+Vx6JiRizon1AphnblBQ3d58HHI=;
-	b=EFMrWkWvfB0VUEyJjabFP5YIvm8XPGiaTZWKGo2ev+FQyEu9J+E4C9LhRqvKhR1EmVAqG6
-	tvVTCrq4hJWg4Ow0geuRhPtJ/fURuwBlPA+3sR4jJnRKK1JwYLGKFT2s+rQdOURVXMjlXl
-	3G0TWJaq5lNGWd3XQL6i6VKOkOmzNH7OYyXO/LPL2hWApPVgIzIOf+AAdV8j/gakblwXVv
-	6NE/65eoleVL5gCSNQb9tBc160HgDIP13CXhG19MOgfUQFq5RZzA+y0UWHcUdR6tqoT5G3
-	NfuepJvq2EN655vhdM6ZTCJLv4PGS0/1tz5GjIhG3nDzP/hSOuokuY+kgI0/pg==
-Message-ID: <8c4999f6-48bf-45d5-9c5b-8103758bac05@bootlin.com>
-Date: Mon, 5 Jan 2026 10:17:39 +0100
+	bh=r127s6dl25GpRpIM7mZ/xamTGfKd8WdDgfo8ge//VIc=;
+	b=ig2D00nSs+yf3M5Oqeox7dRpTCLX3YJydya//pUM9jWE6heJhPdVmEQ3MsCij1Mn7yDlWw
+	UYkj4bp+k6iOUeFsJ0IDZZzHP9i9ADPOSD33IMN462BWpEZnlGfBsrXAVWa58Y4CvFucSB
+	sGX3qFEBQpMBCwuKtXfIARTe2gyJcrKYZ8eXeKNTBeItOqk2IEFDM2NIhq2SEcV1yB0jCT
+	Ld2Yy6kFoN7BCUFejF7MMkq+/WwCtitKXe0/cX1k+5SA3rdUCXYItmIXRotxFwgDgEVBV7
+	I6yfQCJ2SQ5UZOQL1Nvwo3IEvaXHfpnCzNmw0RQurQXVBVPRzAilbe1ivCFQNQ==
+Message-ID: <a8cd864e-76af-4d81-b5a3-6ad6d88e0b26@bootlin.com>
+Date: Mon, 5 Jan 2026 10:18:40 +0100
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -56,13 +56,12 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH 1/2] dt-bindings: iio: adc: add Texas Instruments TLA 2528
-To: Matti Vaittinen <mazziesaccount@gmail.com>,
- Andy Shevchenko <andy.shevchenko@gmail.com>
-Cc: David Lechner <dlechner@baylibre.com>, Jonathan Cameron
+To: David Lechner <dlechner@baylibre.com>, Jonathan Cameron
  <jic23@kernel.org>, nuno.sa@analog.com, Andy Shevchenko <andy@kernel.org>,
  Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
  Conor Dooley <conor+dt@kernel.org>,
  Marcelo Schmitt <marcelo.schmitt@analog.com>,
+ Matti Vaittinen <mazziesaccount@gmail.com>,
  Antoniu Miclaus <antoniu.miclaus@analog.com>,
  Angelo Dureghello <adureghello@baylibre.com>,
  Tobias Sperling <tobias.sperling@softing.com>,
@@ -70,69 +69,128 @@ Cc: David Lechner <dlechner@baylibre.com>, Jonathan Cameron
  Marilene Andrade Garcia <marilene.agarcia@gmail.com>,
  Cosmin Tanislav <cosmin-gabriel.tanislav.xa@renesas.com>,
  duje@dujemihanovic.xyz, herve.codina@bootlin.com,
- Rodolfo Giometti <giometti@enneenne.com>, linux-iio@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- thomas.petazzoni@bootlin.com
+ Rodolfo Giometti <giometti@enneenne.com>
+Cc: linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, thomas.petazzoni@bootlin.com
 References: <20251223155534.220504-1-maxime.chevallier@bootlin.com>
  <20251223155534.220504-2-maxime.chevallier@bootlin.com>
  <56c03c7f-1e5b-4586-beb0-47a1fa3bc86c@baylibre.com>
- <c386a4bd-9c7d-4b4d-b614-fdec424d57a0@gmail.com>
- <CAHp75VfDnuyqRyHpVK40qRR59XB3RHV-aDO72UDNhjLDbJHDPg@mail.gmail.com>
- <323d7c6d-3082-4775-b5eb-4bcb3ee9b1ea@gmail.com>
 From: Maxime Chevallier <maxime.chevallier@bootlin.com>
 Content-Language: en-US
-In-Reply-To: <323d7c6d-3082-4775-b5eb-4bcb3ee9b1ea@gmail.com>
+In-Reply-To: <56c03c7f-1e5b-4586-beb0-47a1fa3bc86c@baylibre.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 X-Last-TLS-Session-Version: TLSv1.3
 
-Hi David, Matti, Andy,
 
-On 29/12/2025 14:23, Matti Vaittinen wrote:
-> On 29/12/2025 11:31, Andy Shevchenko wrote:
->> On Mon, Dec 29, 2025 at 10:04 AM Matti Vaittinen
->> <mazziesaccount@gmail.com> wrote:
->>> On 23/12/2025 20:26, David Lechner wrote:
->>>> On 12/23/25 9:55 AM, Maxime Chevallier wrote:
->>
->> ...
->>
->>>> It looks like inputs can also be used as GPIOs, so
->>>>
->>>> gpio-controller: true
->>>> #gpio-cells:
->>>>     const: 2
->>>>
->>>> would be appropriate (it doesn't matter if the driver doesn't
->>>> implement it, we know what the correct bindings are).
->>>>
->>>>> +
->>>>> +  "#io-channel-cells":
->>>>> +    const: 1
->>>
->>> I didn't check the data-sheet, but if the pins can be set to be GPIOs or
->>> ADC inputs, then I would require channels to be specified. It's only 8
->>> channels, so always listing channels that are present shouldn't be that
->>> big of a problem - and it should avoid one to add extra properties to
->>> denote channels used for GPIO if GPIOs need to be supported.
->>>
->>> Well, I am not insisting this, there are folks that know this stuff
->>> better than I :)
->>
->> Why would we need an extra property for that? GPIO controller has a
->> property for valid_mask, should be enough to handle this case, no?
->>
-> Ah. You're right. The "valid_mask" should be perfectly usable.
+
+On 23/12/2025 19:26, David Lechner wrote:
+> On 12/23/25 9:55 AM, Maxime Chevallier wrote:
+>> The TI TLA 2528 is a simple 8 channel, 12-bit ADC? Add a binding
 > 
-> I might still require the channel information to make it explicit - but 
-> as I said, I leave this for others to decide :)
+> TLA2528 (no space). Also, why the "?"?
 
-Thanks a lot for these suggestions, I'll add all of that in the next
-iteration :)
+that's a typo :) thanks for spotting
 
-Thanks everyone,
+> 
+>> documentation for it.
+>>
+>> Signed-off-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
+>> ---
+>>  .../bindings/iio/adc/ti,tla2528.yaml          | 48 +++++++++++++++++++
+>>  1 file changed, 48 insertions(+)
+>>  create mode 100644 Documentation/devicetree/bindings/iio/adc/ti,tla2528.yaml
+>>
+>> diff --git a/Documentation/devicetree/bindings/iio/adc/ti,tla2528.yaml b/Documentation/devicetree/bindings/iio/adc/ti,tla2528.yaml
+>> new file mode 100644
+>> index 000000000000..0ee326d77014
+>> --- /dev/null
+>> +++ b/Documentation/devicetree/bindings/iio/adc/ti,tla2528.yaml
+>> @@ -0,0 +1,48 @@
+>> +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
+>> +%YAML 1.2
+>> +---
+>> +$id: http://devicetree.org/schemas/iio/adc/ti,tla2528.yaml#
+>> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+>> +
+>> +title: Texas Instruments TLA2528 8-channel 12bit I2C ADC
+> 
+> 12-bit
+> 
+>> +
+>> +maintainers:
+>> +  - Maxime Chevallier <maxime.chevallier@bootlin.com>
+>> +
+>> +description: |
+>> +  12bit 8-channel I2C ADC.
+> 
+> The title already says this. Either drop it or add new info.
+> 
+> Also, don't need the |.
+> 
+>> +
+>> +properties:
+>> +  compatible:
+>> +    const: ti,tla2528
+>> +
+>> +  reg:
+>> +    maxItems: 1
+>> +
+>> +  vref-supply:
+>> +    description: Supply for 2.35V to 5.5V reference voltage
+> 
+> According the the datasheet, there are AVDD and DVDD supplies.
+> Nothing named VREF or REF.
+> 
+> So instead:
+> 
+> avdd-supply: true
+> dvdd-supply: true
+
+Sure thing, I'll add both instead
+
+> 
+> 
+> It looks like inputs can also be used as GPIOs, so
+> 
+> gpio-controller: true
+> #gpio-cells:
+>   const: 2
+> 
+> would be appropriate (it doesn't matter if the driver doesn't
+> implement it, we know what the correct bindings are).
+
+Ack, makes a lot of sense
+
+> 
+>> +
+>> +  "#io-channel-cells":
+>> +    const: 1
+>> +
+>> +required:
+>> +  - compatible
+>> +  - reg
+>> +  - vref-supply
+>> +
+>> +unevaluatedProperties: false
+>> +
+>> +examples:
+>> +  - |
+>> +    i2c {
+>> +        #address-cells = <1>;
+>> +        #size-cells = <0>;
+>> +
+>> +        adc@17 {
+>> +            compatible = "ti,tla2528";
+>> +            reg = <0x17>;
+>> +            vref-supply = <&reg_adc_supply>;
+>> +            #io-channel-cells = <1>;
+>> +        };
+>> +    };
+>> +...
+> 
+
+Thank you for reviewing,
 
 Maxime
-
-
 

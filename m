@@ -1,102 +1,180 @@
-Return-Path: <linux-iio+bounces-27477-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-27478-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 48C4FCF0D55
-	for <lists+linux-iio@lfdr.de>; Sun, 04 Jan 2026 12:38:13 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id C6067CF2045
+	for <lists+linux-iio@lfdr.de>; Mon, 05 Jan 2026 06:40:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 37D9F3003F9F
-	for <lists+linux-iio@lfdr.de>; Sun,  4 Jan 2026 11:38:09 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 7CFA53003071
+	for <lists+linux-iio@lfdr.de>; Mon,  5 Jan 2026 05:40:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74ED728725D;
-	Sun,  4 Jan 2026 11:38:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6CEE27FD43;
+	Mon,  5 Jan 2026 05:40:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lSrmBejJ"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="BU2tGxs/"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dy1-f170.google.com (mail-dy1-f170.google.com [74.125.82.170])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3239A286D57
-	for <linux-iio@vger.kernel.org>; Sun,  4 Jan 2026 11:38:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 022353A1E63
+	for <linux-iio@vger.kernel.org>; Mon,  5 Jan 2026 05:40:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767526687; cv=none; b=l0XZ1lwrtmygFF7IN0yAXbcHRI0Hut9mHgYMlDWwRUL82KpZ0L3fo9bG8G7gJoQgcJLcQvkV+CMhH5wA7E43/9i5isJ2FpkJ0fb27tMxNhfCrs22LUL6IjaBdhKwy7FP+JjOliyDE3S3Ss5Ayz9RspxUp/8jcDUxx6fzNwY7nDA=
+	t=1767591652; cv=none; b=tuunHlAefmoaHNT4R5xBXtQoSfbk2/+vJ3dirqnzRHSzmFFMkEPUJrz5LFb28JB1lQZc/NNw21SD85x503jvJ8f2wFVT2ww4TkLr4YxQ/4hvBgIsy9QVyr/9oUpeOphxFwQ8xBl5GZxceP4WauFfcWUcJY4m0Ifa0yOtcfZEP9o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767526687; c=relaxed/simple;
-	bh=zzt8nsTReCOrFFimHSYnuwYVhyLibD7TXrGiySpB+f0=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=TYLDmR7NJ/gkqOIUHaftt6XDnaUmaExwVcKJ6m+O7tSZn4Hus0VjnXE9nGqqknEV5LnK3WQEyYQy3wE2k3UoFLKmNmfT/ukZJ2K8rSJ0b3ltCiZXSKW9vETMMaAbq8L2J5J1wRT6iLFx2MtfjWSB7vJBXzJFW+L1tKtRA1UWlVM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lSrmBejJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88B8DC2BCB8
-	for <linux-iio@vger.kernel.org>; Sun,  4 Jan 2026 11:38:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767526686;
-	bh=zzt8nsTReCOrFFimHSYnuwYVhyLibD7TXrGiySpB+f0=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=lSrmBejJxZP8gHrW1lt8qLoXx5i5yIr8c9JjAw76JwT4w2DU5Bw/V3A8ds+61J9gA
-	 qrA1BD0oGFxFt5TGFqAv6/RSxsC53w/k7B87GXnPPGu5JyBIFEy/k2xW5XqJfBLQwZ
-	 s7To43MM/23LrjwnT2MHsbj2v+MNR3gch8pFv9yPYQDYuMjuaAik+CInCYu5+ZmfZA
-	 x9Du36muqnYdgEnwcEtBPGE0Q2krb+xtqRR3x8L+34PJR5hQ5QQvm7VmmsMrN+wnM9
-	 I2UaQA0Jag3f/lobO/fONtZhnVUHsQ9680OTtldkoKQt1MckmCleLVqFj0F055vXis
-	 sgoDnkXq9m56w==
-Received: by mail-yw1-f179.google.com with SMTP id 00721157ae682-78f89501423so10866547b3.1
-        for <linux-iio@vger.kernel.org>; Sun, 04 Jan 2026 03:38:06 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCV0RFQY5+NmydiYWOf7dSlyv21mRjBg7R8ZIIaNJliCVm88xwPW5VsW8VFk+OCIIKITuNRAPNc8onU=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yyc/yr7LWuCWfx37d0Wso1UWMJh/yv4hPN744EzdzgDay60WRRg
-	ZjXeJnXMmTQdKynodkapRSU6cJlBXAlBkFUWSqCwRmu15t+tcObyBD/7sjRP+d6nblgWYHdusJj
-	52Cev7HSCQbCgyYjp2Wfu6liwEWo6LFE=
-X-Google-Smtp-Source: AGHT+IF4Orabbp+U3oU6DE4mJfK9KKnbEOxrcm3UcvoG3IBBIUd0oK3DmWjwYq82sAXiIcIbWSh2iznA2Fvf8inAirk=
-X-Received: by 2002:a05:690e:b4d:b0:645:591a:cb5c with SMTP id
- 956f58d0204a3-646e341a6cdmr3638468d50.23.1767526685648; Sun, 04 Jan 2026
- 03:38:05 -0800 (PST)
+	s=arc-20240116; t=1767591652; c=relaxed/simple;
+	bh=nVetKFiniY+pyq12INTLbvV4dQfJMGJUbDFjs3iD5N4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=LIULa8GxBiG0vc3Wz2ghASZf4KKzhla0buDelamKN+IoT9fjN++p1UE8H7YK7OJ28K8Td6iOAM9QMVHHq9jERCaj2NtUA/gI6sZ0J+oZFjU/r+TBUUpIwUqt3sLzf/ARlk2ktAbvdtc/u9IFQq09nmn+sTXZQ+F/L1PDmpf8TFA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=BU2tGxs/; arc=none smtp.client-ip=74.125.82.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-dy1-f170.google.com with SMTP id 5a478bee46e88-2ae29ddaed9so1378396eec.0
+        for <linux-iio@vger.kernel.org>; Sun, 04 Jan 2026 21:40:50 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1767591650; x=1768196450; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=/siz1sGL+rHoPXRyi1dYN5AnuY0dRJ8z6Ho+34PBemY=;
+        b=BU2tGxs/13A7j1S5uf59lAYb31FenTC0OlY+HIwYoZq2kYUC1zamx0ujZWpHCVLANN
+         K/TQr9Hnsf/pcMhN9eHeBFwDbgernQfIr5xrQm7ihvsNyKgQwYTfymKgM8Fy3IFU71x9
+         BKqU2h8V55xOrkIROAnHbI5ZPMqW57sqDXykvr18UH0Dhu8YzmnWSCugVRB0gAIlYAIf
+         JX3qZc+NRgzpRtHOSI8uIVdeDlN0Bbs9epZfS0lcYpFu6kjTKO44jjH6hvof2RRgVkjj
+         VbJ0Cvsu8pr/+mTo7lgct1HMzrs4Pi45RKdabyuDdpbUcU55Gd13bKNZWJj4jGg4qG0v
+         Pc9g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1767591650; x=1768196450;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=/siz1sGL+rHoPXRyi1dYN5AnuY0dRJ8z6Ho+34PBemY=;
+        b=I3680tDKrOrnGRF0g2Zb59/HH4nRDNHrPucgdnPLH0AESzpuG3XJ9AhYKGdLAwU7QD
+         g5zlOHWbSc+BqBZ/DuBWSIdx+U7fk2zr3b2C1dw3WUf8u6RSMHHOG/N8sqseHETZr8o4
+         td5mVL1ccS/6isUOqPzJmT6zv7CQ9CviReyby8mRAJUaJ+Dh91OnuvODjxtUBVPvXGuZ
+         +iNPHqbHRNwyDpUZ3IBx+sc8eni1zRv/y8GDTOGT0rdh7MPWrjXkpTrnX0986xF5JTTq
+         f2FloR6sdJcxW/sq5g8xxWR/yW5MwHVg4x+Z7gGdRlpAEFqVT5673q+eb2mBEmFZaOXR
+         tZSg==
+X-Forwarded-Encrypted: i=1; AJvYcCXY1QHH0OARLVyLzP6GUPMeuLeIuq6o2RhTTzT2Gl3D7O396sKL0LJfqTvlZ6mmWRpdrHu+JAaoxZg=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzo/2sdam9RvpAAVw6TopPauGPxQ99QXdaUiCYcNJUIPl9sNP5l
+	XLgAvKJI30lRYlB3w9mNbYlntWNq8FxotWX4pXfc31QYwq+TDTzeT7qe
+X-Gm-Gg: AY/fxX4fkfbr52nPOs0T4AhcIZoodDaGVWpACADQtjDibPVxA+asLLDHAz4k0Ta/MIP
+	fjH3UL5w5pbgK9Wu7b5IqHH60P4iJ5mPKOmWnYQ7fT/huZet/kiE4qlzp58Hjzp+Ur6QiM3GAT4
+	eP9SkQIeZbIpNu/N4r0gBpMddgCXy7fE303GxouYBx8YGrNd0hdkiEw8wmlvM5CErpSIkgCWGOD
+	a2/LPsfYUQmblBHkCxzZjdN8NocmEo3CaC8CgUv54i2uErazOg4uSHjfpfYq6kaUwhUfKx9L3J6
+	oG90HGvkgYdSeFodnD45FnsNP96MVjTH6jbDCKi7ptwOPEH09khlX0t3nJIG5e5vv3RDOxFk7tB
+	5Cz+PTYn4pLBzl87JQHyUWp6ku4z2PCJWwcJdiP3EOKT5Ame25EPzdmpau6EId/f4r+F52xWllR
+	yckPE7/KtD1eFkgCAMBdZq
+X-Google-Smtp-Source: AGHT+IEr7tfKvJo3iR5Z+TSTQBlApJrCpEFHmGbDsuycc9iNrN3AroTuqC22ByNcEU9JrX+01Fia2w==
+X-Received: by 2002:a05:7300:b586:b0:2a4:3593:ccb9 with SMTP id 5a478bee46e88-2b14335a1ccmr4300198eec.0.1767591649904;
+        Sun, 04 Jan 2026 21:40:49 -0800 (PST)
+Received: from gyrocopter ([76.174.137.141])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2b140c42eb9sm10349451eec.21.2026.01.04.21.40.49
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 04 Jan 2026 21:40:49 -0800 (PST)
+From: Michael Harris <michaelharriscode@gmail.com>
+To: gregkh@linuxfoundation.org,
+	lars@metafoo.de,
+	Michael.Hennerich@analog.com,
+	jic23@kernel.org
+Cc: dlechner@baylibre.com,
+	nuno.sa@analog.com,
+	andy@kernel.org,
+	linux-iio@vger.kernel.org,
+	linux-staging@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH] staging: iio: adt7316: modernize power management
+Date: Sun,  4 Jan 2026 21:40:40 -0800
+Message-ID: <20260105054040.2309395-1-michaelharriscode@gmail.com>
+X-Mailer: git-send-email 2.52.0
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251212231203.727227-1-robh@kernel.org>
-In-Reply-To: <20251212231203.727227-1-robh@kernel.org>
-From: Linus Walleij <linusw@kernel.org>
-Date: Sun, 4 Jan 2026 12:37:54 +0100
-X-Gmail-Original-Message-ID: <CAD++jLkAaAH9_YdTGqHUcOp8PfW+1P=ZLZzS_QseVYWxA4kiWw@mail.gmail.com>
-X-Gm-Features: AQt7F2qijkDXeXovdHRRQ5QEL33UZBQlEMiEIzun3p2-rj7cwfnP7kAmQfWhUyg
-Message-ID: <CAD++jLkAaAH9_YdTGqHUcOp8PfW+1P=ZLZzS_QseVYWxA4kiWw@mail.gmail.com>
-Subject: Re: [PATCH] dt-bindings: Remove unused includes
-To: "Rob Herring (Arm)" <robh@kernel.org>
-Cc: Michael Turquette <mturquette@baylibre.com>, Stephen Boyd <sboyd@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Bjorn Andersson <andersson@kernel.org>, Michal Simek <michal.simek@amd.com>, 
-	Vinod Koul <vkoul@kernel.org>, Matthias Brugger <matthias.bgg@gmail.com>, 
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, 
-	Jonathan Cameron <jic23@kernel.org>, David Lechner <dlechner@baylibre.com>, 
-	=?UTF-8?B?TnVubyBTw6E=?= <nuno.sa@analog.com>, 
-	Andy Shevchenko <andy@kernel.org>, Yong Wu <yong.wu@mediatek.com>, Peter Rosin <peda@axentia.se>, 
-	Chen-Yu Tsai <wens@kernel.org>, Jernej Skrabec <jernej.skrabec@gmail.com>, 
-	Samuel Holland <samuel@sholland.org>, Philipp Zabel <p.zabel@pengutronix.de>, 
-	Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
-	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, 
-	Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>, linux-kernel@vger.kernel.org, 
-	linux-clk@vger.kernel.org, devicetree@vger.kernel.org, 
-	linux-arm-msm@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
-	dmaengine@vger.kernel.org, linux-mediatek@lists.infradead.org, 
-	linux-iio@vger.kernel.org, iommu@lists.linux.dev, linux-gpio@vger.kernel.org, 
-	linux-sunxi@lists.linux.dev, imx@lists.linux.dev, linux-sound@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Sat, Dec 13, 2025 at 12:12=E2=80=AFAM Rob Herring (Arm) <robh@kernel.org=
-> wrote:
+Replaced use of deprecated function SIMPLE_DEV_PM_OPS with
+EXPORT_GPL_SIMPLE_DEV_PM_OPS.
 
-> Remove includes which are not referenced by either DTS files or drivers.
->
-> There's a few more which are new, so they are excluded for now.
->
-> Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
+Removed PM preprocessor conditions with usage of pm_sleep_ptr function.
 
-Good.
-Reviewed-by: Linus Walleij <linusw@kernel.org>
+Signed-off-by: Michael Harris <michaelharriscode@gmail.com>
+---
+ drivers/staging/iio/addac/adt7316-i2c.c | 2 +-
+ drivers/staging/iio/addac/adt7316-spi.c | 2 +-
+ drivers/staging/iio/addac/adt7316.c     | 6 ++----
+ drivers/staging/iio/addac/adt7316.h     | 6 +-----
+ 4 files changed, 5 insertions(+), 11 deletions(-)
 
-Yours,
-Linus Walleij
+diff --git a/drivers/staging/iio/addac/adt7316-i2c.c b/drivers/staging/iio/addac/adt7316-i2c.c
+index f45968ef94ea..3bdaee925dee 100644
+--- a/drivers/staging/iio/addac/adt7316-i2c.c
++++ b/drivers/staging/iio/addac/adt7316-i2c.c
+@@ -136,7 +136,7 @@ static struct i2c_driver adt7316_driver = {
+ 	.driver = {
+ 		.name = "adt7316",
+ 		.of_match_table = adt7316_of_match,
+-		.pm = ADT7316_PM_OPS,
++		.pm = pm_sleep_ptr(&adt7316_pm_ops),
+ 	},
+ 	.probe = adt7316_i2c_probe,
+ 	.id_table = adt7316_i2c_id,
+diff --git a/drivers/staging/iio/addac/adt7316-spi.c b/drivers/staging/iio/addac/adt7316-spi.c
+index af513e003da7..f91325d11394 100644
+--- a/drivers/staging/iio/addac/adt7316-spi.c
++++ b/drivers/staging/iio/addac/adt7316-spi.c
+@@ -142,7 +142,7 @@ static struct spi_driver adt7316_driver = {
+ 	.driver = {
+ 		.name = "adt7316",
+ 		.of_match_table = adt7316_of_spi_match,
+-		.pm = ADT7316_PM_OPS,
++		.pm = pm_sleep_ptr(&adt7316_pm_ops),
+ 	},
+ 	.probe = adt7316_spi_probe,
+ 	.id_table = adt7316_spi_id,
+diff --git a/drivers/staging/iio/addac/adt7316.c b/drivers/staging/iio/addac/adt7316.c
+index 8a9a8262c2be..59fb3bd26bc1 100644
+--- a/drivers/staging/iio/addac/adt7316.c
++++ b/drivers/staging/iio/addac/adt7316.c
+@@ -2082,7 +2082,6 @@ static const struct attribute_group adt7516_event_attribute_group = {
+ 	.name = "events",
+ };
+ 
+-#ifdef CONFIG_PM_SLEEP
+ static int adt7316_disable(struct device *dev)
+ {
+ 	struct iio_dev *dev_info = dev_get_drvdata(dev);
+@@ -2098,9 +2097,8 @@ static int adt7316_enable(struct device *dev)
+ 
+ 	return _adt7316_store_enabled(chip, 1);
+ }
+-EXPORT_SYMBOL_GPL(adt7316_pm_ops);
+-SIMPLE_DEV_PM_OPS(adt7316_pm_ops, adt7316_disable, adt7316_enable);
+-#endif
++
++EXPORT_GPL_SIMPLE_DEV_PM_OPS(adt7316_pm_ops, adt7316_disable, adt7316_enable);
+ 
+ static const struct iio_info adt7316_info = {
+ 	.attrs = &adt7316_attribute_group,
+diff --git a/drivers/staging/iio/addac/adt7316.h b/drivers/staging/iio/addac/adt7316.h
+index 8c2a92ae7157..f208f0d3583a 100644
+--- a/drivers/staging/iio/addac/adt7316.h
++++ b/drivers/staging/iio/addac/adt7316.h
+@@ -22,12 +22,8 @@ struct adt7316_bus {
+ 	int (*multi_write)(void *client, u8 first_reg, u8 count, u8 *data);
+ };
+ 
+-#ifdef CONFIG_PM_SLEEP
+ extern const struct dev_pm_ops adt7316_pm_ops;
+-#define ADT7316_PM_OPS (&adt7316_pm_ops)
+-#else
+-#define ADT7316_PM_OPS NULL
+-#endif
++
+ int adt7316_probe(struct device *dev, struct adt7316_bus *bus,
+ 		  const char *name);
+ 
+-- 
+2.52.0
+
 

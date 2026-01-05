@@ -1,183 +1,138 @@
-Return-Path: <linux-iio+bounces-27479-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-27480-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3FA03CF20C6
-	for <lists+linux-iio@lfdr.de>; Mon, 05 Jan 2026 07:10:25 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4EF63CF2BB4
+	for <lists+linux-iio@lfdr.de>; Mon, 05 Jan 2026 10:27:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B853D300E174
-	for <lists+linux-iio@lfdr.de>; Mon,  5 Jan 2026 06:10:20 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 311A7300876F
+	for <lists+linux-iio@lfdr.de>; Mon,  5 Jan 2026 09:26:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5A0430CD87;
-	Mon,  5 Jan 2026 06:10:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1DDE932ED43;
+	Mon,  5 Jan 2026 09:18:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="b6iQB+9f"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="EFMrWkWv"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-pg1-f178.google.com (mail-pg1-f178.google.com [209.85.215.178])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FA9E23D7FC
-	for <linux-iio@vger.kernel.org>; Mon,  5 Jan 2026 06:10:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90B6D32E6BC;
+	Mon,  5 Jan 2026 09:17:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767593418; cv=none; b=aIkKZ5afbdR0QbgsVyiIp0Ymf6REuWEJ0/tx0RFTik9jCf8Ts6NCggMeOeYVTSJSySzwQkFqVN+fNxNSrIKCgIc7RG3gsqcaMKyZ86VjmMvgfAh8I3eI/Z5zPRMTFKE5Gx4I1wXoWrFb1qjBKJ+0awYyzc/IP1ya2EiJob3whTg=
+	t=1767604679; cv=none; b=Q9/NW/nBI5sXo7ch7JMHX16auUHknY781ZVhljge1XUABTxgJTLhqsoS3v3u/GwOMaYcKFMZXvf3XRDmhuZRf421vXwdZUfgNraQkLhYoQWsnvGjNg2fM82U5aiXSUSz+55dVtccuMhd6uYvoVdwWEKzp1tlOabMWCgpC/xiUMQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767593418; c=relaxed/simple;
-	bh=qvpC/YF/l5FlzaXSoJKoDh6j5g0khuuj0Qt93m9t9PE=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=WilXuKBjsA8QecdBX15EjS9C3vnTyXvhX2uHalQnRY0W5Maec5Cm47TvBLv+jW6aXBoRfIE12qNtVJZSTpEaj6FSsE1M7/mTPonSSOo2xzmtLfsZk3cbXYJ8LkbC+iNXR5iIgV4t6qBviV1qrgLwcAyL6+5AQz/UCrRnhpsxwJY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=b6iQB+9f; arc=none smtp.client-ip=209.85.215.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pg1-f178.google.com with SMTP id 41be03b00d2f7-c0c24d0f4ceso7973050a12.1
-        for <linux-iio@vger.kernel.org>; Sun, 04 Jan 2026 22:10:17 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1767593416; x=1768198216; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=rHJtUQb0A/mhz54yzwiGHDmjdFo5KL8B7QpAOP5snJE=;
-        b=b6iQB+9fBS0aCtKhWH6K9UA9DBPtFGU1KpUDHK5EGYga40VGzWyLnjW4rlSKvvBP2z
-         7Vp3wuuhGRuJYDuyOSILfGrsFDsOaRiGKmN3Oo1lcTfY9xbCIxvbcDrszA33KNkm9MM7
-         f39XAcMyancQJsJOSdbrFu3Q9ehMo680hUjjxRmCQK/ZEqI3hyA7/UnpRTtcv65rLp3L
-         Deub2XRREch00ITALT8dDEFu55jIWvVB12qm8OvSQFkFqdAj0Mku2sQs7PR0WPXEgxVI
-         hPSMfQa2xUkD65dGj+hUoz7sRxYXKJOHPE9JajOofiUWdBTwqkBtmnMCQIm3DpGee5bh
-         FuXg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767593416; x=1768198216;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=rHJtUQb0A/mhz54yzwiGHDmjdFo5KL8B7QpAOP5snJE=;
-        b=H1TfAz6R4DRnZxWcrW0d4DGm9cgT1yoo+rKBAerNXkhb0vVqhq1Blwo7fklWL72qWz
-         Xflm+xST3a0/bNx/gezL5bHn/0+H3DXSqn9WxB+m/i4XroXQReVuVioNNeSs0EmXm7KI
-         spO942g1rxfwCftV7ZjdcwxB8DWZQHWXTPuvSRiqtb/Z+oL+kUqkGajBUQj3dj0NOtdH
-         h7BuCerFQrajvYf5V/1YrhA4Hmrqn12HJGzUfKzpE0SS4pPM11ViY3hjbhZC2OHlG+4J
-         PqVlTNo0rTBf9cDjATZ1N9AaTVvahpW8hNEYhi7QRHo7ZT3K5uPYx0tL9f6uAXeTZ+vz
-         ufDw==
-X-Forwarded-Encrypted: i=1; AJvYcCXMuoe/gUGPZLKLs+13oN4PGAwdbCs5mK6lEDfeogfo8RiwqS14dx/LQqzqBs9nQJaiERVuBSiXkqI=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxHc62xMT1yh/80HSM15jM/OCEhZK78nGVviG+D/2I7C732CmBV
-	U4XF9EaLdK/W9mJxoIf+WhEswNXuItw19ovErVMZCH1jF1v7UUkXr5gm
-X-Gm-Gg: AY/fxX65VssCiM7T2dinkKi6lnlKxMkpiP8YOAfwHnKx5euKBVazPgedTEnQkFvGSol
-	XsT1X6GWOrO837zaJwKM+J+nNMzn54AO+0x8j+STq5UqwgGbpXT+k5rULVW7McROK6+FHqxHoGQ
-	KiOxdGGdu4S+SH7MGzx4xZIVYnODfsY2Q9lIvUJW2BwRBUn4bWyvOyp8aB/dOznu03KvJScxcxG
-	cCvvARW1ANsP72pxtf3bA2VHYqigzqZCKabcpd1XJsxiPQNB3IZD2LT1EKNyBXKJEoqZwc68Rx1
-	lfFWtuJ2PgBBmdpgk1l0tkV62RvWIftCHhvavet2rxUhhXkM1yk8BFTQVJxfR2PHhEEj/jM/rfm
-	6WS0+ahVJm5shb7o5N8Y/9Q1qn9Rj2d6Mf8MGVq+yjiJHtkl6auGFLhB+DPTmQ2hn3VTy8Kupgp
-	Gd7GUs+YJLyrt53DjRFN/h
-X-Google-Smtp-Source: AGHT+IFux037pYXSM/nK+a35vAhJ08w/hzv51KAjgsRlJkYOD8Cgj/aunwGxUmabj2FO5CXuYZMtCg==
-X-Received: by 2002:a05:7022:6294:b0:11b:9b9f:427a with SMTP id a92af1059eb24-121722b4fdfmr46030833c88.21.1767593416335;
-        Sun, 04 Jan 2026 22:10:16 -0800 (PST)
-Received: from gyrocopter ([76.174.137.141])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-121724de268sm134338472c88.8.2026.01.04.22.10.15
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 04 Jan 2026 22:10:15 -0800 (PST)
-From: Michael Harris <michaelharriscode@gmail.com>
-To: gregkh@linuxfoundation.org,
-	lars@metafoo.de,
-	Michael.Hennerich@analog.com,
-	jic23@kernel.org
-Cc: dlechner@baylibre.com,
-	nuno.sa@analog.com,
-	andy@kernel.org,
-	linux-iio@vger.kernel.org,
-	linux-staging@lists.linux.dev,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v2] staging: iio: adt7316: modernize power management
-Date: Sun,  4 Jan 2026 22:08:03 -0800
-Message-ID: <20260105060803.2315274-1-michaelharriscode@gmail.com>
-X-Mailer: git-send-email 2.52.0
+	s=arc-20240116; t=1767604679; c=relaxed/simple;
+	bh=6ykOa+xb1GhM+5QHERy/hBs2W8wwASApjH1/PuJz65g=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=dmxw5u6WC5EBtEGMDFyESHb+cYsvjhLAZimWv2A3aaYY5EKbpXG4li0neG2o1jCpSSnWob6czFKWYHfiXqa7sKlIJ6iS+c/Eyobd8Obee6NMA6OU7hjrlaw+m1psi/OqjHYHEO3xN8yqU+944ez71wJyLzKsUm58rdLSM8Fhk/E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=EFMrWkWv; arc=none smtp.client-ip=185.246.84.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-02.galae.net (Postfix) with ESMTPS id 4F28B1A264A;
+	Mon,  5 Jan 2026 09:17:47 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 1BC4460726;
+	Mon,  5 Jan 2026 09:17:47 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 590D8103C8475;
+	Mon,  5 Jan 2026 10:17:39 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1767604666; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:content-language:in-reply-to:references;
+	bh=W9ayyFGLkXRbUavp+Vx6JiRizon1AphnblBQ3d58HHI=;
+	b=EFMrWkWvfB0VUEyJjabFP5YIvm8XPGiaTZWKGo2ev+FQyEu9J+E4C9LhRqvKhR1EmVAqG6
+	tvVTCrq4hJWg4Ow0geuRhPtJ/fURuwBlPA+3sR4jJnRKK1JwYLGKFT2s+rQdOURVXMjlXl
+	3G0TWJaq5lNGWd3XQL6i6VKOkOmzNH7OYyXO/LPL2hWApPVgIzIOf+AAdV8j/gakblwXVv
+	6NE/65eoleVL5gCSNQb9tBc160HgDIP13CXhG19MOgfUQFq5RZzA+y0UWHcUdR6tqoT5G3
+	NfuepJvq2EN655vhdM6ZTCJLv4PGS0/1tz5GjIhG3nDzP/hSOuokuY+kgI0/pg==
+Message-ID: <8c4999f6-48bf-45d5-9c5b-8103758bac05@bootlin.com>
+Date: Mon, 5 Jan 2026 10:17:39 +0100
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/2] dt-bindings: iio: adc: add Texas Instruments TLA 2528
+To: Matti Vaittinen <mazziesaccount@gmail.com>,
+ Andy Shevchenko <andy.shevchenko@gmail.com>
+Cc: David Lechner <dlechner@baylibre.com>, Jonathan Cameron
+ <jic23@kernel.org>, nuno.sa@analog.com, Andy Shevchenko <andy@kernel.org>,
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>,
+ Marcelo Schmitt <marcelo.schmitt@analog.com>,
+ Antoniu Miclaus <antoniu.miclaus@analog.com>,
+ Angelo Dureghello <adureghello@baylibre.com>,
+ Tobias Sperling <tobias.sperling@softing.com>,
+ Eason Yang <j2anfernee@gmail.com>,
+ Marilene Andrade Garcia <marilene.agarcia@gmail.com>,
+ Cosmin Tanislav <cosmin-gabriel.tanislav.xa@renesas.com>,
+ duje@dujemihanovic.xyz, herve.codina@bootlin.com,
+ Rodolfo Giometti <giometti@enneenne.com>, linux-iio@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ thomas.petazzoni@bootlin.com
+References: <20251223155534.220504-1-maxime.chevallier@bootlin.com>
+ <20251223155534.220504-2-maxime.chevallier@bootlin.com>
+ <56c03c7f-1e5b-4586-beb0-47a1fa3bc86c@baylibre.com>
+ <c386a4bd-9c7d-4b4d-b614-fdec424d57a0@gmail.com>
+ <CAHp75VfDnuyqRyHpVK40qRR59XB3RHV-aDO72UDNhjLDbJHDPg@mail.gmail.com>
+ <323d7c6d-3082-4775-b5eb-4bcb3ee9b1ea@gmail.com>
+From: Maxime Chevallier <maxime.chevallier@bootlin.com>
+Content-Language: en-US
+In-Reply-To: <323d7c6d-3082-4775-b5eb-4bcb3ee9b1ea@gmail.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-Replaced use of deprecated function SIMPLE_DEV_PM_OPS with
-EXPORT_GPL_SIMPLE_DEV_PM_OPS.
+Hi David, Matti, Andy,
 
-Removed PM preprocessor conditions with usage of pm_sleep_ptr function.
+On 29/12/2025 14:23, Matti Vaittinen wrote:
+> On 29/12/2025 11:31, Andy Shevchenko wrote:
+>> On Mon, Dec 29, 2025 at 10:04 AM Matti Vaittinen
+>> <mazziesaccount@gmail.com> wrote:
+>>> On 23/12/2025 20:26, David Lechner wrote:
+>>>> On 12/23/25 9:55 AM, Maxime Chevallier wrote:
+>>
+>> ...
+>>
+>>>> It looks like inputs can also be used as GPIOs, so
+>>>>
+>>>> gpio-controller: true
+>>>> #gpio-cells:
+>>>>     const: 2
+>>>>
+>>>> would be appropriate (it doesn't matter if the driver doesn't
+>>>> implement it, we know what the correct bindings are).
+>>>>
+>>>>> +
+>>>>> +  "#io-channel-cells":
+>>>>> +    const: 1
+>>>
+>>> I didn't check the data-sheet, but if the pins can be set to be GPIOs or
+>>> ADC inputs, then I would require channels to be specified. It's only 8
+>>> channels, so always listing channels that are present shouldn't be that
+>>> big of a problem - and it should avoid one to add extra properties to
+>>> denote channels used for GPIO if GPIOs need to be supported.
+>>>
+>>> Well, I am not insisting this, there are folks that know this stuff
+>>> better than I :)
+>>
+>> Why would we need an extra property for that? GPIO controller has a
+>> property for valid_mask, should be enough to handle this case, no?
+>>
+> Ah. You're right. The "valid_mask" should be perfectly usable.
+> 
+> I might still require the channel information to make it explicit - but 
+> as I said, I leave this for others to decide :)
 
-Signed-off-by: Michael Harris <michaelharriscode@gmail.com>
----
-v2: Corrected staging list email address
----
+Thanks a lot for these suggestions, I'll add all of that in the next
+iteration :)
 
- drivers/staging/iio/addac/adt7316-i2c.c | 2 +-
- drivers/staging/iio/addac/adt7316-spi.c | 2 +-
- drivers/staging/iio/addac/adt7316.c     | 6 ++----
- drivers/staging/iio/addac/adt7316.h     | 6 +-----
- 4 files changed, 5 insertions(+), 11 deletions(-)
+Thanks everyone,
 
-diff --git a/drivers/staging/iio/addac/adt7316-i2c.c b/drivers/staging/iio/addac/adt7316-i2c.c
-index f45968ef94ea..3bdaee925dee 100644
---- a/drivers/staging/iio/addac/adt7316-i2c.c
-+++ b/drivers/staging/iio/addac/adt7316-i2c.c
-@@ -136,7 +136,7 @@ static struct i2c_driver adt7316_driver = {
- 	.driver = {
- 		.name = "adt7316",
- 		.of_match_table = adt7316_of_match,
--		.pm = ADT7316_PM_OPS,
-+		.pm = pm_sleep_ptr(&adt7316_pm_ops),
- 	},
- 	.probe = adt7316_i2c_probe,
- 	.id_table = adt7316_i2c_id,
-diff --git a/drivers/staging/iio/addac/adt7316-spi.c b/drivers/staging/iio/addac/adt7316-spi.c
-index af513e003da7..f91325d11394 100644
---- a/drivers/staging/iio/addac/adt7316-spi.c
-+++ b/drivers/staging/iio/addac/adt7316-spi.c
-@@ -142,7 +142,7 @@ static struct spi_driver adt7316_driver = {
- 	.driver = {
- 		.name = "adt7316",
- 		.of_match_table = adt7316_of_spi_match,
--		.pm = ADT7316_PM_OPS,
-+		.pm = pm_sleep_ptr(&adt7316_pm_ops),
- 	},
- 	.probe = adt7316_spi_probe,
- 	.id_table = adt7316_spi_id,
-diff --git a/drivers/staging/iio/addac/adt7316.c b/drivers/staging/iio/addac/adt7316.c
-index 8a9a8262c2be..59fb3bd26bc1 100644
---- a/drivers/staging/iio/addac/adt7316.c
-+++ b/drivers/staging/iio/addac/adt7316.c
-@@ -2082,7 +2082,6 @@ static const struct attribute_group adt7516_event_attribute_group = {
- 	.name = "events",
- };
- 
--#ifdef CONFIG_PM_SLEEP
- static int adt7316_disable(struct device *dev)
- {
- 	struct iio_dev *dev_info = dev_get_drvdata(dev);
-@@ -2098,9 +2097,8 @@ static int adt7316_enable(struct device *dev)
- 
- 	return _adt7316_store_enabled(chip, 1);
- }
--EXPORT_SYMBOL_GPL(adt7316_pm_ops);
--SIMPLE_DEV_PM_OPS(adt7316_pm_ops, adt7316_disable, adt7316_enable);
--#endif
-+
-+EXPORT_GPL_SIMPLE_DEV_PM_OPS(adt7316_pm_ops, adt7316_disable, adt7316_enable);
- 
- static const struct iio_info adt7316_info = {
- 	.attrs = &adt7316_attribute_group,
-diff --git a/drivers/staging/iio/addac/adt7316.h b/drivers/staging/iio/addac/adt7316.h
-index 8c2a92ae7157..f208f0d3583a 100644
---- a/drivers/staging/iio/addac/adt7316.h
-+++ b/drivers/staging/iio/addac/adt7316.h
-@@ -22,12 +22,8 @@ struct adt7316_bus {
- 	int (*multi_write)(void *client, u8 first_reg, u8 count, u8 *data);
- };
- 
--#ifdef CONFIG_PM_SLEEP
- extern const struct dev_pm_ops adt7316_pm_ops;
--#define ADT7316_PM_OPS (&adt7316_pm_ops)
--#else
--#define ADT7316_PM_OPS NULL
--#endif
-+
- int adt7316_probe(struct device *dev, struct adt7316_bus *bus,
- 		  const char *name);
- 
--- 
-2.52.0
+Maxime
+
 
 

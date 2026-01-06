@@ -1,183 +1,127 @@
-Return-Path: <linux-iio+bounces-27500-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-27501-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id E57B5CF8E08
-	for <lists+linux-iio@lfdr.de>; Tue, 06 Jan 2026 15:52:10 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id D610ACF9673
+	for <lists+linux-iio@lfdr.de>; Tue, 06 Jan 2026 17:40:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 56F71301A4C3
-	for <lists+linux-iio@lfdr.de>; Tue,  6 Jan 2026 14:51:48 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 09A0D30303AA
+	for <lists+linux-iio@lfdr.de>; Tue,  6 Jan 2026 16:36:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CBA78330330;
-	Tue,  6 Jan 2026 14:51:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E3B93203BC;
+	Tue,  6 Jan 2026 16:36:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="W5KesHQG"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oHefFzrB"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-dl1-f44.google.com (mail-dl1-f44.google.com [74.125.82.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DAC4833345E
-	for <linux-iio@vger.kernel.org>; Tue,  6 Jan 2026 14:51:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F794261B83;
+	Tue,  6 Jan 2026 16:36:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767711102; cv=none; b=LEAna/zdIoezKh+AyulyDjwyIgIVCGrNrpRsjRVjpQ71dtoXHFW/6RAapm/3Lix5n3VzdB1kjk1hg15Rpen/qpjY09ppPaCsQEIqSfTrKoRLCOTzaYuzfDaxInm6cZNG1b2xpGC06+/XaGxDZHrJxrfShNiUKdZcFMk5yjy/YKI=
+	t=1767717375; cv=none; b=ABeLHlUdXA7yK1PYlVWbNuTm7c0QDoIPnri2jMA20iayfPtzJeCH9oAJhwei1mida77b6S6aUbeY0cZrXKaFjEJxlGwjqIr274DUmizTjken//t45RwfMHzTVX2HTZ7NAMM5fKNJ1093tck3eDFnSTbUsoS9dYkqtTeTZSHzElQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767711102; c=relaxed/simple;
-	bh=p8dq/dMEupUC2aQzzjPOIC1vFjm7cfadwEaa4zf6ba4=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=L3WGPU5s9wbqnYdDcc2Voj49JpyCWBtgqGIgDueSkZX2W/wUrIxzJVJwzzN+1A2KsLIjiI9Aadl7p8XF/0Qb+Tv0Nt5BGLgx5KD4Ukqa8amSWH1+8EeUdTxEvk8JfmIh91kQhW5RitYtYCDaz061jnLI4igmlvVef0NO0ffRF4Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=W5KesHQG; arc=none smtp.client-ip=74.125.82.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-dl1-f44.google.com with SMTP id a92af1059eb24-11f3e3f0cacso337293c88.0
-        for <linux-iio@vger.kernel.org>; Tue, 06 Jan 2026 06:51:40 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1767711100; x=1768315900; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=G/hNvMMqkMl4qoxeO8kWiJinGTUcm34Ni+je0A+xask=;
-        b=W5KesHQGLS+TD/TD+3ESrXw64mILRkaybhcCmEQmg1bkbiT+g+YokWm6ZSCsuVpnII
-         wRM2yb8R4xqMjAyqhQLg6UFAz6/4FCvaSNoWlwpnNGUQDq1NS9WP6jnMHC/sToPP+sik
-         Q+nStJn6jwdYaAsJ64riBc6rrVR4Qs6VkijpqlY4TTF3DVT5lnMb1Olxd9sNfGVXQMVQ
-         F5uOczTetwHCb+Ma6MuK9gpNzltISpBPtaqggs3l42Zg/DAgWuaL651JfSQYSTe9Vjcr
-         qIEcrdcTHn3JZBvxHhuU4vkj8Kmita0RcxIfT7szPQCD/yXP1/dJr3Oy27r1eK06hGYM
-         6daw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767711100; x=1768315900;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=G/hNvMMqkMl4qoxeO8kWiJinGTUcm34Ni+je0A+xask=;
-        b=DLfuFcKPMiQDR7ckQaNI+CQj1kAfIp07A8CFrIVdFVh3fXsuQW97aosnM2hM0lrlHc
-         GY9GPAWA9t6I9WFMNWyEqCkLB7QaYpJ5suz6eXAa+MOjMxNsju+R6ECBu6eC8ahmewFQ
-         ReWvnrt0QWNOpQOBBEj8ltIXqQ+zHxkdCtFrduu/SJcaxmO8lYqLbmHXOu0wMHKo8oZ2
-         FXQcaExWufD7S32W3P2b+1gvenXxTkyX10WkzqnQP7Tw/qnDPbxGDeai/qRcU0KM5Hq2
-         GhrQ76b9H5GPsS+IRnd8/ltZssn4mZmK/3Szf1Bw9Dw0OnkrBXSUiQhg2mD8GsQ/dBrZ
-         l7Mg==
-X-Forwarded-Encrypted: i=1; AJvYcCWRWG6tQWY0kGMq4Z4SuTlTEGHm0YPfgaXcjpa3BIIdUPskDW5iGEHZDG5kaKxy7nXZr3fbhvMoE+I=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw7afEMSos4As167If1/jTCLFnLwcd4qeYPgv50oRIqYCaZMYkb
-	8b6qSBwgi/tuweDrS1a14vRWgJkXaUR6CxTFZj0jeJSlg/q8IRvCicnX
-X-Gm-Gg: AY/fxX4jdbIPIqmhLoewVDs4NeNVwy/b9NI1PP4yJn5CwhcZiQ6uHYuv5jxIUYXkIhZ
-	XBehUOA/+WuEjcEPehSfF6U09DXlcyK7QNJd3GZ2gUFCRxRdzhPkxZe/ZF37p8rnhmCj5QrM8Ld
-	+LPqN1I3shk8PQ9rFFc1GH5TG4rLwhBUecJoB5LXYaErsq9kq1BAsRBqtI2K+rPEFFVsxsiVQi3
-	zAgGeZ+hmCQYgLua2J14J4qUxWBGqnSu0W8KWqpx0SsydW/k+ujOwDwhpqGB9Wcj+YgNDZoZWsC
-	fS5c37rrnLbrqNp74sES9ZjTVSfWzccTNk1y1a4JVUNBB1T7QkMCiX2ng/0LVc7Duo0BexGTLmB
-	yIdZZ7POaWYyQTCELwkWcjX0Ow/i3ISKq6nmdPfadL0jXmK822WGqBtMantKTFSdTbNHJ82GeWP
-	0dtvMgvqfUEOKsS+4Obz8GIyiJg4k8yZU=
-X-Google-Smtp-Source: AGHT+IH7t7HjXLdeJ46ldbckFVJMidSGo03oodpDrxI0SKkKbyMpbQiE2Zdn26I5kWYcF3bBeMuCrQ==
-X-Received: by 2002:a05:7023:b16:b0:119:e56b:91ea with SMTP id a92af1059eb24-121f18df9afmr2453038c88.27.1767711099732;
-        Tue, 06 Jan 2026 06:51:39 -0800 (PST)
-Received: from gyrocopter ([76.174.137.141])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-121f2434abesm5237003c88.4.2026.01.06.06.51.38
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 06 Jan 2026 06:51:39 -0800 (PST)
-From: Michael Harris <michaelharriscode@gmail.com>
-To: gregkh@linuxfoundation.org,
-	lars@metafoo.de,
-	Michael.Hennerich@analog.com,
-	jic23@kernel.org
-Cc: dlechner@baylibre.com,
-	nuno.sa@analog.com,
-	andy@kernel.org,
-	linux-iio@vger.kernel.org,
-	linux-staging@lists.linux.dev,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v3] staging: iio: adt7316: modernize power management
-Date: Tue,  6 Jan 2026 06:50:55 -0800
-Message-ID: <20260106145055.2557551-1-michaelharriscode@gmail.com>
-X-Mailer: git-send-email 2.52.0
+	s=arc-20240116; t=1767717375; c=relaxed/simple;
+	bh=6NeC5B3RXH7gMhziiOuJTLCjFFUUsX2l5Ssof4Xas80=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=hnr2KJjVdYRlnhG4YvmUkJgQwDKy6Fmoo/uA9MO+BCs9z8R5+PozEz90Gn2rQQ4yKCv/OtGfJ3Duf0/z1lkCR58+kKdk5cO/L7+p+LRAe9ciDIGKfW9pyw2zFfWm8phPyX8jwYx8hFBYHcovo/8Uw7WNbN42cwBlnikdCid0J2k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oHefFzrB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86408C116C6;
+	Tue,  6 Jan 2026 16:36:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1767717374;
+	bh=6NeC5B3RXH7gMhziiOuJTLCjFFUUsX2l5Ssof4Xas80=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=oHefFzrBYXA4m7kkjY9+OHkTgZN/0W9/bZlPS9d9wn1FMpQo9cNAse2PTOIHHIm+c
+	 YGUzXnCpCNuUS7Mcs41sJfyU3Z+v53iXHSWX0Sn7vhoOOaXbgBw8M40MRP3RCYV2Dx
+	 gxJW3s8EEse/7aqPrJBYEFlaorvuPs1J7Vtxop10YoDtsOWusPJ92yG+aHL6eJJKxs
+	 q7QSpyhMPaJ1bxi8ydj5wAZ5ePGagpM8DjSJjlyIjMf48lIivXQEltlktU+FQE+VhA
+	 IntvpEihFTuNft8VoG2F8sUAQBoS/vd70xTx2BvnlG2tbCFyLemEvg+5yZUBViDYuy
+	 UnhtfSOrA7uzA==
+Date: Tue, 6 Jan 2026 10:36:13 -0600
+From: "Rob Herring (Arm)" <robh@kernel.org>
+To: David Lechner <dlechner@baylibre.com>
+Cc: linux-iio@vger.kernel.org, Andy Shevchenko <andy@kernel.org>,
+	devicetree@vger.kernel.org,
+	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
+	Jonathan Cameron <jic23@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Sean Anderson <sean.anderson@linux.dev>,
+	linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
+	Michael Hennerich <michael.hennerich@analog.com>,
+	Marcelo Schmitt <marcelo.schmitt@analog.com>,
+	Mark Brown <broonie@kernel.org>
+Subject: Re: [PATCH v4 1/9] spi: dt-bindings: change spi-{rx,tx}-bus-width to
+ arrays
+Message-ID: <176771732187.2212863.8498767353794540092.robh@kernel.org>
+References: <20251219-spi-add-multi-bus-support-v4-0-145dc5204cd8@baylibre.com>
+ <20251219-spi-add-multi-bus-support-v4-1-145dc5204cd8@baylibre.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251219-spi-add-multi-bus-support-v4-1-145dc5204cd8@baylibre.com>
 
-Replaced use of deprecated function SIMPLE_DEV_PM_OPS() with
-EXPORT_GPL_SIMPLE_DEV_PM_OPS().
 
-Removed PM preprocessor conditions with usage of pm_sleep_ptr().
+On Fri, 19 Dec 2025 15:32:09 -0600, David Lechner wrote:
+> Change spi-rx-bus-width and spi-tx-bus-width properties from single
+> uint32 values to arrays of uint32 values. This allows describing SPI
+> peripherals connected to controllers that have multiple data lanes for
+> receiving or transmitting two or more words in parallel.
+> 
+> Each index in the array corresponds to a physical data lane (one or more
+> wires depending on the bus width). Additional mapping properties will be
+> needed in cases where a lane on the controller or peripheral is skipped.
+> 
+> Bindings that make use of this property are updated in the same commit
+> to avoid validation errors.
+> 
+> The adi,ad4030 binding can now better describe the chips multi-lane
+> capabilities, so that binding is refined and gets a new example.
+> 
+> Converting from single uint32 to array of uint32 does not break .dts/
+> .dtb files since there is no difference between specifying a single
+> uint32 value and an array with a single uint32 value in devicetree.
+> 
+> Signed-off-by: David Lechner <dlechner@baylibre.com>
+> ---
+> 
+> v4 changes:
+> - New patch to replace data-lanes property patch.
+> 
+> In v3, Rob suggested possibly splitting the spi-controller.yaml file
+> to have a way to make most SPI controllers have maxItems: 1 for these
+> properties. I would like to avoid that because it doesn't seem scalable,
+> e.g. if we need another similar split in the future, the number of
+> combinations would grow exponentially (factorially?). I have an idea to
+> instead do this using $dynamicAnchor and $dynamicRef, but dt-schema
+> doesn't currently support that. So I propose we do the best we can for
+> now with the current dt-schema and make further improvements later.
+> 
+> Also, in v3, I suggested that we could have leading 0s in the arrays
+> to indicate unused lanes. But after further consideration, I think it's
+> better to have separate lane-mapping properties for that purpose. It
+> will be easier to explain and parse and be a bit more flexible that way.
+> ---
+>  .../bindings/display/panel/sitronix,st7789v.yaml   |  5 +--
+>  .../devicetree/bindings/iio/adc/adi,ad4030.yaml    | 42 +++++++++++++++++++++-
+>  .../devicetree/bindings/iio/adc/adi,ad4695.yaml    |  5 +--
+>  .../bindings/spi/allwinner,sun4i-a10-spi.yaml      |  6 ++--
+>  .../bindings/spi/allwinner,sun6i-a31-spi.yaml      |  6 ++--
+>  .../bindings/spi/nvidia,tegra210-quad.yaml         |  6 ++--
+>  .../bindings/spi/spi-peripheral-props.yaml         | 26 ++++++++++----
+>  7 files changed, 79 insertions(+), 17 deletions(-)
+> 
 
-Signed-off-by: Michael Harris <michaelharriscode@gmail.com>
----
-v3: Fix commit message function/macro references
-v2: Corrected staging list email address
----
- drivers/staging/iio/addac/adt7316-i2c.c | 2 +-
- drivers/staging/iio/addac/adt7316-spi.c | 2 +-
- drivers/staging/iio/addac/adt7316.c     | 6 ++----
- drivers/staging/iio/addac/adt7316.h     | 6 +-----
- 4 files changed, 5 insertions(+), 11 deletions(-)
+You'll need to add spi/andestech,ae350-spi.yaml which is only in Mark's 
+tree, but otherwise:
 
-diff --git a/drivers/staging/iio/addac/adt7316-i2c.c b/drivers/staging/iio/addac/adt7316-i2c.c
-index f45968ef94ea..3bdaee925dee 100644
---- a/drivers/staging/iio/addac/adt7316-i2c.c
-+++ b/drivers/staging/iio/addac/adt7316-i2c.c
-@@ -136,7 +136,7 @@ static struct i2c_driver adt7316_driver = {
- 	.driver = {
- 		.name = "adt7316",
- 		.of_match_table = adt7316_of_match,
--		.pm = ADT7316_PM_OPS,
-+		.pm = pm_sleep_ptr(&adt7316_pm_ops),
- 	},
- 	.probe = adt7316_i2c_probe,
- 	.id_table = adt7316_i2c_id,
-diff --git a/drivers/staging/iio/addac/adt7316-spi.c b/drivers/staging/iio/addac/adt7316-spi.c
-index af513e003da7..f91325d11394 100644
---- a/drivers/staging/iio/addac/adt7316-spi.c
-+++ b/drivers/staging/iio/addac/adt7316-spi.c
-@@ -142,7 +142,7 @@ static struct spi_driver adt7316_driver = {
- 	.driver = {
- 		.name = "adt7316",
- 		.of_match_table = adt7316_of_spi_match,
--		.pm = ADT7316_PM_OPS,
-+		.pm = pm_sleep_ptr(&adt7316_pm_ops),
- 	},
- 	.probe = adt7316_spi_probe,
- 	.id_table = adt7316_spi_id,
-diff --git a/drivers/staging/iio/addac/adt7316.c b/drivers/staging/iio/addac/adt7316.c
-index 8a9a8262c2be..59fb3bd26bc1 100644
---- a/drivers/staging/iio/addac/adt7316.c
-+++ b/drivers/staging/iio/addac/adt7316.c
-@@ -2082,7 +2082,6 @@ static const struct attribute_group adt7516_event_attribute_group = {
- 	.name = "events",
- };
- 
--#ifdef CONFIG_PM_SLEEP
- static int adt7316_disable(struct device *dev)
- {
- 	struct iio_dev *dev_info = dev_get_drvdata(dev);
-@@ -2098,9 +2097,8 @@ static int adt7316_enable(struct device *dev)
- 
- 	return _adt7316_store_enabled(chip, 1);
- }
--EXPORT_SYMBOL_GPL(adt7316_pm_ops);
--SIMPLE_DEV_PM_OPS(adt7316_pm_ops, adt7316_disable, adt7316_enable);
--#endif
-+
-+EXPORT_GPL_SIMPLE_DEV_PM_OPS(adt7316_pm_ops, adt7316_disable, adt7316_enable);
- 
- static const struct iio_info adt7316_info = {
- 	.attrs = &adt7316_attribute_group,
-diff --git a/drivers/staging/iio/addac/adt7316.h b/drivers/staging/iio/addac/adt7316.h
-index 8c2a92ae7157..f208f0d3583a 100644
---- a/drivers/staging/iio/addac/adt7316.h
-+++ b/drivers/staging/iio/addac/adt7316.h
-@@ -22,12 +22,8 @@ struct adt7316_bus {
- 	int (*multi_write)(void *client, u8 first_reg, u8 count, u8 *data);
- };
- 
--#ifdef CONFIG_PM_SLEEP
- extern const struct dev_pm_ops adt7316_pm_ops;
--#define ADT7316_PM_OPS (&adt7316_pm_ops)
--#else
--#define ADT7316_PM_OPS NULL
--#endif
-+
- int adt7316_probe(struct device *dev, struct adt7316_bus *bus,
- 		  const char *name);
- 
--- 
-2.52.0
+Reviewed-by: Rob Herring (Arm) <robh@kernel.org>
 
 

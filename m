@@ -1,140 +1,142 @@
-Return-Path: <linux-iio+bounces-27505-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-27507-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 44A4FCFAF3C
-	for <lists+linux-iio@lfdr.de>; Tue, 06 Jan 2026 21:35:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C5D20CFB03E
+	for <lists+linux-iio@lfdr.de>; Tue, 06 Jan 2026 21:53:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 6E14B3027A53
-	for <lists+linux-iio@lfdr.de>; Tue,  6 Jan 2026 20:31:53 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id BA6B630FDB5D
+	for <lists+linux-iio@lfdr.de>; Tue,  6 Jan 2026 20:47:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38F3033B6EF;
-	Tue,  6 Jan 2026 19:36:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5B1C2EBBBC;
+	Tue,  6 Jan 2026 20:47:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="Er+Ha+Tl"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Mh7GjfYC"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ej1-f42.google.com (mail-ej1-f42.google.com [209.85.218.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01460346796
-	for <linux-iio@vger.kernel.org>; Tue,  6 Jan 2026 19:36:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF0A718E025;
+	Tue,  6 Jan 2026 20:47:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767728195; cv=none; b=dOBXIIwSGNc5BiipZUPnUCKgY1tFbgSmzQeZv8polr3Yn6AtsygSfxQmlvQIJbGG6IFgychmmaExbg815smLwsatl/c7IKaGWBz9MBKcVy9ejn2cJxQcWlDwREJD/sia6LVET7eWRG6XJkTwEdeltcFx68YVycx6xA2MpXCe558=
+	t=1767732445; cv=none; b=oqQDsr11y1WsxLViybbViK4PYW+kVPi651kmCy5gKyQP4C5WqX6i2Rg+D/7IzKmI1VTbixZB0WwNXTyhye1G7dqEAf/uyI8AiGIdK6RqFb4QhmuS37qb3AEoCI2WV9iKeNj9Jy/IL/y+yGz48sW1WO+OqKuvt9bLlUbGWrvRxbQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767728195; c=relaxed/simple;
-	bh=Hv+4Td7imHc66YvbfhKCd05nmjS6AFCfOJi3FGBPJHk=;
-	h=From:To:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=cV2XNuZVs/pno7Bl8ua8KW99GEBv9LgeuPoHSJ+h8dNXtOr3q7IscocnrxhzHNG7dtR5x3Sq5TUop5KLjJ1aQOr0F/wsaBMV7oEeXF6nEu0jgokjc9ugKC2MC38YQizcSFkzexGMeVEb5mZdB2frdJrN3okdg4xhdsZyucIO84Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=Er+Ha+Tl; arc=none smtp.client-ip=209.85.218.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-ej1-f42.google.com with SMTP id a640c23a62f3a-b7277324054so241013966b.0
-        for <linux-iio@vger.kernel.org>; Tue, 06 Jan 2026 11:36:32 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1767728191; x=1768332991; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=fIsy4zlRCSb3g+IcnxxPTLfEgVdaWceO+4E7k1hxNNo=;
-        b=Er+Ha+Tlojob9s9XC5br9NWpvRdnk2YnuwWg1t9KDOpOrudDEELpMgQk5vgdGLQ71U
-         aIYzfREKIvnDkElHraFxfpiC2MZED1379NGYJEaTN1SWLGdsy+GQXEoFM45N6QheGpS7
-         mhqDrtCw2dcqb+2Z3p5WP+QJc4Ca8d0NT8OO7JaF4wkjJJM3XAtQnmdCv2pMtluBv/mf
-         XAzS02/MMmLwWUiZ6qtdCvTzQroxRO5A7kYo+S7kwQg3xyqG24kSie0nQPwIcGZ4XfdA
-         +7N66fH8OVgCZuQgi6qX55nXmPdHr0fxgXCQ0B3W2DS5Nl72CHnslXBUV+XGpPrdUPTX
-         rUJw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767728191; x=1768332991;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:to:from:x-gm-gg:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=fIsy4zlRCSb3g+IcnxxPTLfEgVdaWceO+4E7k1hxNNo=;
-        b=iCsl4pNNt15BKOx5AR8GhNelY6HDx9e0bDeJWWgd+5qFC2O1SON5i48XoLwH/dSowi
-         q0/vzFc7T+NVhMeD95dtQj03JDycVm/vaa/kahvDmDulZa8MMMKnCVsaSO89FlW4NbP+
-         II+wMIh8zOEHvodD9+TovUcl3r+5jpj+j8SvYXzM/Dt8VfksKQuRUN0pvFtLX/lA4uJE
-         cCA9mU+QI4Fg1WSkWVJgJ/uJ9aXybB1vna2AjkK3c7NDTmRLTJ6QZtG5cJ7xBBdC9tO5
-         oF9lh4qpTm3qtXuSkmAwGP+MhFmpKwdegvToP3OMumdcilB5iiPq8EkIz7KdItPUiI+7
-         4d4w==
-X-Forwarded-Encrypted: i=1; AJvYcCVuR0cBjEgmU8TjI+FSX59vghnCO4vlLAiliKn8RT1veFCDhv7VQYqSJcALZU1Yrh2COm861K2NQhg=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwawwdHJ5aGoyM2wqQcDpaJX9H+tdh2+Kk+bc2J/H6wEWUvbOUk
-	Wys23vThvxqt7ONpSrWJPYRGa0zBogGpCGVuD4GK/dtfkr81vUkxWg48gCJA9muWO4g=
-X-Gm-Gg: AY/fxX69BC9EcF+7NJFaIWVuwcDF6stylwebIaLJQk+++E8F6HVCCWHKPbY8VWVFJqJ
-	s4BN2gZ9vBGzHdC9I1GB3K1kaPXxTXcrhrgTt6WBZjV/3LHhIt3AgU2eG9xIJ1oy/QWcykAV31L
-	nSq5tD0Wwf+ozgAytLyVmW3Qht7koNv5QRjvCSWUdEVZYy6qd+uJxPKcaEhBYf1A+9WCXjNzK7f
-	oxZGLDThpr/BrelHJe7iWhK+62nud894dVVBJVu8wMn7kn/9EhtsDrY+IVPA/2XhBuId5h1lUlE
-	g61eCTn25lziom/RM8g/vXMkyF8aOfPEsMwKwl6RC1uZBj+d0WLyDwPrI9qpVQa/rb2QNbqWW9o
-	VOxdMeTrAbZjMI/VZA7eqvm73Q3qzaW9D1NiZsOAX9BXkFXDSOLvnD+yst8m4Ozql+ggK0woccH
-	AVPyNppPTuyskbFGIC3ItKAeUo9iGDh7eDdn6B16kh0w==
-X-Google-Smtp-Source: AGHT+IGHslxzKv8h3YydnagEsr9OTmsVNjwXar8tIg+Hw3tJSVZ8OjYLZtqr3XlA6LOtw/xV5bqxKw==
-X-Received: by 2002:a17:907:6e93:b0:b83:ee0d:e03d with SMTP id a640c23a62f3a-b84451bd516mr21119266b.19.1767728191386;
-        Tue, 06 Jan 2026 11:36:31 -0800 (PST)
-Received: from localhost (mob-176-245-131-134.net.vodafone.it. [176.245.131.134])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b842a4cfe60sm295763366b.45.2026.01.06.11.36.31
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 06 Jan 2026 11:36:31 -0800 (PST)
-From: Francesco Lavra <flavra@baylibre.com>
-To: Ramona Gradinariu <ramona.gradinariu@analog.com>,
-	Antoniu Miclaus <antoniu.miclaus@analog.com>,
-	Lars-Peter Clausen <lars@metafoo.de>,
-	Michael Hennerich <Michael.Hennerich@analog.com>,
-	Jonathan Cameron <jic23@kernel.org>,
+	s=arc-20240116; t=1767732445; c=relaxed/simple;
+	bh=VfVOPlfZdPaSK69myuoZQ0HV45tCixoJy8KBQlltID4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=VKdY365p1bgrAAELufMfI7Jly9+iUmD5jmXGexTfS2YNv7uL9jJjX9Ic6wG3Bab//ll9PLuYThYTU0PzKYP96vlGhvGLgIeObAiErb+jdBJLM080b3jz4n1B9hyLF0XIpZPYVLqUM7ydO61eZO/AW6Of88mWZfRiPrla1cwp4O0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Mh7GjfYC; arc=none smtp.client-ip=192.198.163.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1767732444; x=1799268444;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=VfVOPlfZdPaSK69myuoZQ0HV45tCixoJy8KBQlltID4=;
+  b=Mh7GjfYCMWSzUV9bDJEV7xaPSBrHAs3Y3d7j5k5S90jKjxtFSFCahiws
+   fpYPkAsWMIEms+U28DsEnmhgzgMTDgf7mSD+Mu7uBb+3pRVQh/x0hc+Cz
+   /XHVJcSEYLcDsQ3rsu3oFHSvIBwY1fxY9bnfx+CUYNxnREX9kNWmmI4zv
+   F+n4QYUTdYA4H7qXeaFDrivb3qxI84KOqK1zU4npqXKdHRHUXCQT7/rgt
+   KKIetyf84bCulMv3Hv11W842kFmLp1hJ3hp3dCtAAthfqROqjnasYjcgc
+   WkbrtrVzRgNCpj2D2o8Ee0UxmQDvtwOfIg7u0/muRGR/hAzS5Cwt6dXSh
+   Q==;
+X-CSE-ConnectionGUID: TeSmvydgQZ+4fipTfPwEoQ==
+X-CSE-MsgGUID: dOqFRqLXRzaXUDyCYzNYwQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11663"; a="72960208"
+X-IronPort-AV: E=Sophos;i="6.21,206,1763452800"; 
+   d="scan'208";a="72960208"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Jan 2026 12:47:23 -0800
+X-CSE-ConnectionGUID: lh4zqpUPTmuaW15F/hEKtw==
+X-CSE-MsgGUID: SygAw2PXQeOR6D2N33ZOoA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,206,1763452800"; 
+   d="scan'208";a="207292320"
+Received: from fpallare-mobl4.ger.corp.intel.com (HELO localhost) ([10.245.245.67])
+  by orviesa004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Jan 2026 12:47:20 -0800
+Date: Tue, 6 Jan 2026 22:47:17 +0200
+From: Andy Shevchenko <andriy.shevchenko@intel.com>
+To: Shrikant <raskar.shree97@gmail.com>
+Cc: Jonathan Cameron <jic23@kernel.org>,
 	David Lechner <dlechner@baylibre.com>,
-	=?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
-	Andy Shevchenko <andy@kernel.org>,
-	linux-iio@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH 2/2] iio: accel: adxl380: Optimize reading of FIFO entries in interrupt handler
-Date: Tue,  6 Jan 2026 20:36:27 +0100
-Message-Id: <20260106193627.3989930-3-flavra@baylibre.com>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20260106193627.3989930-1-flavra@baylibre.com>
-References: <20260106193627.3989930-1-flavra@baylibre.com>
+	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
+	Andy Shevchenko <andy@kernel.org>, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, skhan@linuxfoundation.org,
+	david.hunter.linux@gmail.com, linux-iio@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v4 4/4] iio: proximity: rfd77402: Add interrupt handling
+ support
+Message-ID: <aV101TrC5hB_nHJM@smile.fi.intel.com>
+References: <20260101-b4-rfd77402_irq-v4-0-42cd54359e9f@gmail.com>
+ <20260101-b4-rfd77402_irq-v4-4-42cd54359e9f@gmail.com>
+ <aVe7SP914oI-jAam@smile.fi.intel.com>
+ <CAHc1_P4dCdt6QFgfZ8OUZGT+UfLqiP_ect7pOsd_HeQaDe8jTg@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1312; i=flavra@baylibre.com; h=from:subject; bh=Hv+4Td7imHc66YvbfhKCd05nmjS6AFCfOJi3FGBPJHk=; b=owEB7QES/pANAwAKAe3xO3POlDZfAcsmYgBpXWPSYNm/sCZ9PlbzOgzKR/J/Va7BlVRGafiJd saURpEKC3SJAbMEAAEKAB0WIQSGV4VPlTvcox7DFObt8TtzzpQ2XwUCaV1j0gAKCRDt8TtzzpQ2 XxlPDACiqss/sHDs48h4kpmUERyNxijtJvnCjBHO33SfXSAs7jjEWrMrKHS9ITWFXoZJjGOI4AG sVALL9CguQQfN2MGEM/TgU0zl9stW2EYuQtzRW/pOVZQMFe4YKciuOFApFT0GEgZ0OjE1Qh393c bryd6QLemeKFUEr+EF0Jm1k1vBerexWSyO3wBEdUPVpAYUuXgInt7wlOPJxLQyhtsrkJSVW/qGm bN4NDm8c8kgAVcQnXTB1rSy5XNBsV+namcukcFp/GXniX0XGJPj2wa2yI+K5p4eKMXIVneVDVSn ot2zTckodOO/PYvhMwIMz+UwpVRhc8xHvA4FSf1Cc9QSe78AhciT602i2JYN4pqCsrqJxkphR90 5xbb75uGInjlSsW+6kv7bnBJB56zol1s3mqNH8sdT7g2NekHAkC5Xqf5vcFs9NpgLY2qaDQjTOC RkgQxQq2uFySwfhTvoNhGZOB6ufhw5MaS8d4lv2nUqarFlWMBrJrASUZ8ciRcPtuhUcnY=
-X-Developer-Key: i=flavra@baylibre.com; a=openpgp; fpr=8657854F953BDCA31EC314E6EDF13B73CE94365F
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAHc1_P4dCdt6QFgfZ8OUZGT+UfLqiP_ect7pOsd_HeQaDe8jTg@mail.gmail.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
+ krs, Bertel Jungin Aukio 5, 02600 Espoo
 
-In order to minimize the time required for transferring FIFO data from the
-sensor to the host machine, perform the read from the FIFO in a single call
-to regmap_bulk_read().
-This allows reading acceleration data for all 3 axes at 16 kHz
-sampling frequency using a 1MHz I2C bus frequency.
+On Tue, Jan 06, 2026 at 05:39:29AM +0530, Shrikant wrote:
 
-Signed-off-by: Francesco Lavra <flavra@baylibre.com>
----
- drivers/iio/accel/adxl380.c | 12 +++++-------
- 1 file changed, 5 insertions(+), 7 deletions(-)
+...
 
-diff --git a/drivers/iio/accel/adxl380.c b/drivers/iio/accel/adxl380.c
-index 9f6c0e02575a..ce3643c5deb8 100644
---- a/drivers/iio/accel/adxl380.c
-+++ b/drivers/iio/accel/adxl380.c
-@@ -950,14 +950,12 @@ static irqreturn_t adxl380_irq_handler(int irq, void  *p)
- 		return IRQ_HANDLED;
- 
- 	fifo_entries = rounddown(fifo_entries, st->fifo_set_size);
--	for (i = 0; i < fifo_entries; i += st->fifo_set_size) {
--		ret = regmap_noinc_read(st->regmap, ADXL380_FIFO_DATA,
--					&st->fifo_buf[i],
--					2 * st->fifo_set_size);
--		if (ret)
--			return IRQ_HANDLED;
-+	ret = regmap_noinc_read(st->regmap, ADXL380_FIFO_DATA,
-+				&st->fifo_buf, 2 * fifo_entries);
-+	if (ret)
-+		return IRQ_HANDLED;
-+	for (i = 0; i < fifo_entries; i += st->fifo_set_size)
- 		iio_push_to_buffers(indio_dev, &st->fifo_buf[i]);
--	}
- 
- 	return IRQ_HANDLED;
- }
+> > >  #include <linux/module.h>
+> > >  #include <linux/i2c.h>
+> > >  #include <linux/delay.h>
+> > > +#include <linux/interrupt.h>
+> > > +#include <linux/completion.h>
+> > >  #include <linux/iopoll.h>
+> >
+> > Same comment as per previous patch. Do not add even more misordering, please.
+> Will it be okay if I re-order the includes as below ?
+> #include <linux/completion.h>
+> #include <linux/delay.h>
+> #include <linux/i2c.h>
+> #include <linux/interrupt.h>
+> #include <linux/iopoll.h>
+> #include <linux/module.h>
+
+Just try to squeeze the new inclusions in the longest chain of the sorted ones
+(yes, some original ones may be left untouched and hence unordered).
+
+> #include <linux/iio/iio.h>
+
+...
+
+> > > +/**
+> > > + * struct rfd77402_data - device-specific data for the RFD77402 sensor
+> > > + * @client: I2C client handle
+> > > + * @lock: mutex to serialize sensor reads
+> > > + * @completion: completion used for interrupt-driven measurements
+> > > + * @irq_en: indicates whether interrupt mode is enabled
+> > > + */
+> > >  struct rfd77402_data {
+> > >       struct i2c_client *client;
+> > > -     /* Serialize reads from the sensor */
+> > >       struct mutex lock;
+> > > +     struct completion completion;
+> > > +     bool irq_en;
+> > >  };
+> >
+> > The kernel-doc conversion can be a separate patch, but I'm not insisting.
+> I can split this into a separate patch within the same series.
+> Please let me know if you would prefer it to be handled differently.
+
+It's up to maintainers.
+
 -- 
-2.39.5
+With Best Regards,
+Andy Shevchenko
+
 
 

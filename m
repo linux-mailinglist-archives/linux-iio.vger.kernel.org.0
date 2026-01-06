@@ -1,135 +1,183 @@
-Return-Path: <linux-iio+bounces-27499-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-27500-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id F0930CF74DA
-	for <lists+linux-iio@lfdr.de>; Tue, 06 Jan 2026 09:30:06 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id E57B5CF8E08
+	for <lists+linux-iio@lfdr.de>; Tue, 06 Jan 2026 15:52:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 98CB6307E259
-	for <lists+linux-iio@lfdr.de>; Tue,  6 Jan 2026 08:26:35 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 56F71301A4C3
+	for <lists+linux-iio@lfdr.de>; Tue,  6 Jan 2026 14:51:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA2D830C614;
-	Tue,  6 Jan 2026 08:17:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CBA78330330;
+	Tue,  6 Jan 2026 14:51:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="WUHRbN2f"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="W5KesHQG"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ua1-f52.google.com (mail-ua1-f52.google.com [209.85.222.52])
+Received: from mail-dl1-f44.google.com (mail-dl1-f44.google.com [74.125.82.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07E6030C37A
-	for <linux-iio@vger.kernel.org>; Tue,  6 Jan 2026 08:17:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DAC4833345E
+	for <linux-iio@vger.kernel.org>; Tue,  6 Jan 2026 14:51:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767687457; cv=none; b=kpsMBT/fvDQWy4Dg9X/eXIMItiTdLAoO1gFtHXB88SVrXcFNEP0JvKxG0inoro0UVftPULq1mU8XIOxcLNnZL2XdMhvJltH+uM3JmMDJzoh7VrVA48juKFshLq4I66Rkxpd7nI4UmpgXIr14RiK3td+dEDAvFXWhvP4emaSWUBA=
+	t=1767711102; cv=none; b=LEAna/zdIoezKh+AyulyDjwyIgIVCGrNrpRsjRVjpQ71dtoXHFW/6RAapm/3Lix5n3VzdB1kjk1hg15Rpen/qpjY09ppPaCsQEIqSfTrKoRLCOTzaYuzfDaxInm6cZNG1b2xpGC06+/XaGxDZHrJxrfShNiUKdZcFMk5yjy/YKI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767687457; c=relaxed/simple;
-	bh=FOPUkitsqaF8YzC66VZOfPEJZqQAjxcGjnj21GYvWAg=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=noiLjHjk202P3AprW98rPI5dGFCOjVZU+/VHtO6hiH8OR+PMgpR+XHSsP50C6oALiZsdZGrUM+h23CQ/tfRnpjS/IrTfVPJ7Nx3SKbEPcvRYaK+lcW+7XkHM1LjHd7lheV5zKfuRYgyrjlW9xq69q7wrrqjGoFeQA3cjEYQmycQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=WUHRbN2f; arc=none smtp.client-ip=209.85.222.52
+	s=arc-20240116; t=1767711102; c=relaxed/simple;
+	bh=p8dq/dMEupUC2aQzzjPOIC1vFjm7cfadwEaa4zf6ba4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=L3WGPU5s9wbqnYdDcc2Voj49JpyCWBtgqGIgDueSkZX2W/wUrIxzJVJwzzN+1A2KsLIjiI9Aadl7p8XF/0Qb+Tv0Nt5BGLgx5KD4Ukqa8amSWH1+8EeUdTxEvk8JfmIh91kQhW5RitYtYCDaz061jnLI4igmlvVef0NO0ffRF4Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=W5KesHQG; arc=none smtp.client-ip=74.125.82.44
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ua1-f52.google.com with SMTP id a1e0cc1a2514c-93f500ee7b8so331857241.3
-        for <linux-iio@vger.kernel.org>; Tue, 06 Jan 2026 00:17:35 -0800 (PST)
+Received: by mail-dl1-f44.google.com with SMTP id a92af1059eb24-11f3e3f0cacso337293c88.0
+        for <linux-iio@vger.kernel.org>; Tue, 06 Jan 2026 06:51:40 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1767687455; x=1768292255; darn=vger.kernel.org;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=3ddGdp3Su2MO3oeW79PLeKeX536BVDQjrIolsAybpzg=;
-        b=WUHRbN2fv6FA689+zOvzc8Ziekt32Oy0dV5BQTeL+7NEz99d+U0hrKBMy+2RE6+b+p
-         cf7Gg5bwWbwtNPrngbtl1hBtjZ0G35qKQcZlOa7dVztg8N0HPiZrYpcl5gH3mLzV9e0r
-         7J3c7R/jvWnqGyYQTVXMjkS/RDYMtFRDdPxYHaWAUArOlxKXVLrVhSEEw7fYpguRLFIH
-         jnGkiuhnu/kOVgOkucUnUnFETqDw016w5Z8DqDseBJd4wxRMaeyddcVE8uizeSvZg2cp
-         N92QUjJXtjhjMIorcnsxiNhFaqSlRoxcyY/2tuDIZRAXKD1C2JdMQ12uQuakjfiQyLqV
-         tGnQ==
+        d=gmail.com; s=20230601; t=1767711100; x=1768315900; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=G/hNvMMqkMl4qoxeO8kWiJinGTUcm34Ni+je0A+xask=;
+        b=W5KesHQGLS+TD/TD+3ESrXw64mILRkaybhcCmEQmg1bkbiT+g+YokWm6ZSCsuVpnII
+         wRM2yb8R4xqMjAyqhQLg6UFAz6/4FCvaSNoWlwpnNGUQDq1NS9WP6jnMHC/sToPP+sik
+         Q+nStJn6jwdYaAsJ64riBc6rrVR4Qs6VkijpqlY4TTF3DVT5lnMb1Olxd9sNfGVXQMVQ
+         F5uOczTetwHCb+Ma6MuK9gpNzltISpBPtaqggs3l42Zg/DAgWuaL651JfSQYSTe9Vjcr
+         qIEcrdcTHn3JZBvxHhuU4vkj8Kmita0RcxIfT7szPQCD/yXP1/dJr3Oy27r1eK06hGYM
+         6daw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767687455; x=1768292255;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=1e100.net; s=20230601; t=1767711100; x=1768315900;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=3ddGdp3Su2MO3oeW79PLeKeX536BVDQjrIolsAybpzg=;
-        b=jZl53F1Rbo99LUmfAqdEwTXbUaD0RbHXhNKzS5Gd3luYsbdG06x+XY3LxRgIG6GMi+
-         Z9odaDQDDn+w4FmItXcrI9rbDGzz+m0r3JJi5pvTU+zkPY0cSOOFvh6oDHxano9IRp8o
-         A45MVnw6HJZ1SSXXtUn1RdHp8YPYCmAcIRWcwvzNjVtClR99bTccCw8dIzcolLvmfCKp
-         VrjZ7TlUkkiHj+rvGn/dsUAedGiafdI7kdnmXptR+Vv7dg3ilbroffmafAzZunONn/Bh
-         QXfogLDJ6i2uDpvUodS3O8WpQcVGBUe6pg2yLFvTrvs5D6ocI6i8TdAGiz90O8samo1n
-         ADPg==
-X-Forwarded-Encrypted: i=1; AJvYcCXW62Kw5V3YI560X034+V/0/MXK+lzrgfxCYxxjBB+FQKJBjlk9PAFKPAUr1f6wFtwSI+7S8bIvHTA=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwYV8KC0tkFRI07OACWvuqM8Lyp/rRFDvrb0+yg0nm7htBsxxu0
-	ERAgh/gr/XHYq4eHyvK/sJyWK+FKuWvrYF1SktLCbEmtlfkhENsYP+r8vc+3Hw==
-X-Gm-Gg: AY/fxX5HOAKqYQfhAkihUF1fEOMkg3arLm93Qh4HdkGxf3ZsLyjcouxXerSaiVrCk8Q
-	8pVCZUQnpt4Fq9lWhHn0aOPUcpd5z2LOeS7aHBoylUccakJQ3TVjj+Byx6RGX72gEBSkuGk/YzU
-	nQurjvf/qjL3EHjFi50YqhFteZGZ9NiyRjIp9k8YV/JYsvpa01YHFfebauMe9JWA6djPPgTU/H8
-	iTg0Qj2ApVHQp2jqTe0JOaJLolwQzzkPLTQMuykP67YMWOJrZE+B9ZifGMYXCDNknB4kfJQNnMo
-	KalgNtIbcW5A7zCFdsQRjHz3o8CWrywfRqRneLznRJMTbTltWZwjM3jUhGM2kqOISvgcOBy/FIW
-	djS9b2KcFM7+Om7SLT0EF3V4Na/94RX8CGozhOTj/WsMHQ3vxq34/2tFfS2Q6tk47Mr2boZTiCw
-	2VWc2yeJBpv8j1
-X-Google-Smtp-Source: AGHT+IHHKlQ5vjlh3st7d386BQ191FebEFIku11RDeMl6skzeQhrdVWdk6pjpJ+3acXwO7/xm04sDw==
-X-Received: by 2002:a05:6102:8096:b0:5db:331e:4c1f with SMTP id ada2fe7eead31-5ec74378154mr795535137.16.1767687454857;
-        Tue, 06 Jan 2026 00:17:34 -0800 (PST)
-Received: from [192.168.100.253] ([2800:bf0:82:11a2:7ac4:1f2:947b:2b6])
-        by smtp.gmail.com with ESMTPSA id ada2fe7eead31-5ec7702eb72sm426510137.4.2026.01.06.00.17.33
+        bh=G/hNvMMqkMl4qoxeO8kWiJinGTUcm34Ni+je0A+xask=;
+        b=DLfuFcKPMiQDR7ckQaNI+CQj1kAfIp07A8CFrIVdFVh3fXsuQW97aosnM2hM0lrlHc
+         GY9GPAWA9t6I9WFMNWyEqCkLB7QaYpJ5suz6eXAa+MOjMxNsju+R6ECBu6eC8ahmewFQ
+         ReWvnrt0QWNOpQOBBEj8ltIXqQ+zHxkdCtFrduu/SJcaxmO8lYqLbmHXOu0wMHKo8oZ2
+         FXQcaExWufD7S32W3P2b+1gvenXxTkyX10WkzqnQP7Tw/qnDPbxGDeai/qRcU0KM5Hq2
+         GhrQ76b9H5GPsS+IRnd8/ltZssn4mZmK/3Szf1Bw9Dw0OnkrBXSUiQhg2mD8GsQ/dBrZ
+         l7Mg==
+X-Forwarded-Encrypted: i=1; AJvYcCWRWG6tQWY0kGMq4Z4SuTlTEGHm0YPfgaXcjpa3BIIdUPskDW5iGEHZDG5kaKxy7nXZr3fbhvMoE+I=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw7afEMSos4As167If1/jTCLFnLwcd4qeYPgv50oRIqYCaZMYkb
+	8b6qSBwgi/tuweDrS1a14vRWgJkXaUR6CxTFZj0jeJSlg/q8IRvCicnX
+X-Gm-Gg: AY/fxX4jdbIPIqmhLoewVDs4NeNVwy/b9NI1PP4yJn5CwhcZiQ6uHYuv5jxIUYXkIhZ
+	XBehUOA/+WuEjcEPehSfF6U09DXlcyK7QNJd3GZ2gUFCRxRdzhPkxZe/ZF37p8rnhmCj5QrM8Ld
+	+LPqN1I3shk8PQ9rFFc1GH5TG4rLwhBUecJoB5LXYaErsq9kq1BAsRBqtI2K+rPEFFVsxsiVQi3
+	zAgGeZ+hmCQYgLua2J14J4qUxWBGqnSu0W8KWqpx0SsydW/k+ujOwDwhpqGB9Wcj+YgNDZoZWsC
+	fS5c37rrnLbrqNp74sES9ZjTVSfWzccTNk1y1a4JVUNBB1T7QkMCiX2ng/0LVc7Duo0BexGTLmB
+	yIdZZ7POaWYyQTCELwkWcjX0Ow/i3ISKq6nmdPfadL0jXmK822WGqBtMantKTFSdTbNHJ82GeWP
+	0dtvMgvqfUEOKsS+4Obz8GIyiJg4k8yZU=
+X-Google-Smtp-Source: AGHT+IH7t7HjXLdeJ46ldbckFVJMidSGo03oodpDrxI0SKkKbyMpbQiE2Zdn26I5kWYcF3bBeMuCrQ==
+X-Received: by 2002:a05:7023:b16:b0:119:e56b:91ea with SMTP id a92af1059eb24-121f18df9afmr2453038c88.27.1767711099732;
+        Tue, 06 Jan 2026 06:51:39 -0800 (PST)
+Received: from gyrocopter ([76.174.137.141])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-121f2434abesm5237003c88.4.2026.01.06.06.51.38
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 06 Jan 2026 00:17:34 -0800 (PST)
-From: Kurt Borja <kuurtb@gmail.com>
-Date: Tue, 06 Jan 2026 03:17:32 -0500
-Subject: [PATCH] iio: adc: ti-ads1018: Drop stale kernel-doc function
- context
+        Tue, 06 Jan 2026 06:51:39 -0800 (PST)
+From: Michael Harris <michaelharriscode@gmail.com>
+To: gregkh@linuxfoundation.org,
+	lars@metafoo.de,
+	Michael.Hennerich@analog.com,
+	jic23@kernel.org
+Cc: dlechner@baylibre.com,
+	nuno.sa@analog.com,
+	andy@kernel.org,
+	linux-iio@vger.kernel.org,
+	linux-staging@lists.linux.dev,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v3] staging: iio: adt7316: modernize power management
+Date: Tue,  6 Jan 2026 06:50:55 -0800
+Message-ID: <20260106145055.2557551-1-michaelharriscode@gmail.com>
+X-Mailer: git-send-email 2.52.0
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260106-ads1018-comment-v1-1-315d50c2a353@gmail.com>
-X-B4-Tracking: v=1; b=H4sIABvFXGkC/x3MQQqAIBBA0avIrBNGCZGuEi1Ep5qFGhoRiHdPW
- r7F/w0qFaYKi2hQ6OHKOQ2oSYA/XTpIchgGjdqgQiNdqAqVlT7HSOmWsw3orPbGagOjugrt/P7
- Hdev9AwgtrwthAAAA
-X-Change-ID: 20260106-ads1018-comment-48d0a82c6826
-To: Jonathan Cameron <jic23@kernel.org>
-Cc: David Lechner <dlechner@baylibre.com>, 
- =?utf-8?q?Nuno_S=C3=A1?= <nuno.sa@analog.com>, 
- Andy Shevchenko <andy@kernel.org>, linux-iio@vger.kernel.org, 
- linux-kernel@vger.kernel.org, Kurt Borja <kuurtb@gmail.com>
-X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=957; i=kuurtb@gmail.com;
- h=from:subject:message-id; bh=FOPUkitsqaF8YzC66VZOfPEJZqQAjxcGjnj21GYvWAg=;
- b=owGbwMvMwCUmluBs8WX+lTTG02pJDJkxR2X3fnh9tfZQ+4/KV48qt7x4t7Pv28yb4f6auyXVf
- C511/7p7ChlYRDjYpAVU2RpT1j07VFU3lu/A6H3YeawMoEMYeDiFICJ1P9nZPizXaL/Y/Pbbdtq
- zea5bN+QztkSmcuaaLDLfaNMhFJbbjcjw7otqid/XHiw7Hf829L0pqXr5GZvKbf3v3uxaZLsrVd
- FrlwA
-X-Developer-Key: i=kuurtb@gmail.com; a=openpgp;
- fpr=54D3BE170AEF777983C3C63B57E3B6585920A69A
+Content-Transfer-Encoding: 8bit
 
-The driver no longer uses iio_device_claim_buffer_mode(). Drop it from
-ads1018_spi_read_exclusive() context remark.
+Replaced use of deprecated function SIMPLE_DEV_PM_OPS() with
+EXPORT_GPL_SIMPLE_DEV_PM_OPS().
 
-Signed-off-by: Kurt Borja <kuurtb@gmail.com>
+Removed PM preprocessor conditions with usage of pm_sleep_ptr().
+
+Signed-off-by: Michael Harris <michaelharriscode@gmail.com>
 ---
- drivers/iio/adc/ti-ads1018.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
-
-diff --git a/drivers/iio/adc/ti-ads1018.c b/drivers/iio/adc/ti-ads1018.c
-index 286e06dc70b8..6246b3cab71f 100644
---- a/drivers/iio/adc/ti-ads1018.c
-+++ b/drivers/iio/adc/ti-ads1018.c
-@@ -211,8 +211,7 @@ static u32 ads1018_calc_delay(unsigned int hz)
-  * Reads the most recent ADC conversion value, without updating the
-  * device's configuration.
-  *
-- * Context: Expects iio_device_claim_buffer_mode() is held and SPI bus
-- *	    *exclusive* use.
-+ * Context: Expects SPI bus *exclusive* use.
-  *
-  * Return: 0 on success, negative errno on error.
-  */
-
+v3: Fix commit message function/macro references
+v2: Corrected staging list email address
 ---
-base-commit: fb2f4eb29a258145b0336601f00509cab6e93e7c
-change-id: 20260106-ads1018-comment-48d0a82c6826
+ drivers/staging/iio/addac/adt7316-i2c.c | 2 +-
+ drivers/staging/iio/addac/adt7316-spi.c | 2 +-
+ drivers/staging/iio/addac/adt7316.c     | 6 ++----
+ drivers/staging/iio/addac/adt7316.h     | 6 +-----
+ 4 files changed, 5 insertions(+), 11 deletions(-)
 
+diff --git a/drivers/staging/iio/addac/adt7316-i2c.c b/drivers/staging/iio/addac/adt7316-i2c.c
+index f45968ef94ea..3bdaee925dee 100644
+--- a/drivers/staging/iio/addac/adt7316-i2c.c
++++ b/drivers/staging/iio/addac/adt7316-i2c.c
+@@ -136,7 +136,7 @@ static struct i2c_driver adt7316_driver = {
+ 	.driver = {
+ 		.name = "adt7316",
+ 		.of_match_table = adt7316_of_match,
+-		.pm = ADT7316_PM_OPS,
++		.pm = pm_sleep_ptr(&adt7316_pm_ops),
+ 	},
+ 	.probe = adt7316_i2c_probe,
+ 	.id_table = adt7316_i2c_id,
+diff --git a/drivers/staging/iio/addac/adt7316-spi.c b/drivers/staging/iio/addac/adt7316-spi.c
+index af513e003da7..f91325d11394 100644
+--- a/drivers/staging/iio/addac/adt7316-spi.c
++++ b/drivers/staging/iio/addac/adt7316-spi.c
+@@ -142,7 +142,7 @@ static struct spi_driver adt7316_driver = {
+ 	.driver = {
+ 		.name = "adt7316",
+ 		.of_match_table = adt7316_of_spi_match,
+-		.pm = ADT7316_PM_OPS,
++		.pm = pm_sleep_ptr(&adt7316_pm_ops),
+ 	},
+ 	.probe = adt7316_spi_probe,
+ 	.id_table = adt7316_spi_id,
+diff --git a/drivers/staging/iio/addac/adt7316.c b/drivers/staging/iio/addac/adt7316.c
+index 8a9a8262c2be..59fb3bd26bc1 100644
+--- a/drivers/staging/iio/addac/adt7316.c
++++ b/drivers/staging/iio/addac/adt7316.c
+@@ -2082,7 +2082,6 @@ static const struct attribute_group adt7516_event_attribute_group = {
+ 	.name = "events",
+ };
+ 
+-#ifdef CONFIG_PM_SLEEP
+ static int adt7316_disable(struct device *dev)
+ {
+ 	struct iio_dev *dev_info = dev_get_drvdata(dev);
+@@ -2098,9 +2097,8 @@ static int adt7316_enable(struct device *dev)
+ 
+ 	return _adt7316_store_enabled(chip, 1);
+ }
+-EXPORT_SYMBOL_GPL(adt7316_pm_ops);
+-SIMPLE_DEV_PM_OPS(adt7316_pm_ops, adt7316_disable, adt7316_enable);
+-#endif
++
++EXPORT_GPL_SIMPLE_DEV_PM_OPS(adt7316_pm_ops, adt7316_disable, adt7316_enable);
+ 
+ static const struct iio_info adt7316_info = {
+ 	.attrs = &adt7316_attribute_group,
+diff --git a/drivers/staging/iio/addac/adt7316.h b/drivers/staging/iio/addac/adt7316.h
+index 8c2a92ae7157..f208f0d3583a 100644
+--- a/drivers/staging/iio/addac/adt7316.h
++++ b/drivers/staging/iio/addac/adt7316.h
+@@ -22,12 +22,8 @@ struct adt7316_bus {
+ 	int (*multi_write)(void *client, u8 first_reg, u8 count, u8 *data);
+ };
+ 
+-#ifdef CONFIG_PM_SLEEP
+ extern const struct dev_pm_ops adt7316_pm_ops;
+-#define ADT7316_PM_OPS (&adt7316_pm_ops)
+-#else
+-#define ADT7316_PM_OPS NULL
+-#endif
++
+ int adt7316_probe(struct device *dev, struct adt7316_bus *bus,
+ 		  const char *name);
+ 
 -- 
- ~ Kurt
+2.52.0
 
 

@@ -1,135 +1,246 @@
-Return-Path: <linux-iio+bounces-27532-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-27523-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 71B0ECFEEAA
-	for <lists+linux-iio@lfdr.de>; Wed, 07 Jan 2026 17:40:49 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 65DDDCFF186
+	for <lists+linux-iio@lfdr.de>; Wed, 07 Jan 2026 18:29:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id AB10432B2CB3
-	for <lists+linux-iio@lfdr.de>; Wed,  7 Jan 2026 16:33:12 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 4D0C23392E73
+	for <lists+linux-iio@lfdr.de>; Wed,  7 Jan 2026 16:13:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9C3F388061;
-	Wed,  7 Jan 2026 16:22:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9FA434846E;
+	Wed,  7 Jan 2026 15:13:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="EyZ3d3Nl"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="H2uAo2Vi"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4F4C37C119;
-	Wed,  7 Jan 2026 16:22:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.10
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D406B347FFB
+	for <linux-iio@vger.kernel.org>; Wed,  7 Jan 2026 15:13:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767802966; cv=none; b=hDBmOmsVlcMc7ganAqHJeiH4nfoYqPyGVCOry7HpUbC2a7AhPGiZo16g/31dqZI6NoYvj7PkDzgqSU0tEXPSfY/gElkwU9SsTwdh+DwDC/QeBh46yU7hrAbzr9YalbzaU3qBNZmS5eymD3kIEYuHe3CbuJEk2T1N+uxA3B2CUB0=
+	t=1767798831; cv=none; b=KJNzaAnUDfQTHX2zELCkrnkH55fDjDBdki/MvVVlCbysb2URJIPFoRJenDpCP5jbBIK+5Y7IsberhxYVO11xOK0O3XD5X+d0wo31Jy8y1OCekLXSCgu+bJuhxCqhVdsfLE2JKYk+EDpDDGK8YDMtME2uC+oiKxMeTcoqS2ed3uk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767802966; c=relaxed/simple;
-	bh=jq0QEywoTnzpVD2zdLE2JdG+q/baB33yw7lWGEVqPoI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=qGZ6ajhhtxaCGYQ4dVVEVxLu4VNyL8NKLZTbvd7jGIcL7X8FIimvpgj7ilKRTLCQYah2msf7Bs6zAVqIEI1G1XQV0cObcAVZrp1igHQZuLIkWIOfKTsGis2riuZHYj7/+f6bX6TEZlZMEamfEaVuHUOuU1OG9vtmZPcy57o+GuU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=EyZ3d3Nl; arc=none smtp.client-ip=198.175.65.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1767802955; x=1799338955;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=jq0QEywoTnzpVD2zdLE2JdG+q/baB33yw7lWGEVqPoI=;
-  b=EyZ3d3NlkrU3NfB0PL/Ft+CzDGLk02sjqMl/Gdd45He3KxMohYrqkYzN
-   38fDUlMXwoIyGIJr3tzQfwqi4f+fJdjt35H7iTtN1jXwOLtiZb9x766Ij
-   kkb1+Q3g4Uftr1feqZmcb+THUUVPXeMEJ8ta82DSr/JIbUv4MmWOtOsRL
-   +KHxQxIiCt7ZUe840pWKxAH6H1XFXD4bIkdBKraOaXRaNBNLe1Ibk6E5N
-   ZUxQ7RvK+GkS9McYlQppB76g0fg0FapDS5qht01t26XsJWKg0pQi821cX
-   nppqoX/kQGmx33XdGY9t84SS6a+HXFGnrPyLghi7wHBorF8TBen86FCxw
-   Q==;
-X-CSE-ConnectionGUID: tXHAnheySWSQjb8cCT/NCw==
-X-CSE-MsgGUID: B6cSSCVzR/2NCjRp+NwmIQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11664"; a="86592549"
-X-IronPort-AV: E=Sophos;i="6.21,208,1763452800"; 
-   d="scan'208";a="86592549"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
-  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Jan 2026 08:22:29 -0800
-X-CSE-ConnectionGUID: RP5w7t7WSsGmOLpz6X5W8w==
-X-CSE-MsgGUID: OcEnbIIuQ9OMzuB4HNKMtA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,208,1763452800"; 
-   d="scan'208";a="202746645"
-Received: from egrumbac-mobl6.ger.corp.intel.com (HELO localhost) ([10.245.245.168])
-  by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Jan 2026 08:22:27 -0800
-Date: Wed, 7 Jan 2026 18:22:23 +0200
-From: Andy Shevchenko <andriy.shevchenko@intel.com>
-To: Marcelo Schmitt <marcelo.schmitt@analog.com>
-Cc: linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
-	jic23@kernel.org, nuno.sa@analog.com, dlechner@baylibre.com,
-	andy@kernel.org, Michael.Hennerich@analog.com, robh@kernel.org,
-	krzk+dt@kernel.org, conor+dt@kernel.org, tomas.melin@vaisala.com,
-	marcelo.schmitt1@gmail.com
-Subject: Re: [PATCH v4 2/2] iio: adc: Initial support for AD4134
-Message-ID: <aV6IP3T3Q3z3aTVa@smile.fi.intel.com>
-References: <cover.1767795849.git.marcelo.schmitt@analog.com>
- <6ae8e203f6fb6e9718271132bd35daef790ab574.1767795849.git.marcelo.schmitt@analog.com>
+	s=arc-20240116; t=1767798831; c=relaxed/simple;
+	bh=8W3cviQ5GbInToBhBoY7C9vmqNIvn2QZQdxWo3XW2/A=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=X5kdiG++D19ZhK2jyZcO5TLX42JhwT+CjaAZR2XPZcPTT6bTSFlcGoUc8gFCUqL+mHpkgTf9lq4zlXFYBJcrG775d8ysL0NyzGnsM9pbSz8vVUHa0O0WCFHyDG2/A0HgBVltGaeWlstQCB86/WefjlWjfVS48fGwUKJfr7YyMEk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=H2uAo2Vi; arc=none smtp.client-ip=209.85.128.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-4779cc419b2so19461275e9.3
+        for <linux-iio@vger.kernel.org>; Wed, 07 Jan 2026 07:13:49 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1767798828; x=1768403628; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=8Ereg+lemriroCRpjwkDWgDnQDqYfpC800QB/08JPJM=;
+        b=H2uAo2Vi7HDA+JaG3BZ23dN6BQ4d6kE27XLtJqrbleeBukrWUS88/hYo+GnpOe+z/D
+         8WKHf70YpwOcri6FRMhvYE7ieyOsWvnxDNMoEdQ4t6GDjPJPqKfAgNRD/hcqE/l4J11g
+         cGwrHq1gsBXbfHVn6VaC7ZsHmbg6xCHQ/7vOu6fuq8eAadIDv86BEzvVYpSgqtXquX8M
+         vBq8g8mYMVHgeVasZz99HpgonsJU4dclU3FembZ1IRt5h1Mr/zD04FWv0TIa6i1FAmr7
+         1L5a8AZtj47KbU0uj6+Z0weRwAsK4C+71kh7+w/zYufpAiVd3DTxEvr13ogJ8C1dbUwo
+         XZiw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1767798828; x=1768403628;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=8Ereg+lemriroCRpjwkDWgDnQDqYfpC800QB/08JPJM=;
+        b=Y7p0E9+XhEJoplRnnRHxbxDPfdHag+dT0Ws4oaUIptm2wK/GLHfCIlgVHkHY/4wFE2
+         hJ6b+0iB+6Ex8zWRnvhj1aLm1PB+4faB4cP+mW00SR+k73iA24ViV+FZ1VjShTTG67lm
+         vTyYGARbmTlzM/QWWRHNi1cWnRtAymviBEkzEM8HQNgaDqqh8GsxlrKskYOL4uRxwEbI
+         jAAGTVPSKYp7G2DspTRIslsJKo0g6Ku8YcWVpZAudo3XZWpILOiHokqLCTKYj4Qt0ig9
+         PDxgpGTVF3kVTb43Jh3bNYNY7Pxz3YZ8hyjEBWcsmNZwogesObI48JVx2KKC7+TZyCZS
+         i2Wg==
+X-Gm-Message-State: AOJu0YwNHoDK1C3F2ITWd5k61FEazRgJl/fAX4qrbRcC+yna7Xi4TtOv
+	DgIRlJLPqZ1qvVHEPgBX5K3RXI2DXsLK0F9W1CvQI7A/fWTB40NICYZc
+X-Gm-Gg: AY/fxX4SNkXse7C0YTLOtQfjZKOOU39P1ofhlHtYO00CvAF35qQRQYdiRQy2N/+XOQQ
+	HD8yBizarH0JpIrAM1S9HzgT4NIwr4blnyHfGDvAyMY82Bk9oiRKQkqx3V8A854+UTaKViVz0AQ
+	udhsRQ547CXDI9x7zKREksW8T8uCTM60iWXGI19acVNBx7ZtrL6P0Vj8fHxRUknBOdXNUUubqvd
+	3b2frSB+QNcWg9ut5QVkmCcc5bJBcylJqBVK7FA6J7n+ekr0xAScw1NHiiLD+efQE3bH0rqU0Aq
+	1Pn3NygYX+5RcfS7k4mBxFeekthChRP3f4ZKxzZBpmeupzH7dCxoGQU9E5JDcJh5QkBqd3h0ZBn
+	Wj19rnZ2ZnuEKfDO7+WjZY0NeAWKXXQjxXIiZIfZKeBx+5wYv3NUte42k1y6LBaaHCVgKubG6O2
+	i2zmXGfW+yQNF1cr/kiVkU1TD4Og==
+X-Google-Smtp-Source: AGHT+IHXEer8ATdFHJ3hctOBJ1LLmHpzbXID1qbtLy4x8gGW16EIKN6E9TqiON2GnaulMGyPUWYlDA==
+X-Received: by 2002:a05:600c:8485:b0:477:55ce:f3c2 with SMTP id 5b1f17b1804b1-47d84b182c3mr31029125e9.14.1767798828047;
+        Wed, 07 Jan 2026 07:13:48 -0800 (PST)
+Received: from [172.24.138.145] ([137.71.226.102])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-47d86c6ff40sm31996415e9.2.2026.01.07.07.13.44
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 07 Jan 2026 07:13:46 -0800 (PST)
+Message-ID: <f2537281-f2e0-4194-bc05-cea41ceeba7d@gmail.com>
+Date: Wed, 7 Jan 2026 16:13:43 +0100
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <6ae8e203f6fb6e9718271132bd35daef790ab574.1767795849.git.marcelo.schmitt@analog.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
- krs, Bertel Jungin Aukio 5, 02600 Espoo
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/3] dt-bindings: iio: dac: Add max22007
+To: Krzysztof Kozlowski <krzk@kernel.org>,
+ Janani Sunil <janani.sunil@analog.com>, Lars-Peter Clausen
+ <lars@metafoo.de>, Michael Hennerich <Michael.Hennerich@analog.com>,
+ Alexandru Ardelean <alexandru.ardelean@analog.com>,
+ Jonathan Cameron <jic23@kernel.org>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Jonathan Corbet <corbet@lwn.net>
+Cc: linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
+ jan.sun97@gmail.com, gastmaier@gmail.com
+References: <20251219-max22007-dev-v1-0-242da2c2b868@analog.com>
+ <20251219-max22007-dev-v1-1-242da2c2b868@analog.com>
+ <7ea6cb11-b9a7-4944-bfa1-63c063eb421e@kernel.org>
+Content-Language: en-US
+From: Janani Sunil <jan.sun97@gmail.com>
+In-Reply-To: <7ea6cb11-b9a7-4944-bfa1-63c063eb421e@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Wed, Jan 07, 2026 at 11:47:59AM -0300, Marcelo Schmitt wrote:
-> AD4134 is a 24-bit, 4-channel, simultaneous sampling, precision
-> analog-to-digital converter (ADC). The device can be managed through SPI or
-> direct control of pin logical levels (pin control mode). The AD4134 design
-> also features a dedicated bus for ADC sample data output. Though, this
-> initial driver for AD4134 only supports usual SPI connections.
-> 
-> Add basic support for AD4134 that enables single-shot ADC sample read.
+Hi Krzysztof,
 
-I have been on a few weeks leave and do not remember much, but it looks like
-this version has all my previous comments being addressed.
+Thank you for reviewing the patch.
 
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@intel.com>
+On 12/19/25 16:50, Krzysztof Kozlowski wrote:
+> On 19/12/2025 16:31, Janani Sunil wrote:
+>> Devicetree bindings for MAX22007 4-channel
+>> 12-bit DAC that drives a voltage or current
+>> output on each channel
+> Please wrap commit message according to Linux coding style / submission
+> process (neither too early nor over the limit):
+> https://elixir.bootlin.com/linux/v6.4-rc1/source/Documentation/process/submitting-patches.rst#L597
 
-...
+Noted on the coding guidelines. Shall update the commit message.
 
-> +#include <linux/array_size.h>
-> +#include <linux/bitfield.h>
+>> Signed-off-by: Janani Sunil <janani.sunil@analog.com>
+>> ---
+>>   .../devicetree/bindings/iio/dac/adi,max22007.yaml  | 116 +++++++++++++++++++++
+>>   MAINTAINERS                                        |   7 ++
+>>   2 files changed, 123 insertions(+)
+>>
+>> diff --git a/Documentation/devicetree/bindings/iio/dac/adi,max22007.yaml b/Documentation/devicetree/bindings/iio/dac/adi,max22007.yaml
+>> new file mode 100644
+>> index 000000000000..c2f65d9e42d4
+>> --- /dev/null
+>> +++ b/Documentation/devicetree/bindings/iio/dac/adi,max22007.yaml
+>> @@ -0,0 +1,116 @@
+>> +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
+>> +%YAML 1.2
+>> +---
+>> +$id: http://devicetree.org/schemas/iio/dac/adi,max22007.yaml#
+>> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+>> +
+>> +title: Analog Devices MAX22007 DAC device driver
+> Bindings are for hardware, drop all device driver references.
 
-> +#include <linux/bitops.h>
+Right. Shall remove the references.
 
-> +#include <linux/bits.h>
+>> +
+>> +maintainers:
+>> +  - Janani Sunil <janani.sunil@analog.com>
+>> +
+>> +description:
+>> +  The MAX22007 is a quad-channel, 12-bit digital-to-analog converter (DAC)
+>> +  with integrated precision output amplifiers and current output capability.
+>> +  Each channel can be independently configured for voltage or current output.
+>> +  Datasheet available at https://www.analog.com/en/products/max22007.html
+>> +
+>> +$ref: /schemas/spi/spi-peripheral-props.yaml#
+>> +
+>> +properties:
+>> +  compatible:
+>> +    const: adi,max22007
+>> +
+>> +  reg:
+>> +    maxItems: 1
+>> +
+>> +  spi-max-frequency:
+>> +    maximum: 500000
+>> +
+>> +  '#address-cells':
+>> +    const: 1
+>> +
+>> +  '#size-cells':
+>> +    const: 0
+>> +
+>> +  vdd-supply:
+>> +    description: Low-Voltage Power Supply from +2.7V to +5.5V.
+>> +
+>> +  hvdd-supply:
+>> +    description:
+>> +      Positive High-Voltage Power Supply from +8V to (HVSS +24V) for
+>> +      the Output Channels.
+>> +
+>> +  hvss-supply:
+>> +    description:
+>> +      Negative High-Voltage Power Supply from -2V to 0V for the Output Channels.
+>> +
+>> +  reset-gpios:
+>> +    maxItems: 1
+>> +    description:
+>> +      GPIO used for hardware reset of the device.
+> Drop description, redundant, because not saying anything other than
+> schema already said. You could say whether it is active low for example
+> if you wanted to add something useful.
 
-No need, as bitops.h implies (and guarantees) that BIT()/GENMASK() are provided
-with it.
+Agreed. Will add some information about the GPIO.
 
-> +#include <linux/clk.h>
-> +#include <linux/crc8.h>
-> +#include <linux/delay.h>
-> +#include <linux/dev_printk.h>
-> +#include <linux/err.h>
-> +#include <linux/export.h>
-> +#include <linux/gpio/consumer.h>
-> +#include <linux/iio/iio.h>
-> +#include <linux/iio/types.h>
-> +#include <linux/module.h>
-> +#include <linux/mod_devicetable.h>
-> +#include <linux/regmap.h>
-> +#include <linux/regulator/consumer.h>
-> +#include <linux/reset.h>
-> +#include <linux/spi/spi.h>
-> +#include <linux/time.h>
-> +#include <linux/types.h>
-> +#include <linux/unaligned.h>
-> +#include <linux/units.h>
+>> +
+>> +patternProperties:
+>> +  "^channel@[0-3]$":
+>> +    allOf:
+>> +      - $ref: /schemas/iio/dac/dac.yaml#
+>> +      - type: object
+> Drop allOf. I don't get where did you get this syntax, it's not needed.
 
--- 
-With Best Regards,
-Andy Shevchenko
+Shall remove it.
+
+>> +        description:
+>> +          Represents the external channels which are connected to the DAC.
+>> +          Channels not specified in the device tree will be powered off.
+>> +
+>> +        properties:
+>> +          reg:
+>> +            description: Channel number
+>> +            maxItems: 1
+>> +
+>> +          adi,type:
+>> +            description: Channel output type.
+>> +            $ref: /schemas/types.yaml#/definitions/string
+>> +            enum: [voltage, current]
+> Why would it matter if this is voltage or current? That's the first time
+> this property appears. Why none of existing fit?
+
+The DAC allows configuring the outputs to be a current/voltage type. The IIO channel names need to change depending on that.
+But as per Johnathan's suggestions, I shall reuse the adi,ch-func instead of introducing a new property here.
+
+>> +
+>> +        required:
+>> +          - reg
+>> +          - adi,type
+>> +
+>> +        unevaluatedProperties: false
+>> +
+>> +required:
+>> +  - compatible
+>> +  - reg
+>> +
+>> +anyOf:
+>> +  - required: [channel@0]
+>> +  - required: [channel@1]
+>> +  - required: [channel@2]
+>> +  - required: [channel@3]
+>> +
+>> +unevaluatedProperties: false
+>
+> Best regards,
+> Krzysztof
 
 
+> Best regards,
+> Janani Sunil
 

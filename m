@@ -1,246 +1,117 @@
-Return-Path: <linux-iio+bounces-27523-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-27528-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 65DDDCFF186
-	for <lists+linux-iio@lfdr.de>; Wed, 07 Jan 2026 18:29:52 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id CA7AACFFC5B
+	for <lists+linux-iio@lfdr.de>; Wed, 07 Jan 2026 20:36:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 4D0C23392E73
-	for <lists+linux-iio@lfdr.de>; Wed,  7 Jan 2026 16:13:47 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id A58E93008726
+	for <lists+linux-iio@lfdr.de>; Wed,  7 Jan 2026 19:35:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9FA434846E;
-	Wed,  7 Jan 2026 15:13:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 211D633AD81;
+	Wed,  7 Jan 2026 15:30:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="H2uAo2Vi"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="YHYe90kO"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D406B347FFB
-	for <linux-iio@vger.kernel.org>; Wed,  7 Jan 2026 15:13:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABE14335567;
+	Wed,  7 Jan 2026 15:30:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767798831; cv=none; b=KJNzaAnUDfQTHX2zELCkrnkH55fDjDBdki/MvVVlCbysb2URJIPFoRJenDpCP5jbBIK+5Y7IsberhxYVO11xOK0O3XD5X+d0wo31Jy8y1OCekLXSCgu+bJuhxCqhVdsfLE2JKYk+EDpDDGK8YDMtME2uC+oiKxMeTcoqS2ed3uk=
+	t=1767799857; cv=none; b=YPVvo9VRCppsMw1aFbyoOkkciP7Wgd5gK0VGJ/YRbn6akzTCjvEqN1RnK2pT3qlD7dNjDY5zeBvYxRq5+68FgIAcnDljGG9f4wmJhV2zjMLMWjYlnqTQ5wiKtcwm79rNAn+PvIfwS/TgOYb3BSw0S3m/be/X/fzQhkHSTkYlyWY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767798831; c=relaxed/simple;
-	bh=8W3cviQ5GbInToBhBoY7C9vmqNIvn2QZQdxWo3XW2/A=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=X5kdiG++D19ZhK2jyZcO5TLX42JhwT+CjaAZR2XPZcPTT6bTSFlcGoUc8gFCUqL+mHpkgTf9lq4zlXFYBJcrG775d8ysL0NyzGnsM9pbSz8vVUHa0O0WCFHyDG2/A0HgBVltGaeWlstQCB86/WefjlWjfVS48fGwUKJfr7YyMEk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=H2uAo2Vi; arc=none smtp.client-ip=209.85.128.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-4779cc419b2so19461275e9.3
-        for <linux-iio@vger.kernel.org>; Wed, 07 Jan 2026 07:13:49 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1767798828; x=1768403628; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=8Ereg+lemriroCRpjwkDWgDnQDqYfpC800QB/08JPJM=;
-        b=H2uAo2Vi7HDA+JaG3BZ23dN6BQ4d6kE27XLtJqrbleeBukrWUS88/hYo+GnpOe+z/D
-         8WKHf70YpwOcri6FRMhvYE7ieyOsWvnxDNMoEdQ4t6GDjPJPqKfAgNRD/hcqE/l4J11g
-         cGwrHq1gsBXbfHVn6VaC7ZsHmbg6xCHQ/7vOu6fuq8eAadIDv86BEzvVYpSgqtXquX8M
-         vBq8g8mYMVHgeVasZz99HpgonsJU4dclU3FembZ1IRt5h1Mr/zD04FWv0TIa6i1FAmr7
-         1L5a8AZtj47KbU0uj6+Z0weRwAsK4C+71kh7+w/zYufpAiVd3DTxEvr13ogJ8C1dbUwo
-         XZiw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767798828; x=1768403628;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=8Ereg+lemriroCRpjwkDWgDnQDqYfpC800QB/08JPJM=;
-        b=Y7p0E9+XhEJoplRnnRHxbxDPfdHag+dT0Ws4oaUIptm2wK/GLHfCIlgVHkHY/4wFE2
-         hJ6b+0iB+6Ex8zWRnvhj1aLm1PB+4faB4cP+mW00SR+k73iA24ViV+FZ1VjShTTG67lm
-         vTyYGARbmTlzM/QWWRHNi1cWnRtAymviBEkzEM8HQNgaDqqh8GsxlrKskYOL4uRxwEbI
-         jAAGTVPSKYp7G2DspTRIslsJKo0g6Ku8YcWVpZAudo3XZWpILOiHokqLCTKYj4Qt0ig9
-         PDxgpGTVF3kVTb43Jh3bNYNY7Pxz3YZ8hyjEBWcsmNZwogesObI48JVx2KKC7+TZyCZS
-         i2Wg==
-X-Gm-Message-State: AOJu0YwNHoDK1C3F2ITWd5k61FEazRgJl/fAX4qrbRcC+yna7Xi4TtOv
-	DgIRlJLPqZ1qvVHEPgBX5K3RXI2DXsLK0F9W1CvQI7A/fWTB40NICYZc
-X-Gm-Gg: AY/fxX4SNkXse7C0YTLOtQfjZKOOU39P1ofhlHtYO00CvAF35qQRQYdiRQy2N/+XOQQ
-	HD8yBizarH0JpIrAM1S9HzgT4NIwr4blnyHfGDvAyMY82Bk9oiRKQkqx3V8A854+UTaKViVz0AQ
-	udhsRQ547CXDI9x7zKREksW8T8uCTM60iWXGI19acVNBx7ZtrL6P0Vj8fHxRUknBOdXNUUubqvd
-	3b2frSB+QNcWg9ut5QVkmCcc5bJBcylJqBVK7FA6J7n+ekr0xAScw1NHiiLD+efQE3bH0rqU0Aq
-	1Pn3NygYX+5RcfS7k4mBxFeekthChRP3f4ZKxzZBpmeupzH7dCxoGQU9E5JDcJh5QkBqd3h0ZBn
-	Wj19rnZ2ZnuEKfDO7+WjZY0NeAWKXXQjxXIiZIfZKeBx+5wYv3NUte42k1y6LBaaHCVgKubG6O2
-	i2zmXGfW+yQNF1cr/kiVkU1TD4Og==
-X-Google-Smtp-Source: AGHT+IHXEer8ATdFHJ3hctOBJ1LLmHpzbXID1qbtLy4x8gGW16EIKN6E9TqiON2GnaulMGyPUWYlDA==
-X-Received: by 2002:a05:600c:8485:b0:477:55ce:f3c2 with SMTP id 5b1f17b1804b1-47d84b182c3mr31029125e9.14.1767798828047;
-        Wed, 07 Jan 2026 07:13:48 -0800 (PST)
-Received: from [172.24.138.145] ([137.71.226.102])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-47d86c6ff40sm31996415e9.2.2026.01.07.07.13.44
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 07 Jan 2026 07:13:46 -0800 (PST)
-Message-ID: <f2537281-f2e0-4194-bc05-cea41ceeba7d@gmail.com>
-Date: Wed, 7 Jan 2026 16:13:43 +0100
+	s=arc-20240116; t=1767799857; c=relaxed/simple;
+	bh=e8FKn11v79ssXsv0JerpySvSnmHmZncjqqH0AJm/f+I=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=OpVHIfkCnSsnEdvfn66Dt8SAD8Y/dv2zWDDN7vTs0PBbhGvM/J/uqIsedqzyQnLKmf0nFS+/JHd8gA5FUsTj8bL3kO6HLZ5DDtd9ZYff6gyBKTIILdfS4RuVXbm+GbHlnhTiutPag3PyuU7iRlbrFmtH8m1xHQnKZSZ4+Z2Gk9k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=YHYe90kO; arc=none smtp.client-ip=192.198.163.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1767799854; x=1799335854;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=e8FKn11v79ssXsv0JerpySvSnmHmZncjqqH0AJm/f+I=;
+  b=YHYe90kOvlx1Je6JKnwi0ZLZdhU3+cuznDzzyhIvgu3ZSAky8W1yEAk2
+   p2unS8Lc5Mz0fDH8olwgRWsaVgCfF7LYtG3FqEAlKTOX5Mj05ioT8O58S
+   FiyPesoOzy0pnushVwgXZ2ZIJa9g4ES0TUKP8K5TB5MoGFUah9el1h4O4
+   MzgKTLMdNXQeDgmt04xHBdw1FqY9ItJ0Gos/ioaeJrOhDjAQsaJbXjq9V
+   iEdRmJRn5yqazmIY0v8s/3tw1NjtKWKHKyqgFFm7OoqJHcK/Qn8GIWTCI
+   ksM/F/MxHidz5j7PWmdUuF54dGjmHB2rTPvZn4h3cwwy9cqubASrxf7WE
+   Q==;
+X-CSE-ConnectionGUID: 4vl9Qk7jTsuy5WLhVY09Wg==
+X-CSE-MsgGUID: nzG/lcV9QkCyTTZmU/cbkw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11664"; a="94639313"
+X-IronPort-AV: E=Sophos;i="6.21,208,1763452800"; 
+   d="scan'208";a="94639313"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Jan 2026 07:30:52 -0800
+X-CSE-ConnectionGUID: 2Ig73mmiRQC9/YDa8EoXow==
+X-CSE-MsgGUID: t64rvZbTRtKmUQ6tZebOQQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,208,1763452800"; 
+   d="scan'208";a="202963615"
+Received: from egrumbac-mobl6.ger.corp.intel.com (HELO localhost) ([10.245.245.168])
+  by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Jan 2026 07:30:51 -0800
+Date: Wed, 7 Jan 2026 17:30:48 +0200
+From: Andy Shevchenko <andriy.shevchenko@intel.com>
+To: Miaoqian Lin <linmq006@gmail.com>
+Cc: Lars-Peter Clausen <lars@metafoo.de>,
+	Michael Hennerich <Michael.Hennerich@analog.com>,
+	Jonathan Cameron <jic23@kernel.org>,
+	David Lechner <dlechner@baylibre.com>,
+	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
+	Andy Shevchenko <andy@kernel.org>,
+	Angelo Dureghello <adureghello@baylibre.com>,
+	linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH v2] iio: dac: ad3552r-hs: fix out-of-bound write in
+ ad3552r_hs_write_data_source
+Message-ID: <aV58KPqNn9uYRMk6@smile.fi.intel.com>
+References: <20260107143550.34324-1-linmq006@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/3] dt-bindings: iio: dac: Add max22007
-To: Krzysztof Kozlowski <krzk@kernel.org>,
- Janani Sunil <janani.sunil@analog.com>, Lars-Peter Clausen
- <lars@metafoo.de>, Michael Hennerich <Michael.Hennerich@analog.com>,
- Alexandru Ardelean <alexandru.ardelean@analog.com>,
- Jonathan Cameron <jic23@kernel.org>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Jonathan Corbet <corbet@lwn.net>
-Cc: linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
- jan.sun97@gmail.com, gastmaier@gmail.com
-References: <20251219-max22007-dev-v1-0-242da2c2b868@analog.com>
- <20251219-max22007-dev-v1-1-242da2c2b868@analog.com>
- <7ea6cb11-b9a7-4944-bfa1-63c063eb421e@kernel.org>
-Content-Language: en-US
-From: Janani Sunil <jan.sun97@gmail.com>
-In-Reply-To: <7ea6cb11-b9a7-4944-bfa1-63c063eb421e@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260107143550.34324-1-linmq006@gmail.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
+ krs, Bertel Jungin Aukio 5, 02600 Espoo
 
-Hi Krzysztof,
+On Wed, Jan 07, 2026 at 10:35:50PM +0800, Miaoqian Lin wrote:
+> When simple_write_to_buffer() succeeds, it returns the number of bytes
+> actually copied to the buffer. The code incorrectly uses 'count'
+> as the index for null termination instead of the actual bytes copied.
+> If count exceeds the buffer size, this leads to out-of-bounds write.
+> Add a check for the count and use the return value as the index.
+> 
+> The bug was validated using a demo module that mirrors the original
+> code and was tested under QEMU.
+> 
+> Pattern of the bug:
+> - A fixed 64-byte stack buffer is filled using count.
+> - If count > 64, the code still does buf[count] = '\0', causing an
+> - out-of-bounds write on the stack.
+> 
+> Steps for reproduce:
+> - Opens the device node.
+> - Writes 128 bytes of A to it.
+> - This overflows the 64-byte stack buffer and KASAN reports the OOB.
+> 
+> Found via static analysis. This is similar to the
+> commit da9374819eb3 ("iio: backend: fix out-of-bound write")
 
-Thank you for reviewing the patch.
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@intel.com>
 
-On 12/19/25 16:50, Krzysztof Kozlowski wrote:
-> On 19/12/2025 16:31, Janani Sunil wrote:
->> Devicetree bindings for MAX22007 4-channel
->> 12-bit DAC that drives a voltage or current
->> output on each channel
-> Please wrap commit message according to Linux coding style / submission
-> process (neither too early nor over the limit):
-> https://elixir.bootlin.com/linux/v6.4-rc1/source/Documentation/process/submitting-patches.rst#L597
-
-Noted on the coding guidelines. Shall update the commit message.
-
->> Signed-off-by: Janani Sunil <janani.sunil@analog.com>
->> ---
->>   .../devicetree/bindings/iio/dac/adi,max22007.yaml  | 116 +++++++++++++++++++++
->>   MAINTAINERS                                        |   7 ++
->>   2 files changed, 123 insertions(+)
->>
->> diff --git a/Documentation/devicetree/bindings/iio/dac/adi,max22007.yaml b/Documentation/devicetree/bindings/iio/dac/adi,max22007.yaml
->> new file mode 100644
->> index 000000000000..c2f65d9e42d4
->> --- /dev/null
->> +++ b/Documentation/devicetree/bindings/iio/dac/adi,max22007.yaml
->> @@ -0,0 +1,116 @@
->> +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
->> +%YAML 1.2
->> +---
->> +$id: http://devicetree.org/schemas/iio/dac/adi,max22007.yaml#
->> +$schema: http://devicetree.org/meta-schemas/core.yaml#
->> +
->> +title: Analog Devices MAX22007 DAC device driver
-> Bindings are for hardware, drop all device driver references.
-
-Right. Shall remove the references.
-
->> +
->> +maintainers:
->> +  - Janani Sunil <janani.sunil@analog.com>
->> +
->> +description:
->> +  The MAX22007 is a quad-channel, 12-bit digital-to-analog converter (DAC)
->> +  with integrated precision output amplifiers and current output capability.
->> +  Each channel can be independently configured for voltage or current output.
->> +  Datasheet available at https://www.analog.com/en/products/max22007.html
->> +
->> +$ref: /schemas/spi/spi-peripheral-props.yaml#
->> +
->> +properties:
->> +  compatible:
->> +    const: adi,max22007
->> +
->> +  reg:
->> +    maxItems: 1
->> +
->> +  spi-max-frequency:
->> +    maximum: 500000
->> +
->> +  '#address-cells':
->> +    const: 1
->> +
->> +  '#size-cells':
->> +    const: 0
->> +
->> +  vdd-supply:
->> +    description: Low-Voltage Power Supply from +2.7V to +5.5V.
->> +
->> +  hvdd-supply:
->> +    description:
->> +      Positive High-Voltage Power Supply from +8V to (HVSS +24V) for
->> +      the Output Channels.
->> +
->> +  hvss-supply:
->> +    description:
->> +      Negative High-Voltage Power Supply from -2V to 0V for the Output Channels.
->> +
->> +  reset-gpios:
->> +    maxItems: 1
->> +    description:
->> +      GPIO used for hardware reset of the device.
-> Drop description, redundant, because not saying anything other than
-> schema already said. You could say whether it is active low for example
-> if you wanted to add something useful.
-
-Agreed. Will add some information about the GPIO.
-
->> +
->> +patternProperties:
->> +  "^channel@[0-3]$":
->> +    allOf:
->> +      - $ref: /schemas/iio/dac/dac.yaml#
->> +      - type: object
-> Drop allOf. I don't get where did you get this syntax, it's not needed.
-
-Shall remove it.
-
->> +        description:
->> +          Represents the external channels which are connected to the DAC.
->> +          Channels not specified in the device tree will be powered off.
->> +
->> +        properties:
->> +          reg:
->> +            description: Channel number
->> +            maxItems: 1
->> +
->> +          adi,type:
->> +            description: Channel output type.
->> +            $ref: /schemas/types.yaml#/definitions/string
->> +            enum: [voltage, current]
-> Why would it matter if this is voltage or current? That's the first time
-> this property appears. Why none of existing fit?
-
-The DAC allows configuring the outputs to be a current/voltage type. The IIO channel names need to change depending on that.
-But as per Johnathan's suggestions, I shall reuse the adi,ch-func instead of introducing a new property here.
-
->> +
->> +        required:
->> +          - reg
->> +          - adi,type
->> +
->> +        unevaluatedProperties: false
->> +
->> +required:
->> +  - compatible
->> +  - reg
->> +
->> +anyOf:
->> +  - required: [channel@0]
->> +  - required: [channel@1]
->> +  - required: [channel@2]
->> +  - required: [channel@3]
->> +
->> +unevaluatedProperties: false
->
-> Best regards,
-> Krzysztof
+-- 
+With Best Regards,
+Andy Shevchenko
 
 
-> Best regards,
-> Janani Sunil
 

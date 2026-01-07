@@ -1,62 +1,74 @@
-Return-Path: <linux-iio+bounces-27531-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-27532-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id B66B2CFED47
-	for <lists+linux-iio@lfdr.de>; Wed, 07 Jan 2026 17:21:52 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 71B0ECFEEAA
+	for <lists+linux-iio@lfdr.de>; Wed, 07 Jan 2026 17:40:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E17B63247306
-	for <lists+linux-iio@lfdr.de>; Wed,  7 Jan 2026 16:06:48 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id AB10432B2CB3
+	for <lists+linux-iio@lfdr.de>; Wed,  7 Jan 2026 16:33:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F31DD366DA4;
-	Wed,  7 Jan 2026 15:57:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9C3F388061;
+	Wed,  7 Jan 2026 16:22:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HgAKDX7H"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="EyZ3d3Nl"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96FF9BA3F;
-	Wed,  7 Jan 2026 15:57:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4F4C37C119;
+	Wed,  7 Jan 2026 16:22:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767801446; cv=none; b=fl0NhgHir7EbLIe98o0LuaFeKc9f948B6UDH17wGUDi7rwZoMzAv2tSE61pLzyIPYegh64rU+7ucXBQ4+rZKHEweXQ0HGbUm1iMWc6vVRCCBXvUFsf2TOfeNEDr8sA+g0M+aCrosrN3NpVwI/yRVGMwIzXa8gWqKhoVD6c2m9iM=
+	t=1767802966; cv=none; b=hDBmOmsVlcMc7ganAqHJeiH4nfoYqPyGVCOry7HpUbC2a7AhPGiZo16g/31dqZI6NoYvj7PkDzgqSU0tEXPSfY/gElkwU9SsTwdh+DwDC/QeBh46yU7hrAbzr9YalbzaU3qBNZmS5eymD3kIEYuHe3CbuJEk2T1N+uxA3B2CUB0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767801446; c=relaxed/simple;
-	bh=xWOFtg32OZw8Y8y9UrYrW6PJ2bzQbnugFJ29Z89+cnQ=;
+	s=arc-20240116; t=1767802966; c=relaxed/simple;
+	bh=jq0QEywoTnzpVD2zdLE2JdG+q/baB33yw7lWGEVqPoI=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ZjxC7r/KSmPBcOZmXFuFpQYf1RND+RietPKtoCJP8m3UDBMBDYYMjyON60xfKxT0XT6qKRhFZEjC7nToYssYBLk0qsOZ9JhtKeZgweQFxeWZSWvKn8ABKlJPc3NDm8Ob6UwkegpIzgqYN8QtwGtuCKZPPwuan9Ut5FbDYtU4OdU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HgAKDX7H; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6DD0CC4CEF1;
-	Wed,  7 Jan 2026 15:57:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767801445;
-	bh=xWOFtg32OZw8Y8y9UrYrW6PJ2bzQbnugFJ29Z89+cnQ=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=HgAKDX7HaH5WXezhfMQ8mA48bStcgu6CsBZN0QDdU6QBpfQt2dJ/Mn8Ch7ZqpzYuN
-	 sG4Wa/LRWWD+cVeivB199Ig2x7dnNTdQzIflHQqr/eulvx5rUYAweEYEwK2+jSjGcZ
-	 UG/lWNnZTZ+r0Gg1ad2u/mX7bXajAmg4wZEuxF6vDLILa/+wZV0wft6NicZ3ZP4jiG
-	 pDqyEcXzr9C7Z96up6qgIIfEwjjqILtS4Z/LE/G1vt6t31uvAQcAs+XbTtZrs1UiQi
-	 JHco+PTQ9R9uauskHFoD1dRSKhwvF6c1QAg/FbyZ14sVUpz6wdRvaP1Y8T75Q2OFFg
-	 8bS7fRv27GQaw==
-Date: Wed, 7 Jan 2026 09:57:22 -0600
-From: "Rob Herring (Arm)" <robh@kernel.org>
-To: David Lechner <dlechner@baylibre.com>
-Cc: linux-kernel@vger.kernel.org, Mark Brown <broonie@kernel.org>,
-	linux-spi@vger.kernel.org,
-	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
-	Andy Shevchenko <andy@kernel.org>, linux-iio@vger.kernel.org,
-	Marcelo Schmitt <marcelo.schmitt@analog.com>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Jonathan Cameron <jic23@kernel.org>, devicetree@vger.kernel.org,
-	Sean Anderson <sean.anderson@linux.dev>,
-	Michael Hennerich <michael.hennerich@analog.com>
-Subject: Re: [PATCH v4 2/9] spi: dt-bindings: add spi-{tx,rx}-lane-map
- properties
-Message-ID: <176780144202.1197510.11558178510570306104.robh@kernel.org>
-References: <20251219-spi-add-multi-bus-support-v4-0-145dc5204cd8@baylibre.com>
- <20251219-spi-add-multi-bus-support-v4-2-145dc5204cd8@baylibre.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=qGZ6ajhhtxaCGYQ4dVVEVxLu4VNyL8NKLZTbvd7jGIcL7X8FIimvpgj7ilKRTLCQYah2msf7Bs6zAVqIEI1G1XQV0cObcAVZrp1igHQZuLIkWIOfKTsGis2riuZHYj7/+f6bX6TEZlZMEamfEaVuHUOuU1OG9vtmZPcy57o+GuU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=EyZ3d3Nl; arc=none smtp.client-ip=198.175.65.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1767802955; x=1799338955;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=jq0QEywoTnzpVD2zdLE2JdG+q/baB33yw7lWGEVqPoI=;
+  b=EyZ3d3NlkrU3NfB0PL/Ft+CzDGLk02sjqMl/Gdd45He3KxMohYrqkYzN
+   38fDUlMXwoIyGIJr3tzQfwqi4f+fJdjt35H7iTtN1jXwOLtiZb9x766Ij
+   kkb1+Q3g4Uftr1feqZmcb+THUUVPXeMEJ8ta82DSr/JIbUv4MmWOtOsRL
+   +KHxQxIiCt7ZUe840pWKxAH6H1XFXD4bIkdBKraOaXRaNBNLe1Ibk6E5N
+   ZUxQ7RvK+GkS9McYlQppB76g0fg0FapDS5qht01t26XsJWKg0pQi821cX
+   nppqoX/kQGmx33XdGY9t84SS6a+HXFGnrPyLghi7wHBorF8TBen86FCxw
+   Q==;
+X-CSE-ConnectionGUID: tXHAnheySWSQjb8cCT/NCw==
+X-CSE-MsgGUID: B6cSSCVzR/2NCjRp+NwmIQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11664"; a="86592549"
+X-IronPort-AV: E=Sophos;i="6.21,208,1763452800"; 
+   d="scan'208";a="86592549"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Jan 2026 08:22:29 -0800
+X-CSE-ConnectionGUID: RP5w7t7WSsGmOLpz6X5W8w==
+X-CSE-MsgGUID: OcEnbIIuQ9OMzuB4HNKMtA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,208,1763452800"; 
+   d="scan'208";a="202746645"
+Received: from egrumbac-mobl6.ger.corp.intel.com (HELO localhost) ([10.245.245.168])
+  by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Jan 2026 08:22:27 -0800
+Date: Wed, 7 Jan 2026 18:22:23 +0200
+From: Andy Shevchenko <andriy.shevchenko@intel.com>
+To: Marcelo Schmitt <marcelo.schmitt@analog.com>
+Cc: linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+	jic23@kernel.org, nuno.sa@analog.com, dlechner@baylibre.com,
+	andy@kernel.org, Michael.Hennerich@analog.com, robh@kernel.org,
+	krzk+dt@kernel.org, conor+dt@kernel.org, tomas.melin@vaisala.com,
+	marcelo.schmitt1@gmail.com
+Subject: Re: [PATCH v4 2/2] iio: adc: Initial support for AD4134
+Message-ID: <aV6IP3T3Q3z3aTVa@smile.fi.intel.com>
+References: <cover.1767795849.git.marcelo.schmitt@analog.com>
+ <6ae8e203f6fb6e9718271132bd35daef790ab574.1767795849.git.marcelo.schmitt@analog.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -65,29 +77,59 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20251219-spi-add-multi-bus-support-v4-2-145dc5204cd8@baylibre.com>
+In-Reply-To: <6ae8e203f6fb6e9718271132bd35daef790ab574.1767795849.git.marcelo.schmitt@analog.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
+ krs, Bertel Jungin Aukio 5, 02600 Espoo
 
+On Wed, Jan 07, 2026 at 11:47:59AM -0300, Marcelo Schmitt wrote:
+> AD4134 is a 24-bit, 4-channel, simultaneous sampling, precision
+> analog-to-digital converter (ADC). The device can be managed through SPI or
+> direct control of pin logical levels (pin control mode). The AD4134 design
+> also features a dedicated bus for ADC sample data output. Though, this
+> initial driver for AD4134 only supports usual SPI connections.
+> 
+> Add basic support for AD4134 that enables single-shot ADC sample read.
 
-On Fri, 19 Dec 2025 15:32:10 -0600, David Lechner wrote:
-> Add spi-tx-lane-map and spi-rx-lane-map properties to the SPI peripheral
-> device tree binding. These properties allow specifying the mapping of
-> peripheral data lanes to controller data lanes. This is needed e.g. when
-> some lanes are skipped on the controller side so that the controller
-> can correctly route data to/from the peripheral.
-> 
-> Signed-off-by: David Lechner <dlechner@baylibre.com>
-> ---
-> 
-> v4 changes:
-> - This replaces the data-lanes property from the previous revision. Now
->   there are separate properties for tx and rx lane maps. And instead of
->   being the primary property for determining the number of lanes, this
->   is only needed in special cases where the mapping is non-trivial.
-> ---
->  .../devicetree/bindings/spi/spi-peripheral-props.yaml      | 14 ++++++++++++++
->  1 file changed, 14 insertions(+)
-> 
+I have been on a few weeks leave and do not remember much, but it looks like
+this version has all my previous comments being addressed.
 
-Reviewed-by: Rob Herring (Arm) <robh@kernel.org>
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@intel.com>
+
+...
+
+> +#include <linux/array_size.h>
+> +#include <linux/bitfield.h>
+
+> +#include <linux/bitops.h>
+
+> +#include <linux/bits.h>
+
+No need, as bitops.h implies (and guarantees) that BIT()/GENMASK() are provided
+with it.
+
+> +#include <linux/clk.h>
+> +#include <linux/crc8.h>
+> +#include <linux/delay.h>
+> +#include <linux/dev_printk.h>
+> +#include <linux/err.h>
+> +#include <linux/export.h>
+> +#include <linux/gpio/consumer.h>
+> +#include <linux/iio/iio.h>
+> +#include <linux/iio/types.h>
+> +#include <linux/module.h>
+> +#include <linux/mod_devicetable.h>
+> +#include <linux/regmap.h>
+> +#include <linux/regulator/consumer.h>
+> +#include <linux/reset.h>
+> +#include <linux/spi/spi.h>
+> +#include <linux/time.h>
+> +#include <linux/types.h>
+> +#include <linux/unaligned.h>
+> +#include <linux/units.h>
+
+-- 
+With Best Regards,
+Andy Shevchenko
+
 
 

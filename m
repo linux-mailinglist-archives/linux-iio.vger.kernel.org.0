@@ -1,1333 +1,219 @@
-Return-Path: <linux-iio+bounces-27543-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-27554-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7146AD04573
-	for <lists+linux-iio@lfdr.de>; Thu, 08 Jan 2026 17:25:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B9CDD046D5
+	for <lists+linux-iio@lfdr.de>; Thu, 08 Jan 2026 17:36:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 8308D30D1C73
-	for <lists+linux-iio@lfdr.de>; Thu,  8 Jan 2026 15:15:12 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 91EFD323EA73
+	for <lists+linux-iio@lfdr.de>; Thu,  8 Jan 2026 15:26:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5B194A470E;
-	Thu,  8 Jan 2026 12:15:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8349E4A8F7E;
+	Thu,  8 Jan 2026 13:45:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="H9QFzjGD"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="nrZnx2ec"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 024F648707D;
-	Thu,  8 Jan 2026 12:15:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D49324CA789
+	for <linux-iio@vger.kernel.org>; Thu,  8 Jan 2026 13:45:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767874517; cv=none; b=RSrKVCo7Fywzc5x272NL4eYk9q+S8db9rFJfoE5re7n2I9eO8Nj9QS9aPJQAofa1Y9D4CsGSSaHAvB7S0jKLEcquxozFs18p23cBcNS8BycInGTwDzsuzSPE8PzfZw6UEkGJln4rfbA0J4H5RXNohha74JXVZWrUxfnS5qJBrVQ=
+	t=1767879928; cv=none; b=ehUbpXIcmHTMnZhxYxlIYk4M7eDecqpYjCTeN3nW6nx7SPZ1FHd3ATX6YfdoWmdugEu5eZDfB/u13Q17whhvfb/SCSSWM/GlVT+ot/aIpYiH7gZ1Z0mcUsVSfd0pVg8tmgBsOcykhkOASt9qp8YiiwsAyquGWKrLUV6wGM4WsVM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767874517; c=relaxed/simple;
-	bh=94cFYjpTNndB6qNUuaUCsS3RE5ao5t2VqBaxXyB8esA=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=Q4xOijlOlxa8V7QS+a28djg5wuDo27U0PN4DHtMzEq7OVsfwk5NbQHT0bhGDNWL9bnZgYNDqQj/CGP8G/HAwrhyq9cs8/UGwknANPaNdqwuXcXjkNa+rYgIlJnttCkIJi8uN0ofNurdsYgGfCNg6AYybovXxq6gwNg2n7YMhSaI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=H9QFzjGD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 41F7EC19425;
-	Thu,  8 Jan 2026 12:15:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767874515;
-	bh=94cFYjpTNndB6qNUuaUCsS3RE5ao5t2VqBaxXyB8esA=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=H9QFzjGD6fEUXm4DEr/ubIBkzjNbRYNZ74HI2lZZKedieNvPwZFDOZrc9V9HCA6SP
-	 CX951C7X8E49fMn2LGqWdWaXl5dpADju3NBwT3kbx8G6/t97wEIi5XRs9zOuYOZHh+
-	 ideUNIpbIzv39adyAuaZzZeouhLcmSTyO8J0Qjh+aFO+gFqY+0bwPXA6fUW+Ydf/EP
-	 xXpm3odiWi7ynWPGNFp9+U3cBiPGY0YMt22LrquBA+VXf7R+5Gr8AkUH3EeN7U3k66
-	 nO+SH5wRnyqZL/xrInNQQrn4v1hexsT/PtGcJMKQJYefijvDdv7lAlG89+hsmXoGii
-	 v5bmW8MmjABYg==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 34932D185EC;
-	Thu,  8 Jan 2026 12:15:15 +0000 (UTC)
-From: Rodrigo Alencar via B4 Relay <devnull+rodrigo.alencar.analog.com@kernel.org>
-Date: Thu, 08 Jan 2026 12:14:51 +0000
-Subject: [PATCH v3 2/6] iio: frequency: adf41513: driver implementation
+	s=arc-20240116; t=1767879928; c=relaxed/simple;
+	bh=CA+OcVYwlAR0KUjhM+FdFOnuU8HCz2zYR3BYb70ICG8=;
+	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=sEIfMhPMUsmhG1asrl8YAlqtZQniIkH4Kx/LPQk7Hj/DaUunk4P0RSL+w+hTjdiFWip61FszzoHQCnZ47uw2daT7AU9XVBJXzvHcPGd8J6c+St64QFAEns6NTVdBzxCpw1KXxkGXfETZiQnA4EaS8vxdeoYYeIVNGeRLfBcrFGo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=nrZnx2ec; arc=none smtp.client-ip=209.85.128.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-47d3ba3a4deso18948965e9.2
+        for <linux-iio@vger.kernel.org>; Thu, 08 Jan 2026 05:45:22 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1767879917; x=1768484717; darn=vger.kernel.org;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:to:from:subject:message-id:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=CA+OcVYwlAR0KUjhM+FdFOnuU8HCz2zYR3BYb70ICG8=;
+        b=nrZnx2ecKbeDjKimNBBEFbVp3Teuh885OU7YYKljuFaL+FPf5ra04EGHTffGCyxyJo
+         cLnz5EuLHVUQIIEe4zUj9rMIkTJozzzNIfb50rtAFoE2tLqgl+jjaA+3H2tU6rH42DOf
+         aeI6GNh56+TB2NceBI68w4AJgqjmYuyPj0OC3betLmpIXbk1aZHClEvSWY4htmrRXEID
+         0DUsXvrhmLRvEP7H0mQautb05Xgqt15A3p6BqS/ZqfPPuuM1Qz8dbMhUeEw3LFdvkBIr
+         3yCWi0XvDEe2h42Fg6KjKqqw6vOAwon6m5iuAijSFtxlxxXp1UOh8dlSVSrVfW5YSlMD
+         ZSvA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1767879917; x=1768484717;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:to:from:subject:message-id:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=CA+OcVYwlAR0KUjhM+FdFOnuU8HCz2zYR3BYb70ICG8=;
+        b=B9i+BBsDgajHjdCJhFyJ3hGmiqxM+qFwZV7955FI+4owsFxOXrogQnbExsvfFrBlBm
+         G2gaplQIwot2cgYpTQQPNfSQrkmvEOyPenU7KMMQjDioHicmV9vmNv3FhGNkHnKyCMig
+         N3xWFuAkX0URCQ1KS4bdpYJfMR4LfiYpIP5UKxjAWnpPLXaZuPdRYZ5v40SiEi8aHZfJ
+         Hby4p+DzDYVKsLxiZr8FgtXcckDwskwdwQSNXowS5jBu/LSXMmjEh86dQ5vq8m/Zasyl
+         //yfl/gVuMrPmDsq2RPo0h+0xHaY6+DXHJADoc45RkbCxGFvi9Q3bL84mPO9ONfLzxz5
+         agyQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVL/lkO/7V+pERd6PhgQ0qUvhNnjbJa0nlUslOk2XRoid22NPN4058Vd0Rv90qPMnMDFukUv+q3nu0=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz3hzzu3WnyFjN5boM3QrQ9nSRjISnQ2gyxKqE3sCs7FeeixhwN
+	RaUwFH5tJ3Y81dvWtmtkZO4zC1x89cyvW/df6iRYyOelKQFBwhZyymI3
+X-Gm-Gg: AY/fxX4HtfaAAoT0pe7+TXCudSmdv71vK5/degf+Pm3EhSgzc9KeXudeHvZRraJSb34
+	KTLlIWgJUDo2UOXwKv1H6oP8q8Y+V7HRblkC8JMqSqOIbyHMCLZ2g9Fq9ZrqnocPaDr6kGZZLnj
+	cARBfmAeCwcd5oj1SoFH3AwyF8vOq5Uv18oECNuIqBQRUwjrbXP0x25NdU0S5zWu/Y2gLQqcVo3
+	l6AG/VyS8pkHqOcUeao99uNLZ7009rrOIakQZa7Fsf0LPx1XXigUeegZ/OIgxaOavm6E93KWozN
+	ztI/d2eSKXsh+gWjHzDb2DEXP+P9/FkaKCUZaMm5xacmPn8isqtQ5brzSbGlGvlZ2v6a85KPoj6
+	IJE4qcLdgYSgT8H1WjnGPBelukLQ0bvuwr0Jn7NJyPGEIP0/MS8JlyeWCOuGGlTTHSGOPpXxIRA
+	W+4qRu58x4hI0AO3yVIqlIHZs8y1XTdQ==
+X-Google-Smtp-Source: AGHT+IGqC+YpFC8AtrYSr5K2U+LOC6qSa9F/xVWtbGW+5nd3fTLz34UJcjifFLY4mVHx9luSsoW3bw==
+X-Received: by 2002:a05:600c:470c:b0:475:da13:2568 with SMTP id 5b1f17b1804b1-47d84b39626mr67416585e9.25.1767879917115;
+        Thu, 08 Jan 2026 05:45:17 -0800 (PST)
+Received: from [192.168.1.187] ([161.230.67.253])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-47d8662c09bsm41168155e9.2.2026.01.08.05.45.16
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 08 Jan 2026 05:45:16 -0800 (PST)
+Message-ID: <5cd68e397bb45f606f59038290e4f3ac09d241da.camel@gmail.com>
+Subject: Re: [PATCH 2/2] iio: accel: adxl380: Add support for 1 kHz sampling
+ frequency
+From: Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
+To: Francesco Lavra <flavra@baylibre.com>, Ramona Gradinariu	
+ <ramona.gradinariu@analog.com>, Antoniu Miclaus
+ <antoniu.miclaus@analog.com>,  Lars-Peter Clausen	 <lars@metafoo.de>,
+ Michael Hennerich <Michael.Hennerich@analog.com>,  Jonathan Cameron	
+ <jic23@kernel.org>, David Lechner <dlechner@baylibre.com>, Nuno
+ =?ISO-8859-1?Q?S=E1?=	 <nuno.sa@analog.com>, Andy Shevchenko
+ <andy@kernel.org>, 	linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Date: Thu, 08 Jan 2026 13:45:59 +0000
+In-Reply-To: <9a5db937dc7072d95d6757cdf2eb8d6fde4abbd0.camel@baylibre.com>
+References: <20260107123518.4017292-1-flavra@baylibre.com>
+		 <20260107123518.4017292-3-flavra@baylibre.com>
+		 <52e5cea72b99fc23c922cf74d7dce3403f43c9cd.camel@gmail.com>
+	 <9a5db937dc7072d95d6757cdf2eb8d6fde4abbd0.camel@baylibre.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.58.2 
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Message-Id: <20260108-adf41513-iio-driver-v3-2-23d1371aef48@analog.com>
-References: <20260108-adf41513-iio-driver-v3-0-23d1371aef48@analog.com>
-In-Reply-To: <20260108-adf41513-iio-driver-v3-0-23d1371aef48@analog.com>
-To: linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org, 
- devicetree@vger.kernel.org, linux-doc@vger.kernel.org
-Cc: Jonathan Cameron <jic23@kernel.org>, 
- David Lechner <dlechner@baylibre.com>, Andy Shevchenko <andy@kernel.org>, 
- Lars-Peter Clausen <lars@metafoo.de>, 
- Michael Hennerich <Michael.Hennerich@analog.com>, 
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, Jonathan Corbet <corbet@lwn.net>, 
- Rodrigo Alencar <rodrigo.alencar@analog.com>
-X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1767874513; l=40768;
- i=rodrigo.alencar@analog.com; s=default; h=from:subject:message-id;
- bh=ps2qaIEYyofi9SxbInG+k7Bq3PZzctDzrgjlL1HZTu8=;
- b=zAfQ4yGkVVt0XlG67xilFDu8ATXckV7Ax0FTQtsOR4xIAvZ+OcjOq6dTdNMiB9eokT27eZs7J
- 5I9AnEMeITmDgJOUVAdD7v25zSeNJMX9mkC6mxUowAO+O7Fu29L3Q9b
-X-Developer-Key: i=rodrigo.alencar@analog.com; a=ed25519;
- pk=ULeHbgU/OYh/PG/4anHDfLgldFItQHAhOktYRVLMFRo=
-X-Endpoint-Received: by B4 Relay for rodrigo.alencar@analog.com/default
- with auth_id=561
-X-Original-From: Rodrigo Alencar <rodrigo.alencar@analog.com>
-Reply-To: rodrigo.alencar@analog.com
 
-From: Rodrigo Alencar <rodrigo.alencar@analog.com>
+On Wed, 2026-01-07 at 16:39 +0100, Francesco Lavra wrote:
+> On Wed, 2026-01-07 at 13:56 +0000, Nuno S=C3=A1 wrote:
+> > Hi Francesco,
+> >=20
+> > On Wed, 2026-01-07 at 13:35 +0100, Francesco Lavra wrote:
+> > > In sensor variants (such as ADXL380 and ADXL382) that support low-pow=
+er
+> > > mode, the SAR signal path allows sampling acceleration data at lower
+> > > rates;
+> > > more specifically, when the sensor operates in VLP mode, the sampling
+> > > frequency is 1 kHz.
+> > > To add support for the 1kHz sampling frequency value, modify the
+> > > operating
+> > > mode selection logic to take into account the sampling frequency, and
+> > > configure the decimation filters only when applicable (i.e. when usin=
+g
+> > > a
+> > > sampling frequency that relies on the DSM signal path).
+> > >=20
+> > > Signed-off-by: Francesco Lavra <flavra@baylibre.com>
+> > > ---
+> > > =C2=A0drivers/iio/accel/adxl380.c | 49 +++++++++++++++++++++++-------=
+-------
+> > > =C2=A0drivers/iio/accel/adxl380.h | 10 +++++++-
+> > > =C2=A02 files changed, 40 insertions(+), 19 deletions(-)
+> > >=20
+> > > diff --git a/drivers/iio/accel/adxl380.c b/drivers/iio/accel/adxl380.=
+c
+> > > index bbf1f88ca781..a6919dfce2e9 100644
+> > > --- a/drivers/iio/accel/adxl380.c
+> > > +++ b/drivers/iio/accel/adxl380.c
+> > > @@ -245,12 +245,14 @@ static int adxl380_set_measure_en(struct
+> > > adxl380_state *st, bool en)
+> > > =C2=A0
+> > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0/*
+> > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0 * Activity/Inactivity detection available only =
+in
+> > > VLP/ULP
+> > > -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0 * mode and for devices that support low power mode=
+s.
+> > > Otherwise
+> > > -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0 * go straight to measure mode (same bits as
+> > > ADXL380_OP_MODE_HP).
+> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0 * mode and for devices that support low power mode=
+s.
+> > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0 */
+> > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0if (st->chip_info->has_low_power &&
+> > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 (FIELD_GET(ADXL380_ACT_EN_MSK=
+, act_inact_ctl) ||
+> > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 FIELD_GET(ADXL380_INACT=
+_EN_MSK, act_inact_ctl)))
+> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0st-=
+>odr =3D ADXL380_ODR_VLP;
+> > > +
+> >=20
+> > So before this change we would go to low power mode but still report
+> > whatever sampling frequency
+> > userspace had configured (which I guess would not correspond to reality=
+)?
+>=20
+> Correct.
+>=20
+> > With the above we'll
+> > update the reported odr right?
+>=20
+> Right.
+>=20
+> > Some things/doubts that come to mind:
+> >=20
+> > 1. If I'm right not sure if this shouldn't be treated as a fix.
+>=20
+> Yes, this technically fixes an existing issue, but I didn't advertise it =
+as
+> a fix because solving the issue requires adding support for the 1kHz
+> frequency, which seems to go beyond the strict definition of a fix and
+> sounds more like a new feature.
+> =C2=A0
+> > 2. Should we cache the current odr so that we restore it when
+> > appropriate?
+>=20
+> Do you mean caching it when activity detection is enabled and restoring i=
+t
+> when detection is disabled? It could be done.
+>=20
 
-The driver is based on existing PLL drivers in the IIO subsystem and
-implements the following key features:
+Just and idea. I think it makes sense since enabling activity detection wil=
+l change things
+under the hood and some users might not realize it. But it is not super imp=
+ortant I guess.
 
-- Integer-N and fractional-N (fixed/variable modulus) synthesis modes
-- High-resolution frequency calculations using microhertz (µHz) precision
-  to handle sub-Hz resolution across multi-GHz frequency ranges
-- IIO debugfs interface for direct register access
-- FW property parsing from devicetree including charge pump settings,
-  reference path configuration and muxout options
-- Power management support with suspend/resume callbacks
-- Lock detect GPIO monitoring
+> > 3. Other thing that comes to mind is if it makes sense to allow
+> > controlling odr if
+> > Activity/Inactivity detection is enabled?
+>=20
+> Disallowing odr control when activity detection is enabled could be an
+> option, but what error code should be returned if the user tries to set t=
+he
+> sampling frequency value when not allowed? -EBUSY?
 
-The driver uses 64-bit microhertz values throughout PLL calculations to
-maintain precision when working with frequencies that exceed 32-bit Hz
-representation while requiring fractional Hz resolution.
+I think it makes sense given the constrains on activity events. EBUSY would=
+ be my choice as well.
+Out of curiosity, do you know how the chip behaves if we change the odr wit=
+h activity enabled? Is it
+just ignored?
 
-Signed-off-by: Rodrigo Alencar <rodrigo.alencar@analog.com>
----
- MAINTAINERS                      |    1 +
- drivers/iio/frequency/Kconfig    |   10 +
- drivers/iio/frequency/Makefile   |    1 +
- drivers/iio/frequency/adf41513.c | 1170 ++++++++++++++++++++++++++++++++++++++
- 4 files changed, 1182 insertions(+)
-
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 64906c26142d..a5c5f76f47c6 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -1616,6 +1616,7 @@ L:	linux-iio@vger.kernel.org
- S:	Supported
- W:	https://ez.analog.com/linux-software-drivers
- F:	Documentation/devicetree/bindings/iio/frequency/adi,adf41513.yaml
-+F:	drivers/iio/frequency/adf41513.c
- 
- ANALOG DEVICES INC ADF4377 DRIVER
- M:	Antoniu Miclaus <antoniu.miclaus@analog.com>
-diff --git a/drivers/iio/frequency/Kconfig b/drivers/iio/frequency/Kconfig
-index 583cbdf4e8cd..90c6304c4bcd 100644
---- a/drivers/iio/frequency/Kconfig
-+++ b/drivers/iio/frequency/Kconfig
-@@ -29,6 +29,16 @@ endmenu
- 
- menu "Phase-Locked Loop (PLL) frequency synthesizers"
- 
-+config ADF41513
-+	tristate "Analog Devices ADF41513 PLL Frequency Synthesizer"
-+	depends on SPI
-+	help
-+	  Say yes here to build support for Analog Devices ADF41513
-+	  26.5 GHz Integer-N/Fractional-N PLL Frequency Synthesizer.
-+
-+	  To compile this driver as a module, choose M here: the
-+	  module will be called adf41513.
-+
- config ADF4350
- 	tristate "Analog Devices ADF4350/ADF4351 Wideband Synthesizers"
- 	depends on SPI
-diff --git a/drivers/iio/frequency/Makefile b/drivers/iio/frequency/Makefile
-index 70d0e0b70e80..53b4d01414d8 100644
---- a/drivers/iio/frequency/Makefile
-+++ b/drivers/iio/frequency/Makefile
-@@ -5,6 +5,7 @@
- 
- # When adding new entries keep the list in alphabetical order
- obj-$(CONFIG_AD9523) += ad9523.o
-+obj-$(CONFIG_ADF41513) += adf41513.o
- obj-$(CONFIG_ADF4350) += adf4350.o
- obj-$(CONFIG_ADF4371) += adf4371.o
- obj-$(CONFIG_ADF4377) += adf4377.o
-diff --git a/drivers/iio/frequency/adf41513.c b/drivers/iio/frequency/adf41513.c
-new file mode 100644
-index 000000000000..69dcbbc1f393
---- /dev/null
-+++ b/drivers/iio/frequency/adf41513.c
-@@ -0,0 +1,1170 @@
-+// SPDX-License-Identifier: GPL-2.0-only
-+/*
-+ * ADF41513 SPI PLL Frequency Synthesizer driver
-+ *
-+ * Copyright 2026 Analog Devices Inc.
-+ */
-+
-+#include <linux/bitfield.h>
-+#include <linux/bits.h>
-+#include <linux/clk.h>
-+#include <linux/device.h>
-+#include <linux/err.h>
-+#include <linux/gpio/consumer.h>
-+#include <linux/iio/iio.h>
-+#include <linux/iio/sysfs.h>
-+#include <linux/log2.h>
-+#include <linux/math64.h>
-+#include <linux/mod_devicetable.h>
-+#include <linux/module.h>
-+#include <linux/property.h>
-+#include <linux/regulator/consumer.h>
-+#include <linux/spi/spi.h>
-+#include <linux/types.h>
-+#include <linux/units.h>
-+
-+/* Registers */
-+#define ADF41513_REG0		0
-+#define ADF41513_REG1		1
-+#define ADF41513_REG2		2
-+#define ADF41513_REG3		3
-+#define ADF41513_REG4		4
-+#define ADF41513_REG5		5
-+#define ADF41513_REG6		6
-+#define ADF41513_REG7		7
-+#define ADF41513_REG8		8
-+#define ADF41513_REG9		9
-+#define ADF41513_REG10		10
-+#define ADF41513_REG11		11
-+#define ADF41513_REG12		12
-+#define ADF41513_REG13		13
-+#define ADF41513_REG_NUM	14
-+
-+#define ADF41513_SYNC_REG0	BIT(ADF41513_REG0)
-+#define ADF41513_SYNC_REG1	BIT(ADF41513_REG1)
-+#define ADF41513_SYNC_REG2	BIT(ADF41513_REG2)
-+#define ADF41513_SYNC_REG3	BIT(ADF41513_REG3)
-+#define ADF41513_SYNC_REG4	BIT(ADF41513_REG4)
-+#define ADF41513_SYNC_REG5	BIT(ADF41513_REG5)
-+#define ADF41513_SYNC_REG6	BIT(ADF41513_REG6)
-+#define ADF41513_SYNC_REG7	BIT(ADF41513_REG7)
-+#define ADF41513_SYNC_REG9	BIT(ADF41513_REG9)
-+#define ADF41513_SYNC_REG11	BIT(ADF41513_REG11)
-+#define ADF41513_SYNC_REG12	BIT(ADF41513_REG12)
-+#define ADF41513_SYNC_REG13	BIT(ADF41513_REG13)
-+#define ADF41513_SYNC_DIFF	0
-+#define ADF41513_SYNC_ALL	GENMASK(ADF41513_REG13, ADF41513_REG0)
-+
-+/* REG0 Bit Definitions */
-+#define ADF41513_REG0_CTRL_BITS_MSK		GENMASK(3, 0)
-+#define ADF41513_REG0_INT_MSK			GENMASK(19, 4)
-+#define ADF41513_REG0_VAR_MOD_MSK		BIT(28)
-+
-+/* REG1 Bit Definitions */
-+#define ADF41513_REG1_FRAC1_MSK			GENMASK(28, 4)
-+#define ADF41513_REG1_DITHER2_MSK		BIT(31)
-+
-+/* REG2 Bit Definitions */
-+#define ADF41513_REG2_PHASE_VAL_MSK		GENMASK(15, 4)
-+#define ADF41513_REG2_PHASE_ADJ_MSK		BIT(31)
-+
-+/* REG3 Bit Definitions */
-+#define ADF41513_REG3_FRAC2_MSK			GENMASK(27, 4)
-+
-+/* REG4 Bit Definitions */
-+#define ADF41513_REG4_MOD2_MSK			GENMASK(27, 4)
-+
-+/* REG5 Bit Definitions */
-+#define ADF41513_REG5_CLK1_DIV_MSK		GENMASK(15, 4)
-+#define ADF41513_REG5_R_CNT_MSK			GENMASK(20, 16)
-+#define ADF41513_REG5_REF_DOUBLER_MSK		BIT(21)
-+#define ADF41513_REG5_RDIV2_MSK			BIT(22)
-+#define ADF41513_REG5_PRESCALER_MSK		BIT(23)
-+#define ADF41513_REG5_LSB_P1_MSK		BIT(24)
-+#define ADF41513_REG5_CP_CURRENT_MSK		GENMASK(28, 25)
-+#define ADF41513_REG5_DLD_MODES_MSK		GENMASK(31, 30)
-+
-+/* REG6 Bit Definitions */
-+#define ADF41513_REG6_COUNTER_RESET_MSK		BIT(4)
-+#define ADF41513_REG6_CP_TRISTATE_MSK		BIT(5)
-+#define ADF41513_REG6_POWER_DOWN_MSK		BIT(6)
-+#define ADF41513_REG6_PD_POLARITY_MSK		BIT(7)
-+#define ADF41513_REG6_LDP_MSK			GENMASK(9, 8)
-+#define ADF41513_REG6_CP_TRISTATE_PD_ON_MSK	BIT(16)
-+#define ADF41513_REG6_SD_RESET_MSK		BIT(17)
-+#define ADF41513_REG6_LOL_ENABLE_MSK		BIT(18)
-+#define ADF41513_REG6_ABP_MSK			BIT(19)
-+#define ADF41513_REG6_INT_MODE_MSK		BIT(20)
-+#define ADF41513_REG6_BLEED_ENABLE_MSK		BIT(22)
-+#define ADF41513_REG6_BLEED_POLARITY_MSK	BIT(23)
-+#define ADF41513_REG6_BLEED_CURRENT_MSK		GENMASK(31, 24)
-+
-+/* REG7 Bit Definitions */
-+#define ADF41513_REG7_CLK2_DIV_MSK		GENMASK(17, 6)
-+#define ADF41513_REG7_CLK_DIV_MODE_MSK		GENMASK(19, 18)
-+#define ADF41513_REG7_PS_BIAS_MSK		GENMASK(21, 20)
-+#define ADF41513_REG7_N_DELAY_MSK		GENMASK(23, 22)
-+#define ADF41513_REG7_LD_CLK_SEL_MSK		BIT(26)
-+#define ADF41513_REG7_LD_COUNT_MSK		GENMASK(29, 27)
-+
-+/* REG9 Bit Definitions */
-+#define ADF41513_REG9_LD_BIAS_MSK		GENMASK(31, 30)
-+
-+/* REG11 Bit Definitions */
-+#define ADF41513_REG11_POWER_DOWN_SEL_MSK	BIT(31)
-+
-+/* REG12 Bit Definitions */
-+#define ADF41513_REG12_READBACK_SEL_MSK		GENMASK(19, 14)
-+#define ADF41513_REG12_LE_SELECT_MSK		BIT(20)
-+#define ADF41513_REG12_MASTER_RESET_MSK		BIT(22)
-+#define ADF41513_REG12_LOGIC_LEVEL_MSK		BIT(27)
-+#define ADF41513_REG12_MUXOUT_MSK		GENMASK(31, 28)
-+
-+/* MUXOUT Selection */
-+#define ADF41513_MUXOUT_TRISTATE		0x0
-+#define ADF41513_MUXOUT_DVDD			0x1
-+#define ADF41513_MUXOUT_DGND			0x2
-+#define ADF41513_MUXOUT_R_DIV			0x3
-+#define ADF41513_MUXOUT_N_DIV			0x4
-+#define ADF41513_MUXOUT_DIG_LD			0x6
-+#define ADF41513_MUXOUT_SDO			0x7
-+#define ADF41513_MUXOUT_READBACK		0x8
-+#define ADF41513_MUXOUT_CLK1_DIV		0xA
-+#define ADF41513_MUXOUT_R_DIV2			0xD
-+#define ADF41513_MUXOUT_N_DIV2			0xE
-+
-+/* DLD Mode Selection */
-+#define ADF41513_DLD_TRISTATE			0x0
-+#define ADF41513_DLD_DIG_LD			0x1
-+#define ADF41513_DLD_LOW			0x2
-+#define ADF41513_DLD_HIGH			0x3
-+
-+/* Prescaler Selection */
-+#define ADF41513_PRESCALER_4_5			0
-+#define ADF41513_PRESCALER_8_9			1
-+#define ADF41513_PRESCALER_AUTO			2
-+
-+/* Specifications */
-+#define ADF41510_MAX_RF_FREQ			(10000ULL * HZ_PER_MHZ)
-+#define ADF41513_MIN_RF_FREQ			(1000ULL * HZ_PER_MHZ)
-+#define ADF41513_MAX_RF_FREQ			(26500ULL * HZ_PER_MHZ)
-+
-+#define ADF41513_MIN_REF_FREQ			(10U * HZ_PER_MHZ)
-+#define ADF41513_MAX_REF_FREQ			(800U * HZ_PER_MHZ)
-+#define ADF41513_MAX_REF_FREQ_DOUBLER		(225U * HZ_PER_MHZ)
-+
-+#define ADF41513_MAX_PFD_FREQ_INT_N_UHZ		(250ULL * HZ_PER_MHZ * MICROHZ_PER_HZ)
-+#define ADF41513_MAX_PFD_FREQ_FRAC_N_UHZ	(125ULL * HZ_PER_MHZ * MICROHZ_PER_HZ)
-+#define ADF41513_MAX_FREQ_RESOLUTION_UHZ	(100ULL * HZ_PER_KHZ * MICROHZ_PER_HZ)
-+
-+#define ADF41513_MIN_INT_4_5			20
-+#define ADF41513_MAX_INT_4_5			511
-+#define ADF41513_MIN_INT_8_9			64
-+#define ADF41513_MAX_INT_8_9			1023
-+
-+#define ADF41513_MIN_INT_FRAC_4_5		23
-+#define ADF41513_MIN_INT_FRAC_8_9		75
-+
-+#define ADF41513_MIN_R_CNT			1
-+#define ADF41513_MAX_R_CNT			32
-+
-+#define ADF41513_MIN_R_SET			1800
-+#define ADF41513_DEFAULT_R_SET			2700
-+#define ADF41513_MAX_R_SET			10000
-+
-+#define ADF41513_MIN_CP_VOLTAGE_mV		810
-+#define ADF41513_DEFAULT_CP_VOLTAGE_mV		6480
-+#define ADF41513_MAX_CP_VOLTAGE_mV		12960
-+
-+#define ADF41513_MAX_CLK_DIVIDER		4095
-+#define ADF41513_LD_COUNT_FAST_MIN		2
-+#define ADF41513_LD_COUNT_FAST_LIMIT		64
-+#define ADF41513_LD_COUNT_MIN			64
-+#define ADF41513_LD_COUNT_MAX			8192
-+
-+#define ADF41513_FIXED_MODULUS			BIT(25)
-+#define ADF41513_MAX_MOD2			(BIT(24) - 1)
-+#define ADF41513_MAX_PHASE_VAL			(BIT(12) - 1)
-+
-+#define ADF41513_HZ_DECIMAL_PRECISION		6
-+#define ADF41513_MAX_PHASE_MICRORAD		6283185UL
-+#define ADF41513_PS_BIAS_INIT			0x2
-+
-+enum {
-+	ADF41513_FREQ,
-+	ADF41513_POWER_DOWN,
-+	ADF41513_FREQ_RESOLUTION,
-+};
-+
-+enum adf41513_pll_mode {
-+	ADF41513_MODE_INVALID,
-+	ADF41513_MODE_INTEGER_N,
-+	ADF41513_MODE_FIXED_MODULUS,
-+	ADF41513_MODE_VARIABLE_MODULUS,
-+};
-+
-+struct adf41513_chip_info {
-+	bool has_prescaler_8_9;
-+	u64 max_rf_freq_hz;
-+};
-+
-+struct adf41513_data {
-+	u64 power_up_frequency_hz;
-+	u64 freq_resolution_uhz;
-+	u32 charge_pump_voltage_mv;
-+	u32 lock_detect_count;
-+
-+	u8 ref_div_factor;
-+	bool ref_doubler_en;
-+	bool ref_div2_en;
-+	bool phase_detector_polarity;
-+
-+	bool logic_lvl_1v8_en;
-+};
-+
-+struct adf41513_pll_settings {
-+	enum adf41513_pll_mode mode;
-+
-+	/* reference path parameters */
-+	u8 r_counter;
-+	u8 ref_doubler;
-+	u8 ref_div2;
-+	u8 prescaler;
-+
-+	/* frequency parameters */
-+	u64 target_frequency_uhz;
-+	u64 actual_frequency_uhz;
-+	u64 pfd_frequency_uhz;
-+
-+	/* pll parameters */
-+	u16 int_value;
-+	u32 frac1;
-+	u32 frac2;
-+	u32 mod2;
-+};
-+
-+struct adf41513_state {
-+	const struct adf41513_chip_info *chip_info;
-+	struct spi_device *spi;
-+	struct gpio_desc *lock_detect;
-+	struct gpio_desc *chip_enable;
-+	struct clk *ref_clk;
-+	u32 ref_freq_hz;
-+
-+	/*
-+	 * Lock for accessing device registers. Some operations require
-+	 * multiple consecutive R/W operations, during which the device
-+	 * shouldn't be interrupted. The buffers are also shared across
-+	 * all operations so need to be protected on stand alone reads and
-+	 * writes.
-+	 */
-+	struct mutex lock;
-+
-+	/* Cached register values */
-+	u32 regs[ADF41513_REG_NUM];
-+	u32 regs_hw[ADF41513_REG_NUM];
-+
-+	struct adf41513_data data;
-+	struct adf41513_pll_settings settings;
-+
-+	/*
-+	 * DMA (thus cache coherency maintenance) may require that
-+	 * transfer buffers live in their own cache lines.
-+	 */
-+	__be32 buf __aligned(IIO_DMA_MINALIGN);
-+};
-+
-+static const char * const adf41513_power_supplies[] = {
-+	"avdd1", "avdd2", "avdd3", "avdd4", "avdd5", "vp"
-+};
-+
-+/**
-+ * adf41513_parse_uhz() - parse fixed point frequency string into microhertz
-+ * @str:	input string with frequency in Hz (supports 6 decimal places)
-+ * @freq_uhz:	output frequency in microhertz
-+ *
-+ * This driver supports sub-Hz frequency resolution with frequency ranges
-+ * up to several GHz (> 2^32). To achieve this, frequency calculations are
-+ * done in microhertz using u64 variables. iio core parse helpers only support
-+ * 64-bit integers or 32-bit integers plus fractional part. Here, we need
-+ * 64-bit integer plus fractional part (6 decimal places) to achieve lower
-+ * frequency resolutions.
-+ * See iio_write_channel_info and __iio_str_to_fixpoint in
-+ * drivers/iio/industrialio-core.c
-+ *
-+ * Returns:
-+ * 0 on success, -EINVAL on parsing error.
-+ */
-+static int adf41513_parse_uhz(const char *str, u64 *freq_uhz)
-+{
-+	u64 uhz = 0;
-+	int f_count = ADF41513_HZ_DECIMAL_PRECISION;
-+	bool frac_part = false;
-+
-+	if (str[0] == '+')
-+		str++;
-+
-+	while (*str && f_count > 0) {
-+		if ('0' <= *str && *str <= '9') {
-+			uhz = uhz * 10 + *str - '0';
-+			if (frac_part)
-+				f_count--;
-+		} else if (*str == '\n') {
-+			if (*(str + 1) == '\0')
-+				break;
-+			return -EINVAL;
-+		} else if (*str == '.' && !frac_part) {
-+			frac_part = true;
-+		} else {
-+			return -EINVAL;
-+		}
-+		str++;
-+	}
-+
-+	for (; f_count > 0; f_count--)
-+		uhz *= 10;
-+
-+	*freq_uhz = uhz;
-+
-+	return 0;
-+}
-+
-+static int adf41513_uhz_to_str(u64 freq_uhz, char *buf)
-+{
-+	u32 frac_part;
-+	u64 int_part = div_u64_rem(freq_uhz, MICROHZ_PER_HZ, &frac_part);
-+
-+	return sysfs_emit(buf, "%llu.%06u\n", int_part, frac_part);
-+}
-+
-+static int adf41513_sync_config(struct adf41513_state *st, u16 sync_mask)
-+{
-+	int ret;
-+	int i;
-+
-+	/* write registers in reverse order (R13 to R0)*/
-+	for (i = ADF41513_REG13; i >= ADF41513_REG0; i--) {
-+		if (st->regs_hw[i] == st->regs[i] && !(sync_mask & BIT(i)))
-+			continue;
-+
-+		st->buf = cpu_to_be32(st->regs[i] | i);
-+		ret = spi_write(st->spi, &st->buf, sizeof(st->buf));
-+		if (ret < 0)
-+			return ret;
-+		st->regs_hw[i] = st->regs[i];
-+		dev_dbg(&st->spi->dev, "REG%d <= 0x%08X\n", i, st->regs[i] | i);
-+	}
-+
-+	return 0;
-+}
-+
-+static u64 adf41513_pll_get_rate(struct adf41513_state *st)
-+{
-+	struct adf41513_pll_settings *cfg = &st->settings;
-+
-+	if (cfg->mode != ADF41513_MODE_INVALID)
-+		return cfg->actual_frequency_uhz;
-+
-+	/* get pll settings from regs_hw */
-+	cfg->int_value = FIELD_GET(ADF41513_REG0_INT_MSK, st->regs_hw[ADF41513_REG0]);
-+	cfg->frac1 = FIELD_GET(ADF41513_REG1_FRAC1_MSK, st->regs_hw[ADF41513_REG1]);
-+	cfg->frac2 = FIELD_GET(ADF41513_REG3_FRAC2_MSK, st->regs_hw[ADF41513_REG3]);
-+	cfg->mod2 = FIELD_GET(ADF41513_REG4_MOD2_MSK, st->regs_hw[ADF41513_REG4]);
-+	cfg->r_counter = FIELD_GET(ADF41513_REG5_R_CNT_MSK, st->regs_hw[ADF41513_REG5]);
-+	cfg->ref_doubler = FIELD_GET(ADF41513_REG5_REF_DOUBLER_MSK, st->regs_hw[ADF41513_REG5]);
-+	cfg->ref_div2 = FIELD_GET(ADF41513_REG5_RDIV2_MSK, st->regs_hw[ADF41513_REG5]);
-+	cfg->prescaler = FIELD_GET(ADF41513_REG5_PRESCALER_MSK, st->regs_hw[ADF41513_REG5]);
-+
-+	/* calculate pfd frequency */
-+	cfg->pfd_frequency_uhz = (u64)st->ref_freq_hz * MICROHZ_PER_HZ;
-+	if (cfg->ref_doubler)
-+		cfg->pfd_frequency_uhz <<= 1;
-+	if (cfg->ref_div2)
-+		cfg->pfd_frequency_uhz >>= 1;
-+	cfg->pfd_frequency_uhz = div_u64(cfg->pfd_frequency_uhz,
-+					 cfg->r_counter);
-+	cfg->actual_frequency_uhz = (u64)cfg->int_value * cfg->pfd_frequency_uhz;
-+
-+	/* check if int mode is selected */
-+	if (FIELD_GET(ADF41513_REG6_INT_MODE_MSK, st->regs_hw[ADF41513_REG6])) {
-+		cfg->mode = ADF41513_MODE_INTEGER_N;
-+	} else {
-+		cfg->actual_frequency_uhz += mul_u64_u64_div_u64(cfg->frac1,
-+								 cfg->pfd_frequency_uhz,
-+								 ADF41513_FIXED_MODULUS);
-+
-+		/* check if variable modulus is selected */
-+		if (FIELD_GET(ADF41513_REG0_VAR_MOD_MSK, st->regs_hw[ADF41513_REG0])) {
-+			cfg->actual_frequency_uhz +=
-+				mul_u64_u64_div_u64(cfg->frac2,
-+						    cfg->pfd_frequency_uhz,
-+						    ADF41513_FIXED_MODULUS * cfg->mod2);
-+
-+			cfg->mode = ADF41513_MODE_VARIABLE_MODULUS;
-+		} else {
-+			/* LSB_P1 offset */
-+			if (!FIELD_GET(ADF41513_REG5_LSB_P1_MSK, st->regs_hw[ADF41513_REG5]))
-+				cfg->actual_frequency_uhz +=
-+					div_u64(cfg->pfd_frequency_uhz,
-+						ADF41513_FIXED_MODULUS * 2);
-+			cfg->mode = ADF41513_MODE_FIXED_MODULUS;
-+		}
-+	}
-+
-+	cfg->target_frequency_uhz = cfg->actual_frequency_uhz;
-+
-+	return cfg->actual_frequency_uhz;
-+}
-+
-+static int adf41513_calc_pfd_frequency(struct adf41513_state *st,
-+				       struct adf41513_pll_settings *result,
-+				       u64 fpfd_limit_uhz)
-+{
-+	result->ref_div2 = st->data.ref_div2_en ? 1 : 0;
-+	result->ref_doubler = st->data.ref_doubler_en ? 1 : 0;
-+
-+	if (st->data.ref_doubler_en && st->ref_freq_hz > ADF41513_MAX_REF_FREQ_DOUBLER) {
-+		result->ref_doubler = 0;
-+		dev_warn(&st->spi->dev, "Disabling ref doubler due to high reference frequency\n");
-+	}
-+
-+	result->r_counter = st->data.ref_div_factor - 1;
-+	do {
-+		result->r_counter++;
-+		/* f_PFD = REF_IN × ((1 + D)/(R × (1 + T))) */
-+		result->pfd_frequency_uhz = (u64)st->ref_freq_hz * MICROHZ_PER_HZ;
-+		if (result->ref_doubler)
-+			result->pfd_frequency_uhz <<= 1;
-+		if (result->ref_div2)
-+			result->pfd_frequency_uhz >>= 1;
-+		result->pfd_frequency_uhz = div_u64(result->pfd_frequency_uhz,
-+						    result->r_counter);
-+	} while (result->pfd_frequency_uhz > fpfd_limit_uhz);
-+
-+	if (result->r_counter > ADF41513_MAX_R_CNT) {
-+		dev_err(&st->spi->dev, "Cannot optimize PFD frequency\n");
-+		return -ERANGE;
-+	}
-+
-+	return 0;
-+}
-+
-+static int adf41513_calc_integer_n(struct adf41513_state *st,
-+				   struct adf41513_pll_settings *result)
-+{
-+	u16 max_int = (st->chip_info->has_prescaler_8_9) ?
-+		      ADF41513_MAX_INT_8_9 : ADF41513_MAX_INT_4_5;
-+	u64 freq_error_uhz;
-+	u16 int_value = div64_u64_rem(result->target_frequency_uhz, result->pfd_frequency_uhz,
-+				      &freq_error_uhz);
-+
-+	/* check if freq error is within a tolerance of 1/2 resolution */
-+	if (freq_error_uhz > (result->pfd_frequency_uhz >> 1) && int_value < max_int) {
-+		int_value++;
-+		freq_error_uhz = result->pfd_frequency_uhz - freq_error_uhz;
-+	}
-+
-+	if (freq_error_uhz > st->data.freq_resolution_uhz)
-+		return -ERANGE;
-+
-+	/* set prescaler */
-+	if (st->chip_info->has_prescaler_8_9 && int_value >= ADF41513_MIN_INT_8_9 &&
-+	    int_value <= ADF41513_MAX_INT_8_9)
-+		result->prescaler = 1;
-+	else if (int_value >= ADF41513_MIN_INT_4_5 && int_value <= ADF41513_MAX_INT_4_5)
-+		result->prescaler = 0;
-+	else
-+		return -ERANGE;
-+
-+	result->actual_frequency_uhz = (u64)int_value * result->pfd_frequency_uhz;
-+	result->mode = ADF41513_MODE_INTEGER_N;
-+	result->int_value = int_value;
-+	result->frac1 = 0;
-+	result->frac2 = 0;
-+	result->mod2 = 0;
-+
-+	return 0;
-+}
-+
-+static int adf41513_calc_fixed_mod(struct adf41513_state *st,
-+				   struct adf41513_pll_settings *result)
-+{
-+	u64 freq_error_uhz;
-+	u64 resolution_uhz = div_u64(result->pfd_frequency_uhz, ADF41513_FIXED_MODULUS);
-+	u64 target_frequency_uhz = result->target_frequency_uhz;
-+	u32 frac1;
-+	u16 int_value;
-+	bool lsb_p1_offset = !FIELD_GET(ADF41513_REG5_LSB_P1_MSK, st->regs_hw[ADF41513_REG5]);
-+
-+	/* LSB_P1 adds a frequency offset of f_pfd/2^26 */
-+	if (lsb_p1_offset)
-+		target_frequency_uhz -= resolution_uhz >> 1;
-+
-+	int_value = div64_u64_rem(target_frequency_uhz, result->pfd_frequency_uhz,
-+				  &freq_error_uhz);
-+
-+	if (st->chip_info->has_prescaler_8_9 && int_value >= ADF41513_MIN_INT_FRAC_8_9 &&
-+	    int_value <= ADF41513_MAX_INT_8_9)
-+		result->prescaler = 1;
-+	else if (int_value >= ADF41513_MIN_INT_FRAC_4_5 && int_value <= ADF41513_MAX_INT_4_5)
-+		result->prescaler = 0;
-+	else
-+		return -ERANGE;
-+
-+	/* compute frac1 and fixed modulus error */
-+	frac1 = mul_u64_u64_div_u64(freq_error_uhz, ADF41513_FIXED_MODULUS,
-+				    result->pfd_frequency_uhz);
-+	freq_error_uhz -= mul_u64_u64_div_u64(frac1, result->pfd_frequency_uhz,
-+					      ADF41513_FIXED_MODULUS);
-+
-+	/* check if freq error is within a tolerance of 1/2 resolution */
-+	if (freq_error_uhz > (resolution_uhz >> 1) && frac1 < (ADF41513_FIXED_MODULUS - 1)) {
-+		frac1++;
-+		freq_error_uhz = resolution_uhz - freq_error_uhz;
-+	}
-+
-+	if (freq_error_uhz > st->data.freq_resolution_uhz)
-+		return -ERANGE;
-+
-+	/* integer part */
-+	result->actual_frequency_uhz = (u64)int_value * result->pfd_frequency_uhz;
-+	/* fractional part */
-+	if (lsb_p1_offset)
-+		result->actual_frequency_uhz +=	(resolution_uhz >> 1);
-+	result->actual_frequency_uhz += mul_u64_u64_div_u64(frac1, result->pfd_frequency_uhz,
-+							    ADF41513_FIXED_MODULUS);
-+	result->mode = ADF41513_MODE_FIXED_MODULUS;
-+	result->int_value = int_value;
-+	result->frac1 = frac1;
-+	result->frac2 = 0;
-+	result->mod2 = 0;
-+
-+	return 0;
-+}
-+
-+static int adf41513_calc_variable_mod(struct adf41513_state *st,
-+				      struct adf41513_pll_settings *result)
-+{
-+	u64 freq_error_uhz;
-+	u32 frac1, frac2, mod2;
-+	u16 int_value = div64_u64_rem(result->target_frequency_uhz,
-+				      result->pfd_frequency_uhz,
-+				      &freq_error_uhz);
-+
-+	if (st->chip_info->has_prescaler_8_9 && int_value >= ADF41513_MIN_INT_FRAC_8_9 &&
-+	    int_value <= ADF41513_MAX_INT_8_9)
-+		result->prescaler = 1;
-+	else if (int_value >= ADF41513_MIN_INT_FRAC_4_5 && int_value <= ADF41513_MAX_INT_4_5)
-+		result->prescaler = 0;
-+	else
-+		return -ERANGE;
-+
-+	/* calculate required mod2 based on target resolution / 2 */
-+	mod2 = DIV64_U64_ROUND_CLOSEST(result->pfd_frequency_uhz << 1,
-+				       st->data.freq_resolution_uhz * ADF41513_FIXED_MODULUS);
-+	/* ensure mod2 is at least 2 for meaningful operation */
-+	mod2 = clamp(mod2, 2, ADF41513_MAX_MOD2);
-+
-+	/* calculate frac1 and frac2 */
-+	frac1 = mul_u64_u64_div_u64(freq_error_uhz, ADF41513_FIXED_MODULUS,
-+				    result->pfd_frequency_uhz);
-+	freq_error_uhz -= mul_u64_u64_div_u64(frac1, result->pfd_frequency_uhz,
-+					      ADF41513_FIXED_MODULUS);
-+	frac2 = mul_u64_u64_div_u64(freq_error_uhz, (u64)mod2 * ADF41513_FIXED_MODULUS,
-+				    result->pfd_frequency_uhz);
-+
-+	/* integer part */
-+	result->actual_frequency_uhz = (u64)int_value * result->pfd_frequency_uhz;
-+	/* fractional part */
-+	result->actual_frequency_uhz += mul_u64_u64_div_u64((u64)frac1 * mod2 + frac2,
-+							    result->pfd_frequency_uhz,
-+							    (u64)mod2 * ADF41513_FIXED_MODULUS);
-+	result->mode = ADF41513_MODE_VARIABLE_MODULUS;
-+	result->int_value = int_value;
-+	result->frac1 = frac1;
-+	result->frac2 = frac2;
-+	result->mod2 = mod2;
-+
-+	return 0;
-+}
-+
-+static int adf41513_calc_pll_settings(struct adf41513_state *st,
-+				      struct adf41513_pll_settings *result,
-+				      u64 rf_out_uhz)
-+{
-+	u64 max_rf_freq_uhz = st->chip_info->max_rf_freq_hz * MICROHZ_PER_HZ;
-+	u64 min_rf_freq_uhz = ADF41513_MIN_RF_FREQ * MICROHZ_PER_HZ;
-+	u64 pfd_freq_limit_uhz;
-+	int ret;
-+
-+	if (rf_out_uhz < min_rf_freq_uhz || rf_out_uhz > max_rf_freq_uhz) {
-+		dev_err(&st->spi->dev, "RF frequency %llu uHz out of range [%llu, %llu] uHz\n",
-+			rf_out_uhz, min_rf_freq_uhz, max_rf_freq_uhz);
-+		return -EINVAL;
-+	}
-+
-+	result->target_frequency_uhz = rf_out_uhz;
-+
-+	/* try integer-N first (best phase noise performance) */
-+	pfd_freq_limit_uhz = min(div_u64(rf_out_uhz, ADF41513_MIN_INT_4_5),
-+				 ADF41513_MAX_PFD_FREQ_INT_N_UHZ);
-+	ret = adf41513_calc_pfd_frequency(st, result, pfd_freq_limit_uhz);
-+	if (ret < 0)
-+		return ret;
-+
-+	ret = adf41513_calc_integer_n(st, result);
-+	if (ret < 0) {
-+		/* try fractional-N: recompute pfd frequency if necessary */
-+		pfd_freq_limit_uhz = min(div_u64(rf_out_uhz, ADF41513_MIN_INT_FRAC_4_5),
-+					 ADF41513_MAX_PFD_FREQ_FRAC_N_UHZ);
-+		if (pfd_freq_limit_uhz < result->pfd_frequency_uhz) {
-+			ret = adf41513_calc_pfd_frequency(st, result, pfd_freq_limit_uhz);
-+			if (ret < 0)
-+				return ret;
-+		}
-+
-+		/* fixed-modulus attempt */
-+		ret = adf41513_calc_fixed_mod(st, result);
-+		if (ret < 0) {
-+			/* variable-modulus attempt */
-+			ret = adf41513_calc_variable_mod(st, result);
-+			if (ret < 0) {
-+				dev_err(&st->spi->dev,
-+					"no valid PLL configuration found for %llu uHz\n",
-+					rf_out_uhz);
-+				return -EINVAL;
-+			}
-+		}
-+	}
-+
-+	return 0;
-+}
-+
-+static int adf41513_set_frequency(struct adf41513_state *st, u64 freq_uhz, u16 sync_mask)
-+{
-+	struct adf41513_pll_settings result;
-+	int ret;
-+
-+	ret = adf41513_calc_pll_settings(st, &result, freq_uhz);
-+	if (ret < 0)
-+		return ret;
-+
-+	/* apply computed results to pll settings */
-+	memcpy(&st->settings, &result, sizeof(st->settings));
-+
-+	dev_dbg(&st->spi->dev,
-+		"%s mode: int=%u, frac1=%u, frac2=%u, mod2=%u, fpdf=%llu Hz, prescaler=%s\n",
-+		(result.mode == ADF41513_MODE_INTEGER_N) ? "integer-n" :
-+		(result.mode == ADF41513_MODE_FIXED_MODULUS) ? "fixed-modulus" : "variable-modulus",
-+		result.int_value, result.frac1, result.frac2, result.mod2,
-+		div64_u64(result.pfd_frequency_uhz, MICROHZ_PER_HZ),
-+		result.prescaler ? "8/9" : "4/5");
-+
-+	st->regs[ADF41513_REG0] = FIELD_PREP(ADF41513_REG0_INT_MSK,
-+					     st->settings.int_value);
-+	if (st->settings.mode == ADF41513_MODE_VARIABLE_MODULUS)
-+		st->regs[ADF41513_REG0] |= ADF41513_REG0_VAR_MOD_MSK;
-+
-+	st->regs[ADF41513_REG1] = FIELD_PREP(ADF41513_REG1_FRAC1_MSK,
-+					     st->settings.frac1);
-+	if (st->settings.mode != ADF41513_MODE_INTEGER_N)
-+		st->regs[ADF41513_REG1] |= ADF41513_REG1_DITHER2_MSK;
-+
-+	st->regs[ADF41513_REG3] = FIELD_PREP(ADF41513_REG3_FRAC2_MSK,
-+					     st->settings.frac2);
-+	FIELD_MODIFY(ADF41513_REG4_MOD2_MSK, &st->regs[ADF41513_REG4],
-+		     st->settings.mod2);
-+	FIELD_MODIFY(ADF41513_REG5_R_CNT_MSK, &st->regs[ADF41513_REG5],
-+		     st->settings.r_counter);
-+	FIELD_MODIFY(ADF41513_REG5_REF_DOUBLER_MSK, &st->regs[ADF41513_REG5],
-+		     st->settings.ref_doubler);
-+	FIELD_MODIFY(ADF41513_REG5_RDIV2_MSK, &st->regs[ADF41513_REG5],
-+		     st->settings.ref_div2);
-+	FIELD_MODIFY(ADF41513_REG5_PRESCALER_MSK, &st->regs[ADF41513_REG5],
-+		     st->settings.prescaler);
-+
-+	if (st->settings.mode == ADF41513_MODE_INTEGER_N) {
-+		st->regs[ADF41513_REG6] |= ADF41513_REG6_INT_MODE_MSK;
-+		st->regs[ADF41513_REG6] &= ~ADF41513_REG6_BLEED_ENABLE_MSK;
-+	} else {
-+		st->regs[ADF41513_REG6] &= ~ADF41513_REG6_INT_MODE_MSK;
-+		st->regs[ADF41513_REG6] |= ADF41513_REG6_BLEED_ENABLE_MSK;
-+	}
-+
-+	return adf41513_sync_config(st, sync_mask | ADF41513_SYNC_REG0);
-+}
-+
-+static int adf41513_suspend(struct adf41513_state *st)
-+{
-+	st->regs[ADF41513_REG6] |= FIELD_PREP(ADF41513_REG6_POWER_DOWN_MSK, 1);
-+	return adf41513_sync_config(st, ADF41513_SYNC_DIFF);
-+}
-+
-+static int adf41513_resume(struct adf41513_state *st)
-+{
-+	st->regs[ADF41513_REG6] &= ~ADF41513_REG6_POWER_DOWN_MSK;
-+	return adf41513_sync_config(st, ADF41513_SYNC_DIFF);
-+}
-+
-+static ssize_t adf41513_read_uhz(struct iio_dev *indio_dev,
-+				 uintptr_t private,
-+				 const struct iio_chan_spec *chan,
-+				 char *buf)
-+{
-+	struct adf41513_state *st = iio_priv(indio_dev);
-+	u64 freq_uhz;
-+
-+	guard(mutex)(&st->lock);
-+
-+	switch ((u32)private) {
-+	case ADF41513_FREQ:
-+		freq_uhz = adf41513_pll_get_rate(st);
-+		if (st->lock_detect)
-+			if (!gpiod_get_value_cansleep(st->lock_detect)) {
-+				dev_dbg(&st->spi->dev, "PLL un-locked\n");
-+				return -EBUSY;
-+			}
-+		break;
-+	case ADF41513_FREQ_RESOLUTION:
-+		freq_uhz = st->data.freq_resolution_uhz;
-+		break;
-+	default:
-+		return -EINVAL;
-+	}
-+
-+	return adf41513_uhz_to_str(freq_uhz, buf);
-+}
-+
-+static ssize_t adf41513_read_powerdown(struct iio_dev *indio_dev,
-+				       uintptr_t private,
-+				       const struct iio_chan_spec *chan,
-+				       char *buf)
-+{
-+	struct adf41513_state *st = iio_priv(indio_dev);
-+	u32 val;
-+
-+	guard(mutex)(&st->lock);
-+
-+	switch ((u32)private) {
-+	case ADF41513_POWER_DOWN:
-+		val = FIELD_GET(ADF41513_REG6_POWER_DOWN_MSK,
-+				st->regs_hw[ADF41513_REG6]);
-+		return sysfs_emit(buf, "%u\n", val);
-+	default:
-+		return -EINVAL;
-+	}
-+}
-+
-+static ssize_t adf41513_write_uhz(struct iio_dev *indio_dev,
-+				  uintptr_t private,
-+				  const struct iio_chan_spec *chan,
-+				  const char *buf, size_t len)
-+{
-+	struct adf41513_state *st = iio_priv(indio_dev);
-+	u64 freq_uhz;
-+	int ret;
-+
-+	ret = adf41513_parse_uhz(buf, &freq_uhz);
-+	if (ret)
-+		return ret;
-+
-+	guard(mutex)(&st->lock);
-+
-+	switch ((u32)private) {
-+	case ADF41513_FREQ:
-+		ret = adf41513_set_frequency(st, freq_uhz, ADF41513_SYNC_DIFF);
-+		break;
-+	case ADF41513_FREQ_RESOLUTION:
-+		if (freq_uhz == 0 || freq_uhz > ADF41513_MAX_FREQ_RESOLUTION_UHZ)
-+			return -EINVAL;
-+		st->data.freq_resolution_uhz = freq_uhz;
-+		break;
-+	default:
-+		return -EINVAL;
-+	}
-+
-+	return ret ? ret : len;
-+}
-+
-+static ssize_t adf41513_write_powerdown(struct iio_dev *indio_dev,
-+					uintptr_t private,
-+					const struct iio_chan_spec *chan,
-+					const char *buf, size_t len)
-+{
-+	struct adf41513_state *st = iio_priv(indio_dev);
-+	unsigned long readin;
-+	int ret;
-+
-+	ret = kstrtoul(buf, 10, &readin);
-+	if (ret)
-+		return ret;
-+
-+	guard(mutex)(&st->lock);
-+
-+	switch ((u32)private) {
-+	case ADF41513_POWER_DOWN:
-+		if (readin)
-+			ret = adf41513_suspend(st);
-+		else
-+			ret = adf41513_resume(st);
-+		break;
-+	default:
-+		return -EINVAL;
-+	}
-+
-+	return ret ? ret : len;
-+}
-+
-+#define _ADF41513_EXT_PD_INFO(_name, _ident) { \
-+	.name = _name, \
-+	.read = adf41513_read_powerdown, \
-+	.write = adf41513_write_powerdown, \
-+	.private = _ident, \
-+	.shared = IIO_SEPARATE, \
-+}
-+
-+#define _ADF41513_EXT_UHZ_INFO(_name, _ident) { \
-+	.name = _name, \
-+	.read = adf41513_read_uhz, \
-+	.write = adf41513_write_uhz, \
-+	.private = _ident, \
-+	.shared = IIO_SEPARATE, \
-+}
-+
-+static const struct iio_chan_spec_ext_info adf41513_ext_info[] = {
-+	/*
-+	 * Ideally we would use IIO_CHAN_INFO_FREQUENCY, but the device supports
-+	 * frequency values greater 2^32 with sub-Hz resolution, i.e. 64-bit
-+	 * fixed point with 6 decimal places values are used to represent
-+	 * frequencies.
-+	 */
-+	_ADF41513_EXT_UHZ_INFO("frequency", ADF41513_FREQ),
-+	_ADF41513_EXT_UHZ_INFO("frequency_resolution", ADF41513_FREQ_RESOLUTION),
-+	_ADF41513_EXT_PD_INFO("powerdown", ADF41513_POWER_DOWN),
-+	{ }
-+};
-+
-+static const struct iio_chan_spec adf41513_chan = {
-+	.type = IIO_ALTVOLTAGE,
-+	.indexed = 1,
-+	.output = 1,
-+	.channel = 0,
-+	.info_mask_separate = BIT(IIO_CHAN_INFO_PHASE),
-+	.ext_info = adf41513_ext_info,
-+};
-+
-+static int adf41513_read_raw(struct iio_dev *indio_dev,
-+			     struct iio_chan_spec const *chan,
-+			     int *val, int *val2, long info)
-+{
-+	struct adf41513_state *st = iio_priv(indio_dev);
-+	u64 phase_urad;
-+	u16 phase_val;
-+
-+	guard(mutex)(&st->lock);
-+
-+	switch (info) {
-+	case IIO_CHAN_INFO_PHASE:
-+		phase_val = FIELD_GET(ADF41513_REG2_PHASE_VAL_MSK,
-+				      st->regs_hw[ADF41513_REG2]);
-+		phase_urad = (u64)phase_val * ADF41513_MAX_PHASE_MICRORAD;
-+		phase_urad >>= 12;
-+		*val = (u32)phase_urad / MICRO;
-+		*val2 = (u32)phase_urad % MICRO;
-+		return IIO_VAL_INT_PLUS_MICRO;
-+	default:
-+		return -EINVAL;
-+	}
-+}
-+
-+static int adf41513_write_raw(struct iio_dev *indio_dev,
-+			      struct iio_chan_spec const *chan,
-+			      int val, int val2, long info)
-+{
-+	struct adf41513_state *st = iio_priv(indio_dev);
-+	u64 phase_urad;
-+	u16 phase_val;
-+
-+	guard(mutex)(&st->lock);
-+
-+	switch (info) {
-+	case IIO_CHAN_INFO_PHASE:
-+		phase_urad = (u64)val * MICRO + val2;
-+		if (val < 0 || val2 < 0 || phase_urad >= ADF41513_MAX_PHASE_MICRORAD)
-+			return -EINVAL;
-+
-+		phase_val = DIV_U64_ROUND_CLOSEST(phase_urad << 12,
-+						  ADF41513_MAX_PHASE_MICRORAD);
-+		phase_val = min(phase_val, ADF41513_MAX_PHASE_VAL);
-+		st->regs[ADF41513_REG2] |= ADF41513_REG2_PHASE_ADJ_MSK;
-+		FIELD_MODIFY(ADF41513_REG2_PHASE_VAL_MSK,
-+			     &st->regs[ADF41513_REG2], phase_val);
-+		return adf41513_sync_config(st, ADF41513_SYNC_REG0);
-+	default:
-+		return -EINVAL;
-+	}
-+}
-+
-+static int adf41513_reg_access(struct iio_dev *indio_dev,
-+			       unsigned int reg,
-+			       unsigned int writeval,
-+			       unsigned int *readval)
-+{
-+	struct adf41513_state *st = iio_priv(indio_dev);
-+
-+	if (reg > ADF41513_REG13)
-+		return -EINVAL;
-+
-+	guard(mutex)(&st->lock);
-+
-+	if (!readval) {
-+		if (reg <= ADF41513_REG6)
-+			st->settings.mode = ADF41513_MODE_INVALID;
-+		st->regs[reg] = writeval & ~0xF; /* Clear control bits */
-+		return adf41513_sync_config(st, BIT(reg));
-+	}
-+
-+	*readval = st->regs_hw[reg];
-+	return 0;
-+}
-+
-+static const struct iio_info adf41513_info = {
-+	.read_raw = adf41513_read_raw,
-+	.write_raw = adf41513_write_raw,
-+	.debugfs_reg_access = &adf41513_reg_access,
-+};
-+
-+static int adf41513_parse_fw(struct adf41513_state *st)
-+{
-+	struct device *dev = &st->spi->dev;
-+	int ret;
-+	u32 tmp, cp_resistance, cp_current;
-+
-+	/* power-up frequency */
-+	st->data.power_up_frequency_hz = ADF41510_MAX_RF_FREQ;
-+	ret = device_property_read_u32(dev, "adi,power-up-frequency-mhz", &tmp);
-+	if (!ret) {
-+		st->data.power_up_frequency_hz = (u64)tmp * HZ_PER_MHZ;
-+		if (st->data.power_up_frequency_hz < ADF41513_MIN_RF_FREQ ||
-+		    st->data.power_up_frequency_hz > ADF41513_MAX_RF_FREQ)
-+			return dev_err_probe(dev, -ERANGE,
-+					     "power-up frequency %llu Hz out of range\n",
-+					     st->data.power_up_frequency_hz);
-+	}
-+
-+	st->data.ref_div_factor = ADF41513_MIN_R_CNT;
-+	ret = device_property_read_u32(dev, "adi,reference-div-factor", &tmp);
-+	if (!ret) {
-+		if (tmp < ADF41513_MIN_R_CNT || tmp > ADF41513_MAX_R_CNT)
-+			return dev_err_probe(dev, -ERANGE,
-+					     "invalid reference div factor %u\n", tmp);
-+		st->data.ref_div_factor = tmp;
-+	}
-+
-+	st->data.ref_doubler_en = device_property_read_bool(dev, "adi,reference-doubler-enable");
-+	st->data.ref_div2_en = device_property_read_bool(dev, "adi,reference-div2-enable");
-+
-+	cp_resistance = ADF41513_DEFAULT_R_SET;
-+	ret = device_property_read_u32(dev, "adi,charge-pump-resistor-ohms", &cp_resistance);
-+	if (!ret && (cp_resistance < ADF41513_MIN_R_SET || cp_resistance > ADF41513_MAX_R_SET))
-+		return dev_err_probe(dev, -ERANGE, "R_SET %u Ohms out of range\n", cp_resistance);
-+
-+	st->data.charge_pump_voltage_mv = ADF41513_DEFAULT_CP_VOLTAGE_mV;
-+	ret = device_property_read_u32(dev, "adi,charge-pump-current-microamp", &cp_current);
-+	if (!ret) {
-+		tmp = DIV_ROUND_CLOSEST(cp_current * cp_resistance, MILLI); /* convert to mV */
-+		if (tmp < ADF41513_MIN_CP_VOLTAGE_mV || tmp > ADF41513_MAX_CP_VOLTAGE_mV)
-+			return dev_err_probe(dev, -ERANGE, "I_CP %u uA (%u Ohms) out of range\n",
-+					     cp_current, cp_resistance);
-+		st->data.charge_pump_voltage_mv = tmp;
-+	}
-+
-+	st->data.phase_detector_polarity =
-+		device_property_read_bool(dev, "adi,phase-detector-polarity-positive-enable");
-+
-+	st->data.logic_lvl_1v8_en = device_property_read_bool(dev, "adi,logic-level-1v8-enable");
-+
-+	st->data.lock_detect_count = ADF41513_LD_COUNT_MIN;
-+	ret = device_property_read_u32(dev, "adi,lock-detector-count", &tmp);
-+	if (!ret) {
-+		if (tmp < ADF41513_LD_COUNT_FAST_MIN || tmp > ADF41513_LD_COUNT_MAX ||
-+		    !is_power_of_2(tmp))
-+			return dev_err_probe(dev, -ERANGE,
-+					     "invalid lock detect count: %u\n", tmp);
-+		st->data.lock_detect_count = tmp;
-+	}
-+
-+	st->data.freq_resolution_uhz = MICROHZ_PER_HZ;
-+
-+	return 0;
-+}
-+
-+static int adf41513_setup(struct adf41513_state *st)
-+{
-+	u32 tmp;
-+
-+	memset(st->regs_hw, 0xFF, sizeof(st->regs_hw));
-+
-+	/* assuming DLD pin is used for lock detection */
-+	st->regs[ADF41513_REG5] = FIELD_PREP(ADF41513_REG5_DLD_MODES_MSK,
-+					     ADF41513_DLD_DIG_LD);
-+
-+	tmp = DIV_ROUND_CLOSEST(st->data.charge_pump_voltage_mv, ADF41513_MIN_CP_VOLTAGE_mV);
-+	st->regs[ADF41513_REG5] |= FIELD_PREP(ADF41513_REG5_CP_CURRENT_MSK, tmp - 1);
-+
-+	st->regs[ADF41513_REG6] = ADF41513_REG6_ABP_MSK |
-+				  ADF41513_REG6_LOL_ENABLE_MSK |
-+				  ADF41513_REG6_SD_RESET_MSK;
-+	if (st->data.phase_detector_polarity)
-+		st->regs[ADF41513_REG6] |= ADF41513_REG6_PD_POLARITY_MSK;
-+
-+	st->regs[ADF41513_REG7] = FIELD_PREP(ADF41513_REG7_PS_BIAS_MSK,
-+					     ADF41513_PS_BIAS_INIT);
-+	tmp = ilog2(st->data.lock_detect_count);
-+	if (st->data.lock_detect_count < ADF41513_LD_COUNT_FAST_LIMIT) {
-+		tmp -= const_ilog2(ADF41513_LD_COUNT_FAST_MIN);
-+		st->regs[ADF41513_REG7] |= ADF41513_REG7_LD_CLK_SEL_MSK;
-+	} else {
-+		tmp -= const_ilog2(ADF41513_LD_COUNT_MIN);
-+	}
-+	st->regs[ADF41513_REG7] |= FIELD_PREP(ADF41513_REG7_LD_COUNT_MSK, tmp);
-+
-+	st->regs[ADF41513_REG11] = ADF41513_REG11_POWER_DOWN_SEL_MSK;
-+	st->regs[ADF41513_REG12] = FIELD_PREP(ADF41513_REG12_LOGIC_LEVEL_MSK,
-+					      st->data.logic_lvl_1v8_en ? 0 : 1);
-+
-+	/* perform initialization sequence with power-up frequency */
-+	return adf41513_set_frequency(st, st->data.power_up_frequency_hz * MICROHZ_PER_HZ,
-+				      ADF41513_SYNC_ALL);
-+}
-+
-+static void adf41513_power_down(void *data)
-+{
-+	struct adf41513_state *st = data;
-+
-+	adf41513_suspend(st);
-+	if (st->chip_enable)
-+		gpiod_set_value_cansleep(st->chip_enable, 0);
-+}
-+
-+static int adf41513_pm_suspend(struct device *dev)
-+{
-+	return adf41513_suspend(dev_get_drvdata(dev));
-+}
-+
-+static int adf41513_pm_resume(struct device *dev)
-+{
-+	return adf41513_resume(dev_get_drvdata(dev));
-+}
-+
-+static const struct adf41513_chip_info adf41510_chip_info = {
-+	.has_prescaler_8_9 = false,
-+	.max_rf_freq_hz = ADF41510_MAX_RF_FREQ,
-+};
-+
-+static const struct adf41513_chip_info adf41513_chip_info = {
-+	.has_prescaler_8_9 = true,
-+	.max_rf_freq_hz = ADF41513_MAX_RF_FREQ,
-+};
-+
-+static int adf41513_probe(struct spi_device *spi)
-+{
-+	struct iio_dev *indio_dev;
-+	struct adf41513_state *st;
-+	struct device *dev = &spi->dev;
-+	int ret;
-+
-+	indio_dev = devm_iio_device_alloc(dev, sizeof(*st));
-+	if (!indio_dev)
-+		return -ENOMEM;
-+
-+	st = iio_priv(indio_dev);
-+	st->spi = spi;
-+	st->chip_info = spi_get_device_match_data(spi);
-+	if (!st->chip_info)
-+		return -EINVAL;
-+
-+	spi_set_drvdata(spi, st);
-+
-+	st->ref_clk = devm_clk_get_enabled(dev, NULL);
-+	if (IS_ERR(st->ref_clk))
-+		return PTR_ERR(st->ref_clk);
-+
-+	st->ref_freq_hz = clk_get_rate(st->ref_clk);
-+	if (st->ref_freq_hz < ADF41513_MIN_REF_FREQ || st->ref_freq_hz > ADF41513_MAX_REF_FREQ)
-+		return dev_err_probe(dev, -ERANGE,
-+				     "reference frequency %u Hz out of range\n",
-+				     st->ref_freq_hz);
-+
-+	ret = adf41513_parse_fw(st);
-+	if (ret)
-+		return ret;
-+
-+	ret = devm_regulator_bulk_get_enable(dev,
-+					     ARRAY_SIZE(adf41513_power_supplies),
-+					     adf41513_power_supplies);
-+	if (ret)
-+		return dev_err_probe(dev, ret,
-+				     "failed to get and enable regulators\n");
-+
-+	st->chip_enable = devm_gpiod_get_optional(dev, "enable", GPIOD_OUT_HIGH);
-+	if (IS_ERR(st->chip_enable))
-+		return dev_err_probe(dev, PTR_ERR(st->chip_enable),
-+				     "fail to request chip enable GPIO\n");
-+
-+	st->lock_detect = devm_gpiod_get_optional(dev, "lock-detect", GPIOD_IN);
-+	if (IS_ERR(st->lock_detect))
-+		return dev_err_probe(dev, PTR_ERR(st->lock_detect),
-+				     "fail to request lock detect GPIO\n");
-+
-+	ret = devm_mutex_init(dev, &st->lock);
-+	if (ret)
-+		return ret;
-+
-+	indio_dev->name = spi_get_device_id(spi)->name;
-+	indio_dev->info = &adf41513_info;
-+	indio_dev->modes = INDIO_DIRECT_MODE;
-+	indio_dev->channels = &adf41513_chan;
-+	indio_dev->num_channels = 1;
-+
-+	ret = adf41513_setup(st);
-+	if (ret < 0)
-+		return dev_err_probe(dev, ret, "failed to setup device\n");
-+
-+	ret = devm_add_action_or_reset(dev, adf41513_power_down, st);
-+	if (ret)
-+		return dev_err_probe(dev, ret, "Failed to add power down action\n");
-+
-+	return devm_iio_device_register(dev, indio_dev);
-+}
-+
-+static const struct spi_device_id adf41513_id[] = {
-+	{"adf41510", (kernel_ulong_t)&adf41510_chip_info},
-+	{"adf41513", (kernel_ulong_t)&adf41513_chip_info},
-+	{ }
-+};
-+MODULE_DEVICE_TABLE(spi, adf41513_id);
-+
-+static const struct of_device_id adf41513_of_match[] = {
-+	{ .compatible = "adi,adf41510", .data = &adf41510_chip_info },
-+	{ .compatible = "adi,adf41513", .data = &adf41513_chip_info },
-+	{ }
-+};
-+MODULE_DEVICE_TABLE(of, adf41513_of_match);
-+
-+static DEFINE_SIMPLE_DEV_PM_OPS(adf41513_pm_ops, adf41513_pm_suspend, adf41513_pm_resume);
-+
-+static struct spi_driver adf41513_driver = {
-+	.driver = {
-+		.name = "adf41513",
-+		.pm = pm_ptr(&adf41513_pm_ops),
-+		.of_match_table = adf41513_of_match,
-+	},
-+	.probe = adf41513_probe,
-+	.id_table = adf41513_id,
-+};
-+module_spi_driver(adf41513_driver);
-+
-+MODULE_AUTHOR("Rodrigo Alencar <rodrigo.alencar@analog.com>");
-+MODULE_DESCRIPTION("Analog Devices ADF41513 PLL Frequency Synthesizer");
-+MODULE_LICENSE("GPL");
-
--- 
-2.43.0
-
+- Nuno S=C3=A1
 
 

@@ -1,142 +1,302 @@
-Return-Path: <linux-iio+bounces-27548-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-27552-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B21FD02C33
-	for <lists+linux-iio@lfdr.de>; Thu, 08 Jan 2026 13:55:21 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 725F9D02D52
+	for <lists+linux-iio@lfdr.de>; Thu, 08 Jan 2026 14:04:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 2711130662A8
-	for <lists+linux-iio@lfdr.de>; Thu,  8 Jan 2026 12:49:18 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id CF7DE3002D14
+	for <lists+linux-iio@lfdr.de>; Thu,  8 Jan 2026 13:04:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4F85465D19;
-	Thu,  8 Jan 2026 12:42:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19FC344B685;
+	Thu,  8 Jan 2026 12:59:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="KEPN8acV"
+	dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b="1IjPQGo9"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-dy1-f196.google.com (mail-dy1-f196.google.com [74.125.82.196])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-00128a01.pphosted.com (mx0b-00128a01.pphosted.com [148.163.139.77])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2875A4657F8
-	for <linux-iio@vger.kernel.org>; Thu,  8 Jan 2026 12:42:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.196
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9F913FB22A;
+	Thu,  8 Jan 2026 12:59:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.139.77
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767876157; cv=none; b=bRvli6eH1aPmc72yZx9DKfh2PmUJbCPxyOHV9/P2VtU/BEi4+MjZ79rEYSFF3K+eMgT/RF1HnPw/c/ezUQvFUXYKknoQTD7XUMKfhPIEj7QQZJWSom3xSS3fcDcLF2IzmBrLMsOMKO88PsgCZqhFi4pDpTp9EQgpNkMnj+lHGUw=
+	t=1767877154; cv=none; b=WYiHQ10WYuk5y4Nl8BbOZz0DSkn1rYr8MWWuhu1fiHUkJrjKVg/y6bKIuskefgDx6/bJ0IzGAZU/mn2+iGyTxhYd4dFkUONja8nk/C1l5/7l+eQThxpNaiGa+UZJa68oV3vakTajMGVWdiNKH5+uIuISGy4uXT40TAeA6P8TXm4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767876157; c=relaxed/simple;
-	bh=6wtGbh2+RP2QUwWE9UIqXXcEp3EZiqiCgv0n4SQ2vUs=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=K7WvbrYM9xmH19vK20xqNjs6ldnjVUBBXF7vnnfVXRd+uVeLtm9nau26F8pvB/iUISDn+T48lTo9wOET41FpTi3hZEJ8xGUdXroiWp5YHZtlz/VZCNyAbXFJ5FlcQz/KZCC8o/hFCioxuIR6Yo8PvjnBzmbCMceTNiKdEbyIICo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=KEPN8acV; arc=none smtp.client-ip=74.125.82.196
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-dy1-f196.google.com with SMTP id 5a478bee46e88-2ae57f34e22so301363eec.1
-        for <linux-iio@vger.kernel.org>; Thu, 08 Jan 2026 04:42:36 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1767876155; x=1768480955; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=iINcQgr3dcl7IwITqUtWTzuEmlrnp/IbXb1tjKBIgMo=;
-        b=KEPN8acV47ycJ2LaC9cZjX8YgKn9GIKrsokTF2tfNcleQqIFZhx0Z5OM3aokWl7Kjk
-         aRxOeWqpSUO9mvIcOpR/zhbrNF6Uc48Tw8AipNy1S9Q5T0CJ/khaYfNSneL7SSKAjoAh
-         FHIpeWjO3/OuPgaqS3vj7mxmjT4iycF9d7E4pyfZquhaPo/OSnpA7ZFPWbmHZHMzX0Ik
-         78zZwGdLZKIi/xndMyukXa5gMUtQcRZ+oSObG3uxgf2XaIfM4Xkl65yJYA8x3nm13PVF
-         PAaMbSg1Uyw4vc9kodaZsIe3Lykz+MvtMHHtohN9VQxWn75f+r6+scRqBtJR1o7OlN/U
-         AZUw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767876155; x=1768480955;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=iINcQgr3dcl7IwITqUtWTzuEmlrnp/IbXb1tjKBIgMo=;
-        b=AgFq5qjYN29lNnwAqj/whCCOUd/eTu0TX6SyZGtg12t1/sxAyDqh1lnowdxXaOGWdp
-         ZjdhDFc7+bid9tyB8Ovb0JWgmDERpnFuYI6dgw87FYHGVOVR2b5kLb8uuJqucCLxWd/g
-         qusGlHmfjvvtVs7/YcDCPjsX1jMpTJbdBMrqA+1rRrp6W8OnjAlLywd6Zfbi7791w4Lo
-         JZEG5/XlTI+JaUs5bjk05M9Khp1q4P6IadMu5r+9Z8363jSu9ERW08P8jEhTlxb4vOoT
-         PoQD9VzCsF7JwuioSx+iDIrjNdSYv3f3A1Tz/y5kg/GCAdX5EiCmAi9NloFk9HyDhYYy
-         Sr4w==
-X-Forwarded-Encrypted: i=1; AJvYcCVPe3c7crCVsJ87o9CZXtlthvAMeUaUMa3VcWfEnUbctcLVn1jQkeyVrVgIRUcAI3jPkhxl9gUM1NE=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz1My/J+Jjr27A+PMUNzQNHDHNhWY81va6e3JQ2CT0yDX9s3JwT
-	2Sa4mV3Y8+vLsqnXvKmv5LcehMj6cd8L6H/ePco9IPJ40cnLNA8rnAEU
-X-Gm-Gg: AY/fxX5AzOfuHA2792TUE1wp9llzVD09EPhE4+roVfbSWKNjDa8DzqgpXVX+D+WlfvO
-	J3ZqRvbyZ3bHhEiZuWSiXzyrMI9HgHg//Fb/GXajhLiwv5I80ul1+I0XErwl6Ra5VGqzdfICADC
-	YbscHCBjTlpKOPMZQvL73yz7N4MdC+lwB5gF1zjyJmFMvypTXC8uf49VRY3YL2w8lBtqGOFo7Mx
-	XROp+AQN7AX8qDg+WgjS+rt2dId1w2AbxHC6Fii7edhTyFouAOsp/GbklcwKdImCjX2pqPSNRM6
-	MuBKkWoDBZGLZZ6pBQBWcQCazlMNNtk53LmNxlubMfv+7giVTrYIq9ep6GZZpvt9jtORKaS1W04
-	Qb3jagaBCuQgLDJQ2gCfJ3dfYPai19eeg4e/jQXxdzg9Fq9Wgd80lY2DY65HItRAQ9Lhxkrj/kk
-	lr0LMR2CP7J/ONlARswps=
-X-Google-Smtp-Source: AGHT+IGKdzRBnHICTlRWGJzmFCnaBvcnI3d6GGx35do6Dsr1hh8Gc5HdQMPNrFaQ6n6EcK7eJyNvKw==
-X-Received: by 2002:a05:7300:5613:b0:2b0:1607:6d02 with SMTP id 5a478bee46e88-2b17d2ba86cmr4428926eec.31.1767876155196;
-        Thu, 08 Jan 2026 04:42:35 -0800 (PST)
-Received: from localhost ([2804:30c:2766:a500:b70:8c42:f792:bef6])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2b1707b21dasm9868181eec.27.2026.01.08.04.42.33
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 08 Jan 2026 04:42:34 -0800 (PST)
-Date: Thu, 8 Jan 2026 09:44:20 -0300
-From: Marcelo Schmitt <marcelo.schmitt1@gmail.com>
-To: David Lechner <dlechner@baylibre.com>
-Cc: Mark Brown <broonie@kernel.org>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Marcelo Schmitt <marcelo.schmitt@analog.com>,
-	Michael Hennerich <michael.hennerich@analog.com>,
-	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
-	Jonathan Cameron <jic23@kernel.org>,
-	Andy Shevchenko <andy@kernel.org>,
-	Sean Anderson <sean.anderson@linux.dev>, linux-spi@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-iio@vger.kernel.org
-Subject: Re: [PATCH v4 5/9] spi: Documentation: add page on multi-lane support
-Message-ID: <aV-mpFCF_ET3AZ1B@debian-BULLSEYE-live-builder-AMD64>
-References: <20251219-spi-add-multi-bus-support-v4-0-145dc5204cd8@baylibre.com>
- <20251219-spi-add-multi-bus-support-v4-5-145dc5204cd8@baylibre.com>
+	s=arc-20240116; t=1767877154; c=relaxed/simple;
+	bh=di1QNSZlZ73YeORmIBDjh7tZ2z+9Id2/QMJNfNh1Ao8=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-ID:References:
+	 In-Reply-To:To:CC; b=QREVe+JQB955E3wyMBuiaYavZEezxCYnEa42Y6q63MBYMhT3fdfc5mdwVDW/pCoW0GQfZU4efnCikdblTjTmiXrfWyHFggm0I25Typaquu9qo2UhDVlvyKL+7BlFtS1bbSIqBxHbOMkRI1ENJKzMbF4WTD9F+/QXjHetclRHNXA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=analog.com; spf=pass smtp.mailfrom=analog.com; dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b=1IjPQGo9; arc=none smtp.client-ip=148.163.139.77
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=analog.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=analog.com
+Received: from pps.filterd (m0167090.ppops.net [127.0.0.1])
+	by mx0b-00128a01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 608CTiEv2385986;
+	Thu, 8 Jan 2026 07:58:45 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=analog.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=DKIM; bh=clcev
+	mGfxB5F0HEIUTl8F/mXI7ZaC+MbGbwHAR0rF8w=; b=1IjPQGo9ONtHd1hGGKoTe
+	HnxVgvJBZOgLeM86YAsN3+9g6f8DvZ3y+iDV9tQ3iXjlGKkUSX/39BBPR9Gm10+C
+	q4afL9FEbb3fLfvBTL6FSmOJEXf2ZcLb7I7Y3fHtN+QMxtSFcedybVznvTdh8enh
+	CWne5rez0k9nIVVuIHVjxnIswuP3AYsOsWNvtga+f7ceTx9WQjhpZwaGj8Ft6fHu
+	GdUz06Nl5Bvsqk2TdcnxSEtMZ5isgLmoGZ5gCcksoL86UkHlHKoCLjQITLUN+9TM
+	MzoQ7dmlcfvrV2kF50oU6fxiiPLmHkRLo6THm68vgSTEX+KmlaSq+NxlPqxoIeLB
+	A==
+Received: from nwd2mta4.analog.com ([137.71.173.58])
+	by mx0b-00128a01.pphosted.com (PPS) with ESMTPS id 4bjcmu86uw-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 08 Jan 2026 07:58:45 -0500 (EST)
+Received: from ASHBMBX9.ad.analog.com (ASHBMBX9.ad.analog.com [10.64.17.10])
+	by nwd2mta4.analog.com (8.14.7/8.14.7) with ESMTP id 608CwhYN033911
+	(version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+	Thu, 8 Jan 2026 07:58:43 -0500
+Received: from ASHBCASHYB5.ad.analog.com (10.64.17.133) by
+ ASHBMBX9.ad.analog.com (10.64.17.10) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1748.37; Thu, 8 Jan 2026 07:58:43 -0500
+Received: from ASHBMBX9.ad.analog.com (10.64.17.10) by
+ ASHBCASHYB5.ad.analog.com (10.64.17.133) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1748.37; Thu, 8 Jan 2026 07:58:43 -0500
+Received: from zeus.spd.analog.com (10.66.68.11) by ashbmbx9.ad.analog.com
+ (10.64.17.10) with Microsoft SMTP Server id 15.2.1748.37 via Frontend
+ Transport; Thu, 8 Jan 2026 07:58:43 -0500
+Received: from HYB-e1y2fvUQ3cx.ad.analog.com (HYB-e1y2fvUQ3cx.ad.analog.com [10.44.3.88])
+	by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 608CwSiE012447;
+	Thu, 8 Jan 2026 07:58:37 -0500
+From: Janani Sunil <janani.sunil@analog.com>
+Date: Thu, 8 Jan 2026 13:58:23 +0100
+Subject: [PATCH v2 1/2] dt-bindings: iio: dac: Add max22007
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251219-spi-add-multi-bus-support-v4-5-145dc5204cd8@baylibre.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-ID: <20260108-max22007-dev-v2-1-2506c738784f@analog.com>
+References: <20260108-max22007-dev-v2-0-2506c738784f@analog.com>
+In-Reply-To: <20260108-max22007-dev-v2-0-2506c738784f@analog.com>
+To: Lars-Peter Clausen <lars@metafoo.de>,
+        Michael Hennerich
+	<Michael.Hennerich@analog.com>,
+        Alexandru Ardelean
+	<alexandru.ardelean@analog.com>,
+        Jonathan Cameron <jic23@kernel.org>, "Rob
+ Herring" <robh@kernel.org>,
+        Krzysztof Kozlowski <krzk+dt@kernel.org>,
+        "Conor
+ Dooley" <conor+dt@kernel.org>,
+        Jonathan Corbet <corbet@lwn.net>
+CC: <linux-iio@vger.kernel.org>, <devicetree@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <linux-doc@vger.kernel.org>,
+        <jan.sun97@gmail.com>, Janani Sunil <janani.sunil@analog.com>
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1767877109; l=4953;
+ i=janani.sunil@analog.com; h=from:subject:message-id;
+ bh=di1QNSZlZ73YeORmIBDjh7tZ2z+9Id2/QMJNfNh1Ao8=;
+ b=b+gycGiRiOmlgicBN1agGZq9vOrCGgHzg6jqNi+mrmRQ4xdpJwCB1/Iy+Wix3DtAOsShMd7dm
+ c6LiXRu0vGeAaAmYYx2UCGn1cnS2LGMCZjKqe1Q70seTxrKTJhmo+bV
+X-Developer-Key: i=janani.sunil@analog.com; a=ed25519;
+ pk=e25MyjRLPY3RWrYm/LrJ+/+t1MZJUbkgIW5CZg+g+hA=
+X-ADIRuleOP-NewSCL: Rule Triggered
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMTA4MDA5MiBTYWx0ZWRfXyu5YHVC9TcDN
+ o8tB1BdYZnZUnmNKdtRcUnuZJzrB9etFFZ7KeaChMZHdCl3KvEU3HtzMfYbLM8Ow5FWoFaeSrrY
+ G2gjlJiq8slvyeWFBo/oz30pbmugHnoFfHP38vcvvTKbzzHO/XAqIGFe0DmmeEJCDIlb6FdnpD5
+ lkGiXwve6sPRfaHz7QuEmAQmCemKTRnqbvpH9CEywaK1b22RHLl2CP8xE59207y6c2bJQhGnF42
+ n5XnYjHq+de0bcJBDrz73EZkKYImvUYY0C8pOZkGlXBN/qdgWCgVezVGCWNHDv/apy1EURchPmi
+ 4fTOVXhTb2FrwXNm3Fb9zRv78bH6GQz5wB7AcE1Oa0yfJyoqHO6YC0veLdbvAkciBk3itgNH+9H
+ uuyARvQmFYG52R3rzlMTKbEMT3QzsbKU74JMZXVSn5spizYXU3MfFTQG10xmRYdpNk6W2XzJpBt
+ bEbhrJutifAiPN6P88Q==
+X-Proofpoint-GUID: g1UhBNWHucPu78AAJ-qbby6w7YFgARRX
+X-Authority-Analysis: v=2.4 cv=PP8COPqC c=1 sm=1 tr=0 ts=695faa05 cx=c_pps
+ a=3WNzaoukacrqR9RwcOSAdA==:117 a=3WNzaoukacrqR9RwcOSAdA==:17
+ a=IkcTkHD0fZMA:10 a=vUbySO9Y5rIA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=gEfo2CItAAAA:8 a=gAnH3GRIAAAA:8 a=VwQbUJbxAAAA:8 a=5yLO_ytG1KKSPBdCm3cA:9
+ a=QEXdDO2ut3YA:10 a=9pxso9FRmSwA:10 a=kMJE-xFm7jYA:10
+ a=sptkURWiP4Gy88Gu7hUp:22
+X-Proofpoint-ORIG-GUID: g1UhBNWHucPu78AAJ-qbby6w7YFgARRX
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
+ definitions=2026-01-08_02,2026-01-07_03,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ malwarescore=0 lowpriorityscore=0 impostorscore=0 bulkscore=0 adultscore=0
+ priorityscore=1501 clxscore=1015 spamscore=0 phishscore=0 suspectscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2512120000 definitions=main-2601080092
 
-Actually, one more thing ...
+Devicetree bindings for MAX22007 4-channel 12-bit DAC that drives a
+voltage or current output on each channel
 
-On 12/19, David Lechner wrote:
-> Add a new page to Documentation/spi/ describing how multi-lane SPI
-> support works. This is uncommon functionality so it deserves its own
-> documentation page.
-> 
-> Signed-off-by: David Lechner <dlechner@baylibre.com>
-> ---
-...
-> +- :c:macro:`SPI_MULTI_BUS_MODE_STRIPE`: Send or receive two different data words
-> +    at the same time, one on each lane. This means that the buffer needs to be
-> +    sized to hold data for all lanes. Data is interleaved in the buffer, with
-> +    the first word corresponding to lane 0, the second to lane 1, and so on.
-> +    Once the last lane is used, the next word in the buffer corresponds to lane
-> +    0 again. Accordingly, the buffer size must be a multiple of the number of
-> +    lanes. This mode works for both reads and writes.
-> +
-> +    Example::
-> +
-> +        struct spi_transfer xfer = {
-> +            .rx_buf = rx_buf,
-> +            .len = 2,
-> +            .multi_lane_mode = SPI_MULTI_BUS_MODE_STRIPE,
-> +        };
-> +
-> +        spi_sync_transfer(spi, &xfer, 1);
-> +
-> +    Each tx wire has a different data word sent simultaneously::
-In this example, the controller is reading data so the rx wires have different
-data word received?
+Signed-off-by: Janani Sunil <janani.sunil@analog.com>
+---
+ .../devicetree/bindings/iio/dac/adi,max22007.yaml  | 136 +++++++++++++++++++++
+ MAINTAINERS                                        |   7 ++
+ 2 files changed, 143 insertions(+)
 
-> +
-> +        controller    < data bits <     peripheral
-> +        ----------   ----------------   ----------
-> +            SDI 0    0-0-0-1-0-0-0-1    SDO 0
-> +            SDI 1    1-0-0-0-1-0-0-0    SDO 1
-> +
-> +    After the transfer, ``rx_buf[0] == 0x11`` (word from SDO 0) and
-> +    ``rx_buf[1] == 0x88`` (word from SDO 1).
+diff --git a/Documentation/devicetree/bindings/iio/dac/adi,max22007.yaml b/Documentation/devicetree/bindings/iio/dac/adi,max22007.yaml
+new file mode 100644
+index 000000000000..52c7c3217f90
+--- /dev/null
++++ b/Documentation/devicetree/bindings/iio/dac/adi,max22007.yaml
+@@ -0,0 +1,136 @@
++# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/iio/dac/adi,max22007.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
++
++title: Analog Devices MAX22007 DAC
++
++maintainers:
++  - Janani Sunil <janani.sunil@analog.com>
++
++description:
++  The MAX22007 is a quad-channel, 12-bit digital-to-analog converter (DAC)
++  with integrated precision output amplifiers and current output capability.
++  Each channel can be independently configured for voltage or current output.
++  Datasheet available at https://www.analog.com/en/products/max22007.html
++
++$ref: /schemas/spi/spi-peripheral-props.yaml#
++
++properties:
++  compatible:
++    const: adi,max22007
++
++  reg:
++    maxItems: 1
++
++  spi-max-frequency:
++    maximum: 500000
++
++  '#address-cells':
++    const: 1
++
++  '#size-cells':
++    const: 0
++
++  vdd-supply:
++    description: Low-Voltage Power Supply from +2.7V to +5.5V.
++
++  hvdd-supply:
++    description:
++      Positive High-Voltage Power Supply from +8V to (HVSS +24V) for
++      the Output Channels.
++
++  hvss-supply:
++    description:
++      Optional Negative High-Voltage Power Supply from -2V to 0V for the Output
++      Channels. For most applications HVSS can be connected to GND (0V), but for
++      applications requiring output down to true 0V or 0mA, connect to a -2V supply.
++
++  reset-gpios:
++    maxItems: 1
++    description:
++      Active low GPIO used for hardware reset.
++
++patternProperties:
++  "^channel@[0-3]$":
++    $ref: /schemas/iio/dac/dac.yaml#
++    type: object
++    description:
++      Represents the external channels which are connected to the DAC.
++
++    properties:
++      reg:
++        description: Channel number
++        items:
++          minimum: 0
++          maximum: 3
++
++      adi,ch-func:
++        description:
++          Channel output type. Use CH_FUNC_VOLTAGE_OUTPUT for voltage
++          output or CH_FUNC_CURRENT_OUTPUT for current output.
++        $ref: /schemas/types.yaml#/definitions/uint32
++        enum: [1, 2]
++
++    required:
++      - reg
++      - adi,ch-func
++
++    unevaluatedProperties: false
++
++required:
++  - compatible
++  - reg
++  - vdd-supply
++  - hvdd-supply
++
++unevaluatedProperties: false
++
++examples:
++  - |
++    #include <dt-bindings/gpio/gpio.h>
++    #include <dt-bindings/iio/addac/adi,ad74413r.h>
++
++    vdd_reg: regulator-vdd {
++        compatible = "regulator-fixed";
++        regulator-name = "vdd-3v3";
++        regulator-min-microvolt = <3300000>;
++        regulator-max-microvolt = <3300000>;
++        regulator-always-on;
++    };
++
++    hvdd_reg: regulator-hvdd {
++        compatible = "regulator-fixed";
++        regulator-name = "hvdd-12v";
++        regulator-min-microvolt = <12000000>;
++        regulator-max-microvolt = <12000000>;
++        regulator-always-on;
++    };
++
++    spi {
++        #address-cells = <1>;
++        #size-cells = <0>;
++
++        dac@0 {
++            compatible = "adi,max22007";
++            reg = <0>;
++            spi-max-frequency = <500000>;
++            reset-gpios = <&gpio 19 GPIO_ACTIVE_LOW>;
++            vdd-supply = <&vdd_reg>;
++            hvdd-supply = <&hvdd_reg>;
++            #address-cells = <1>;
++            #size-cells = <0>;
++
++            channel@0 {
++                reg = <0>;
++                adi,ch-func = <CH_FUNC_VOLTAGE_OUTPUT>;
++            };
++
++            channel@1 {
++                reg = <1>;
++                adi,ch-func = <CH_FUNC_CURRENT_OUTPUT>;
++            };
++        };
++    };
++...
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 29340394ac9d..e1addbd21562 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -1593,6 +1593,13 @@ W:	https://ez.analog.com/linux-software-drivers
+ F:	Documentation/devicetree/bindings/iio/dac/adi,ad9739a.yaml
+ F:	drivers/iio/dac/ad9739a.c
+ 
++ANALOG DEVICES INC MAX22007 DRIVER
++M:	Janani Sunil <janani.sunil@analog.com>
++L:	linux-iio@vger.kernel.org
++S:	Supported
++W:	https://ez.analog.com/linux-software-drivers
++F:	Documentation/devicetree/bindings/iio/dac/adi,max22007.yaml
++
+ ANALOG DEVICES INC ADA4250 DRIVER
+ M:	Antoniu Miclaus <antoniu.miclaus@analog.com>
+ L:	linux-iio@vger.kernel.org
+
+-- 
+2.43.0
+
 

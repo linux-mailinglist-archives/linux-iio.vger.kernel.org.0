@@ -1,131 +1,123 @@
-Return-Path: <linux-iio+bounces-27534-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-27535-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 175AFD0133A
-	for <lists+linux-iio@lfdr.de>; Thu, 08 Jan 2026 07:08:43 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1029DD01FA1
+	for <lists+linux-iio@lfdr.de>; Thu, 08 Jan 2026 10:58:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 7C75E3069D4F
-	for <lists+linux-iio@lfdr.de>; Thu,  8 Jan 2026 06:06:20 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 315EE3000917
+	for <lists+linux-iio@lfdr.de>; Thu,  8 Jan 2026 09:58:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1E8A318EFB;
-	Thu,  8 Jan 2026 06:06:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="MHsuhpPV"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C49C0342CB3;
+	Thu,  8 Jan 2026 08:41:37 +0000 (UTC)
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-lf1-f52.google.com (mail-lf1-f52.google.com [209.85.167.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from cstnet.cn (smtp81.cstnet.cn [159.226.251.81])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB2A7301002
-	for <linux-iio@vger.kernel.org>; Thu,  8 Jan 2026 06:06:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39170279DCA;
+	Thu,  8 Jan 2026 08:41:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767852379; cv=none; b=MtRz41QlLWRVsXwiD8Ul+nZ7QEaVXL+6sVYHsH85B1o/qBfyaiAs2DaQ1lqHgtk5YVORE6rB7Q+Es/KnKfAqUctM2QfK9asVM9S98HQjAtUEs19TKi9FXHc6eJv3kxZcChcXrvyHEhXWVQRi/HY6Da1rJLmbZjE/0Jf+s1DNS0w=
+	t=1767861695; cv=none; b=lIJeb4nJKEObWUFaFXq9l87q6TIiIT41YfZHDUaPv4b+G1oVBZ8LDIqHJI3QAWMBsCAMNJG+dvZECElq+fR/7f0mLGvPjdQ53mcY581vamQDC4kWq/iUGROtgkUOYto7feK7uQ/mOX9mXDG0lYqCfIxMngBSS6DcKo8YNtOOBDM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767852379; c=relaxed/simple;
-	bh=KLxIkXnhLy5AQiTjeWELfJxBNcfjk273PSXJZ7+3llM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=iLbovFIMHHh0hK5bCgMAMH7tlS6XyW0no3erNI0H6YmqhOhb1mpaJSK08J7Sb/gl50yG3oatC65k2wqFdkIGcCLrvbz4crIaMcMYFJTlfcMGm5yLoofK8bSDFUoM3uCACOh6Z2XbdEWqMLSIqWefWSpb5WKkT3ZTpW587mRJeL0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=MHsuhpPV; arc=none smtp.client-ip=209.85.167.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lf1-f52.google.com with SMTP id 2adb3069b0e04-59b6c13b68dso1119497e87.0
-        for <linux-iio@vger.kernel.org>; Wed, 07 Jan 2026 22:06:17 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1767852376; x=1768457176; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=KwFZe9VzUZgEZC6AGvQFK4i98g/XBUDvNY20cqi3O5Y=;
-        b=MHsuhpPV6UBZrwt6ct/+elmz+f9VL5fZAKbUu/fRIx1ZR88JD6l9uIPuj5/toSPiR9
-         CrCLMZO5vt0n7S5R37PQpcUhzlTzovaeP5pU57gn61nF+ThY3HI2TQ0aF+uf1E93aYkZ
-         bZos5DpKblT3tGWpg98/kbTB7m5A+YyEcFv2diQZIpjK9C9NH2IbATP3IBHWxd9PfJ6H
-         JX7PFg6AUZsLvuCkvUpB3wJucUpdbJSkgAbniAm6i/jTPpkv0uHQya34LFFhTUYjy852
-         wvTgUEYoang1Gd9PjnQkLFtLIyuzjJTcR/mE7w3kf3iF2ZimPF1rORU5Dny5aLSLUW5V
-         UVIQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767852376; x=1768457176;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=KwFZe9VzUZgEZC6AGvQFK4i98g/XBUDvNY20cqi3O5Y=;
-        b=thr9QLUfHtJHlLnOAxZ9I6fd+mxg3aGSQsj+w4yp57mZUdUqyFOfyRLfS6B3Wbnyzo
-         mVzde2cIfO/PJT+TFicrkRfJe8RvOrQf6vx/k8qGl3NktlFM0v34/wpbqvzqwUqPpT3Q
-         CLVAXyBjq2Xj7vbeenxwdNP3ePrIEmQinxjpeGXwkXqhVcPlWIn7ruaNjy7QBnDstPNr
-         wOugmhf203d3UiXunxsiSATCejA48bS1F+Xbey61f72mCxiM64ueETGolYYHTANTMiDB
-         eOX3hriZFBDYEtbMzivSOlwP0otndg2lAIclrQuDW+F5bUnATiSA3GlXMKHkDMVrPOpG
-         DH+A==
-X-Gm-Message-State: AOJu0Yz+4zzLe733egM9ku7MquKJbKn0wKoRtk3Ls1aEIrVMtFPALKnY
-	7/bzOU5BTSctnkPez6DTlMGipYrg+n/dKp35RSINizHwMY//2ar93O0g
-X-Gm-Gg: AY/fxX6cMjSCAZpxhGWoIoxdipE1uwJRGWHBsa17TjephJtd4CeSyQAi/wGqDnapD3O
-	9dxSQq/UKApbVa8SlRZCit0BgTg880UpcKRqudI9kE60qyRETKMehYciX4huSpA4npp1Yyaeq8g
-	b7IrUB4mC91LocBS5zCRZdQ/bXXpOyzRiH/zhA1C+fXpgZzJQ4EXEi2EaC3IKY6lazLI0OMivMa
-	NOsUGnv9UlyDSI403bOIGtg3zkD9miK+VT2H9Vku9/KbIrjg1eRav9dkQfomdrT1cHLk1o5UExN
-	qpBIAOyUL+Vd7It26jYvtl7tRt/7B7HVKoxBm/wtFEPV/nLsJEPDQdkUOmccCIma3cEg30NDLnr
-	TbYluCxm5ka7E2pD60A40ZiiZDPgVzJe0iteSsnoHD5xeYjGjlVO8ynPvvJRcrz2WGadYuIJ4YI
-	pmG5fVGsCcSMEfyhwP4pMOBqoaEbBn7x6CJ8bu04YYZ2GJLVqx0KpBBcG4AYgY5NvKAN6u
-X-Google-Smtp-Source: AGHT+IEEHo1bQ0j/1YRp4GIECoHoO18+cOgMbneVC1WjDIWd41k0XXdOs0UlgVyYSH/RGaDuDJoBKQ==
-X-Received: by 2002:a05:6512:3b9d:b0:59b:79eb:968 with SMTP id 2adb3069b0e04-59b79eb0a1amr41509e87.0.1767852375512;
-        Wed, 07 Jan 2026 22:06:15 -0800 (PST)
-Received: from ?IPV6:2a10:a5c0:800d:dd00:8fdf:935a:2c85:d703? ([2a10:a5c0:800d:dd00:8fdf:935a:2c85:d703])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-59b6fa7f0acsm1013946e87.99.2026.01.07.22.06.14
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 07 Jan 2026 22:06:14 -0800 (PST)
-Message-ID: <fd506e0f-9e52-498d-8e35-077ab52efbd7@gmail.com>
-Date: Thu, 8 Jan 2026 08:06:13 +0200
+	s=arc-20240116; t=1767861695; c=relaxed/simple;
+	bh=VHn/pX8B0r2xgMeONvegJf13IGeipGnx1l4MJJFmvPw=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=oZSuIg2YYzXdEDkjqHbWXCYkj6HsB7/2vRf73AKkFlJAxNfDVuVksN7+RHtdDg9v1JvH5GIO514T1h9YxD4iTUZBnigPx9jMXuPxWE6DdjWEZICpUtQi9fmyE0fm4vIf+Ev++5JK4TdiUensHmYMaCLk6DLQlC11YFFqhsvdOiE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
+Received: from localhost (unknown [124.16.138.129])
+	by APP-03 (Coremail) with SMTP id rQCowABXZMupbV9pc0QcBA--.38873S2;
+	Thu, 08 Jan 2026 16:41:14 +0800 (CST)
+From: Chen Ni <nichen@iscas.ac.cn>
+To: mazziesaccount@gmail.com,
+	lars@metafoo.de,
+	Michael.Hennerich@analog.com,
+	jic23@kernel.org,
+	dlechner@baylibre.com,
+	nuno.sa@analog.com,
+	andy@kernel.org
+Cc: linux-iio@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Chen Ni <nichen@iscas.ac.cn>
+Subject: [PATCH v2] iio: adc: ad7476: Remove duplicate include and sort the rest
+Date: Thu,  8 Jan 2026 16:39:24 +0800
+Message-Id: <20260108083924.2579676-1-nichen@iscas.ac.cn>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] iio: adc: ad7476: Remove duplicate include
-To: Chen Ni <nichen@iscas.ac.cn>, lars@metafoo.de,
- Michael.Hennerich@analog.com, jic23@kernel.org, dlechner@baylibre.com,
- nuno.sa@analog.com, andy@kernel.org
-Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20260107082920.2151042-1-nichen@iscas.ac.cn>
-Content-Language: en-US, en-AU, en-GB, en-BW
-From: Matti Vaittinen <mazziesaccount@gmail.com>
-In-Reply-To: <20260107082920.2151042-1-nichen@iscas.ac.cn>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:rQCowABXZMupbV9pc0QcBA--.38873S2
+X-Coremail-Antispam: 1UD129KBjvJXoW7Ww18Wry7KFWkArWrAF1rtFb_yoW8Jw18pF
+	4qkF4kJrZ8Aw18CF17uF12kF9xXan5ur1UtFy2ga4UZ3y3tFnYgw4kCrn3tr1kAFZFgF4D
+	GFW3Grs8CrW5ZrJanT9S1TB71UUUUUDqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUPj14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
+	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
+	1l84ACjcxK6xIIjxv20xvE14v26F1j6w1UM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26F4j
+	6r4UJwA2z4x0Y4vEx4A2jsIE14v26rxl6s0DM28EF7xvwVC2z280aVCY1x0267AKxVW0oV
+	Cq3wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0
+	I7IYx2IY67AKxVWrXVW3AwAv7VC2z280aVAFwI0_XcC_AcWlOx8S6xCaFVCjc4AY6r1j6r
+	4UM4x0Y48IcxkI7VAKI48JM4x0x7Aq67IIx4CEVc8vx2IErcIFxwACI402YVCY1x02628v
+	n2kIc2xKxwCY1x0262kKe7AKxVWUtVW8ZwCY02Avz4vE14v_GFyl42xK82IYc2Ij64vIr4
+	1l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1l4IxYO2xFxVAFwI0_JF0_Jw1lx2IqxVAqx4xG67AK
+	xVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r1q6r43MIIYrx
+	kI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14v2
+	6r1j6r4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWUJVW8Jw
+	CI42IY6I8E87Iv6xkF7I0E14v26r4j6r4UJbIYCTnIWIevJa73UjIFyTuYvjTRCCJPDUUU
+	U
+X-CM-SenderInfo: xqlfxv3q6l2u1dvotugofq/
 
-On 07/01/2026 10:29, Chen Ni wrote:
-> Remove duplicate inclusion of linux/bitops.h.
-> 
-> Signed-off-by: Chen Ni <nichen@iscas.ac.cn>
+Remove duplicate <linux/bitops.h> and sort all headers alphabetically.
 
-I would also appreciate having the includes alphabetically ordered as 
-Andy suggested. This, however, is a fine fix as it is so:
-
-Reviewed-by: Matti Vaittinen <mazziesaccount@gmail.com>
-
-> ---
->   drivers/iio/adc/ad7476.c | 1 -
->   1 file changed, 1 deletion(-)
-> 
-> diff --git a/drivers/iio/adc/ad7476.c b/drivers/iio/adc/ad7476.c
-> index 1bec6657394c..21d3f6aae972 100644
-> --- a/drivers/iio/adc/ad7476.c
-> +++ b/drivers/iio/adc/ad7476.c
-> @@ -16,7 +16,6 @@
->   #include <linux/gpio/consumer.h>
->   #include <linux/err.h>
->   #include <linux/module.h>
-> -#include <linux/bitops.h>
->   #include <linux/delay.h>
->   
->   #include <linux/iio/iio.h>
-
-
--- 
+Signed-off-by: Chen Ni <nichen@iscas.ac.cn>
 ---
-Matti Vaittinen
-Linux kernel developer at ROHM Semiconductors
-Oulu Finland
+Changelog:
 
-~~ When things go utterly wrong vim users can always type :help! ~~
+v1 -> v2:
+
+- Alphabetically sort all header files.
+---
+ drivers/iio/adc/ad7476.c | 15 +++++++--------
+ 1 file changed, 7 insertions(+), 8 deletions(-)
+
+diff --git a/drivers/iio/adc/ad7476.c b/drivers/iio/adc/ad7476.c
+index 1bec6657394c..51bd81b2eb0a 100644
+--- a/drivers/iio/adc/ad7476.c
++++ b/drivers/iio/adc/ad7476.c
+@@ -7,21 +7,20 @@
+  */
+ 
+ #include <linux/bitops.h>
++#include <linux/delay.h>
+ #include <linux/device.h>
++#include <linux/err.h>
++#include <linux/gpio/consumer.h>
+ #include <linux/kernel.h>
++#include <linux/module.h>
++#include <linux/regulator/consumer.h>
+ #include <linux/slab.h>
+-#include <linux/sysfs.h>
+ #include <linux/spi/spi.h>
+-#include <linux/regulator/consumer.h>
+-#include <linux/gpio/consumer.h>
+-#include <linux/err.h>
+-#include <linux/module.h>
+-#include <linux/bitops.h>
+-#include <linux/delay.h>
++#include <linux/sysfs.h>
+ 
++#include <linux/iio/buffer.h>
+ #include <linux/iio/iio.h>
+ #include <linux/iio/sysfs.h>
+-#include <linux/iio/buffer.h>
+ #include <linux/iio/trigger_consumer.h>
+ #include <linux/iio/triggered_buffer.h>
+ 
+-- 
+2.25.1
+
 

@@ -1,105 +1,146 @@
-Return-Path: <linux-iio+bounces-27572-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-27573-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 696C3D082F0
-	for <lists+linux-iio@lfdr.de>; Fri, 09 Jan 2026 10:28:08 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id B035DD0A0D9
+	for <lists+linux-iio@lfdr.de>; Fri, 09 Jan 2026 13:54:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 931653065155
-	for <lists+linux-iio@lfdr.de>; Fri,  9 Jan 2026 09:24:17 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 181D830B23AD
+	for <lists+linux-iio@lfdr.de>; Fri,  9 Jan 2026 12:42:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54AAE3590C8;
-	Fri,  9 Jan 2026 09:24:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F28073596F1;
+	Fri,  9 Jan 2026 12:42:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="p7D3DyUp"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="a76hO02m"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-vk1-f176.google.com (mail-vk1-f176.google.com [209.85.221.176])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15A483590BF
-	for <linux-iio@vger.kernel.org>; Fri,  9 Jan 2026 09:24:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57F87310636
+	for <linux-iio@vger.kernel.org>; Fri,  9 Jan 2026 12:42:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767950657; cv=none; b=O3bYlVXH1BzeAS8tCgMKJlE0A6ZPguD+dpwXf/hAOl3VjS+lQKurfxdxlhUFvCux/sMKaGZbNVP7muwBh04+URVWbY+GuNQOFXohE15VyVTOE04nUrGEZH/vfiVOfuW3UvrbSE5YgSbSd8YhsWUDjJeF9e87Te6qEcup42q81Ds=
+	t=1767962566; cv=none; b=Mz5TeNekF7YkgMhxfQ+CPIfaVKQOLAND5MUOQgFLp8eZgD5i2jiagn3rH2fc7xo2lIpahkEfTJ/LlDuo100V2NkcUGNLZbAvmYAQoKwBvJqq/YQwXzQ8cqoH03y6TY0CpBufeQKTP2iT9bvi7CH4Jglzi+gDaYyVVliCNgossaA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767950657; c=relaxed/simple;
-	bh=HMeW2z+HFuisPVGzHUTczpWuqgiqCfXERh3hoCQJz9E=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Utc4AKtOKJSFtUKKXFhECE8hpkVDykAg5iHldmVUL30v3z5v6dl5OVdenchauTJsTI/2mMy06w3vM/YcPuZErOsCzBpqgpdrg0b76OILOW2/uuF1ZmyGHjOotwiQ/YTls79+lbRGDBR/GFvPClJjR4SCH0KX3pB8nCpqO1vR2/c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=p7D3DyUp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9EF79C16AAE
-	for <linux-iio@vger.kernel.org>; Fri,  9 Jan 2026 09:24:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767950656;
-	bh=HMeW2z+HFuisPVGzHUTczpWuqgiqCfXERh3hoCQJz9E=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=p7D3DyUptWVxuCIUv1bgxZnwCUjGKIUMtzt0hpIsjr3Uf+JuxU8K/1fXMxnPUmVJd
-	 f2XL/N2kV9vuzAKY3QboFywW1aKSTsnnqVB1KViMRTIeKPcp9ZKZfGR3VI1izx/NV8
-	 bROG0c70b+Rk0tSt83xZZYmgD3yQd/V5kBXByhYuYCTiF+iX7BBN2o9SqFwqYMhgvF
-	 VkJ1xJW+0bxq98rIeoDOXx+M7aQmqNQjfyzJVvO+LyxgP3luZgw6f4sl9ISASXB3b0
-	 Ri652LazJvksTLzHC2PG1UtfCjDDIF+gF45awqii1/evi680wd0Q6jMVeE5kMbt633
-	 TrlnQs1E+meqA==
-Received: by mail-yw1-f171.google.com with SMTP id 00721157ae682-78fba1a1b1eso44783277b3.1
-        for <linux-iio@vger.kernel.org>; Fri, 09 Jan 2026 01:24:16 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCXy3VL3VegH7OU3n4ecTDbe+DNAEM68g694Uxt6GDUbU9DtNDG0AjJ5FlYTHRj/7lkBtqjInfW76ek=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzLKJ73tYM6SHi8G5SzFg5PohSPmWsdVwEO3mS8+romM2Ics4OD
-	4QEsDV/7JM4P8A9O/iPfgqtXdf0nZyek8tb+6B3dW+v+FjOTva0kmcC19Bdzd7TTDxpF6x0Q0Om
-	xw0ARgGSw9MQPsQTg9Yg9+zFY37P9Wb8=
-X-Google-Smtp-Source: AGHT+IFfGOMHcBu+Lrr4wQSB5LAgjIli1+ouJok4/eV+kbpe+/OT6QPHsv/5w7mAmTRLx1Y0FIA1JgDvFqY17XZrCq4=
-X-Received: by 2002:a05:690e:1c17:b0:646:7b7c:2faf with SMTP id
- 956f58d0204a3-6470d2af77bmr9864715d50.20.1767950656041; Fri, 09 Jan 2026
- 01:24:16 -0800 (PST)
+	s=arc-20240116; t=1767962566; c=relaxed/simple;
+	bh=hZSgLFwm7iWTSCEMlGpJ5EydF3r4Fok2bDOlepHZ5R0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=DUnwskXkvbcMBtL1CtbDKwMX0xzxuDw/aQefyV32ZovnLOMUQlobh97RtfKIfFdT5F2ul/y1k8NCzwit4JOTCleukhbogsJBd8FVP0VMXb1O5mIs2oxnU/gVkwZD++iK8C+puObsT9GjG7zojxiVUg9ZNZZ10lp13qJRolHfqsI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=a76hO02m; arc=none smtp.client-ip=209.85.221.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-vk1-f176.google.com with SMTP id 71dfb90a1353d-5636274b362so363939e0c.2
+        for <linux-iio@vger.kernel.org>; Fri, 09 Jan 2026 04:42:45 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1767962564; x=1768567364; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=K3BFu0vu0/p35NSB3GE3KTVvm2WkoyhJD5SPOf/SaeU=;
+        b=a76hO02m2zyU0nn+/0WvJf0A//MgSy24ecK2vgzKwg/rNsXQzflpXEZMsk+Le0Xts+
+         4ei0oXO/MFJG2OzzezPNGz/6+omGmJQ2YYhtRhDOPHpL2csC31xZWDHWf9ClJv117tSE
+         XZ/n9btjige4iDkfmSLcQWYNOR2pBEarYILOOyzRAZhFNRpteCOF52Ti4mpPP4c4z3RF
+         uCTqru6EWkTuyr5qLp6vxVk7ucxz/qhwujUp2g+xIm5AnIBSDsTArBZmn3XcW5kuSEZE
+         /kzYpREkr+bCZ5OKKIkmaMfWTmhv2xI7lzeHl7+1FWmyR3NokEaw8NlnNzM0Ritt4hu0
+         SviQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1767962564; x=1768567364;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=K3BFu0vu0/p35NSB3GE3KTVvm2WkoyhJD5SPOf/SaeU=;
+        b=KlDk2hxfqQtGZEl0EZslK56vXdU4L3I/H15Wg+mXhz04PsUbPPNThJMEaNNFP805RH
+         N3B/YWw/O3NX+0xXYWcaU+4w+o71NXv+Y0PfaqrfEQ/WaB7nqtwyS5GQ9Tio52Ejje64
+         /5Z5tLZfh2ZvXrrGFBjsHQsDEndOOnxq7qcjcMkqWqKStq4KaPhhoikBH+UDclRiwmq7
+         th4jWQe87N00cEoRQi5ZWSJXuA72m7eWN1+k4nzxYgi9ZSMlRDYLWq1cAUWRA+/xmsZs
+         9hwuHl+M7e/PerkjVr7DWqC/uNkrmIEQr134lRWY5fwsizeNoLTMOPUHiHMVE1vZJKQV
+         /iIQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXSIA31NrRpPrZf65Z8LmtYohUKI6hkGUpNwYrENnnYbSvUZd9TZ0MtM7kpNgnNnYmEMsQ4V8AG6O8=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy5I1JeuOWNu73h+Ew4sd+Q7sz6EnbW3HX4jxLlqv0DbLw7AKUt
+	PD6zWGgnsvIReGQnGZC4JuX6TLQdxG5kfBTX+HiVX3vu9NOTostC6sov
+X-Gm-Gg: AY/fxX5ALnf7xqE5WcTLhHLtVN8Q74XvZgN/dElZI6DnTFP8R9+kRaowaVs/manpv3Q
+	Uexq5nupAhE3pisuDDBARAW8gx3pwbZiLjCfMv2LFVvcWpun5EGjFEgcNb/XWw+JNDkW+ftUPUn
+	nXXVj5F6DpgnMmCoOIdwlcgybGhXOuKvs7M+CCLGGPRmUaN4cYeJG/wiLetPz/Ttn9NGrh/5NUv
+	hgz/cyGTYTc2kuhtIPUXyHVkX7DQmIRTYqm972+0dacg2kCIbWvWwsg7WVeNYSaQnImgQC0y1pN
+	nueU0QyXdl8qQOtSLLMYSbt64vOglQqTI7rjxRvCQI67TVaP04ffetSGeKt4ry6pQHBdMJ3SnmT
+	ARvEnt816NFpadY/NLDFCBhycorIIn1gsjDpml/0ZouzUY2D03DohNyPOuosEvihnAjb5rH3Emk
+	JlP3+ww4y7Bv26h9Um8qE=
+X-Google-Smtp-Source: AGHT+IEFwkm7ZUOXNxPhCYhh26Dl1VpJaAPxMviOBBIXzleuSNVqOAzV6ATr3WWYBcee7gd8DzSzGw==
+X-Received: by 2002:a05:6102:50ac:b0:5ee:a184:35c8 with SMTP id ada2fe7eead31-5eea1843ad8mr1950120137.30.1767962562741;
+        Fri, 09 Jan 2026 04:42:42 -0800 (PST)
+Received: from localhost ([2804:30c:2766:a500:b70:8c42:f792:bef6])
+        by smtp.gmail.com with ESMTPSA id a1e0cc1a2514c-944124c452asm8625479241.13.2026.01.09.04.42.41
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 09 Jan 2026 04:42:41 -0800 (PST)
+Date: Fri, 9 Jan 2026 09:44:28 -0300
+From: Marcelo Schmitt <marcelo.schmitt1@gmail.com>
+To: Janani Sunil <janani.sunil@analog.com>
+Cc: Lars-Peter Clausen <lars@metafoo.de>,
+	Michael Hennerich <Michael.Hennerich@analog.com>,
+	Alexandru Ardelean <alexandru.ardelean@analog.com>,
+	Jonathan Cameron <jic23@kernel.org>, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Jonathan Corbet <corbet@lwn.net>, linux-iio@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-doc@vger.kernel.org, jan.sun97@gmail.com
+Subject: Re: [PATCH v2 1/2] dt-bindings: iio: dac: Add max22007
+Message-ID: <aWD4LA7Y1fl3yvh-@debian-BULLSEYE-live-builder-AMD64>
+References: <20260108-max22007-dev-v2-0-2506c738784f@analog.com>
+ <20260108-max22007-dev-v2-1-2506c738784f@analog.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250613124648.14141-1-marek.vasut+bmc150@mailbox.org>
- <79946c40-e2ce-4fbc-a6b2-b37f6fd69d1d@kernel.org> <20250621181733.3cb6111e@jic23-huawei>
- <07d91b36-dbeb-42b3-8dd7-b0771df9b306@mailbox.org> <c42243fd-ffd2-4144-875e-b156133eb031@kernel.org>
- <7d327efe-94ce-458a-9394-eb5582f1c263@mailbox.org>
-In-Reply-To: <7d327efe-94ce-458a-9394-eb5582f1c263@mailbox.org>
-From: Linus Walleij <linusw@kernel.org>
-Date: Fri, 9 Jan 2026 10:24:05 +0100
-X-Gmail-Original-Message-ID: <CAD++jL=OhmJmiq+osdZysfJ=U4mwKcuNVUY-RKq-xO_YZpeP3g@mail.gmail.com>
-X-Gm-Features: AZwV_QgO_ufNRha8CReUDjyVTL4WG3n5KUaC08N3jKYgtwLGyhruJzCx-wMjHFs
-Message-ID: <CAD++jL=OhmJmiq+osdZysfJ=U4mwKcuNVUY-RKq-xO_YZpeP3g@mail.gmail.com>
-Subject: Re: [PATCH] iio: accel: bmc150: Do not configure IRQ registers if no
- IRQ connected
-To: Marek Vasut <marek.vasut@mailbox.org>
-Cc: Hans de Goede <hansg@kernel.org>, Jonathan Cameron <jic23@kernel.org>, linux-iio@vger.kernel.org, 
-	=?UTF-8?B?TnVubyBTw6E=?= <nuno.sa@analog.com>, 
-	Andy Shevchenko <andy@kernel.org>, David Lechner <dlechner@baylibre.com>, 
-	Julien Stephan <jstephan@baylibre.com>, Peter Zijlstra <peterz@infradead.org>, 
-	Salvatore Bonaccorso <carnil@debian.org>, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260108-max22007-dev-v2-1-2506c738784f@analog.com>
 
-On Thu, Jan 8, 2026 at 10:55=E2=80=AFPM Marek Vasut <marek.vasut@mailbox.or=
-g> wrote:
+Hi Janani,
 
-> On 6/21/25 10:14 PM, Hans de Goede wrote:
->
-> Hello Hans,
->
-> > IIO has separate interfaces for exporting channels which can be polled =
-by
-> > userspace and for triggers which is a more event driven interface.
-> >
-> > It should be possible to modify the driver to skip the trigger registra=
-tion,
-> > while keeping the channels. E.g. iio-sensor-proxy will then automatical=
-lt
-> > switch to polling in userspace.
-> I wonder if this got fixed by this commit in the meantime:
->
-> 3aa385a9c75c ("iio: accel: bmc150: Fix irq assumption regression")
+One extra comment in addition to Krzysztof's.
 
-I think so.
+On 01/08, Janani Sunil wrote:
+> Devicetree bindings for MAX22007 4-channel 12-bit DAC that drives a
+> voltage or current output on each channel
+> 
+> Signed-off-by: Janani Sunil <janani.sunil@analog.com>
+> ---
+...
+> +
+> +patternProperties:
+> +  "^channel@[0-3]$":
+> +    $ref: /schemas/iio/dac/dac.yaml#
+> +    type: object
+> +    description:
+> +      Represents the external channels which are connected to the DAC.
+> +
+> +    properties:
+> +      reg:
+> +        description: Channel number
+> +        items:
+> +          minimum: 0
+> +          maximum: 3
+> +
+> +      adi,ch-func:
+> +        description:
+> +          Channel output type. Use CH_FUNC_VOLTAGE_OUTPUT for voltage
+> +          output or CH_FUNC_CURRENT_OUTPUT for current output.
+> +        $ref: /schemas/types.yaml#/definitions/uint32
+> +        enum: [1, 2]
+adi,ad74413r.yaml has many possibilities for the channel output type.
+max22007 is only either voltage or current.
+Can't we do this with output-range-microamp and output-range-microvolt from dac.yaml?
+Figure out the channel type from the output-range- property?
 
-It was causing a NULL dereference for me, so I had to fix it.
+> +
+> +    required:
+> +      - reg
+> +      - adi,ch-func
+> +
+> +    unevaluatedProperties: false
 
-Yours,
-Linus Walleij
+With best regards,
+Marcelo
 

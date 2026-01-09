@@ -1,163 +1,114 @@
-Return-Path: <linux-iio+bounces-27584-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-27585-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC258D0C025
-	for <lists+linux-iio@lfdr.de>; Fri, 09 Jan 2026 20:07:28 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D964ED0C03A
+	for <lists+linux-iio@lfdr.de>; Fri, 09 Jan 2026 20:09:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 7B7E33028592
-	for <lists+linux-iio@lfdr.de>; Fri,  9 Jan 2026 19:07:15 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 29F0F30078B7
+	for <lists+linux-iio@lfdr.de>; Fri,  9 Jan 2026 19:09:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73FA52DF14C;
-	Fri,  9 Jan 2026 19:07:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 570B22E6CC2;
+	Fri,  9 Jan 2026 19:09:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="TBHtbL/V"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="PXWja+tb"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09CBA218845;
-	Fri,  9 Jan 2026 19:07:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCC3729BD88;
+	Fri,  9 Jan 2026 19:09:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767985634; cv=none; b=KnBDJqZueJjW+UVd4NhXTB2tzE6SAHJAEro8cF9At711chr08AUrul3MSZEV4cc6RVc4FXN1FxBCJnS7f9WaepCtClNYtQl7sKnM15MpQf/LpRnxua6+GJR6sfhfYRiYxZGgvEVkvMq8NBPfLHuiNHLJzkkZeckI9DvGHsVTHUk=
+	t=1767985754; cv=none; b=km8LfI+a2wPMJjIwp2mKxWhHmE3LLUS1WQJpkZ0eZfCQAR2cG2+Jx2OlkD+yHEU0RZTFc09pZmzSnQIO8HoetmJXRaQcTy//nMuE6DRmACEr/tlq2j1qJmn1njooo41oQqKtbcIxhZi5x3fzp2NT2q/GMUEfuvNcUQ84J5WpaTE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767985634; c=relaxed/simple;
-	bh=KOBnRTPPMxRitdXJ/bzV/177ZSn8//YyDaldxjvFzbI=;
+	s=arc-20240116; t=1767985754; c=relaxed/simple;
+	bh=MbbtNyYC8/9lBM1YRHOjZp8Eu+mbv5hhAZ9liMf8x2s=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=mxhKpmZWTAjgx/Vz3qjt/65DA37TM6yp2XPCevmuICpcPe5rOOpuyU112uJJnL3Jv6HI3ZESvDJKy0rY9+hGCLjXqWi6I6/5IEbb5GifNkRdXt11cp+96otNyqjeJ7Ng8XxcXYAe3Tlr4x3aDcfcwrpkZXl6otOpTCz04+XJ+9U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=TBHtbL/V; arc=none smtp.client-ip=198.175.65.11
+	 Content-Type:Content-Disposition:In-Reply-To; b=WpWcXWsPe6pRBnfNl7t4pa6Bj03dXtZwSQvS42d59S2Ib52njXsk39YIpX897QwWm/uPewfNu7mESWWw1aJoGSL4uQ3qYDjf7wP9Um2CQAemnAO7SUHBqNLI+/jIUzspR2XHeWF1lwaXmwEbIVqU/JBcSa0w+YSOViltHddBgbk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=PXWja+tb; arc=none smtp.client-ip=192.198.163.11
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1767985633; x=1799521633;
+  t=1767985753; x=1799521753;
   h=date:from:to:cc:subject:message-id:references:
-   mime-version:content-transfer-encoding:in-reply-to;
-  bh=KOBnRTPPMxRitdXJ/bzV/177ZSn8//YyDaldxjvFzbI=;
-  b=TBHtbL/V3fEFhF4HgCHRe5I88KOLJMTnCcj4M3qZIelRQxdkTKGaopjW
-   2G4o65llm17M/DQOJxF4uN+yiLYPLK4B06VCLrqK6F4sM276y/ETW4x3w
-   PeaVlCWpLXlme+JDzTithUP0tQ/SLm0cyDv+UDuQHcSbsI1n8eLLaCo8S
-   Mv8QT1C1qo3RcMdaUIgvajLNnFeA9elLiYX/Bq5pualRmZ9rJh9gauyI6
-   6nzHCgzDYHGHDSwZST03Qn2dClussNqhzJG74+9qxOZSaXeQgc1hMjkJY
-   PJot/DVCVtVZsNfKJOSuexKX3dH7V/ClAkkDMZtSBsnGcN7xQMbR60BJq
-   g==;
-X-CSE-ConnectionGUID: LVENBcPhRFWkc/i9RB/D4w==
-X-CSE-MsgGUID: 9LhZMJYzSry2ReO2wrfqOQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11666"; a="79665095"
+   mime-version:in-reply-to;
+  bh=MbbtNyYC8/9lBM1YRHOjZp8Eu+mbv5hhAZ9liMf8x2s=;
+  b=PXWja+tboepbUgFMv5XaDSrjbW/JudTMZox45XUGNBllpeZRtJZjWYLu
+   LaOIC09AzIioZ/li28ALlIcab1L3GveZKz3b+1IZ7oCDuaHyhi/CA4Qce
+   k8vqqXzEIzEhPgha85lV0GuKtuB6ZJMCqIv2UlKwmREeOMVTmzusAotwH
+   +upH8afNPt/k+WgyZ4+ZvORZBUXWQamVXvCMl0tWJDs1g/OvvV16GPKPH
+   hXc0JFgSd2zVyACNOBREX5C/Bj6U4mMJFnBU75lssXYVYpISLkncyoRCr
+   jyqB8dg+hVzCozvoSHihlitbjiphaFovAUoVW3GAUvZxvbwdFTpC5JKvd
+   w==;
+X-CSE-ConnectionGUID: ytpAPBY5RQ2ZfRCH+YiqLg==
+X-CSE-MsgGUID: 9ZdADLrpTXGqhEPtcC7K2A==
+X-IronPort-AV: E=McAfee;i="6800,10657,11666"; a="80007785"
 X-IronPort-AV: E=Sophos;i="6.21,214,1763452800"; 
-   d="scan'208";a="79665095"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
-  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Jan 2026 11:07:13 -0800
-X-CSE-ConnectionGUID: YuT3Tw14QP2uCoGVarClVA==
-X-CSE-MsgGUID: wm0oLCSAQeKzHvuavTNP6Q==
+   d="scan'208";a="80007785"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Jan 2026 11:09:12 -0800
+X-CSE-ConnectionGUID: yLTUQQBiSAGPVW/4WXUfAw==
+X-CSE-MsgGUID: tHcMPdGCTbup6zv4txq7Kw==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.21,214,1763452800"; 
-   d="scan'208";a="208024462"
+   d="scan'208";a="203455342"
 Received: from abityuts-desk.ger.corp.intel.com (HELO localhost) ([10.245.244.157])
-  by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Jan 2026 11:07:09 -0800
-Date: Fri, 9 Jan 2026 21:07:07 +0200
+  by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Jan 2026 11:09:10 -0800
+Date: Fri, 9 Jan 2026 21:09:08 +0200
 From: Andy Shevchenko <andriy.shevchenko@intel.com>
-To: rodrigo.alencar@analog.com
-Cc: linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-doc@vger.kernel.org,
+To: Francesco Lavra <flavra@baylibre.com>
+Cc: Lorenzo Bianconi <lorenzo@kernel.org>,
 	Jonathan Cameron <jic23@kernel.org>,
 	David Lechner <dlechner@baylibre.com>,
-	Andy Shevchenko <andy@kernel.org>,
-	Lars-Peter Clausen <lars@metafoo.de>,
-	Michael Hennerich <Michael.Hennerich@analog.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Jonathan Corbet <corbet@lwn.net>
-Subject: Re: [PATCH v3 4/6] iio: frequency: adf41513: features on frequency
- change
-Message-ID: <aWFR2wTSWLydGN5O@smile.fi.intel.com>
-References: <20260108-adf41513-iio-driver-v3-0-23d1371aef48@analog.com>
- <20260108-adf41513-iio-driver-v3-4-23d1371aef48@analog.com>
+	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
+	Andy Shevchenko <andy@kernel.org>, linux-iio@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 2/3] iio: imu: st_lsm6dsx: set FIFO ODR for accelerometer
+ and magnetometer only
+Message-ID: <aWFSVKBCYzjuZzic@smile.fi.intel.com>
+References: <20260109181528.154127-1-flavra@baylibre.com>
+ <20260109181528.154127-3-flavra@baylibre.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260108-adf41513-iio-driver-v3-4-23d1371aef48@analog.com>
+In-Reply-To: <20260109181528.154127-3-flavra@baylibre.com>
 Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
  krs, Bertel Jungin Aukio 5, 02600 Espoo
 
-On Thu, Jan 08, 2026 at 12:14:53PM +0000, Rodrigo Alencar via B4 Relay wrote:
-
-> Set Bleed current when PFD frequency changes (bleed enabled when in
-> fractional mode). Set lock detector window size, handling bias and
-> precision. Add phase resync support, setting clock dividers when
-> PFD frequency changes.
-
-...
-
-> +static const u16 adf41513_ld_window_p1ns[] = {
-> +	9, 12, 16, 17, 21, 28, 29, 35,			/* 0 - 7 */
-> +	43, 47, 49, 52, 70, 79, 115			/* 8 - 14 */
-
-Leave trailing comma.
-
-> +};
-> +
-> +static const u8 adf41513_ldp_bias[] = {
-> +	0xC, 0xD, 0xE, 0x8, 0x9, 0x4, 0xA, 0x5,		/* 0 - 7 */
-> +	0x0, 0x6, 0xB, 0x1, 0x2, 0x7, 0x3		/* 8 - 14 */
-
-Ditto.
-
-> +};
-> +
->  static const char * const adf41513_power_supplies[] = {
->  	"avdd1", "avdd2", "avdd3", "avdd4", "avdd5", "vp"
-
-Ditto.
-
->  };
+On Fri, Jan 09, 2026 at 07:15:27PM +0100, Francesco Lavra wrote:
+> The st_lsm6dsx_set_fifo_odr() function, which is called when enabling and
+> disabling the hardware FIFO, checks the contents of the hw->settings->batch
+> array at index sensor->id, and then sets the current ODR value in sensor
+> registers that depend on whether the register address is set in the above
+> array element. This logic is valid for internal sensors only, i.e. the
+> accelerometer and magnetometer; however, since commit c91c1c844ebd ("iio:
+> imu: st_lsm6dsx: add i2c embedded controller support"), this function is
+> called also when configuring the hardware FIFO for external sensors (i.e.
+> sensors accessed through the sensor hub functionality), which can result in
+> unrelated device registers being written.
+> 
+> Add a check to the beginning of st_lsm6dsx_set_fifo_odr() so that it does
+> not touch any registers unless it is called for internal sensors.
 
 ...
 
-> +	bleed_value = div64_u64(st->settings.pfd_frequency_uhz * bleed_value,
-> +				1600ULL * HZ_PER_MHZ * MICROHZ_PER_HZ);
+>  	const struct st_lsm6dsx_reg *batch_reg;
+>  	u8 data;
+>  
+> +	/* Only accel and gyro have batch registers. */
+> +	if (sensor->id >= ARRAY_SIZE(hw->settings->batch))
+> +		return 0;
 
-> +	u16 ld_window_p1ns = div64_u64(10ULL * NANO * MICROHZ_PER_HZ,
-> +				       st->settings.pfd_frequency_uhz << 1);
++ Blank line.
 
-These multiplications (here and elsewhere) are (very) confusing.
-
-I believe you want to have a frequency in Hz in µHz resolution. The second one
-can be close to this if used GIGA instead of NANO. But I think the better way
-to have something like the first one but with MICRO instead of MICROHZ_PER_HZ.
-
-Please, put an order in these.
-
-...
-
-> +	/* assuming both clock dividers hold similar values */
-> +	total_div = mul_u64_u64_div_u64(st->settings.pfd_frequency_uhz,
-> +					st->data.phase_resync_period_ns,
-> +					1ULL * MICRO * NANO);
-
-This sounds good as we multiply Hz by ns.
-
-...
-
-> +	st->data.phase_resync_period_ns = 0;
-
-Do we even need this?
-
-> +	ret = device_property_read_u32(dev, "adi,phase-resync-period-ns", &tmp);
-> +	if (!ret)
-> +		st->data.phase_resync_period_ns = tmp;
-
-Is the _period_ns of type u32? Then simply
-
-	device_property_read_u32(dev, "adi,phase-resync-period-ns", &st->data.phase_resync_period_ns);
+>  	batch_reg = &hw->settings->batch[sensor->id];
 
 -- 
 With Best Regards,

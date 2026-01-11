@@ -1,55 +1,59 @@
-Return-Path: <linux-iio+bounces-27609-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-27610-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7099AD0EF41
-	for <lists+linux-iio@lfdr.de>; Sun, 11 Jan 2026 14:07:54 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id E7B75D0EF53
+	for <lists+linux-iio@lfdr.de>; Sun, 11 Jan 2026 14:15:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 6FC6430094B7
-	for <lists+linux-iio@lfdr.de>; Sun, 11 Jan 2026 13:07:53 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 275CC300F5A0
+	for <lists+linux-iio@lfdr.de>; Sun, 11 Jan 2026 13:14:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F51B33984D;
-	Sun, 11 Jan 2026 13:07:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7033133C50F;
+	Sun, 11 Jan 2026 13:14:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="S5QMCcJz"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ip/e2mh1"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 239C8DDAB;
-	Sun, 11 Jan 2026 13:07:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34A5033122E;
+	Sun, 11 Jan 2026 13:14:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768136872; cv=none; b=c4xC2K4E+5pd8/bG53HFcFBQCxlTtwi/R8mtv/FOXEO5Spx0G7X21VvtSyIX4F1DnSpVeIrHBDyD5QQdy7Whyjmc43DaN2Jc92OjWEw4fVOS9q2HX/MKqxL5GIe4gM8zHxzGoRNDOIAzheN8lR6Kcbw09cEl9zmQvLC7Jkbovgc=
+	t=1768137296; cv=none; b=a4LUZYbXjU1KLLNTEm4nia9/5uwGkHxE0hj4LbXXZz61gwxOrwGNgdNw+gKjcDHiLIJWBR5OgwXDSNKX6OuhDzTv+yh+iMP+kTmARXDn5dq1dElP3oKQFnnOl+J4A85NHI9r0w9hLb9sVNIbWteK3sVMkuaO/EtiTo2FBGVKOvY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768136872; c=relaxed/simple;
-	bh=MWtxW2JpxnvULib/YwCKheBdTPKCuvNYob7+cJW60nU=;
+	s=arc-20240116; t=1768137296; c=relaxed/simple;
+	bh=MA7WclqKrs/0+T7D2D8fju/Y19IeEHKbYArPN0tiMQ0=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=UFxn5vlXfjpTWDOa2Tn839Pz4SunSz4cx4zpbAt3PFwfqnDORY0D3xM0LRXKszVnpKx8nQJwt1IRntfgh0xX9vtbTfPnnF45TGbO9KApkMvhoMWyaMk/q/55Mp+3HsPrv2b20Dz9iRDrsV9nxt+w7PcBpEOUaSJ4XajgXP5b6j8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=S5QMCcJz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06337C4CEF7;
-	Sun, 11 Jan 2026 13:07:48 +0000 (UTC)
+	 MIME-Version:Content-Type; b=iPYY2iKdhkZjgUZA+Mo+Bb3NsDsV0Ut1xMOsx96HT/JTmUYomiNMXqqFlT/o8DHYSEAe4y34nK2gL8wbmErMhkmuwQFMOjAgIqqcRJOsO55Nm0ZhQ2IH5ZUwiH3NXXS/lsgD0pY7TJsS5qnmRRdL8nvvg9Qo4oJon6cQRGmfnWg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ip/e2mh1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 252B0C4CEF7;
+	Sun, 11 Jan 2026 13:14:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768136871;
-	bh=MWtxW2JpxnvULib/YwCKheBdTPKCuvNYob7+cJW60nU=;
+	s=k20201202; t=1768137296;
+	bh=MA7WclqKrs/0+T7D2D8fju/Y19IeEHKbYArPN0tiMQ0=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=S5QMCcJzQOq59ItdjmK25RW8MEMwC32eBK/ymq/ADlRkxjmZoeQKzNNbkDYXUyAz0
-	 0n5ADNRrsm1exINmxa+5ifutrRQVQ0cI6KznrfMjfv5IxUFywrFfmuBGlHQUWuFeqG
-	 GQPZ1ctKzwc54YITkx+e4nYXLVbAYiw0PqJLUUVtO5sjVHqA+X5p0wrZXqFOWUlRCj
-	 MBpbwbK4oalYAk7uCaF72R9w57RlQTGTvzwLkp0PSZ2xPEQfW8+1Yke1A+xGa/PPBt
-	 DW4RhKrzr3wB6Y9PUxInz87iB2kb2Zge7T6VJ+gJd9fnv9QelVgz8EITN/CfoMJz7v
-	 NAH1f43r2r7Mg==
-Date: Sun, 11 Jan 2026 13:07:44 +0000
+	b=ip/e2mh1lzFozUogLYa6yVqGXcfGYXBoa5Z5N2LB56bCuKFuyHsYhaNWWCnFnGawM
+	 0RSksRTT3dKzzpMwMJKB0+0ePBKAHdxyMUgSaRsnTufzpD6A6ZVDgeyF3NMcr7oUwZ
+	 DKz+aDM90mZu9QmHdC9UExaWLDocFaogQDD9bcgbkXNIiTbp/IcFEhTl1OZVmLnfuH
+	 tdDjPwDTvHrPkhMQr/6Q4vsCgaFqyRbIR49cbfxF5fCoCcwnZQHzXID7iaANhn4jNS
+	 sjMyxVbdHer3Ef+qYKFAVuLdVVYaTF7xj0y1KVqBj80PgSoIkJwwVC+TWoiwAorlXy
+	 6VY6Ll6nSvxUA==
+Date: Sun, 11 Jan 2026 13:14:46 +0000
 From: Jonathan Cameron <jic23@kernel.org>
-To: Kurt Borja <kuurtb@gmail.com>
-Cc: David Lechner <dlechner@baylibre.com>, Nuno =?UTF-8?B?U8Oh?=
- <nuno.sa@analog.com>, Andy Shevchenko <andy@kernel.org>,
- linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] iio: adc: ti-ads1018: Drop stale kernel-doc function
- context
-Message-ID: <20260111130744.48919874@jic23-huawei>
-In-Reply-To: <20260106-ads1018-comment-v1-1-315d50c2a353@gmail.com>
-References: <20260106-ads1018-comment-v1-1-315d50c2a353@gmail.com>
+To: Francesco Lavra <flavra@baylibre.com>
+Cc: Ramona Gradinariu <ramona.gradinariu@analog.com>, Antoniu Miclaus
+ <antoniu.miclaus@analog.com>, Lars-Peter Clausen <lars@metafoo.de>, Michael
+ Hennerich <Michael.Hennerich@analog.com>, David Lechner
+ <dlechner@baylibre.com>, Nuno =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>, Andy
+ Shevchenko <andy@kernel.org>, linux-iio@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 2/2] iio: accel: adxl380: Optimize reading of FIFO
+ entries in interrupt handler
+Message-ID: <20260111131435.6460d968@jic23-huawei>
+In-Reply-To: <20260106193627.3989930-3-flavra@baylibre.com>
+References: <20260106193627.3989930-1-flavra@baylibre.com>
+	<20260106193627.3989930-3-flavra@baylibre.com>
 X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -60,40 +64,54 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Tue, 06 Jan 2026 03:17:32 -0500
-Kurt Borja <kuurtb@gmail.com> wrote:
+On Tue,  6 Jan 2026 20:36:27 +0100
+Francesco Lavra <flavra@baylibre.com> wrote:
 
-> The driver no longer uses iio_device_claim_buffer_mode(). Drop it from
-> ads1018_spi_read_exclusive() context remark.
+> In order to minimize the time required for transferring FIFO data from the
+> sensor to the host machine, perform the read from the FIFO in a single call
+> to regmap_bulk_read().
+> This allows reading acceleration data for all 3 axes at 16 kHz
+> sampling frequency using a 1MHz I2C bus frequency.
 > 
-> Signed-off-by: Kurt Borja <kuurtb@gmail.com>
-Applied.
-Thanks,
+> Signed-off-by: Francesco Lavra <flavra@baylibre.com>
+> ---
+>  drivers/iio/accel/adxl380.c | 12 +++++-------
+>  1 file changed, 5 insertions(+), 7 deletions(-)
+> 
+> diff --git a/drivers/iio/accel/adxl380.c b/drivers/iio/accel/adxl380.c
+> index 9f6c0e02575a..ce3643c5deb8 100644
+> --- a/drivers/iio/accel/adxl380.c
+> +++ b/drivers/iio/accel/adxl380.c
+> @@ -950,14 +950,12 @@ static irqreturn_t adxl380_irq_handler(int irq, void  *p)
+>  		return IRQ_HANDLED;
+>  
+>  	fifo_entries = rounddown(fifo_entries, st->fifo_set_size);
+> -	for (i = 0; i < fifo_entries; i += st->fifo_set_size) {
+> -		ret = regmap_noinc_read(st->regmap, ADXL380_FIFO_DATA,
+> -					&st->fifo_buf[i],
+> -					2 * st->fifo_set_size);
+> -		if (ret)
+> -			return IRQ_HANDLED;
+> +	ret = regmap_noinc_read(st->regmap, ADXL380_FIFO_DATA,
+> +				&st->fifo_buf, 2 * fifo_entries);
+
+Whilst we are here can we replace that 2 with sizeof(*st->fifo_buf)?
+
+Otherwise, Antoniu, can you take a look at these change.
+Seem reasonable to me.  Given we are fairly late in the cycle I'll
+probably merge them both for the next merge window and we'll have
+to wait until after that for the fix to make it to stable.
 
 Jonathan
 
-> ---
->  drivers/iio/adc/ti-ads1018.c | 3 +--
->  1 file changed, 1 insertion(+), 2 deletions(-)
-> 
-> diff --git a/drivers/iio/adc/ti-ads1018.c b/drivers/iio/adc/ti-ads1018.c
-> index 286e06dc70b8..6246b3cab71f 100644
-> --- a/drivers/iio/adc/ti-ads1018.c
-> +++ b/drivers/iio/adc/ti-ads1018.c
-> @@ -211,8 +211,7 @@ static u32 ads1018_calc_delay(unsigned int hz)
->   * Reads the most recent ADC conversion value, without updating the
->   * device's configuration.
->   *
-> - * Context: Expects iio_device_claim_buffer_mode() is held and SPI bus
-> - *	    *exclusive* use.
-> + * Context: Expects SPI bus *exclusive* use.
->   *
->   * Return: 0 on success, negative errno on error.
->   */
-> 
-> ---
-> base-commit: fb2f4eb29a258145b0336601f00509cab6e93e7c
-> change-id: 20260106-ads1018-comment-48d0a82c6826
-> 
+
+> +	if (ret)
+> +		return IRQ_HANDLED;
+> +	for (i = 0; i < fifo_entries; i += st->fifo_set_size)
+>  		iio_push_to_buffers(indio_dev, &st->fifo_buf[i]);
+> -	}
+>  
+>  	return IRQ_HANDLED;
+>  }
 
 

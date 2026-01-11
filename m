@@ -1,57 +1,56 @@
-Return-Path: <linux-iio+bounces-27607-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-27608-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E5D14D0EF15
-	for <lists+linux-iio@lfdr.de>; Sun, 11 Jan 2026 14:00:57 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D4B8D0EF2D
+	for <lists+linux-iio@lfdr.de>; Sun, 11 Jan 2026 14:04:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 660A83003B17
-	for <lists+linux-iio@lfdr.de>; Sun, 11 Jan 2026 13:00:54 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id BDDBB300B983
+	for <lists+linux-iio@lfdr.de>; Sun, 11 Jan 2026 13:03:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4030B3396F4;
-	Sun, 11 Jan 2026 13:00:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 11FF93396F4;
+	Sun, 11 Jan 2026 13:03:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DhaiENLz"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aieQc8MD"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01C712F49F1;
-	Sun, 11 Jan 2026 13:00:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C42707262A;
+	Sun, 11 Jan 2026 13:03:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768136453; cv=none; b=gwBMKYdssjcnqIgte4vqvJY+OXIZ6foYvedFrb8imWzaZhJcCgTQFM9pC5TllwXLkgSspFeluCecqlE6DEOON7jF07L5Ob+hsEUSdHuHxfuJAZgqqT/Qax1szT+r500/FF6feT+PI2GiVmypczXynGsYl9VGUxj7BIu7igshRIc=
+	t=1768136634; cv=none; b=EdnRCaPaT7a45llc05mxdmyo4LOpjGtlSKROKubLdTWCidiEneCzhkcCZKEs9qqK2fMXpjG0ewghsVZhxA5vt0T4DsVSpzJKvvXXyPL0g95Tc3mWhOEImM4zRO4BpXGOsJaXt7jhxL1QnaEc9G1BuBIAETR5NZBL+dLo7m7w6aQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768136453; c=relaxed/simple;
-	bh=bsUMYq9zK4TB4Uecl1CADcEXMgPAE/Ix0Zn7gXJKdpE=;
+	s=arc-20240116; t=1768136634; c=relaxed/simple;
+	bh=xnFecsZcJrziBt1AmL7g4IRZf5OWO89RyKWJNmcj2eE=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=UIz9QGGao9RdHAqbLO6qaRk+mpaTlz3fLArcprLJ1wkFaTwXrHKMVJ8Gg3OX6FszUTpyCgVZ36CejF/bwoJjnuKpZ53FtqEDUqG5m+vLEO6kcnHYL3s9RyGTd23HL2xHaagImSFM+bhqAREGW2lAH19679RpoqlQn/eI+UibkTc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DhaiENLz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F175C4CEF7;
-	Sun, 11 Jan 2026 13:00:48 +0000 (UTC)
+	 MIME-Version:Content-Type; b=ffdGD/4pTaKKwwSEoir2fcwsaFmPQ6zS5pYSkRy9kuKrPHvQm1VYxzMvw+JDbY+WBpcOgF4Kt49JK7rKq0pfm1r7+gn5FGkjsjp0Yc8l8qRCGdotKJNM2JWmPOi4aOMuLZr8V85LvpQkZgxSXb75ZavoZTSuL6cQsUJ2KCM7Gs4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aieQc8MD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9FA7C4CEF7;
+	Sun, 11 Jan 2026 13:03:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768136452;
-	bh=bsUMYq9zK4TB4Uecl1CADcEXMgPAE/Ix0Zn7gXJKdpE=;
+	s=k20201202; t=1768136634;
+	bh=xnFecsZcJrziBt1AmL7g4IRZf5OWO89RyKWJNmcj2eE=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=DhaiENLzUgMqSrkd0D/st0S/P53xwct6j7PoUfNbzICiU3aF1uT2al7F9vNuJMOEM
-	 Iyr9DDDhpsGgvUTNurEs9axA1JZAlDO67zxXe+xyCn19rxvJCMOWSXLyKz6WTi+W42
-	 nlbVNRilUyA3lNyupJNjyeE2StTIbWIg7P94D0nMV2HbA4TsY3n6J0vuPUQkomC+/z
-	 SJjS8pmCF2Z79pbM1vovd+L8U98I10L0GN5VRmODdc0VEkpQJ8XzC/bON2X9Qcq1h5
-	 Sup2x6JL7wlOnuLubxtDZpIUZJkLmk2Ek95rcpJ5FtTxP4G4wrQ71PgcTuPJISqui7
-	 LPJi3HhSavrrg==
-Date: Sun, 11 Jan 2026 13:00:42 +0000
+	b=aieQc8MDjIdKcTG5cglBl5evJvsk7O0Rr7CJyRHGlPTyg833HKyAj+lrvo7zaR3cz
+	 bNQWE9Zi0cuRUpp8wtItPPlUDGdH/2iTpSE5c3DmuUIgDP2wAVhkCDhFqvNJhcQh8M
+	 /wdPgqc6l0lA/fT+YJJwX0i/6CtXuvpe7MRXElDzlgEowEWACow69K6HkxpdnY4l7l
+	 ExsW3adXctVjVyIZhkp2Ta62ewdVzJ3dAhnDRHuZJYlgpQnzp/r6FBkwGewZksGhld
+	 gtv5AweNEQapNT1D2qWkDcZ1BxWWVYa04uHwqFOCrSFcHwkAbj40juoqgK2hMOEOfj
+	 BYbjv7szjHR+w==
+Date: Sun, 11 Jan 2026 13:03:46 +0000
 From: Jonathan Cameron <jic23@kernel.org>
 To: Andy Shevchenko <andriy.shevchenko@intel.com>
-Cc: Michael Harris <michaelharriscode@gmail.com>,
- gregkh@linuxfoundation.org, lars@metafoo.de, Michael.Hennerich@analog.com,
- dlechner@baylibre.com, nuno.sa@analog.com, andy@kernel.org,
- linux-iio@vger.kernel.org, linux-staging@lists.linux.dev,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3] staging: iio: adt7316: modernize power management
-Message-ID: <20260111130042.10e321c9@jic23-huawei>
-In-Reply-To: <aV14wL35muj55kMF@smile.fi.intel.com>
-References: <20260106145055.2557551-1-michaelharriscode@gmail.com>
-	<aV14wL35muj55kMF@smile.fi.intel.com>
+Cc: "Derek J. Clark" <derekjohn.clark@gmail.com>, David Lechner
+ <dlechner@baylibre.com>, Andy Shevchenko <andy@kernel.org>, Alex Lanzano
+ <lanzano.alex@gmail.com>, linux-iio@vger.kernel.org,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH] iio: bmi270_i2c: Add MODULE_DEVICE_TABLE for BMI260/270
+Message-ID: <20260111130346.73ecb12d@jic23-huawei>
+In-Reply-To: <aV7KdXkQkI5XsoF3@smile.fi.intel.com>
+References: <20260106054519.566796-1-derekjohn.clark@gmail.com>
+	<aV7KdXkQkI5XsoF3@smile.fi.intel.com>
 X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -62,24 +61,30 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Tue, 6 Jan 2026 23:04:00 +0200
+On Wed, 7 Jan 2026 23:04:53 +0200
 Andy Shevchenko <andriy.shevchenko@intel.com> wrote:
 
-> On Tue, Jan 06, 2026 at 06:50:55AM -0800, Michael Harris wrote:
-> > Replaced use of deprecated function SIMPLE_DEV_PM_OPS() with
-> > EXPORT_GPL_SIMPLE_DEV_PM_OPS().
+> On Tue, Jan 06, 2026 at 05:45:19AM +0000, Derek J. Clark wrote:
+> > Currently BMI260 & BMI270 devices do not automatically load this
+> > driver. To fix this, add missing MODULE_DEVICE_TABLE for the i2c,
+> > acpi, and of device tables so the driver will load when the hardware
+> > is detected.
 > > 
-> > Removed PM preprocessor conditions with usage of pm_sleep_ptr().  
+> > Tested on my OneXPlayer F1 Pro.  
 > 
-> FWIW,
+> No objections,
 > Reviewed-by: Andy Shevchenko <andriy.shevchenko@intel.com>
-
+> 
 Applied to the togreg branch of iio.git and pushed out as testing.
 
-thanks,
+These are always a bit of a corner case wrt to whether we should treat
+them as a fix.  It never worked though so I'm not going to rush them in.
+If you want it applied to stable kernels, I'm fine with a request for
+that after the next merge window.
+
+Thanks,
 
 Jonathan
 
-> 
 
 

@@ -1,62 +1,61 @@
-Return-Path: <linux-iio+bounces-27590-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-27591-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C36AD0EBE6
-	for <lists+linux-iio@lfdr.de>; Sun, 11 Jan 2026 12:50:54 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F089D0EBF9
+	for <lists+linux-iio@lfdr.de>; Sun, 11 Jan 2026 12:52:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 0BC643015168
-	for <lists+linux-iio@lfdr.de>; Sun, 11 Jan 2026 11:50:30 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 5CF50300E799
+	for <lists+linux-iio@lfdr.de>; Sun, 11 Jan 2026 11:52:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0012E338591;
-	Sun, 11 Jan 2026 11:50:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E677B338591;
+	Sun, 11 Jan 2026 11:52:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MxOO2JSH"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lLlP94D9"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1D2CB640;
-	Sun, 11 Jan 2026 11:50:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A854450094C;
+	Sun, 11 Jan 2026 11:52:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768132228; cv=none; b=M8Dwg4yAlnuofz8eGrupdLSgSiuxl/LhXHIbcoJpvyqaOUPd9s0ovbIkDatVOrwrhpb3G69c9q8KXOft5PLE7m8EF/jBlI7Yot8c1bD7QPnPau+36kKIERM157vfZtspbCDwksddxfhk4Bn79p5SyyB62fXUBtCTqPYTawls06k=
+	t=1768132350; cv=none; b=KVcRCq/qeq2p4oHcFflsuXfZAoRpYG4d3VO+7bw0owjz5QN2jkZgRcELA1pPyVdfamoWIwtedDliLHZ2wimJY7+mzB4BUXsBnD8FyW8dZ2Rhc2Uy6KqTPm5VeC04ERmTkLiKuEs2h9qG7Gqdvo2tTWg72NE7b4J0jwX3U4fCYgQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768132228; c=relaxed/simple;
-	bh=Wg3jSS2kMxPrmU0o08gArXQ2MGtq9XGcdEdlPy7k3F4=;
+	s=arc-20240116; t=1768132350; c=relaxed/simple;
+	bh=0GkxFneeSyIWyVZyFNFfxwxn7XkF3NPIGEPeRDVQdpY=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=LY6cF7H5Y23phsv+lzsE98wZzzvomUb6Uw7P5qrL9D5EpZpbn+Yj1Mch8o4JzWJdZQP/0h+o8bYJ8IxaPFZPshDFCuF0betTf1K3RzMb1+704UIGLGmrEhklF8rQblz+aU2K3ev+ookAYhv/Hc73Zb3MSF6DgYTemnydWSm7LcQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MxOO2JSH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8910C19423;
-	Sun, 11 Jan 2026 11:50:22 +0000 (UTC)
+	 MIME-Version:Content-Type; b=tL5iNrRqlK+N9uW+Zv9yZpBFyi5jm7YwIcnlAaXwIaSS7KidQEXKd8AfWjRknKEQCf9fO/1F/wdLOHlGF0d3jvRhefM0xIjLbohDxEit4VL5dv4SP7J2Ea1fNhe1y3IRLIzhozyllsDjq5xW2Aw2e7NTKeKDiqjC7xyGW2lJcD4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lLlP94D9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0DCEDC4CEF7;
+	Sun, 11 Jan 2026 11:52:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768132228;
-	bh=Wg3jSS2kMxPrmU0o08gArXQ2MGtq9XGcdEdlPy7k3F4=;
+	s=k20201202; t=1768132350;
+	bh=0GkxFneeSyIWyVZyFNFfxwxn7XkF3NPIGEPeRDVQdpY=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=MxOO2JSH9LLnkZMhyKpOvg5txIy3KJ5GyZiyZEflZIsp9pMNPvWsuTdVsJ35+DF7P
-	 cioTtQxDtkH97JkBQ+/14bXEvc17PZk8kj4pqmCr33VGrCWx0l8hVMzMsoV3dobbnH
-	 Ruu+/ygSfIr1DMUQd/Y8Y/MycLpbRJExcSAA5Qeceob7hA8lmhovzZa3ejJG/kd7pA
-	 aEgsfJS0RvnvRrzaMkbekb39HhhQpHxef//lvrUFJPGaZIV3svcNuUflY2kNv8bDCK
-	 a6Q0qeHgfFq5BJdJD5DX+f/ucK1utyr7Xo3ZgO57UV2vHtYTs7eWvcu5r+CfbJ8+ca
-	 0wmyJFJjUorKg==
-Date: Sun, 11 Jan 2026 11:50:17 +0000
+	b=lLlP94D9FgPuuqpCfGCxs4FacmAftfpMu+gA7Zak8eY5OKry7s27v6VE2geRABPxU
+	 iAowf+1NOzi4pp6xqR3+o1G755Shv23q8rf4DjeisMfo6tGbTnfzl/WYcZjUy1nbU5
+	 892yqFaTy8bzm0Na67ATbn1Kq1/lDz72XwHBAwOWq2DgLY0tpz64GGopCj6gz6KuB4
+	 rH+R32+978oZrcq7aroZewgms5GQSpfu1zefPeKAQpagsOz3ocv6sQRMbU09G2BFwD
+	 xjSkhvezAGjZhr3eBNOjKpDQYkn0MGP7sz3PEJEvUkXbrAeHvbD2D33eNV59sewHyD
+	 JWzeDCPA0g1sQ==
+Date: Sun, 11 Jan 2026 11:52:19 +0000
 From: Jonathan Cameron <jic23@kernel.org>
-To: Janani Sunil <jan.sun97@gmail.com>
-Cc: Jonathan Cameron <jonathan.cameron@huawei.com>, Janani Sunil
- <janani.sunil@analog.com>, Lars-Peter Clausen <lars@metafoo.de>, Michael
- Hennerich <Michael.Hennerich@analog.com>, Alexandru Ardelean
- <alexandru.ardelean@analog.com>, Rob Herring <robh@kernel.org>, Krzysztof
- Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>,
- Jonathan Corbet <corbet@lwn.net>, linux-iio@vger.kernel.org,
+To: David Lechner <dlechner@baylibre.com>
+Cc: Mark Brown <broonie@kernel.org>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Marcelo Schmitt <marcelo.schmitt@analog.com>,
+ Michael Hennerich <michael.hennerich@analog.com>, Nuno =?UTF-8?B?U8Oh?=
+ <nuno.sa@analog.com>, Andy Shevchenko <andy@kernel.org>, Sean Anderson
+ <sean.anderson@linux.dev>, linux-spi@vger.kernel.org,
  devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-doc@vger.kernel.org, gastmaier@gmail.com
-Subject: Re: [PATCH 3/3] iio: dac: Add MAX22007 DAC driver support
-Message-ID: <20260111115017.62802a56@jic23-huawei>
-In-Reply-To: <013a144f-101e-49dd-9865-79dd6181f43a@gmail.com>
-References: <20251219-max22007-dev-v1-0-242da2c2b868@analog.com>
-	<20251219-max22007-dev-v1-3-242da2c2b868@analog.com>
-	<20251219172510.00007208@huawei.com>
-	<013a144f-101e-49dd-9865-79dd6181f43a@gmail.com>
+ linux-iio@vger.kernel.org
+Subject: Re: [PATCH v4 1/9] spi: dt-bindings: change spi-{rx,tx}-bus-width
+ to arrays
+Message-ID: <20260111115219.296e8205@jic23-huawei>
+In-Reply-To: <20251219-spi-add-multi-bus-support-v4-1-145dc5204cd8@baylibre.com>
+References: <20251219-spi-add-multi-bus-support-v4-0-145dc5204cd8@baylibre.com>
+	<20251219-spi-add-multi-bus-support-v4-1-145dc5204cd8@baylibre.com>
 X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -67,54 +66,28 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Wed, 7 Jan 2026 16:28:31 +0100
-Janani Sunil <jan.sun97@gmail.com> wrote:
+On Fri, 19 Dec 2025 15:32:09 -0600
+David Lechner <dlechner@baylibre.com> wrote:
 
-> Hi Jonathan,
+> Change spi-rx-bus-width and spi-tx-bus-width properties from single
+> uint32 values to arrays of uint32 values. This allows describing SPI
+> peripherals connected to controllers that have multiple data lanes for
+> receiving or transmitting two or more words in parallel.
 > 
-> Thank you for your review.
+> Each index in the array corresponds to a physical data lane (one or more
+> wires depending on the bus width). Additional mapping properties will be
+> needed in cases where a lane on the controller or peripheral is skipped.
 > 
-> On 12/19/25 18:25, Jonathan Cameron wrote:
-> > On Fri, 19 Dec 2025 16:31:17 +0100
-> > Janani Sunil <janani.sunil@analog.com> wrote:
-> >  
-> >> Add support for the MAX22007 4 channel DAC
-> >> that drives a voltage or current output on each channel.  
-> > wrap to 75 chars rather than 50-60ish  
+> Bindings that make use of this property are updated in the same commit
+> to avoid validation errors.
 > 
-> Noted. Will correct this.
+> The adi,ad4030 binding can now better describe the chips multi-lane
+> capabilities, so that binding is refined and gets a new example.
 > 
-> >> Signed-off-by: Janani Sunil <janani.sunil@analog.com>  
-> > Hi Janani
-> >
-> > A few minor things inline.  Also add turning on any required
-> > power supplies.  See how other drivers do it with a single call
-> > in in probe. If your board is using always on supplies it will just
-> > work as a stub regulator will be provided by the regulator core.
-> >
-> >
-> > Thanks,
-> >
-> > Jonathan  
+> Converting from single uint32 to array of uint32 does not break .dts/
+> .dtb files since there is no difference between specifying a single
+> uint32 value and an array with a single uint32 value in devicetree.
 > 
-> Will take a reference from the other drivers and add the power supply configurations.
-
-Hi Janani,
-
-A small process thing you should take into account for future replies.
-Generally kernel mailing lists are very high volume with a lot of review
-feedback. As such we tend to go for a balance of efficiency over politeness.
-
-So when you agree to a particular bit of feedback, just crop out that
-bit of the message in any reply (if you agree to all of it no need to reply at
-all!).  That lets us focus in quickly on the bits that need more discussion.
-
-The politeness bit is resolve by adding a thank alongside the change log
-in the next version.  I end up sending this message to someone most weeks,
-so don't worry about it!  It feels unnatural to all of us initially.
-
-Thanks
-
-Jonathan
-
+> Signed-off-by: David Lechner <dlechner@baylibre.com>
+Reviewed-by: Jonathan Cameron <jonathan.cameron@huawei.com>
 

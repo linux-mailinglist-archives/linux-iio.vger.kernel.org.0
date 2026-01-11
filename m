@@ -1,57 +1,57 @@
-Return-Path: <linux-iio+bounces-27621-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-27622-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 40230D0F6C4
-	for <lists+linux-iio@lfdr.de>; Sun, 11 Jan 2026 17:19:13 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E7551D0F6E9
+	for <lists+linux-iio@lfdr.de>; Sun, 11 Jan 2026 17:24:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id E487B303E0C4
-	for <lists+linux-iio@lfdr.de>; Sun, 11 Jan 2026 16:19:11 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 9A05530208E7
+	for <lists+linux-iio@lfdr.de>; Sun, 11 Jan 2026 16:24:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 857353033E4;
-	Sun, 11 Jan 2026 16:19:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14ED934C991;
+	Sun, 11 Jan 2026 16:24:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hGUBS162"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nPFT4TaP"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E0C634C9B5;
-	Sun, 11 Jan 2026 16:19:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB6AB34B68F;
+	Sun, 11 Jan 2026 16:23:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768148346; cv=none; b=DDzfpepQ/Xb8UGSpevqbrMvX2QsTMT23Nx3bvAvQRn+QHVc1ihgA1WSbok3hWOLEAHvNXnEvOpVaLxPfjbn+QJHdy5VfFcOlBVfVIDe1BVN2WacdURQHjfeDfH95k5geNPQ9dLnDZflmv/2eQOfOypsW/auWiUyxNOAjPN41gO8=
+	t=1768148639; cv=none; b=g8lNOeHvJdfU8RZpFcgj0u70K2DzTmp2Cz4z6W7t90pacAOh8OM+Oh80/IsU7MRpUu5YFva9MuVpyj6vD4G3q/ULXfnxI+q2kQ8awWDpskmSvxIguH72OvkwSuSroVrI7VZ83ud7FybvwzexL9gfgVf/7eXDloYDZCPbYifLkMk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768148346; c=relaxed/simple;
-	bh=e90hf7GZiLLcqRExqe1SHzftQ/RorA9s8ibnGjzJw7E=;
+	s=arc-20240116; t=1768148639; c=relaxed/simple;
+	bh=XZv96mLsbVJM75QFrgCaAzgGVUWDJuc4fhkVKne/mi4=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Jfa4oob35jOw8DSYaAxONoLn7V7e7TkFiFp/ZibqT5YS4JCvDF/3jRyuAB4ANWrb4jpd3gYhdYrxrzhpKd8QddS2SilFFZbJMota4DGMXh9vAC+BBmnWHB27T3ZCrsJ5TrkD+fPeLAc9oWUsHWnUPyHG/CTZwNvXYtOXxL5U/C8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hGUBS162; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6C26C4CEF7;
-	Sun, 11 Jan 2026 16:19:02 +0000 (UTC)
+	 MIME-Version:Content-Type; b=RubEa+GiMg7BGjahMr1h/uznviNQbXo81vqTgmH7XzIcb3K1dGEijNp3cv3/4e38ajesFDc1PgJVGmBsINMlZcnxpDZIrMJXeLE3Hq18O4BF3Bd+Ck+ktHatI2oHO01ZHjPbkWd1ynxf5WjlJIl+Rk3Rbii+4pHO3P/EuHD6nfk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nPFT4TaP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1D39C4CEF7;
+	Sun, 11 Jan 2026 16:23:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768148345;
-	bh=e90hf7GZiLLcqRExqe1SHzftQ/RorA9s8ibnGjzJw7E=;
+	s=k20201202; t=1768148639;
+	bh=XZv96mLsbVJM75QFrgCaAzgGVUWDJuc4fhkVKne/mi4=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=hGUBS162FWEK003fKUsLS45Mfk1r+ZARXkAJnaj8ddtlYP9kLTAAoRqZFrH79vL9U
-	 juOLVQSx2QM1dnLXQCBiyUSkOKuz2PiibnN9RbQnVovXiZT6DGnvmhWMHxfD+1ggRa
-	 IKfM4R+acR4JGta9iTT/w8KJpadSiD6QOTsHYbHisLqx4SQ0bgACY2s5x6jC38PXwn
-	 /U+R/FrM11cBRNzEhDmXl7W5V4F4w1AqkIIKyfiYeWZeRmYsAcC4P0L8kg84D4l1US
-	 Z587RL8m3oVncf9l1nlFC1/b57sVC0x7+PvMCf3c1Oqq52C1Q8AGGEyAZtwAwAeEbQ
-	 1y2yB9JXrjf5w==
-Date: Sun, 11 Jan 2026 16:18:57 +0000
+	b=nPFT4TaPQQ8uxG+K3tG6teAme+x+TcXq9XfJKaqI0yAROMxHI1wd573heSlE+R3kR
+	 69OwnX6Qwf3gV0kXj7lPDaQ76pbHKxU2+zZMJj27iQ6UUWrf+TxD1KQCxrKqCqZ5so
+	 EvB3y+G44MVLXrXnw+RklBT5MGfV92p7P3uE09GPM4zv+bIIstc/dU5WRmSogewJAx
+	 K5Lk4o6Uod7KAI01KtuEcxHbTfyyvan36IRlOAriUtwGubAhvJmmgNjveZE37QuNHH
+	 /Vwck6KExLsx2qNmcugVXVZFN+cxwIjDixm7AZqDQqAHb+NcgoAmXsFoLn7DoyDSMz
+	 EdNIwwLaqwUsQ==
+Date: Sun, 11 Jan 2026 16:23:51 +0000
 From: Jonathan Cameron <jic23@kernel.org>
 To: Francesco Lavra <flavra@baylibre.com>
 Cc: Lorenzo Bianconi <lorenzo@kernel.org>, David Lechner
  <dlechner@baylibre.com>, Nuno =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>, Andy
  Shevchenko <andy@kernel.org>, linux-iio@vger.kernel.org,
  linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 1/3] iio: imu: st_lsm6dsx: set buffer sampling frequency
- for accelerometer only
-Message-ID: <20260111161857.4f8b4c35@jic23-huawei>
-In-Reply-To: <20260109181528.154127-2-flavra@baylibre.com>
+Subject: Re: [PATCH 2/3] iio: imu: st_lsm6dsx: set FIFO ODR for
+ accelerometer and magnetometer only
+Message-ID: <20260111162351.1407115a@jic23-huawei>
+In-Reply-To: <20260109181528.154127-3-flavra@baylibre.com>
 References: <20260109181528.154127-1-flavra@baylibre.com>
-	<20260109181528.154127-2-flavra@baylibre.com>
+	<20260109181528.154127-3-flavra@baylibre.com>
 X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -62,64 +62,51 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Fri,  9 Jan 2026 19:15:26 +0100
+On Fri,  9 Jan 2026 19:15:27 +0100
 Francesco Lavra <flavra@baylibre.com> wrote:
 
-> The st_lsm6dsx_hwfifo_odr_store() function, which is called when userspace
-> writes the buffer sampling frequency sysfs attribute, calls
-> st_lsm6dsx_check_odr(), which accesses the odr_table array at index
-> `sensor->id`; since this array is only 2 entries long, an access for any
-> sensor type other than accelerometer or gyroscope is an out-of-bounds
-> access.
+> The st_lsm6dsx_set_fifo_odr() function, which is called when enabling and
+> disabling the hardware FIFO, checks the contents of the hw->settings->batch
+> array at index sensor->id, and then sets the current ODR value in sensor
+> registers that depend on whether the register address is set in the above
+> array element. This logic is valid for internal sensors only, i.e. the
+> accelerometer and magnetometer; however, since commit c91c1c844ebd ("iio:
+> imu: st_lsm6dsx: add i2c embedded controller support"), this function is
+> called also when configuring the hardware FIFO for external sensors (i.e.
+> sensors accessed through the sensor hub functionality), which can result in
+> unrelated device registers being written.
 > 
-> To prevent userspace from triggering an out-of-bounds array access, and to
-> support the only use case for which FIFO sampling frequency values
-> different from the sensor sampling frequency may be needed (which is for
-> keeping FIFO data rate low while sampling acceleration data at high rates
-> for accurate event detection), do not create the buffer sampling frequency
-> attribute for sensor types other than the accelerometer.
-
-I'm not following why we need to drop this attribute for the gyroscope.
-Perhaps lay out what the combinations of controls are and the attributes
-we end up with.
-
-As you note in the cover letter we can change this now with ABI issues as
-it is just in my tree, so I don't mind the change, just want to understand
-it a little better than I currently do!
-
+> Add a check to the beginning of st_lsm6dsx_set_fifo_odr() so that it does
+> not touch any registers unless it is called for internal sensors.
 > 
-> Fixes: 6b648a36c200 ("iio: imu: st_lsm6dsx: Decouple sensor ODR from FIFO batch data rate")
+> Fixes: c91c1c844ebd ("iio: imu: st_lsm6dsx: add i2c embedded controller support")
 > Signed-off-by: Francesco Lavra <flavra@baylibre.com>
+This seems fine to me. Ideally it would have been first patch in the series
+as this is one we want to backport.  I'll leave it on list little while
+though to see if Lorenzo or anyone else has time to take a look.
+
+Thanks,
+
+Jonathan
+
+
 > ---
->  drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_buffer.c | 11 ++++++++++-
->  1 file changed, 10 insertions(+), 1 deletion(-)
+>  drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_buffer.c | 3 +++
+>  1 file changed, 3 insertions(+)
 > 
 > diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_buffer.c b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_buffer.c
-> index 55d877745575..5ac45e6230b5 100644
+> index 5ac45e6230b5..9db48e835d4f 100644
 > --- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_buffer.c
 > +++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_buffer.c
-> @@ -858,12 +858,21 @@ int st_lsm6dsx_fifo_setup(struct st_lsm6dsx_hw *hw)
->  	int i, ret;
+> @@ -225,6 +225,9 @@ static int st_lsm6dsx_set_fifo_odr(struct st_lsm6dsx_sensor *sensor,
+>  	const struct st_lsm6dsx_reg *batch_reg;
+>  	u8 data;
 >  
->  	for (i = 0; i < ST_LSM6DSX_ID_MAX; i++) {
-> +		const struct iio_dev_attr **attrs;
-> +
->  		if (!hw->iio_devs[i])
->  			continue;
->  
-> +		/*
-> +		 * For the accelerometer, allow setting FIFO sampling frequency
-> +		 * values different from the sensor sampling frequency, which
-> +		 * may be needed to keep FIFO data rate low while sampling
-> +		 * acceleration data at high rates for accurate event detection.
-> +		 */
-> +		attrs = (i == ST_LSM6DSX_ID_ACC) ? st_lsm6dsx_buffer_attrs : NULL;
->  		ret = devm_iio_kfifo_buffer_setup_ext(hw->dev, hw->iio_devs[i],
->  						      &st_lsm6dsx_buffer_ops,
-> -						      st_lsm6dsx_buffer_attrs);
-> +						      attrs);
->  		if (ret)
->  			return ret;
->  	}
+> +	/* Only accel and gyro have batch registers. */
+> +	if (sensor->id >= ARRAY_SIZE(hw->settings->batch))
+> +		return 0;
+>  	batch_reg = &hw->settings->batch[sensor->id];
+>  	if (batch_reg->addr) {
+>  		int val;
 
 

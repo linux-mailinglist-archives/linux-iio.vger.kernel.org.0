@@ -1,59 +1,57 @@
-Return-Path: <linux-iio+bounces-27620-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-27621-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E06E2D0F67B
-	for <lists+linux-iio@lfdr.de>; Sun, 11 Jan 2026 17:09:34 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 40230D0F6C4
+	for <lists+linux-iio@lfdr.de>; Sun, 11 Jan 2026 17:19:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id DA4E43050586
-	for <lists+linux-iio@lfdr.de>; Sun, 11 Jan 2026 16:09:25 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id E487B303E0C4
+	for <lists+linux-iio@lfdr.de>; Sun, 11 Jan 2026 16:19:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE93134C820;
-	Sun, 11 Jan 2026 16:09:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 857353033E4;
+	Sun, 11 Jan 2026 16:19:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lJPPS1EJ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hGUBS162"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A83C34BA24;
-	Sun, 11 Jan 2026 16:09:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E0C634C9B5;
+	Sun, 11 Jan 2026 16:19:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768147764; cv=none; b=bGI9bfMyAbfCBouU3/96XnAvTC6YgWzmUQqEX4Y4qnkE7P7JMsEQcPToxwj8gJBrAKk6usrDPYMmyTExla7kYHWUr+S3qMgk0E8Ry2i2ydIb+zSbZhr89cY5O8cajIztYfM91GTA4Nr+U2ycK2AmmKGLXl8IsMU5WpxRLPIDmcg=
+	t=1768148346; cv=none; b=DDzfpepQ/Xb8UGSpevqbrMvX2QsTMT23Nx3bvAvQRn+QHVc1ihgA1WSbok3hWOLEAHvNXnEvOpVaLxPfjbn+QJHdy5VfFcOlBVfVIDe1BVN2WacdURQHjfeDfH95k5geNPQ9dLnDZflmv/2eQOfOypsW/auWiUyxNOAjPN41gO8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768147764; c=relaxed/simple;
-	bh=dbcZL645pHFqgTcsH096QV8zHH1uB+yrUffujrOPkiA=;
+	s=arc-20240116; t=1768148346; c=relaxed/simple;
+	bh=e90hf7GZiLLcqRExqe1SHzftQ/RorA9s8ibnGjzJw7E=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=rxK7J7g+A6xoiT31voP68qvlhfO9b9diao3nlpVAKX2xxAW1vhbSsuEeAheyTm8g7qgzXNLA0OsS0vxok/gq+UfZqhRbUEdJsXoKRmD5BWtg5XsUrt9HAuJe/WTVWQ8GoVSNJBIraWT/GT1esM/sBA3kNHKcTJHY7hU/OxYa2FU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lJPPS1EJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2DBC5C4CEF7;
-	Sun, 11 Jan 2026 16:09:18 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Jfa4oob35jOw8DSYaAxONoLn7V7e7TkFiFp/ZibqT5YS4JCvDF/3jRyuAB4ANWrb4jpd3gYhdYrxrzhpKd8QddS2SilFFZbJMota4DGMXh9vAC+BBmnWHB27T3ZCrsJ5TrkD+fPeLAc9oWUsHWnUPyHG/CTZwNvXYtOXxL5U/C8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hGUBS162; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6C26C4CEF7;
+	Sun, 11 Jan 2026 16:19:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768147764;
-	bh=dbcZL645pHFqgTcsH096QV8zHH1uB+yrUffujrOPkiA=;
+	s=k20201202; t=1768148345;
+	bh=e90hf7GZiLLcqRExqe1SHzftQ/RorA9s8ibnGjzJw7E=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=lJPPS1EJmitu8+bpVhq91HQHA6tYdlDOY/WgU2CFfsuFrr0nBLsDo59JRhxX2dAGs
-	 yZMyq/Pv8mKfrC/R1McrFKIgzu8beNDt7YO57E5RlrE7Vni/y8G1jo0iE41dvm1XrN
-	 lTNqIyxli7QdDv/J/i9abf2mJ9ZZsi01qqbVldkh/fK77A/w0et1ujnPK8vozmH+lN
-	 We9R85tFqRIfUpFvKNSdXhjmRN+66hgQqZYNUxge9QUIA0RMEGBSRYeRMsRcbTXfM7
-	 4G3nE+2pQ0AfF15eNjvMA1S8FNgZOET9EFdUuR7b6fWcbmhdDj55yjNje1sMO7kj2D
-	 K+ybgH0G299eA==
-Date: Sun, 11 Jan 2026 16:09:14 +0000
+	b=hGUBS162FWEK003fKUsLS45Mfk1r+ZARXkAJnaj8ddtlYP9kLTAAoRqZFrH79vL9U
+	 juOLVQSx2QM1dnLXQCBiyUSkOKuz2PiibnN9RbQnVovXiZT6DGnvmhWMHxfD+1ggRa
+	 IKfM4R+acR4JGta9iTT/w8KJpadSiD6QOTsHYbHisLqx4SQ0bgACY2s5x6jC38PXwn
+	 /U+R/FrM11cBRNzEhDmXl7W5V4F4w1AqkIIKyfiYeWZeRmYsAcC4P0L8kg84D4l1US
+	 Z587RL8m3oVncf9l1nlFC1/b57sVC0x7+PvMCf3c1Oqq52C1Q8AGGEyAZtwAwAeEbQ
+	 1y2yB9JXrjf5w==
+Date: Sun, 11 Jan 2026 16:18:57 +0000
 From: Jonathan Cameron <jic23@kernel.org>
-To: Janani Sunil <janani.sunil@analog.com>
-Cc: Lars-Peter Clausen <lars@metafoo.de>, Michael Hennerich
- <Michael.Hennerich@analog.com>, Alexandru Ardelean
- <alexandru.ardelean@analog.com>, "Rob Herring" <robh@kernel.org>, Krzysztof
- Kozlowski <krzk+dt@kernel.org>, "Conor Dooley" <conor+dt@kernel.org>,
- Jonathan Corbet <corbet@lwn.net>, <linux-iio@vger.kernel.org>,
- <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
- <linux-doc@vger.kernel.org>, <jan.sun97@gmail.com>
-Subject: Re: [PATCH v2 2/2] iio: dac: Add MAX22007 DAC driver support
-Message-ID: <20260111160914.72f177e6@jic23-huawei>
-In-Reply-To: <20260108-max22007-dev-v2-2-2506c738784f@analog.com>
-References: <20260108-max22007-dev-v2-0-2506c738784f@analog.com>
-	<20260108-max22007-dev-v2-2-2506c738784f@analog.com>
+To: Francesco Lavra <flavra@baylibre.com>
+Cc: Lorenzo Bianconi <lorenzo@kernel.org>, David Lechner
+ <dlechner@baylibre.com>, Nuno =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>, Andy
+ Shevchenko <andy@kernel.org>, linux-iio@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 1/3] iio: imu: st_lsm6dsx: set buffer sampling frequency
+ for accelerometer only
+Message-ID: <20260111161857.4f8b4c35@jic23-huawei>
+In-Reply-To: <20260109181528.154127-2-flavra@baylibre.com>
+References: <20260109181528.154127-1-flavra@baylibre.com>
+	<20260109181528.154127-2-flavra@baylibre.com>
 X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -64,103 +62,64 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Thu, 8 Jan 2026 13:58:24 +0100
-Janani Sunil <janani.sunil@analog.com> wrote:
+On Fri,  9 Jan 2026 19:15:26 +0100
+Francesco Lavra <flavra@baylibre.com> wrote:
 
-> Add support for the MAX22007, a 4-channel 12-bit DAC that drives
-> voltage or current output on each channel.
+> The st_lsm6dsx_hwfifo_odr_store() function, which is called when userspace
+> writes the buffer sampling frequency sysfs attribute, calls
+> st_lsm6dsx_check_odr(), which accesses the odr_table array at index
+> `sensor->id`; since this array is only 2 entries long, an access for any
+> sensor type other than accelerometer or gyroscope is an out-of-bounds
+> access.
 > 
-> Signed-off-by: Janani Sunil <janani.sunil@analog.com>
+> To prevent userspace from triggering an out-of-bounds array access, and to
+> support the only use case for which FIFO sampling frequency values
+> different from the sensor sampling frequency may be needed (which is for
+> keeping FIFO data rate low while sampling acceleration data at high rates
+> for accurate event detection), do not create the buffer sampling frequency
+> attribute for sensor types other than the accelerometer.
 
-A few minor things to add to Marcelo's detailed review.
+I'm not following why we need to drop this attribute for the gyroscope.
+Perhaps lay out what the combinations of controls are and the attributes
+we end up with.
 
-Thanks,
+As you note in the cover letter we can change this now with ABI issues as
+it is just in my tree, so I don't mind the change, just want to understand
+it a little better than I currently do!
 
-Jonathan
-
-> diff --git a/drivers/iio/dac/max22007.c b/drivers/iio/dac/max22007.c
-> new file mode 100644
-> index 000000000000..19557c008554
-> --- /dev/null
-> +++ b/drivers/iio/dac/max22007.c
-
-
-> +static int max22007_spi_read(void *context, const void *reg, size_t reg_size,
-> +			     void *val, size_t val_size)
-> +{
-> +	struct max22007_state *st = context;
-> +	u8 reg_byte = *(u8 *)reg;
-> +	u8 calculated_crc, received_crc;
-> +	u8 crc_data[3];
-> +	u8 rx_buf[4];
-> +	int ret;
+> 
+> Fixes: 6b648a36c200 ("iio: imu: st_lsm6dsx: Decouple sensor ODR from FIFO batch data rate")
+> Signed-off-by: Francesco Lavra <flavra@baylibre.com>
+> ---
+>  drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_buffer.c | 11 ++++++++++-
+>  1 file changed, 10 insertions(+), 1 deletion(-)
+> 
+> diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_buffer.c b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_buffer.c
+> index 55d877745575..5ac45e6230b5 100644
+> --- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_buffer.c
+> +++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_buffer.c
+> @@ -858,12 +858,21 @@ int st_lsm6dsx_fifo_setup(struct st_lsm6dsx_hw *hw)
+>  	int i, ret;
+>  
+>  	for (i = 0; i < ST_LSM6DSX_ID_MAX; i++) {
+> +		const struct iio_dev_attr **attrs;
 > +
-> +	if (reg_size != 1)
-> +		return -EINVAL;
-> +
-> +	ret = spi_write_then_read(st->spi, &reg_byte, 1, rx_buf,
-> +				  val_size + MAX22007_CRC_OVERHEAD);
-> +	if (ret) {
-> +		dev_err(&st->spi->dev, "SPI transfer failed: %d\n", ret);
-> +		return ret;
-> +	}
-> +
-> +	crc_data[0] = reg_byte;
-> +	crc_data[1] = rx_buf[0];
-> +	crc_data[2] = rx_buf[1];
-> +
-> +	calculated_crc = crc8(max22007_crc8_table, crc_data, 3, 0x00);
-
-I think you can chain CRCs as follows and avoid the need for a local array
-just to marshal the data.
-
-	calculated_crc = crc8(max22007_crc8_table, &reg_byte, 1, 0x00);
-	calculated_crc = crc8(max22007_crc8_table, rx_buf, 2, caculated_crc);
-
-> +	received_crc = rx_buf[val_size];
-> +
-> +	if (calculated_crc != received_crc) {
-> +		dev_err(&st->spi->dev, "CRC mismatch on read register %02x\n", reg_byte);
-> +		return -EIO;
-> +	}
-> +
-> +	memcpy(val, rx_buf, val_size);
-> +
-> +	return 0;
-> +}
-
-> +static ssize_t max22007_write_dac_powerdown(struct iio_dev *indio_dev,
-> +					    uintptr_t private,
-> +					    const struct iio_chan_spec *chan,
-> +					    const char *buf, size_t len)
-> +{
-> +	struct max22007_state *st = iio_priv(indio_dev);
-> +	bool powerdown;
-> +	int ret;
-> +
-> +	ret = kstrtobool(buf, &powerdown);
-> +	if (ret)
-> +		return ret;
-> +
-> +	if (powerdown)
-> +		ret = regmap_update_bits(st->regmap, MAX22007_CHANNEL_MODE_REG,
-> +					 MAX22007_CH_PWRON_CH_MASK(chan->channel),
-> +					 MAX22007_CH_PWR_VAL(chan->channel, 0));
-> +	else
-> +		ret = regmap_update_bits(st->regmap, MAX22007_CHANNEL_MODE_REG,
-> +					 MAX22007_CH_PWRON_CH_MASK(chan->channel),
-> +					 MAX22007_CH_PWR_VAL(chan->channel, 1));
-> +	if (ret)
-> +		return ret;
-> +
-Something like the following reduces duplication:
-
-	ret = regmap_update_bits(st->regmap, MAX22007_CHANNEL_MODE_REG,
-				 MAX2207_CH_PWRON_CH_MASK(chan->channel),
-				 MAX2207_CH_PWR_VAL(chan->channel, powerdown ? 1 : 0);
-
-
-> +	return len;
-> +}
+>  		if (!hw->iio_devs[i])
+>  			continue;
+>  
+> +		/*
+> +		 * For the accelerometer, allow setting FIFO sampling frequency
+> +		 * values different from the sensor sampling frequency, which
+> +		 * may be needed to keep FIFO data rate low while sampling
+> +		 * acceleration data at high rates for accurate event detection.
+> +		 */
+> +		attrs = (i == ST_LSM6DSX_ID_ACC) ? st_lsm6dsx_buffer_attrs : NULL;
+>  		ret = devm_iio_kfifo_buffer_setup_ext(hw->dev, hw->iio_devs[i],
+>  						      &st_lsm6dsx_buffer_ops,
+> -						      st_lsm6dsx_buffer_attrs);
+> +						      attrs);
+>  		if (ret)
+>  			return ret;
+>  	}
 
 

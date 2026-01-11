@@ -1,56 +1,55 @@
-Return-Path: <linux-iio+bounces-27608-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-27609-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D4B8D0EF2D
-	for <lists+linux-iio@lfdr.de>; Sun, 11 Jan 2026 14:04:00 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7099AD0EF41
+	for <lists+linux-iio@lfdr.de>; Sun, 11 Jan 2026 14:07:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id BDDBB300B983
-	for <lists+linux-iio@lfdr.de>; Sun, 11 Jan 2026 13:03:55 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 6FC6430094B7
+	for <lists+linux-iio@lfdr.de>; Sun, 11 Jan 2026 13:07:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 11FF93396F4;
-	Sun, 11 Jan 2026 13:03:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F51B33984D;
+	Sun, 11 Jan 2026 13:07:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aieQc8MD"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="S5QMCcJz"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C42707262A;
-	Sun, 11 Jan 2026 13:03:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 239C8DDAB;
+	Sun, 11 Jan 2026 13:07:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768136634; cv=none; b=EdnRCaPaT7a45llc05mxdmyo4LOpjGtlSKROKubLdTWCidiEneCzhkcCZKEs9qqK2fMXpjG0ewghsVZhxA5vt0T4DsVSpzJKvvXXyPL0g95Tc3mWhOEImM4zRO4BpXGOsJaXt7jhxL1QnaEc9G1BuBIAETR5NZBL+dLo7m7w6aQ=
+	t=1768136872; cv=none; b=c4xC2K4E+5pd8/bG53HFcFBQCxlTtwi/R8mtv/FOXEO5Spx0G7X21VvtSyIX4F1DnSpVeIrHBDyD5QQdy7Whyjmc43DaN2Jc92OjWEw4fVOS9q2HX/MKqxL5GIe4gM8zHxzGoRNDOIAzheN8lR6Kcbw09cEl9zmQvLC7Jkbovgc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768136634; c=relaxed/simple;
-	bh=xnFecsZcJrziBt1AmL7g4IRZf5OWO89RyKWJNmcj2eE=;
+	s=arc-20240116; t=1768136872; c=relaxed/simple;
+	bh=MWtxW2JpxnvULib/YwCKheBdTPKCuvNYob7+cJW60nU=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ffdGD/4pTaKKwwSEoir2fcwsaFmPQ6zS5pYSkRy9kuKrPHvQm1VYxzMvw+JDbY+WBpcOgF4Kt49JK7rKq0pfm1r7+gn5FGkjsjp0Yc8l8qRCGdotKJNM2JWmPOi4aOMuLZr8V85LvpQkZgxSXb75ZavoZTSuL6cQsUJ2KCM7Gs4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aieQc8MD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9FA7C4CEF7;
-	Sun, 11 Jan 2026 13:03:51 +0000 (UTC)
+	 MIME-Version:Content-Type; b=UFxn5vlXfjpTWDOa2Tn839Pz4SunSz4cx4zpbAt3PFwfqnDORY0D3xM0LRXKszVnpKx8nQJwt1IRntfgh0xX9vtbTfPnnF45TGbO9KApkMvhoMWyaMk/q/55Mp+3HsPrv2b20Dz9iRDrsV9nxt+w7PcBpEOUaSJ4XajgXP5b6j8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=S5QMCcJz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06337C4CEF7;
+	Sun, 11 Jan 2026 13:07:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768136634;
-	bh=xnFecsZcJrziBt1AmL7g4IRZf5OWO89RyKWJNmcj2eE=;
+	s=k20201202; t=1768136871;
+	bh=MWtxW2JpxnvULib/YwCKheBdTPKCuvNYob7+cJW60nU=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=aieQc8MDjIdKcTG5cglBl5evJvsk7O0Rr7CJyRHGlPTyg833HKyAj+lrvo7zaR3cz
-	 bNQWE9Zi0cuRUpp8wtItPPlUDGdH/2iTpSE5c3DmuUIgDP2wAVhkCDhFqvNJhcQh8M
-	 /wdPgqc6l0lA/fT+YJJwX0i/6CtXuvpe7MRXElDzlgEowEWACow69K6HkxpdnY4l7l
-	 ExsW3adXctVjVyIZhkp2Ta62ewdVzJ3dAhnDRHuZJYlgpQnzp/r6FBkwGewZksGhld
-	 gtv5AweNEQapNT1D2qWkDcZ1BxWWVYa04uHwqFOCrSFcHwkAbj40juoqgK2hMOEOfj
-	 BYbjv7szjHR+w==
-Date: Sun, 11 Jan 2026 13:03:46 +0000
+	b=S5QMCcJzQOq59ItdjmK25RW8MEMwC32eBK/ymq/ADlRkxjmZoeQKzNNbkDYXUyAz0
+	 0n5ADNRrsm1exINmxa+5ifutrRQVQ0cI6KznrfMjfv5IxUFywrFfmuBGlHQUWuFeqG
+	 GQPZ1ctKzwc54YITkx+e4nYXLVbAYiw0PqJLUUVtO5sjVHqA+X5p0wrZXqFOWUlRCj
+	 MBpbwbK4oalYAk7uCaF72R9w57RlQTGTvzwLkp0PSZ2xPEQfW8+1Yke1A+xGa/PPBt
+	 DW4RhKrzr3wB6Y9PUxInz87iB2kb2Zge7T6VJ+gJd9fnv9QelVgz8EITN/CfoMJz7v
+	 NAH1f43r2r7Mg==
+Date: Sun, 11 Jan 2026 13:07:44 +0000
 From: Jonathan Cameron <jic23@kernel.org>
-To: Andy Shevchenko <andriy.shevchenko@intel.com>
-Cc: "Derek J. Clark" <derekjohn.clark@gmail.com>, David Lechner
- <dlechner@baylibre.com>, Andy Shevchenko <andy@kernel.org>, Alex Lanzano
- <lanzano.alex@gmail.com>, linux-iio@vger.kernel.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH] iio: bmi270_i2c: Add MODULE_DEVICE_TABLE for BMI260/270
-Message-ID: <20260111130346.73ecb12d@jic23-huawei>
-In-Reply-To: <aV7KdXkQkI5XsoF3@smile.fi.intel.com>
-References: <20260106054519.566796-1-derekjohn.clark@gmail.com>
-	<aV7KdXkQkI5XsoF3@smile.fi.intel.com>
+To: Kurt Borja <kuurtb@gmail.com>
+Cc: David Lechner <dlechner@baylibre.com>, Nuno =?UTF-8?B?U8Oh?=
+ <nuno.sa@analog.com>, Andy Shevchenko <andy@kernel.org>,
+ linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] iio: adc: ti-ads1018: Drop stale kernel-doc function
+ context
+Message-ID: <20260111130744.48919874@jic23-huawei>
+In-Reply-To: <20260106-ads1018-comment-v1-1-315d50c2a353@gmail.com>
+References: <20260106-ads1018-comment-v1-1-315d50c2a353@gmail.com>
 X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -61,30 +60,40 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Wed, 7 Jan 2026 23:04:53 +0200
-Andy Shevchenko <andriy.shevchenko@intel.com> wrote:
+On Tue, 06 Jan 2026 03:17:32 -0500
+Kurt Borja <kuurtb@gmail.com> wrote:
 
-> On Tue, Jan 06, 2026 at 05:45:19AM +0000, Derek J. Clark wrote:
-> > Currently BMI260 & BMI270 devices do not automatically load this
-> > driver. To fix this, add missing MODULE_DEVICE_TABLE for the i2c,
-> > acpi, and of device tables so the driver will load when the hardware
-> > is detected.
-> > 
-> > Tested on my OneXPlayer F1 Pro.  
+> The driver no longer uses iio_device_claim_buffer_mode(). Drop it from
+> ads1018_spi_read_exclusive() context remark.
 > 
-> No objections,
-> Reviewed-by: Andy Shevchenko <andriy.shevchenko@intel.com>
-> 
-Applied to the togreg branch of iio.git and pushed out as testing.
-
-These are always a bit of a corner case wrt to whether we should treat
-them as a fix.  It never worked though so I'm not going to rush them in.
-If you want it applied to stable kernels, I'm fine with a request for
-that after the next merge window.
-
+> Signed-off-by: Kurt Borja <kuurtb@gmail.com>
+Applied.
 Thanks,
 
 Jonathan
 
+> ---
+>  drivers/iio/adc/ti-ads1018.c | 3 +--
+>  1 file changed, 1 insertion(+), 2 deletions(-)
+> 
+> diff --git a/drivers/iio/adc/ti-ads1018.c b/drivers/iio/adc/ti-ads1018.c
+> index 286e06dc70b8..6246b3cab71f 100644
+> --- a/drivers/iio/adc/ti-ads1018.c
+> +++ b/drivers/iio/adc/ti-ads1018.c
+> @@ -211,8 +211,7 @@ static u32 ads1018_calc_delay(unsigned int hz)
+>   * Reads the most recent ADC conversion value, without updating the
+>   * device's configuration.
+>   *
+> - * Context: Expects iio_device_claim_buffer_mode() is held and SPI bus
+> - *	    *exclusive* use.
+> + * Context: Expects SPI bus *exclusive* use.
+>   *
+>   * Return: 0 on success, negative errno on error.
+>   */
+> 
+> ---
+> base-commit: fb2f4eb29a258145b0336601f00509cab6e93e7c
+> change-id: 20260106-ads1018-comment-48d0a82c6826
+> 
 
 

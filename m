@@ -1,52 +1,57 @@
-Return-Path: <linux-iio+bounces-27606-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-27607-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id ADD01D0EF00
-	for <lists+linux-iio@lfdr.de>; Sun, 11 Jan 2026 13:59:02 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E5D14D0EF15
+	for <lists+linux-iio@lfdr.de>; Sun, 11 Jan 2026 14:00:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 7268F300ACF1
-	for <lists+linux-iio@lfdr.de>; Sun, 11 Jan 2026 12:58:51 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 660A83003B17
+	for <lists+linux-iio@lfdr.de>; Sun, 11 Jan 2026 13:00:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E1FF83375C5;
-	Sun, 11 Jan 2026 12:58:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4030B3396F4;
+	Sun, 11 Jan 2026 13:00:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IGOgOWwH"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DhaiENLz"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A632A2D193F
-	for <linux-iio@vger.kernel.org>; Sun, 11 Jan 2026 12:58:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01C712F49F1;
+	Sun, 11 Jan 2026 13:00:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768136330; cv=none; b=W1Kx0PwL1fmZL5XD3Vk2NP0TxTZuLR+kxAl+L44mbHBU+a+ik7HUOMr9nVVfeDugyF41oOT9uDmwCitjnAnQEpvbnFqxNWh3AL5+XWY5H/mbvqr2DmofsWf5VXDwkR8DLQGBAhIeAO9X6Q6ZThC3oD1FFlH/XlzhI9TqFn62tl4=
+	t=1768136453; cv=none; b=gwBMKYdssjcnqIgte4vqvJY+OXIZ6foYvedFrb8imWzaZhJcCgTQFM9pC5TllwXLkgSspFeluCecqlE6DEOON7jF07L5Ob+hsEUSdHuHxfuJAZgqqT/Qax1szT+r500/FF6feT+PI2GiVmypczXynGsYl9VGUxj7BIu7igshRIc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768136330; c=relaxed/simple;
-	bh=TCCGwWjlvkoJaBl9Dit8AYmdR/tv29r15bkbOLEr2Lo=;
+	s=arc-20240116; t=1768136453; c=relaxed/simple;
+	bh=bsUMYq9zK4TB4Uecl1CADcEXMgPAE/Ix0Zn7gXJKdpE=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Cd8p+og3PuQIoiAR4U4FCP1GYZ/AhPY1zpkqL+xcbv3jkvdDIjd7X9AWa0Ciej8EsHcPj+P6qcj77sXBcYBlPua61r930m9upgw68tPZ/G1MvUpIjAqOdUjBT5tuB6nZDuCRf+xbN7i5uBaKYCMqYyGOQuU4n51xXQ1rMH5AJII=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IGOgOWwH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42C56C4CEF7;
-	Sun, 11 Jan 2026 12:58:48 +0000 (UTC)
+	 MIME-Version:Content-Type; b=UIz9QGGao9RdHAqbLO6qaRk+mpaTlz3fLArcprLJ1wkFaTwXrHKMVJ8Gg3OX6FszUTpyCgVZ36CejF/bwoJjnuKpZ53FtqEDUqG5m+vLEO6kcnHYL3s9RyGTd23HL2xHaagImSFM+bhqAREGW2lAH19679RpoqlQn/eI+UibkTc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DhaiENLz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F175C4CEF7;
+	Sun, 11 Jan 2026 13:00:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768136330;
-	bh=TCCGwWjlvkoJaBl9Dit8AYmdR/tv29r15bkbOLEr2Lo=;
+	s=k20201202; t=1768136452;
+	bh=bsUMYq9zK4TB4Uecl1CADcEXMgPAE/Ix0Zn7gXJKdpE=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=IGOgOWwHAp5OH3b2EiNfGUVegfymEwLEktRCPKMkrPZOxJVs8H6swn27ESAErZAml
-	 Ujb5sKHbmVlPFCo27IiDSPCVUaEF5h3cJoNgM5DzTeF/SzFm7l0gAHngByhR3Eoz6w
-	 hqCV8wnHKWhLc41r3UELd7w+z7tJAxYDFTxqVytgVRxt6/SnSBahtW3GTXypkSRQ4L
-	 2BHNlxqBkNBMQJ2tAK9/Jd/slVuHoD6QcfyribcK2XdF9Qv9v9zp1DPOSJvbUEKoXp
-	 YwHDy+RUYIDPFwdAS7FQTTsWgPCsrKB6zB7WW6P4VHDOVzUFjmohULWk85p5IU5EE0
-	 FiTBb520Tk/hg==
-Date: Sun, 11 Jan 2026 12:58:44 +0000
+	b=DhaiENLzUgMqSrkd0D/st0S/P53xwct6j7PoUfNbzICiU3aF1uT2al7F9vNuJMOEM
+	 Iyr9DDDhpsGgvUTNurEs9axA1JZAlDO67zxXe+xyCn19rxvJCMOWSXLyKz6WTi+W42
+	 nlbVNRilUyA3lNyupJNjyeE2StTIbWIg7P94D0nMV2HbA4TsY3n6J0vuPUQkomC+/z
+	 SJjS8pmCF2Z79pbM1vovd+L8U98I10L0GN5VRmODdc0VEkpQJ8XzC/bON2X9Qcq1h5
+	 Sup2x6JL7wlOnuLubxtDZpIUZJkLmk2Ek95rcpJ5FtTxP4G4wrQ71PgcTuPJISqui7
+	 LPJi3HhSavrrg==
+Date: Sun, 11 Jan 2026 13:00:42 +0000
 From: Jonathan Cameron <jic23@kernel.org>
-To: Gabriel Almeida <gabrielsousa230@gmail.com>
-Cc: linux-iio@vger.kernel.org
-Subject: Re: [PATCH] iio: light: zopt2201: use lock guards
-Message-ID: <20260111125844.493fe5ac@jic23-huawei>
-In-Reply-To: <20260103192442.10826-1-gabrielsousa230@gmail.com>
-References: <20260103192442.10826-1-gabrielsousa230@gmail.com>
+To: Andy Shevchenko <andriy.shevchenko@intel.com>
+Cc: Michael Harris <michaelharriscode@gmail.com>,
+ gregkh@linuxfoundation.org, lars@metafoo.de, Michael.Hennerich@analog.com,
+ dlechner@baylibre.com, nuno.sa@analog.com, andy@kernel.org,
+ linux-iio@vger.kernel.org, linux-staging@lists.linux.dev,
+ linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3] staging: iio: adt7316: modernize power management
+Message-ID: <20260111130042.10e321c9@jic23-huawei>
+In-Reply-To: <aV14wL35muj55kMF@smile.fi.intel.com>
+References: <20260106145055.2557551-1-michaelharriscode@gmail.com>
+	<aV14wL35muj55kMF@smile.fi.intel.com>
 X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -57,63 +62,24 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Sat,  3 Jan 2026 16:24:42 -0300
-Gabriel Almeida <gabrielsousa230@gmail.com> wrote:
+On Tue, 6 Jan 2026 23:04:00 +0200
+Andy Shevchenko <andriy.shevchenko@intel.com> wrote:
 
-> Use guard() to handle the mutex lock instead of manually
-> locking and unlocking it.
+> On Tue, Jan 06, 2026 at 06:50:55AM -0800, Michael Harris wrote:
+> > Replaced use of deprecated function SIMPLE_DEV_PM_OPS() with
+> > EXPORT_GPL_SIMPLE_DEV_PM_OPS().
+> > 
+> > Removed PM preprocessor conditions with usage of pm_sleep_ptr().  
 > 
-> Signed-off-by: Gabriel Almeida <gabrielsousa230@gmail.com>
-Hi Gabriel,
+> FWIW,
+> Reviewed-by: Andy Shevchenko <andriy.shevchenko@intel.com>
 
-Welcome to IIO and thanks for your patch.
+Applied to the togreg branch of iio.git and pushed out as testing.
 
-> ---
->  drivers/iio/light/zopt2201.c | 6 ++----
->  1 file changed, 2 insertions(+), 4 deletions(-)
-> 
-> diff --git a/drivers/iio/light/zopt2201.c b/drivers/iio/light/zopt2201.c
-> index 1dba1b949cc3..f5a41c293d9c 100644
-> --- a/drivers/iio/light/zopt2201.c
-> +++ b/drivers/iio/light/zopt2201.c
-
-Needs cleanup.h include to be added.  The headers in this in this driver
-aren't ordered, so just put it so it's in the correct order with one
-of them! (alphabetical)
-
-
-
-> @@ -351,15 +351,13 @@ static int zopt2201_write_scale_by_idx(struct zopt2201_data *data, int idx,
->  {
->  	int ret;
->  
-> -	mutex_lock(&data->lock);
-> +	guard(mutex)(&data->lock);
->  	ret = zopt2201_set_resolution(data, zopt2201_scale_array[idx].res);
->  	if (ret < 0)
-> -		goto unlock;
-> +		return ret;
->  
->  	ret = zopt2201_set_gain(data, zopt2201_scale_array[idx].gain);
->  
-> -unlock:
-> -	mutex_unlock(&data->lock);
->  	return ret;
-	return zopt2201_set_gain();
-
->  }
->  
-Whilst this change is reasonable subject to comments above,
-you should be looking at the rest of the driver to see if similar
-changes apply. zopt2201_read() for example can use a guard with the
-trivial increase in scope of the final endian swap occuring under the lock
-(which is harmless!)  There are other places as well so take a good look.
-
-Thanks,
+thanks,
 
 Jonathan
 
-
-
+> 
 
 

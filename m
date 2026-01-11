@@ -1,45 +1,45 @@
-Return-Path: <linux-iio+bounces-27591-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-27592-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F089D0EBF9
-	for <lists+linux-iio@lfdr.de>; Sun, 11 Jan 2026 12:52:37 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E59CD0EC2F
+	for <lists+linux-iio@lfdr.de>; Sun, 11 Jan 2026 12:58:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 5CF50300E799
-	for <lists+linux-iio@lfdr.de>; Sun, 11 Jan 2026 11:52:32 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 55D5D3015A86
+	for <lists+linux-iio@lfdr.de>; Sun, 11 Jan 2026 11:58:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E677B338591;
-	Sun, 11 Jan 2026 11:52:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A8BCB33AD8D;
+	Sun, 11 Jan 2026 11:58:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lLlP94D9"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XY6jqKfQ"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A854450094C;
-	Sun, 11 Jan 2026 11:52:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 685C633984D;
+	Sun, 11 Jan 2026 11:58:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768132350; cv=none; b=KVcRCq/qeq2p4oHcFflsuXfZAoRpYG4d3VO+7bw0owjz5QN2jkZgRcELA1pPyVdfamoWIwtedDliLHZ2wimJY7+mzB4BUXsBnD8FyW8dZ2Rhc2Uy6KqTPm5VeC04ERmTkLiKuEs2h9qG7Gqdvo2tTWg72NE7b4J0jwX3U4fCYgQ=
+	t=1768132682; cv=none; b=ipARAHpXXmkX72fsNyJB1PsaoXXQwwZK+EK7KHfWiPTOElnUKPr54s05YKIv9KAAhZ23/fcJdEOA2ldCw/WLDY72vOtrBuXGuEfd3l37B+aNODaDgIExXFiLu8M7jFFznl8XUeEYGxv3MZikyL/f24Eh7N7mB1pYufIHpeRCaoM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768132350; c=relaxed/simple;
-	bh=0GkxFneeSyIWyVZyFNFfxwxn7XkF3NPIGEPeRDVQdpY=;
+	s=arc-20240116; t=1768132682; c=relaxed/simple;
+	bh=E2NMgVvln16lOoF3BfhbRAY3DUGq/OulfaKkTjoxB2c=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=tL5iNrRqlK+N9uW+Zv9yZpBFyi5jm7YwIcnlAaXwIaSS7KidQEXKd8AfWjRknKEQCf9fO/1F/wdLOHlGF0d3jvRhefM0xIjLbohDxEit4VL5dv4SP7J2Ea1fNhe1y3IRLIzhozyllsDjq5xW2Aw2e7NTKeKDiqjC7xyGW2lJcD4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lLlP94D9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0DCEDC4CEF7;
-	Sun, 11 Jan 2026 11:52:24 +0000 (UTC)
+	 MIME-Version:Content-Type; b=HbSy/bsBYmF4hK9Qr+x+FvTL32l31H6PEQo+DtPXCo/rRpO7+KvIGu+1h637H9Sf0tEkq8MVMQeDtI6kIX3YdN/PlHsSzCwEnMXx+7qs5F45sQZxwMPuP3MbmsaXNCzvEdpmSV20nKqPM8qq57Gehc7KbPCvz8yoi8c26md9vLY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XY6jqKfQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B043C19423;
+	Sun, 11 Jan 2026 11:57:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768132350;
-	bh=0GkxFneeSyIWyVZyFNFfxwxn7XkF3NPIGEPeRDVQdpY=;
+	s=k20201202; t=1768132682;
+	bh=E2NMgVvln16lOoF3BfhbRAY3DUGq/OulfaKkTjoxB2c=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=lLlP94D9FgPuuqpCfGCxs4FacmAftfpMu+gA7Zak8eY5OKry7s27v6VE2geRABPxU
-	 iAowf+1NOzi4pp6xqR3+o1G755Shv23q8rf4DjeisMfo6tGbTnfzl/WYcZjUy1nbU5
-	 892yqFaTy8bzm0Na67ATbn1Kq1/lDz72XwHBAwOWq2DgLY0tpz64GGopCj6gz6KuB4
-	 rH+R32+978oZrcq7aroZewgms5GQSpfu1zefPeKAQpagsOz3ocv6sQRMbU09G2BFwD
-	 xjSkhvezAGjZhr3eBNOjKpDQYkn0MGP7sz3PEJEvUkXbrAeHvbD2D33eNV59sewHyD
-	 JWzeDCPA0g1sQ==
-Date: Sun, 11 Jan 2026 11:52:19 +0000
+	b=XY6jqKfQsjWYPZa38ZPB33NlU2ScDi/PCttT4lh4GtWssvbbdJ6Pg2WJbraC5ZNbS
+	 TqKbUybV8ewvcNjf1JV6a4gsMa/2v2c5Jsk9yIpyU98Le6RiIv+hEo818fdnSbx2s1
+	 F7w3vMXGxPQENcpw08i+tKnw2q9n6iPGHSlf5UO45Pu/jY8hg6cXGCR4Kr7SHMLgMu
+	 9hvQcQHvpOQdUMoL77SChPgQFSz1vmxYdpfSGyph/fTp+tPaI9roBf+TfVCVe5rJF1
+	 GPES1x1tYtBTxbK0Y1hMlOv7TApN6ui6iYhjfNGXXs0s9RTpJgbbffcX97WEKh54md
+	 GnJ7ZRX4tN18g==
+Date: Sun, 11 Jan 2026 11:57:51 +0000
 From: Jonathan Cameron <jic23@kernel.org>
 To: David Lechner <dlechner@baylibre.com>
 Cc: Mark Brown <broonie@kernel.org>, Rob Herring <robh@kernel.org>,
@@ -50,12 +50,10 @@ Cc: Mark Brown <broonie@kernel.org>, Rob Herring <robh@kernel.org>,
  <sean.anderson@linux.dev>, linux-spi@vger.kernel.org,
  devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
  linux-iio@vger.kernel.org
-Subject: Re: [PATCH v4 1/9] spi: dt-bindings: change spi-{rx,tx}-bus-width
- to arrays
-Message-ID: <20260111115219.296e8205@jic23-huawei>
-In-Reply-To: <20251219-spi-add-multi-bus-support-v4-1-145dc5204cd8@baylibre.com>
+Subject: Re: [PATCH v4 0/9] spi: add multi-lane support
+Message-ID: <20260111115751.7269c7b0@jic23-huawei>
+In-Reply-To: <20251219-spi-add-multi-bus-support-v4-0-145dc5204cd8@baylibre.com>
 References: <20251219-spi-add-multi-bus-support-v4-0-145dc5204cd8@baylibre.com>
-	<20251219-spi-add-multi-bus-support-v4-1-145dc5204cd8@baylibre.com>
 X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -66,28 +64,19 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Fri, 19 Dec 2025 15:32:09 -0600
+On Fri, 19 Dec 2025 15:32:08 -0600
 David Lechner <dlechner@baylibre.com> wrote:
 
-> Change spi-rx-bus-width and spi-tx-bus-width properties from single
-> uint32 values to arrays of uint32 values. This allows describing SPI
-> peripherals connected to controllers that have multiple data lanes for
-> receiving or transmitting two or more words in parallel.
+> This series is adding support for SPI controllers and peripherals that
+> have multiple SPI data lanes (data lanes being independent sets of
+> SDI/SDO lines, each with their own serializer/deserializer).
 > 
-> Each index in the array corresponds to a physical data lane (one or more
-> wires depending on the bus width). Additional mapping properties will be
-> needed in cases where a lane on the controller or peripheral is skipped.
-> 
-> Bindings that make use of this property are updated in the same commit
-> to avoid validation errors.
-> 
-> The adi,ad4030 binding can now better describe the chips multi-lane
-> capabilities, so that binding is refined and gets a new example.
-> 
-> Converting from single uint32 to array of uint32 does not break .dts/
-> .dtb files since there is no difference between specifying a single
-> uint32 value and an array with a single uint32 value in devicetree.
-> 
-> Signed-off-by: David Lechner <dlechner@baylibre.com>
-Reviewed-by: Jonathan Cameron <jonathan.cameron@huawei.com>
+This seems to be in a pretty good state now, so I'm guessing v5 will merge.
+So with that in mind, add something to cover letter of v5 saying how you
+think that is best done.  I'm thinking probably Mark does an immutable branch
+with 1-7 and I merge that + 8 and 9 via IIO.
+
+Thanks,
+
+Jonathan
 

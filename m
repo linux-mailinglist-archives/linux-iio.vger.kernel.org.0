@@ -1,62 +1,63 @@
-Return-Path: <linux-iio+bounces-27601-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-27602-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 513AFD0EDEB
-	for <lists+linux-iio@lfdr.de>; Sun, 11 Jan 2026 13:32:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EBF94D0EE08
+	for <lists+linux-iio@lfdr.de>; Sun, 11 Jan 2026 13:36:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id AEAB2300EA2C
-	for <lists+linux-iio@lfdr.de>; Sun, 11 Jan 2026 12:32:16 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 94E6130065B0
+	for <lists+linux-iio@lfdr.de>; Sun, 11 Jan 2026 12:36:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA072330B20;
-	Sun, 11 Jan 2026 12:32:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D49413375C5;
+	Sun, 11 Jan 2026 12:36:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Co04IrTO"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="B8bVSt4B"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79B2E14F70;
-	Sun, 11 Jan 2026 12:32:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96E771DFDE;
+	Sun, 11 Jan 2026 12:36:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768134732; cv=none; b=aSJo5qk25rYrrvC2r68dQaViit43qUDLFyecZBMRZ0NMaOmzPAQRDHzvjA4WsWaTUKOl5VDoeXcMcON52W8DLYitHizabM/qSP9Cr6ql3ab+Rdygnvub3+NzMbUkRoeg5gGV/6AQxa1r0gdCa8SlpRq3rtNRv/FliIL8XB3Eopo=
+	t=1768134977; cv=none; b=Jtxijr0RJr0KL5wjSYu/obKysFG1vljMuGzPYRi7qUrssKDYtwps6Sg40JU4NwERQ9x0nIGHwE2NuS/fyRUL5H8pCxK+qnBi/CyESsrsz+42QdRIwlpTG2c9Hx6ZU/9NinMMV+JgQwjWhKnNFN7VuHRR46Pt+oY9SjFr51tQ3Y4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768134732; c=relaxed/simple;
-	bh=/pd5RYXxAu3TC9tzJphDPUQ5fhdFaNq6CB5bXbU/wiU=;
+	s=arc-20240116; t=1768134977; c=relaxed/simple;
+	bh=Duzvya6Z7Ck+DtdMgnSV7xdhdZUVaMHLe/s62Waj1H0=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=b1997zHfmnvYz8QFvQ6h6jW3Iz5/CPfQbijIaBxdq1NaxSXqSjR+zxt9RzTyvkeZONfLhFmi1Baz3NbrWr0LgPMU2xw1a9WuiNKI3JDOUST2GK4XwGjxfUwCxIP0yLfjn07M+k315lDjb96y9jnSKO4g2HVTl3un4kVhjCHgG+w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Co04IrTO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 938ABC4CEF7;
-	Sun, 11 Jan 2026 12:32:05 +0000 (UTC)
+	 MIME-Version:Content-Type; b=XLKan8vfblE3bn15pnnXDQUqtHBKliZjK2jC5UCh/Y0629AMDw2+p8LWKQr8YtLJvkv24KkqQO3W4RaD471gPLFDlCK8L4NekDaC4q1t6sGxqifQnsYkXbV0U1d6j/hgx7GdZQ0wjuk5LUa0vRj9QJCd4/n3a7PhuNW8G4VtZps=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=B8bVSt4B; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88DF0C4CEF7;
+	Sun, 11 Jan 2026 12:36:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768134732;
-	bh=/pd5RYXxAu3TC9tzJphDPUQ5fhdFaNq6CB5bXbU/wiU=;
+	s=k20201202; t=1768134977;
+	bh=Duzvya6Z7Ck+DtdMgnSV7xdhdZUVaMHLe/s62Waj1H0=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=Co04IrTOUyHZCmLvXU8QnWA204LTqwROk447Eok9bHD4n8ga+um6wuVU5pI01Bdzt
-	 O0V9gmT5Uy0WBtT30VhPa2VGQVR1S+1OF/RxUQu8Ye/mm5kTApOXSLIPvXj05BaP7E
-	 w1OObGKrcwSYhgLSkLSk1qXEXRr8+vNAiL+mCEoB+F1i9ykx1vXjQGodLNMmNDOk0z
-	 bxLnPCj8PlCPcTrf7PdnS0shr5eE/P7WD3HtmlzIpgD//zKQwEwhvjNZXbYCvXkHrt
-	 6ViXwOcpqPMn9UEsAJUVYSnVq+8aBnUL9X9o5xvbKEs1VtAUwjssM3SVJ8uLu9uGUO
-	 O5yEiRiSyOBRw==
-Date: Sun, 11 Jan 2026 12:32:00 +0000
+	b=B8bVSt4BbPxllswunaZC3NexjDUVhry9XGgYOipjCPs+lJap5WFCfuJnsDyhj3Nyx
+	 ckvq+4lF20i77zgwPVM5Ka3idT247evtH9MlxrCWLFfUlSlyvcJlmcar2Tb4/mpv6X
+	 ohIQBNzu/QVHcXUZyrJARZlZiU1QnvEumxAer/krKeq94qANI/z+LOZAx0aUuiZEjW
+	 o0hGjaj1+ZGvArHI6xiRrC5HDj5xTVsqOuNsJM7eD3a/2YmmwhZ+3rSf/yzy6u0Kkv
+	 qiY0xJZP6Yu4ptcNJ3aVZP6ixa4MLJj/DsnmwLhZ4s3HqAdga3jVVRfQ/Rhv/bIOcU
+	 XZ49NPeaeCdtg==
+Date: Sun, 11 Jan 2026 12:36:06 +0000
 From: Jonathan Cameron <jic23@kernel.org>
-To: akemnade@kernel.org
-Cc: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>, David Lechner
+To: Andy Shevchenko <andriy.shevchenko@intel.com>
+Cc: Shrikant <raskar.shree97@gmail.com>, David Lechner
  <dlechner@baylibre.com>, Nuno =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>, Andy
- Shevchenko <andy@kernel.org>, Aaro Koskinen <aaro.koskinen@iki.fi>, Andreas
- Kemnade <andreas@kemnade.info>, Kevin Hilman <khilman@baylibre.com>, Roger
- Quadros <rogerq@kernel.org>, Tony Lindgren <tony@atomide.com>, Rob Herring
- <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Jonathan Cameron <Jonathan.Cameron@huawei.com>,
- linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-omap@vger.kernel.org, devicetree@vger.kernel.org
-Subject: Re: [PATCH 2/2] ARM: dts: ti/omap: omap4-epson-embt2ws: fix typo in
- iio device property
-Message-ID: <20260111123200.6871a41b@jic23-huawei>
-In-Reply-To: <20251231-mpu9150-v1-2-08ecf085c4ae@kernel.org>
-References: <20251231-mpu9150-v1-0-08ecf085c4ae@kernel.org>
-	<20251231-mpu9150-v1-2-08ecf085c4ae@kernel.org>
+ Shevchenko <andy@kernel.org>, Rob Herring <robh@kernel.org>, Krzysztof
+ Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>,
+ skhan@linuxfoundation.org, david.hunter.linux@gmail.com,
+ linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v4 4/4] iio: proximity: rfd77402: Add interrupt handling
+ support
+Message-ID: <20260111123606.559b8428@jic23-huawei>
+In-Reply-To: <aV101TrC5hB_nHJM@smile.fi.intel.com>
+References: <20260101-b4-rfd77402_irq-v4-0-42cd54359e9f@gmail.com>
+	<20260101-b4-rfd77402_irq-v4-4-42cd54359e9f@gmail.com>
+	<aVe7SP914oI-jAam@smile.fi.intel.com>
+	<CAHc1_P4dCdt6QFgfZ8OUZGT+UfLqiP_ect7pOsd_HeQaDe8jTg@mail.gmail.com>
+	<aV101TrC5hB_nHJM@smile.fi.intel.com>
 X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -67,46 +68,64 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Wed, 31 Dec 2025 22:14:17 +0100
-akemnade@kernel.org wrote:
+On Tue, 6 Jan 2026 22:47:17 +0200
+Andy Shevchenko <andriy.shevchenko@intel.com> wrote:
 
-> From: Andreas Kemnade <andreas@kemnade.info>
+> On Tue, Jan 06, 2026 at 05:39:29AM +0530, Shrikant wrote:
 > 
-> Define interrupts properly. Unfortunately, this hides a bug in the linux
-> driver, so it needs to be used with the driver fixed only.
+> ...
 > 
-> Signed-off-by: Andreas Kemnade <andreas@kemnade.info>
+> > > >  #include <linux/module.h>
+> > > >  #include <linux/i2c.h>
+> > > >  #include <linux/delay.h>
+> > > > +#include <linux/interrupt.h>
+> > > > +#include <linux/completion.h>
+> > > >  #include <linux/iopoll.h>  
+> > >
+> > > Same comment as per previous patch. Do not add even more misordering, please.  
+> > Will it be okay if I re-order the includes as below ?
+> > #include <linux/completion.h>
+> > #include <linux/delay.h>
+> > #include <linux/i2c.h>
+> > #include <linux/interrupt.h>
+> > #include <linux/iopoll.h>
+> > #include <linux/module.h>  
+> 
+> Just try to squeeze the new inclusions in the longest chain of the sorted ones
+> (yes, some original ones may be left untouched and hence unordered).
+> 
+Or a separate cleanup precursor patch woudl be fine.
 
-Reviewed-by: Jonathan Cameron <jonathan.cameron@huawei.com>
-Not related to patch 1 so if TI soc folk can pick this up that would be
-great.
-
-> ---
->  arch/arm/boot/dts/ti/omap/omap4-epson-embt2ws.dts | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
+> > #include <linux/iio/iio.h>  
 > 
-> diff --git a/arch/arm/boot/dts/ti/omap/omap4-epson-embt2ws.dts b/arch/arm/boot/dts/ti/omap/omap4-epson-embt2ws.dts
-> index c90f43cc2fae9..a9f0cfd7c999d 100644
-> --- a/arch/arm/boot/dts/ti/omap/omap4-epson-embt2ws.dts
-> +++ b/arch/arm/boot/dts/ti/omap/omap4-epson-embt2ws.dts
-> @@ -346,7 +346,7 @@ mpu9150h: imu@68 {
->  		pinctrl-names = "default";
->  		pinctrl-0 = <&mpu9150h_pins>;
->  		interrupt-parent = <&gpio2>;
-> -		interrupt = <19 IRQ_TYPE_LEVEL_HIGH>;
-> +		interrupts = <19 IRQ_TYPE_LEVEL_HIGH>;
->  	};
->  };
->  
-> @@ -408,7 +408,7 @@ mpu9150: imu@68 {
->  		pinctrl-names = "default";
->  		pinctrl-0 = <&mpu9150_pins>;
->  		interrupt-parent = <&gpio2>;
-> -		interrupt = <7 IRQ_TYPE_LEVEL_HIGH>;
-> +		interrupts = <7 IRQ_TYPE_LEVEL_HIGH>;
->  		vddio-supply = <&cb_v18>;
->  		vdd-supply = <&cb_v33>;
->  		invensense,level-shifter;
+> ...
+> 
+> > > > +/**
+> > > > + * struct rfd77402_data - device-specific data for the RFD77402 sensor
+> > > > + * @client: I2C client handle
+> > > > + * @lock: mutex to serialize sensor reads
+> > > > + * @completion: completion used for interrupt-driven measurements
+> > > > + * @irq_en: indicates whether interrupt mode is enabled
+> > > > + */
+> > > >  struct rfd77402_data {
+> > > >       struct i2c_client *client;
+> > > > -     /* Serialize reads from the sensor */
+> > > >       struct mutex lock;
+> > > > +     struct completion completion;
+> > > > +     bool irq_en;
+> > > >  };  
+> > >
+> > > The kernel-doc conversion can be a separate patch, but I'm not insisting.  
+> > I can split this into a separate patch within the same series.
+> > Please let me know if you would prefer it to be handled differently.  
+> 
+> It's up to maintainers.
+I'd prefer it split.
+
+Thanks,
+
+Jonathan
+
 > 
 
 

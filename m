@@ -1,59 +1,55 @@
-Return-Path: <linux-iio+bounces-27610-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-27611-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id E7B75D0EF53
-	for <lists+linux-iio@lfdr.de>; Sun, 11 Jan 2026 14:15:12 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E949ED0EF78
+	for <lists+linux-iio@lfdr.de>; Sun, 11 Jan 2026 14:17:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 275CC300F5A0
-	for <lists+linux-iio@lfdr.de>; Sun, 11 Jan 2026 13:14:57 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 190B8300A1E2
+	for <lists+linux-iio@lfdr.de>; Sun, 11 Jan 2026 13:17:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7033133C50F;
-	Sun, 11 Jan 2026 13:14:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D8783242C2;
+	Sun, 11 Jan 2026 13:17:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ip/e2mh1"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XDEw26+B"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34A5033122E;
-	Sun, 11 Jan 2026 13:14:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 514CA14F70;
+	Sun, 11 Jan 2026 13:17:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768137296; cv=none; b=a4LUZYbXjU1KLLNTEm4nia9/5uwGkHxE0hj4LbXXZz61gwxOrwGNgdNw+gKjcDHiLIJWBR5OgwXDSNKX6OuhDzTv+yh+iMP+kTmARXDn5dq1dElP3oKQFnnOl+J4A85NHI9r0w9hLb9sVNIbWteK3sVMkuaO/EtiTo2FBGVKOvY=
+	t=1768137427; cv=none; b=SEHmwBYHUAqa3zHziGAgkWuf+OCrUxRdGHPQgp3cFSX4xHPY1gT1+WctaOpISYcWuHVSZVgE3ZIY/+R5mgkMd3JhzkD6hnYNSw+lIOkJrkj4P/hx9WARKM0OB6HosGdoXqd4MPys7MhydOc4iDyHZe/cDW0iU+dKJUUhmj/lbZE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768137296; c=relaxed/simple;
-	bh=MA7WclqKrs/0+T7D2D8fju/Y19IeEHKbYArPN0tiMQ0=;
+	s=arc-20240116; t=1768137427; c=relaxed/simple;
+	bh=UTmaJCOuxe5QH+YMHACQ5BxE2XUjeKBk9T6SiIG2zVA=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=iPYY2iKdhkZjgUZA+Mo+Bb3NsDsV0Ut1xMOsx96HT/JTmUYomiNMXqqFlT/o8DHYSEAe4y34nK2gL8wbmErMhkmuwQFMOjAgIqqcRJOsO55Nm0ZhQ2IH5ZUwiH3NXXS/lsgD0pY7TJsS5qnmRRdL8nvvg9Qo4oJon6cQRGmfnWg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ip/e2mh1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 252B0C4CEF7;
-	Sun, 11 Jan 2026 13:14:51 +0000 (UTC)
+	 MIME-Version:Content-Type; b=p0QmLxJde1InyUn2R/jr0S3j0SMe7p+Lz0cB9giT4G9h+jgTOCE63UTVNwcgSpMUtzGiDLvhzRKQVvdfOGU6yEgu/keJgK2MgKNX8XbnIjY8LqejbBVHLgp5KbU+7fI3FBXyCjIudIPHZpLfrI6BeTB2S5RHfIC66Rs/vokkoq8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XDEw26+B; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52E84C19422;
+	Sun, 11 Jan 2026 13:17:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768137296;
-	bh=MA7WclqKrs/0+T7D2D8fju/Y19IeEHKbYArPN0tiMQ0=;
+	s=k20201202; t=1768137427;
+	bh=UTmaJCOuxe5QH+YMHACQ5BxE2XUjeKBk9T6SiIG2zVA=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=ip/e2mh1lzFozUogLYa6yVqGXcfGYXBoa5Z5N2LB56bCuKFuyHsYhaNWWCnFnGawM
-	 0RSksRTT3dKzzpMwMJKB0+0ePBKAHdxyMUgSaRsnTufzpD6A6ZVDgeyF3NMcr7oUwZ
-	 DKz+aDM90mZu9QmHdC9UExaWLDocFaogQDD9bcgbkXNIiTbp/IcFEhTl1OZVmLnfuH
-	 tdDjPwDTvHrPkhMQr/6Q4vsCgaFqyRbIR49cbfxF5fCoCcwnZQHzXID7iaANhn4jNS
-	 sjMyxVbdHer3Ef+qYKFAVuLdVVYaTF7xj0y1KVqBj80PgSoIkJwwVC+TWoiwAorlXy
-	 6VY6Ll6nSvxUA==
-Date: Sun, 11 Jan 2026 13:14:46 +0000
+	b=XDEw26+By+nLyw1HgAH7dqiYdpAfhEKqOcpGJgHapq8pZ88JULt/I2AR2sWzJ4L/O
+	 IYBP33vhOUJn3pnSDZazOKwUtbnN/OOzgGe4lkaele608uzuAdRQtGbVjLWVhieceT
+	 2A31nfoBXOBH7lvdGOu20cfySOMFhTET+uk4TU2Az2yd8MCAe9nHGhHF8yD8BeAr18
+	 o5mvGqD5QqTqh+T+yxl/oiFy55Wi7zk/nulu9KkVr89Ny4aoH+CqrCj3W4Hp+rUCgE
+	 YE6wFOWRkSwX6gkZasN3/rrlWB2raqYCYK2v4INmVxZ6VmbHLHXrMSwkIYf0whYJ0f
+	 fTYWS/A8o7m+A==
+Date: Sun, 11 Jan 2026 13:16:58 +0000
 From: Jonathan Cameron <jic23@kernel.org>
-To: Francesco Lavra <flavra@baylibre.com>
-Cc: Ramona Gradinariu <ramona.gradinariu@analog.com>, Antoniu Miclaus
- <antoniu.miclaus@analog.com>, Lars-Peter Clausen <lars@metafoo.de>, Michael
- Hennerich <Michael.Hennerich@analog.com>, David Lechner
- <dlechner@baylibre.com>, Nuno =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>, Andy
- Shevchenko <andy@kernel.org>, linux-iio@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 2/2] iio: accel: adxl380: Optimize reading of FIFO
- entries in interrupt handler
-Message-ID: <20260111131435.6460d968@jic23-huawei>
-In-Reply-To: <20260106193627.3989930-3-flavra@baylibre.com>
-References: <20260106193627.3989930-1-flavra@baylibre.com>
-	<20260106193627.3989930-3-flavra@baylibre.com>
+To: Matti Vaittinen <mazziesaccount@gmail.com>
+Cc: Chen Ni <nichen@iscas.ac.cn>, lars@metafoo.de,
+ Michael.Hennerich@analog.com, dlechner@baylibre.com, nuno.sa@analog.com,
+ andy@kernel.org, linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] iio: adc: ad7476: Remove duplicate include
+Message-ID: <20260111131658.005da0a6@jic23-huawei>
+In-Reply-To: <fd506e0f-9e52-498d-8e35-077ab52efbd7@gmail.com>
+References: <20260107082920.2151042-1-nichen@iscas.ac.cn>
+	<fd506e0f-9e52-498d-8e35-077ab52efbd7@gmail.com>
 X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -64,54 +60,43 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Tue,  6 Jan 2026 20:36:27 +0100
-Francesco Lavra <flavra@baylibre.com> wrote:
+On Thu, 8 Jan 2026 08:06:13 +0200
+Matti Vaittinen <mazziesaccount@gmail.com> wrote:
 
-> In order to minimize the time required for transferring FIFO data from the
-> sensor to the host machine, perform the read from the FIFO in a single call
-> to regmap_bulk_read().
-> This allows reading acceleration data for all 3 axes at 16 kHz
-> sampling frequency using a 1MHz I2C bus frequency.
+> On 07/01/2026 10:29, Chen Ni wrote:
+> > Remove duplicate inclusion of linux/bitops.h.
+> > 
+> > Signed-off-by: Chen Ni <nichen@iscas.ac.cn>  
 > 
-> Signed-off-by: Francesco Lavra <flavra@baylibre.com>
-> ---
->  drivers/iio/accel/adxl380.c | 12 +++++-------
->  1 file changed, 5 insertions(+), 7 deletions(-)
+> I would also appreciate having the includes alphabetically ordered as 
+> Andy suggested. This, however, is a fine fix as it is so:
 > 
-> diff --git a/drivers/iio/accel/adxl380.c b/drivers/iio/accel/adxl380.c
-> index 9f6c0e02575a..ce3643c5deb8 100644
-> --- a/drivers/iio/accel/adxl380.c
-> +++ b/drivers/iio/accel/adxl380.c
-> @@ -950,14 +950,12 @@ static irqreturn_t adxl380_irq_handler(int irq, void  *p)
->  		return IRQ_HANDLED;
->  
->  	fifo_entries = rounddown(fifo_entries, st->fifo_set_size);
-> -	for (i = 0; i < fifo_entries; i += st->fifo_set_size) {
-> -		ret = regmap_noinc_read(st->regmap, ADXL380_FIFO_DATA,
-> -					&st->fifo_buf[i],
-> -					2 * st->fifo_set_size);
-> -		if (ret)
-> -			return IRQ_HANDLED;
-> +	ret = regmap_noinc_read(st->regmap, ADXL380_FIFO_DATA,
-> +				&st->fifo_buf, 2 * fifo_entries);
+> Reviewed-by: Matti Vaittinen <mazziesaccount@gmail.com>
+Applied this one.  As Andy observes in v2 review the first patch
+should be this anyway!
 
-Whilst we are here can we replace that 2 with sizeof(*st->fifo_buf)?
-
-Otherwise, Antoniu, can you take a look at these change.
-Seem reasonable to me.  Given we are fairly late in the cycle I'll
-probably merge them both for the next merge window and we'll have
-to wait until after that for the fix to make it to stable.
+Thanks,
 
 Jonathan
 
-
-> +	if (ret)
-> +		return IRQ_HANDLED;
-> +	for (i = 0; i < fifo_entries; i += st->fifo_set_size)
->  		iio_push_to_buffers(indio_dev, &st->fifo_buf[i]);
-> -	}
->  
->  	return IRQ_HANDLED;
->  }
+> 
+> > ---
+> >   drivers/iio/adc/ad7476.c | 1 -
+> >   1 file changed, 1 deletion(-)
+> > 
+> > diff --git a/drivers/iio/adc/ad7476.c b/drivers/iio/adc/ad7476.c
+> > index 1bec6657394c..21d3f6aae972 100644
+> > --- a/drivers/iio/adc/ad7476.c
+> > +++ b/drivers/iio/adc/ad7476.c
+> > @@ -16,7 +16,6 @@
+> >   #include <linux/gpio/consumer.h>
+> >   #include <linux/err.h>
+> >   #include <linux/module.h>
+> > -#include <linux/bitops.h>
+> >   #include <linux/delay.h>
+> >   
+> >   #include <linux/iio/iio.h>  
+> 
+> 
 
 

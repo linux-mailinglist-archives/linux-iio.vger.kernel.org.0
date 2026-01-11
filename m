@@ -1,58 +1,61 @@
-Return-Path: <linux-iio+bounces-27596-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-27597-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id DAA9DD0ED03
-	for <lists+linux-iio@lfdr.de>; Sun, 11 Jan 2026 13:13:19 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 47045D0ED1A
+	for <lists+linux-iio@lfdr.de>; Sun, 11 Jan 2026 13:14:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id A05E5303E696
-	for <lists+linux-iio@lfdr.de>; Sun, 11 Jan 2026 12:09:36 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C6FC03008E93
+	for <lists+linux-iio@lfdr.de>; Sun, 11 Jan 2026 12:13:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39CFA33B6FC;
-	Sun, 11 Jan 2026 12:09:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9E983382CB;
+	Sun, 11 Jan 2026 12:13:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ae5CCVjP"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Zud7RUFG"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFA7E339863;
-	Sun, 11 Jan 2026 12:09:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC85D3396F7;
+	Sun, 11 Jan 2026 12:13:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768133375; cv=none; b=Exvdpj+v/Xt9+nJjTlIJLgEwu/58PEYBtFa3Pv2xBbskqUYgoivp87fIhdvHx+l/D0062RMpdFsQiJ6W/4CGrc8d/zxcRxC2wG+R1w5XoAnw8OqwzNAWHtVbOvOoUxLuoPcbDgnb70crQhPIdJTvv3QdHbc90rWzwSNAVW6MEGY=
+	t=1768133627; cv=none; b=tkFrWvRsCInDAIIq3Eq2MbNeUakCFeDV/vReLJlEu0R97YqS+87gETeFdwti1amYA8hJlzP0pdAc5SsBOWN/UJ7uEly2XWxI2lBzTLyQFK0ETlpIkUS2RSkTgcwL9X6ZigkkXwun84MpJVvksBtHn+nTv5oJjaMWsN1YjkDeYT4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768133375; c=relaxed/simple;
-	bh=h3ZrYJmyJeIMzvRz9Ej06lSTtygpzVESZRtBb/b+jHY=;
+	s=arc-20240116; t=1768133627; c=relaxed/simple;
+	bh=Q4vyqCjeaIy/bxa6BSzjTBX5MwJls04a5aPpDNApAZ8=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=hFpCZKzcpNgCE2cQvZuB329VIEBJCUaEq/lU3/jOlSzpfc7NJK0ZbeHyKbJyDaBqxgWn5V2luQRUu9rirLOgV3eipOb/t9cW1wqYgztc2OhUkAxOi0CMvrPhZCBzV5uzdrb2jr/dGqQcYIuRqulwBsdTcaH8fK+rhn//yb6Grcw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ae5CCVjP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61347C4CEF7;
-	Sun, 11 Jan 2026 12:09:30 +0000 (UTC)
+	 MIME-Version:Content-Type; b=MLAjaFnEgFt/tKwGg37R2iEVTpV13i7v7wLa2HbrckjGuHHrhk5zjPgkcaAGDiuXZP0vgxOM90twzHoMurNyJolsVVIu4eE/UWJm3N2Ilhcz0Zf51Xa7Q8BbuNkOA4q0H403MQHjlxl2774+U8+c5VCZcnOqokperjT5oBuDMT0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Zud7RUFG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41924C19422;
+	Sun, 11 Jan 2026 12:13:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768133374;
-	bh=h3ZrYJmyJeIMzvRz9Ej06lSTtygpzVESZRtBb/b+jHY=;
+	s=k20201202; t=1768133627;
+	bh=Q4vyqCjeaIy/bxa6BSzjTBX5MwJls04a5aPpDNApAZ8=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=ae5CCVjPb0/+vCLZ87cz3Hpb7ZGQrEZHpE+2xuSel/OnlLQznoiz5sZIOkdIsIF5q
-	 6UU77OSVDuDmU/97ro7pbWCGGihNGdtl3+1Nv2tMPdEPN9EJZtZ5g6a7U/5kGtEb2y
-	 oUwcFfORBUIkOduDJI+hvWvAu0wdrRXBii3U3k6IqD9wrlHiHMIqz+cvnlapc08lz/
-	 sGutPDi+jIVcczvWfTdBSsYTfJQ3xmtUYv7r4FGGj+mbQSuABl0A9Ce7axBxoW5A9+
-	 98qigw2HKLQUD09nl6my1bkjHLqVe7OnxSVmPliQPbFju36ksPVy4/JALXHBTDk81b
-	 V0Bs/cwPoM4Xw==
-Date: Sun, 11 Jan 2026 12:09:25 +0000
+	b=Zud7RUFGxpEBsHrxmv4MlDJT4oju4I9DpotSSqNuUVwnB3kEyTLEHqLuHlXjH6PnV
+	 /c9eKA5+0dIm4TCkHCg+rFScz9zE60kzEBTS880zqW16xBBSeuNOKf1B+NVehBPOU9
+	 +Ii+jbegCjIaUAj9dIEfjkSPz4YsnDUzZHiXsvvRxRYCf431NZdZsGFIKK8dCFqGYU
+	 dVm6lflTQpoTEpK69nxq6VZmYZB2MA0kHE+AG6K3i82o3LzHiPb6QPIOp3HZqUl+Z4
+	 2pR+WwSSX93lDb6mp1Z9ByRZPF90QKeCg4+jXM0IHLkyvjpPe3GWi7PkWk0qjmzbCR
+	 2FmxqxvFeJ3cQ==
+Date: Sun, 11 Jan 2026 12:13:37 +0000
 From: Jonathan Cameron <jic23@kernel.org>
-To: Andy Shevchenko <andy.shevchenko@gmail.com>
-Cc: SeungJu Cheon <suunj1331@gmail.com>, antoniu.miclaus@analog.com,
- lars@metafoo.de, Michael.Hennerich@analog.com, andriy.shevchenko@intel.com,
- dlechner@baylibre.com, nuno.sa@analog.com, andy@kernel.org,
- linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2] iio:frequency:adf4377: Fix duplicated soft reset
- mask
-Message-ID: <20260111120857.5087e396@jic23-huawei>
-In-Reply-To: <CAHp75VdOX_h1Ksm4MbYyipiSpGrTp84GTkUAO9L_0o3auR3Xkg@mail.gmail.com>
-References: <20251230123609.210454-1-suunj1331@gmail.com>
-	<20251230132126.217802-1-suunj1331@gmail.com>
-	<CAHp75VdOX_h1Ksm4MbYyipiSpGrTp84GTkUAO9L_0o3auR3Xkg@mail.gmail.com>
+To: Tomas Borquez <tomasborquez13@gmail.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Lars-Peter Clausen
+ <lars@metafoo.de>, Michael Hennerich <Michael.Hennerich@analog.com>, David
+ Lechner <dlechner@baylibre.com>, Nuno =?UTF-8?B?U8Oh?=
+ <nuno.sa@analog.com>, Andy Shevchenko <andy@kernel.org>,
+ linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
+ linux-staging@lists.linux.dev
+Subject: Re: [PATCH v2 4/6] staging: iio: ad9832: remove dds.h dependency
+Message-ID: <20260111121337.24f4eae5@jic23-huawei>
+In-Reply-To: <7s5n34ucflr5jvn7xpotj7qnp5msf45t37ziydh2g4eej4j6ai@irs5mrlpwcyr>
+References: <20251230203459.28935-1-tomasborquez13@gmail.com>
+	<20251230203459.28935-5-tomasborquez13@gmail.com>
+	<20251231180939.422e9e62@jic23-huawei>
+	<20251231181153.556f14fe@jic23-huawei>
+	<7s5n34ucflr5jvn7xpotj7qnp5msf45t37ziydh2g4eej4j6ai@irs5mrlpwcyr>
 X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -60,66 +63,52 @@ List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Wed, 31 Dec 2025 13:19:46 +0200
-Andy Shevchenko <andy.shevchenko@gmail.com> wrote:
+On Sun, 4 Jan 2026 02:38:50 -0300
+Tomas Borquez <tomasborquez13@gmail.com> wrote:
 
-> On Tue, Dec 30, 2025 at 3:21=E2=80=AFPM SeungJu Cheon <suunj1331@gmail.co=
-m> wrote:
-> >
-> > The regmap_read_poll_timeout() uses ADF4377_0000_SOFT_RESET_R_MSK
-> > twice instead of checking both SOFT_RESET_MSK (bit 0) and
-> > SOFT_RESET_R_MSK (bit 7). This causes incomplete reset status check. =20
->=20
-> an incomplete
->=20
-> > Fix by using both masks as done in regmap_update_bits() above. =20
->=20
+> On Wed, Dec 31, 2025 at 06:11:53PM +0000, Jonathan Cameron wrote:
+> > On Wed, 31 Dec 2025 18:09:39 +0000
+> > Jonathan Cameron <jic23@kernel.org> wrote:
+> >   
+> > > On Tue, 30 Dec 2025 17:34:57 -0300
+> > > Tomas Borquez <tomasborquez13@gmail.com> wrote:
+> > >   
+> > > > Remove dependency on dds.h by converting custom macros to standard IIO
+> > > > attribute declarations.
+> > > > 
+> > > > Signed-off-by: Tomas Borquez <tomasborquez13@gmail.com>    
+> > > Hi Tomas,
+> > > 
+> > > Happy new year (almost)  
+> Hey Jonathan,
+> 
+> Happy new year!
+> 
 > ...
->=20
->=20
-> May I ask how you tested this? Logically from the code it sounds
-> correct, but I haven't read the datasheet yet, so I can't tell if this
-> is the expected value to read or not.
->=20
->=20
-> >         return regmap_read_poll_timeout(st->regmap, 0x0, read_val,
-> > -                                       !(read_val & (ADF4377_0000_SOFT=
-_RESET_R_MSK |
-> > +                                       !(read_val & (ADF4377_0000_SOFT=
-_RESET_MSK |
-> >                                         ADF4377_0000_SOFT_RESET_R_MSK))=
-, 200, 200 * 100); =20
->=20
-> Okay, I opened the datasheet, and the below is what I read there. The
-> code first sets the SOFT_RESET_R and SOFT_RESET bits to "1", and waits
-> for them to be cleared. But the Table 43 does not mention that
-> SOFT_RESET_R is auto cleaned, and actually I don't see with a brief
-> look what the "repeat of" term means.
->=20
-> And for normal operation they needs to be 0ed as per:
->   "SOFT_RESET, SOFT_RESET_R, RST_SYS, and ADC_ST_CNV are the only
-> remaining RW bit fields not mentioned yet, and must also be set to
-> their POR state (see Table 34)."
->=20
-> With that said, I would wait for AD people to clarify the programming
-> workflow here.
->=20
+> 
+> > > I'm not that keen on having the documentation only several patches later. Drag that
+> > > before this patch or combine adding the new ABI and documentation in the same patch  
+> > Ah. I'd missed that this is deliberately a no change patch with old abi.
+> > 
+> > So ignore the stuff that doesn't make sense with that in mind!  
+> 
+> Just to make sure I understood:
+> - I should just remove out_altvoltage0_frequency_scale
+> - And add documentation in the same patch with all the ABI changes
+>   "staging: iio: ad9832: convert to iio channels and ext_info attrs"
+>   or as a separate patch like it is now?
 
-Small kernel development process thing as well. Please don't send a v2 in r=
-eply to a v1.
-It can become very confusing if we end up with a larger number of versions.
-Much better to just post a new thread for each version, and include
-a link back to the lore archive of the previous version in your cover lette=
-r.
+It's fine as you have it already.  Ultimately out_altvotage0_frequency_scale
+should go away but that can come in the ABI update patch.
 
-Also from a practical point of view, it ends up pages up in people's inboxe=
-s and
-so is is less likely to get reviewed!
-
-Thanks
+I'd just misunderstood that this was simply a 'get rid of dds.h' usage
+patch and the real ABI changes are later.
 
 Jonathan
+
+> 
+
 

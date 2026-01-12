@@ -1,179 +1,152 @@
-Return-Path: <linux-iio+bounces-27633-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-27634-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F79CD11ABD
-	for <lists+linux-iio@lfdr.de>; Mon, 12 Jan 2026 11:00:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 99AC6D11B7D
+	for <lists+linux-iio@lfdr.de>; Mon, 12 Jan 2026 11:07:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id CD57F30C38D6
-	for <lists+linux-iio@lfdr.de>; Mon, 12 Jan 2026 09:56:38 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E2FC3305EE7E
+	for <lists+linux-iio@lfdr.de>; Mon, 12 Jan 2026 10:04:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E4D66277818;
-	Mon, 12 Jan 2026 09:56:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF2FB27703E;
+	Mon, 12 Jan 2026 10:04:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kLv8bhia"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="N1MAv9wr"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-qv1-f47.google.com (mail-qv1-f47.google.com [209.85.219.47])
+Received: from mail-qt1-f180.google.com (mail-qt1-f180.google.com [209.85.160.180])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4312E27A133
-	for <linux-iio@vger.kernel.org>; Mon, 12 Jan 2026 09:56:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0E5026A0A7
+	for <linux-iio@vger.kernel.org>; Mon, 12 Jan 2026 10:04:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768211797; cv=none; b=nnz4DmNb2sRMBDM+5skW79bFOKydvJx0+JaTxayPIgICuZbQtpBTYJSuFcXZAdJBYx6G4/GIWr6j+MebXYdJ5t1+ZYS3suFQzfbI2bYln3diu34PCH2rTyz18mynRyVZdzUqLCXp0+jY1dvqrKIp/py2UQcC/oHFvzkEyFJaVZY=
+	t=1768212253; cv=none; b=AxAeylN6ciZnNmv7BZdKhuno3Y3SGUT03+sxKqyEbm6DF1Ep6ZahLvBrGf9RDZszTak0UvK5NnePgmfi8/BnwXdFHnFySIFztvvLqfwTE/hGGJdApW2qEHTP+YnCBi3Qlx+45cmg0Zy9aKGIK5wHQkR8QlFw8aYPUxM67pMTDcc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768211797; c=relaxed/simple;
-	bh=3s/FMAtzszYcu9PdHJfF317mWoWH9YpJ2wK1w4fpfk4=;
+	s=arc-20240116; t=1768212253; c=relaxed/simple;
+	bh=oqOGXbeDIQlNePE/yiwJ+NT0kXzbdHkFX5Jkw1SZilw=;
 	h=From:Date:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=WIiuae1A8tNRgo0XfwIaGNBdS+nx3quh5s+ePu6jqsS10i/F/AjB++ZMBbCnKz8BMDfLDPDKuX74DB07bWVd0IL5tGV4Q1FDg05UDGvcxCT0847hfGI9d3i5YF9PD6tBLhk1Wg++vkMnPhU6vFN7dIR01dRT4DRUyI9uMAZallU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=kLv8bhia; arc=none smtp.client-ip=209.85.219.47
+	 Content-Type:Content-Disposition:In-Reply-To; b=iHufo+jdBOjPRXekGPei6x1qDr7KB7J7WIkOQEapo1VFOMc0V21yfwN3gS0hSClXCdrZQtA2Qe9q2Rgni39A4VCE+aQwR4ZH/HmssIU5Jcs0UOn9i3t7Cl1cIuH84bK4KQYkOj4SrbU9r5HfW172E9sQ5pmL6hxWHLhJHOXgEOY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=N1MAv9wr; arc=none smtp.client-ip=209.85.160.180
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-qv1-f47.google.com with SMTP id 6a1803df08f44-8907f0b447aso70910886d6.0
-        for <linux-iio@vger.kernel.org>; Mon, 12 Jan 2026 01:56:36 -0800 (PST)
+Received: by mail-qt1-f180.google.com with SMTP id d75a77b69052e-4f34c5f2f98so69454021cf.1
+        for <linux-iio@vger.kernel.org>; Mon, 12 Jan 2026 02:04:09 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1768211795; x=1768816595; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:date:from:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=MnATEC3zLg0tL86MlP2EV/1JLZWPopkEABO3EE71r+k=;
-        b=kLv8bhiaFBSoPdw8udk652N6eQ3DrGMy7A8juzduVpU/b+SCTLEkYlxl0MUQdYjClg
-         vFZ7q5WmR7K365Mkf3+a2O3mYsmFba8dzJ0sgM0BzDL+WhrjX4mFAq5prBzTnUchtRSK
-         5j6Jlzcp63ldFzkcCPh8osqTfFcEyedyrSJVg76j1C14HVkkFXddPRc07q00sJtwhBmZ
-         3JZUI/ZfAxXC8H95GQMlQ+aCVEufhjbXBl3wUoe6s1yawKQ2bZOO0W5ekxvvmVHZ5CXi
-         hz1oj0XGX2AFF3qC/+98UfqUgT1xe/VZND0VodCc9vcBWq8dZwOpBFRNgLG9Tn4wAPBo
-         6XJA==
+        d=gmail.com; s=20230601; t=1768212248; x=1768817048; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:date:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=U5hiBX/EJmbP0rFvOH8HeLIh3uhucig2oXB0fSc8NSg=;
+        b=N1MAv9wr2GKPAbiYalM/ultWNNHRnItPp5uXKvCM9nkvAzQFdm99JkOJgc33VhPz1V
+         ibfz65ZZuDO5Q64juKemL+byXnTxxmBaqh6NpWTEYeutm99LwhE4t0L1IjKPo5I6DNZK
+         yDsg1alLvf+bcgzaDP/IQuQr7ZCKORbG5WY4yyRoeleYUijEUSRze7dROPJ5+GCepI+/
+         WR7ZTH+369iyj2ABChPQoETsUQKDQ19Pl26Vn9SG+8ekLchPlJgNlZg/96+zI1T36I6z
+         xwlh2MOOSc1e5gQ3sdFPCNY2S+Jse9CZh246KE0DfIHACdcwtxABH6KKStG+hBW8Ssdq
+         uLkQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768211795; x=1768816595;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:date:from:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=MnATEC3zLg0tL86MlP2EV/1JLZWPopkEABO3EE71r+k=;
-        b=WOccdXQVm8crIabd5fOAn1YAynBdCF/BEd/K1kVjSM0up8YCtCm6YtTjGki0zuAfpw
-         JBjBsbKHMGT3j81yD1ld/Wl7MeSVfxF/TIeOvd9rqLw1gUS4Za0mPgpTRkHYYZaOML6U
-         RhgMAaz8OQaHKSYWnpPywUStVzjVN948QAfrQcjlamDUrO4qpFLXoh5kveVmpF9qmfzz
-         xGlOipKWnCXkuXrLJ7I7EVe1qfkUlzLZMCzFtiY9yPAyHzojz4DkhoJV2ajlBDM2ynIA
-         tLOxmE0jMuwwDX5YEd39Q4ZxAX0rEYf9WcHibet0UbVj/RltxugLESQdaLRBrWJh2+Xg
-         n6Eg==
-X-Forwarded-Encrypted: i=1; AJvYcCW1xK2s6gZQ2KHJWblypCnuKybJpfsALQj1niv/XRcorPXgI/V1cSBASj6DPFLRFYkkVJISJABbOGM=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwkJwanehU1KL5qBiCBzbSMdOVkO8bYmY1kbtsqCZWJ8LlGEViI
-	tA6LOHXnoboAwTFhfjb7+i7ARSjXBWSCdNl0vDLYB3ftkt4UEqAamjJi
-X-Gm-Gg: AY/fxX40ccfpGUHxgzc7twTEYb6YV+szEfQgor60V4c+olXciYk07VRqd+DRillJXGR
-	Vy2mk9EEHjsGNMhHDppLg/6Ls00iVeeCU0cN7PmcPru+cq4fZYHYrVgA9nXGZLCwg9WtPss5WvY
-	e8IWDC/0XngRSgGOBSqiXuy76xcDyA6j84aXanoPuo6tOGk1huKf3X0SBHk1m3QS7eKxyxbzd2/
-	eQISyB00hqkpstfXDALSbYbitVjVJYnxLOr5GI3vnEzuSxS6jx2UFMOYF/iNL7R482Bzr50QGTo
-	7Zp2y/fpX8vzLdXF9vFvu9dWwOXd42K3hjKKLPy6o19GXr0geJ7Iqd5PA0Cda21yWsBAFeqqfVa
-	5Ay5mjNuMmmDlrRCqCqALfj2FQHcxWw5AbDA/koQWyRh3wBIAO2sur18GO10omdQUMn4vkIBMp3
-	MrMXfl08iOpI9u/N70rvcq3cvK42njIcMUVbuMKMXcjzj663PLbg65JoWGt+BG2bm4O+Tt+z1nx
-	xTx
-X-Google-Smtp-Source: AGHT+IGfjbR1JItQWWDS/6nxRJ8tfrCJBireKBKEmFX+tFc5HJk5PzGCIGvKimxXJ2znJZjE+wGwRQ==
-X-Received: by 2002:a05:6214:3bc7:b0:880:498e:a63e with SMTP id 6a1803df08f44-8908417a374mr295137846d6.2.1768211795213;
-        Mon, 12 Jan 2026 01:56:35 -0800 (PST)
+        d=1e100.net; s=20230601; t=1768212248; x=1768817048;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:date:from:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=U5hiBX/EJmbP0rFvOH8HeLIh3uhucig2oXB0fSc8NSg=;
+        b=WDDlHVbc355tLhelQHWLx7IYi+J9lTP15/DSiALJxFiKVyLZHlca3XHqDtexA03XV5
+         uQ2IEF840DneKnryH1lujmPzlnQUE89tkIIhvUNyzk6NnxpCu2/GRsHyMFR8vcMp9cL6
+         bUQcXecivB6OPlvHpWy3PvX4XPyTzrXpH6g9EKxknVXNq5hZqus7nBsGHDLTGCoDMbvQ
+         gRuYUTLXxLlJb6lMudSkAPrGOqtB4f40yhGtjXA/0l1aagXIPpnY3TSQz3UYL6OP3Rtv
+         nb+u7okVR40Z/wRzzB2mc2TrqY528edrRq+HtJtxKRtFQChWbWbSKgRYLtPMLJy61wvd
+         YfgA==
+X-Forwarded-Encrypted: i=1; AJvYcCWJTf3fXdMehRMSZohNQHjXxWuWFfSqWi6RvGV+s79Zcdsp/v+ZjzTpEP0Ee3tOoIOuk+gRo6sRo1Q=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxjbAmSuY7stO0LFsdYT2y5Jxu9IyxXRCsHS9UJ+I19k6IZzpQ8
+	MnTEYFL0Xj8crTnpKoqNkLwQsIh7t7vMgzDmejxK/5a65IU9EHMg946U
+X-Gm-Gg: AY/fxX5VPjBPxqKfNkgNLX3leTdiOV63yROrd1xJiPOgyMwiGXIS9kP+qc81P8ER0U5
+	ipRWRGJ8gukzUbo3r1V2BUFHG9CJX/dvdywLV2/RHn8liQOyFPckMW+o/gK6X1oxlFxjx1wL07f
+	gAPelDI7azUfqLbVRdzEiqTT/8FGJWHf/pzFiDxuH47SVqo6yddEP9b2SfTaxG4+SyPyPx2gvS1
+	V8lD6TM/RvBO3lZgekqtKSfgennGV4m+szE15EwYVueZdrfwuGqeCpXFHh3RU2jIC7QhG/GJY2Z
+	vxcdRDFUIQWB1Z5i8kiU8Bv8cioOZPXfb45IRNT837WFn2T1SbZEcyF3Ud+cq1NdP0Kky4sjcPb
+	ECr+xIM7aCglC69r+jUP6kZ/k4PGxchaZ+Y3ashFjQk431bO2NcdWPbaZEkqIIxIuU9hsIfepPp
+	M8Lg3TyMAtRuSbAAKxHoSK09p5Z3rzH7OJB3tbYOaxAXUrU9bLgOaej7cuR2djxR59PdYOqA5KX
+	SlX
+X-Google-Smtp-Source: AGHT+IGB5QJeG8ku54AAK1oYhHpchOQzwcbI7Eq/Mwh+iHar9n885imDNGmU7We54FoKXl1Rmirvqg==
+X-Received: by 2002:a05:622a:114f:b0:4f1:cab1:9d3c with SMTP id d75a77b69052e-4ffb4a264c8mr245124531cf.57.1768212248319;
+        Mon, 12 Jan 2026 02:04:08 -0800 (PST)
 Received: from RDEALENC-L01.ad.analog.com ([24.206.116.131])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-890770e2aa5sm135606526d6.19.2026.01.12.01.56.32
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-4ffa8e627absm119541151cf.30.2026.01.12.02.04.05
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 12 Jan 2026 01:56:34 -0800 (PST)
+        Mon, 12 Jan 2026 02:04:07 -0800 (PST)
 From: Rodrigo Alencar <455.rodrigo.alencar@gmail.com>
 X-Google-Original-From: Rodrigo Alencar <rdealenc@rdealenc-l01.ad.analog.com>
-Date: Mon, 12 Jan 2026 09:56:25 +0000
-To: Andy Shevchenko <andriy.shevchenko@intel.com>, 
-	rodrigo.alencar@analog.com
+Date: Mon, 12 Jan 2026 10:04:02 +0000
+To: Krzysztof Kozlowski <krzk@kernel.org>, 
+	Rodrigo Alencar <rodrigo.alencar@analog.com>
 Cc: linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org, 
 	devicetree@vger.kernel.org, linux-doc@vger.kernel.org, Jonathan Cameron <jic23@kernel.org>, 
 	David Lechner <dlechner@baylibre.com>, Andy Shevchenko <andy@kernel.org>, 
 	Lars-Peter Clausen <lars@metafoo.de>, Michael Hennerich <Michael.Hennerich@analog.com>, 
 	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
 	Conor Dooley <conor+dt@kernel.org>, Jonathan Corbet <corbet@lwn.net>
-Subject: Re: [PATCH v3 2/6] iio: frequency: adf41513: driver implementation
-Message-ID: <6hcqrcy3meskddrklb3jtlpca2snrs4upwms56lhq7mkes7krm@vdiaqkfc6lgg>
+Subject: Re: [PATCH v3 1/6] dt-bindings: iio: frequency: add adf41513
+Message-ID: <7ck6vexpeak47kob7niupkdg3nbyvp4nab7rqmz6niq4frf64y@tjnph6hno32z>
 References: <20260108-adf41513-iio-driver-v3-0-23d1371aef48@analog.com>
- <20260108-adf41513-iio-driver-v3-2-23d1371aef48@analog.com>
- <aWFPEa9HI4wmYLpn@smile.fi.intel.com>
+ <20260108-adf41513-iio-driver-v3-1-23d1371aef48@analog.com>
+ <20260109-translucent-violet-smilodon-ed1917@quoll>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <aWFPEa9HI4wmYLpn@smile.fi.intel.com>
+In-Reply-To: <20260109-translucent-violet-smilodon-ed1917@quoll>
 
-On 26/01/09 08:55PM, Andy Shevchenko wrote:
-> On Thu, Jan 08, 2026 at 12:14:51PM +0000, Rodrigo Alencar via B4 Relay wrote:
-> > 
-> > The driver is based on existing PLL drivers in the IIO subsystem and
-> > implements the following key features:
-> > 
-> > - Integer-N and fractional-N (fixed/variable modulus) synthesis modes
-> > - High-resolution frequency calculations using microhertz (µHz) precision
-> >   to handle sub-Hz resolution across multi-GHz frequency ranges
-> > - IIO debugfs interface for direct register access
-> > - FW property parsing from devicetree including charge pump settings,
-> >   reference path configuration and muxout options
-> > - Power management support with suspend/resume callbacks
-> > - Lock detect GPIO monitoring
-> > 
-> > The driver uses 64-bit microhertz values throughout PLL calculations to
-> > maintain precision when working with frequencies that exceed 32-bit Hz
-> > representation while requiring fractional Hz resolution.
+On 26/01/09 09:13AM, Krzysztof Kozlowski wrote:
+> On Thu, Jan 08, 2026 at 12:14:50PM +0000, Rodrigo Alencar wrote:
+> > +examples:
+> > +  - |
+> > +    spi {
+> > +        #address-cells = <1>;
+> > +        #size-cells = <0>;
+> > +
+> > +        pll@0 {
+> > +            compatible = "adi,adf41513";
+> > +            reg = <0>;
+> > +            spi-max-frequency = <10000000>;
+> > +            clocks = <&ref_clk>;
+> > +            avdd1-supply = <&vdd_3v3>;
+> > +            avdd2-supply = <&vdd_3v3>;
+> > +            avdd3-supply = <&vdd_3v3>;
+> > +            avdd4-supply = <&vdd_3v3>;
+> > +            avdd5-supply = <&vdd_3v3>;
+> > +            vp-supply = <&vdd_3v3>;
+> > +
+> > +            adi,power-up-frequency-mhz = <12000>;
+> > +            adi,charge-pump-current-microamp = <2400>;
+> > +            adi,phase-detector-polarity-positive-enable;
+> > +        };
+> > +    };
 > 
-> ...
-> 
-> > +/* Specifications */
-> > +#define ADF41510_MAX_RF_FREQ			(10000ULL * HZ_PER_MHZ)
-> > +#define ADF41513_MIN_RF_FREQ			(1000ULL * HZ_PER_MHZ)
-> > +#define ADF41513_MAX_RF_FREQ			(26500ULL * HZ_PER_MHZ)
-> 
-> We need HZ_PER_GHZ. I think it's easy to have one be present in units.h.
+> One example - more complete, so the next one - is enough. They do not
+> differ.
 >
 
-26.5 GHz is not going to use HZ_PER_GHZ, so for consistency I think it makes
-sense to keep HZ_PER_MHZ for the others.
+Not sure I undestood this message:
+- are those examples 'enough' as the second one is 'more complete'?
+- do I need to change the second example to be 'more complete',
+  because 'they do not differ'?
+- do I need to create 'one example' 'more complete', apart from the existing ones?
  
-> ...
+> > +  - |
+> > +    #include <dt-bindings/gpio/gpio.h>
+> > +    spi {
+> > +        #address-cells = <1>;
+> > +        #size-cells = <0>;
+> > +
+> > +        pll@0 {
+> > +            compatible = "adi,adf41513";
 > 
-> > +#define ADF41513_MIN_REF_FREQ			(10U * HZ_PER_MHZ)
-> > +#define ADF41513_MAX_REF_FREQ			(800U * HZ_PER_MHZ)
-> > +#define ADF41513_MAX_REF_FREQ_DOUBLER		(225U * HZ_PER_MHZ)
+> Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
 > 
-> How does "U" help here?
-
-not much really, will remove.
-
-> ...
-> 
-> > +#define ADF41513_MIN_INT_4_5			20
-> > +#define ADF41513_MAX_INT_4_5			511
-> > +#define ADF41513_MIN_INT_8_9			64
-> > +#define ADF41513_MAX_INT_8_9			1023
-> 
-> Not sure if we want (BIT(x) - 1) for the limits as we have non-0 minimums.
-> 
-> ...
-> 
-> > +#define ADF41513_MAX_CLK_DIVIDER		4095
-> 
-> Sounds like a candidate for (BIT(12) - 1).
->
-
-limits for INT are taken from the datasheet as is, so I think it makes to leave them
-like this, as for CLK1/CLK2 max divider, indeed I can make it (BIT(12) - 1) as it
-refers to a 12-bit register field.
- 
-> ...
-> 
-> > +#define ADF41513_MAX_PHASE_MICRORAD		6283185UL
-> 
-> Basically I'm replying to this just for this line. 180° is PI radians, which is
-> something like 31415926... Can we use here (2 * 314...) where PI is provided in
-> one of the used form? This will help to grep and replace in case we will have a
-> common PI constant defined in the kernel (units.h).
-> 
-> -- 
-> With Best Regards,
-> Andy Shevchenko
+> Best regards,
+> Krzysztof
 > 
 
 kind regards,

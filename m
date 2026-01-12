@@ -1,95 +1,96 @@
-Return-Path: <linux-iio+bounces-27637-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-27638-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C347D12BA4
-	for <lists+linux-iio@lfdr.de>; Mon, 12 Jan 2026 14:21:15 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 418A0D12CDB
+	for <lists+linux-iio@lfdr.de>; Mon, 12 Jan 2026 14:30:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 1F0A1300C6D4
-	for <lists+linux-iio@lfdr.de>; Mon, 12 Jan 2026 13:21:14 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id ACBD1301B494
+	for <lists+linux-iio@lfdr.de>; Mon, 12 Jan 2026 13:26:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34946357725;
-	Mon, 12 Jan 2026 13:21:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0118E358D09;
+	Mon, 12 Jan 2026 13:26:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="TEdAe+H+"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DfkaNEc9"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
+Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 748152222C4
-	for <linux-iio@vger.kernel.org>; Mon, 12 Jan 2026 13:21:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1868B3590A2
+	for <linux-iio@vger.kernel.org>; Mon, 12 Jan 2026 13:26:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768224073; cv=none; b=k2+uP60DUp30jceF/g8B7kDzzHhpd18fKEduy/pCyue4iTzAb2fX8pehfr00PKhhOj/mSbZutC93ZXrnH1qdRnBYU4LFQDfV89HaiYFRs2Evidb/9NdplWGopI0frA8Os5RwqADdy1ax6+0ey96jAjiokpLesGGFrWr9Kx84kEA=
+	t=1768224378; cv=none; b=KS7dfFB2WB+4/N0xubLVF4GZlSe8BVmBgDhrq7Ljj7PRSvXrcWh+2pY7q129ZOj2Oj4gCJyHTXIabC4HER0jJ97MJ0yNV7ZeIGuGHuAHJJgQ0OUc5SMeRqhNHIddVembetn4JykAvHCoWBpUIKjSU/A8eBME0olVErpAKrK443Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768224073; c=relaxed/simple;
-	bh=QrUQeHmuD7Kq7P+N9j6XZkXNDTrh42rBy966fxPI1wM=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=dEQkgWnU10h/Bandc0daEhvaeSwrknmjOyN+YPKo5G3hJF0gzBylKXryzBUKpoQu54QzfTf2OAyDfGSL5FpZucIUI0V1IPP3oC+nMk4cYri7h5fhi9ECCIdqB78x5zKaEo2nFTEFXTXQbR5YfxaUd8gTAFME4PHgahBGFKYVRhM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=TEdAe+H+; arc=none smtp.client-ip=209.85.128.51
+	s=arc-20240116; t=1768224378; c=relaxed/simple;
+	bh=2oF3EvFvkFdV1ST1qNlWtL9H1W7jx/jvnRhy2/pkxC4=;
+	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=LL03nMDU9Kcl1DQoHcEJUDCG/f3oYBw6opjxLeNwOChpJzTi9oiYFy1zsZnlTVRbkcJiN5oSH0IYAtUsH/xEG7ym1epIqJxzwmLsbKo+euB1nHBDU7qo6eG12EZ07GeVzd5QO0aYPW/2/TS0yrlRExSsl7Z8ahH+1/jRlRWAqUU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=DfkaNEc9; arc=none smtp.client-ip=209.85.128.43
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-4779cc419b2so59912825e9.3
-        for <linux-iio@vger.kernel.org>; Mon, 12 Jan 2026 05:21:11 -0800 (PST)
+Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-477ba2c1ca2so70335485e9.2
+        for <linux-iio@vger.kernel.org>; Mon, 12 Jan 2026 05:26:16 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1768224070; x=1768828870; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1768224375; x=1768829175; darn=vger.kernel.org;
         h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=qaUR1iXVEZCuCvQZbgMPmGmuTJhDs6JoaR/MCARuHcA=;
-        b=TEdAe+H+43QdOHfm9wP0Xq1F7IwfrXGs1AWQc2fvgQwjq5lPrTds/CS4o/Z0UtBLu/
-         D2H/nMnGlfH5e1EOVU89WnVudObyqkM0vt27py4WOCQmC2fpxdBICJEHHSDQOIt3DB2b
-         7qUNE5OD86SUD/A+NjO75ALqvYH2o4plcoo9dmvU4z4j+PmdAyaUUH/zkDXvFpcUXIUn
-         fLO8OkAn8mPQ8ojNoHfeqv+Re1Biqm/mydCohE3aSkR6oBpsqhY+POuQ4KjeFd033elN
-         gB+wt6pF1flWqfxQuI+9jIg8qbxwZkewOb9hqxCmbecAL/DurWAQxYwBHRMqwXEtGjtW
-         Q2ZQ==
+         :in-reply-to:date:to:from:subject:message-id:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=2oF3EvFvkFdV1ST1qNlWtL9H1W7jx/jvnRhy2/pkxC4=;
+        b=DfkaNEc9mo5G1xuMYZpBK0Yi0vLlUZHCHl3vpqDjoDZdz+k5meKzNWCALaQNcLLh3w
+         svzJ4ikCeeSJnn9WahXETk/B1yK7uqqjY3ef9bL7jEuskjDnwuIOMdP+KNW1PfypGCAP
+         1TOOJMjgovTTJ34gqhpA78wRDO4HJOH3iGWlqKX3gi5zzu2Pua1gAI6i1O+MX2shgoNY
+         I0UtMomjlO3wVpsbDbuhb0uRvXa2Bbd82tokIyuzzeAoKRrsoJEGu62hlpq2ws8/eP1A
+         xHjx1QDL6/mMLnaaJe5TpxS/J4Q+GTRRTcBV3z4nz2+RJ5xV+CPaR9pGrcqKLKkAZQWi
+         L/bA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768224070; x=1768828870;
+        d=1e100.net; s=20230601; t=1768224375; x=1768829175;
         h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-gg
+         :in-reply-to:date:to:from:subject:message-id:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=qaUR1iXVEZCuCvQZbgMPmGmuTJhDs6JoaR/MCARuHcA=;
-        b=D1u/O1xqCjeWF4NOg7nDL/aRAWLHAEIjAzolNfJ1lVQJTrO3vpWfK5uLDVwLXHe5Tj
-         iaU01J67Ba/wa75fJpCi6ExNDFPsOmc7ZQ1SxK8kGt9FO+y4ugLDlz6wRMAk0aqeKo4H
-         n63THLe7VwbfdBJJUFty5HrEI0nB6C5tkqCMPDKPcZXvw78kG+N2XNcyGfgBgHS6jBI4
-         g4wbVu96/OXDSlQvuyHTnWbyZUAR2tEB4fi8E+CqiD9K3BYs94Y35aVzKs+DnL7lqWQj
-         ZM5UIUhqAqeM3YTrfoF8NSTq8HJzCvkkQXmYpeIDiM5P0thLEg0JJuEKjdsPMH2FmaYx
-         5PDQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVqkC0nLBcYC4WhGVz3FufHEVZPSup2NrnSD4JAqB8oMES3sUdbAd4UhiAoE1gncbl5WzdI9lpLhes=@vger.kernel.org
-X-Gm-Message-State: AOJu0YycEdBj4Z503jEnuMd96djiM+2TkStDWbklM5dInrebDMVmP8jg
-	jx7bqIfr165RvECD31q5yqaq1o1hohLcgO8YMnAZFq3UZEHxMMxLwyQJ
-X-Gm-Gg: AY/fxX6pSEEpzVGTazL3zOBUNYkAJxFEW57ZADfZz8kXSQ5K4YMM532SLkovs4Bkcal
-	fWlAExPN1yjNMRXJlIKpee+d3zzFvnnqIUxiMEyrzeghCz9qYkZQmVT8N89XJvmluUAZWF+tkta
-	ATmiWD7ykN7n7/xigdQfwgDEuEf05WN3Q595vEwK9zKKww3jnIMiZhLsNSoacZ/TXUQxwyDLd2T
-	Nn3GTNpZm4F996I0MJdHbaWqwLRnS0SArTTJcBTr8+kYhUGbzmYggvZrQaMVfL6GONapjYpsTlw
-	4HL4eN6vXkkMrzOIOdDUab98d6vX5WxUrMrtUEbyNMJRE/mFUbomlkdeQaP/BZsY8jQikCZwMmF
-	e5sNXCe61IlAc2E2sFPJVi5usHsvia8dGGRbMI+TsFVdHmLRtGqtn7se9FHYSR7ymvieOHX1zf4
-	xEXcBMwtAv7fubhugr1Iz1186jKjSfyw==
-X-Google-Smtp-Source: AGHT+IFK+bTXgrx0rrDtsi2mZgSzqRkancBWy+9OHXmBOnd3lcCOJSOYbZz3Wv2tOFi5TLTuZs94xA==
-X-Received: by 2002:a05:600c:8b57:b0:47d:586e:2fea with SMTP id 5b1f17b1804b1-47d84b182a7mr202762515e9.15.1768224069584;
-        Mon, 12 Jan 2026 05:21:09 -0800 (PST)
+        bh=2oF3EvFvkFdV1ST1qNlWtL9H1W7jx/jvnRhy2/pkxC4=;
+        b=YoliOaL9T9OHz+om9u9tSBOPQ8rVO1t6Waf+fyl1DSPcpCZ2BtANxoJD74FBcsH3uZ
+         9l67w+aCur83sWkdW4VUYQc3OfKDCe/+Y5WrkvVG5vlUUSs8e5HQrSHoQ3xI4WCQL+mo
+         T79cFrDX2+44EOD54l3KouQ54jxciDoLbeqViZL5liW3p1cnd4x5fOZ0zaq70UJe404y
+         6N+/PVMNNldu3VD8V8qbu8SLxPweeBd+thO9Ou2tK5syjPNiZN3RpZ3mveFE7nTrwgKs
+         2b54fSqGJMGwDFI4i8UlG0+8SwtUnuLWOrX6QIYru27k3nRSRsUmWCwSTc2CyHKyB8Aj
+         2f1g==
+X-Forwarded-Encrypted: i=1; AJvYcCUAbqeorVr2c/r5wTaVCotVX4Z2QmDP/LSYHerTIhKcPst0qLpfK9soGxTB+V4PUFHqIuLEpHF7qaE=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy2bM3RIgJRVZU6ItXVBrF9LckHf6GEr/UCYeDZC6MisY+vCBYO
+	NYKxKOZAlr09Y3GeDlw1CM04a4L43kdsxkzSxZVqBwAbXkwmzKQFtttE
+X-Gm-Gg: AY/fxX5hjr8JUcP8PuN255k8jKTjnZ7RXFnCmwq9TnayILsazqjMw+VuQCPgnef/D9h
+	o70IaQa+e3ZZ4X2oR302Otb45PuQ6HPCX7D50ioxV6IMqnGDEriRNftf9qJYqGG2slIDkkA/zHU
+	Sj/dOSa1q4UN7k61HRtMv/XNrwrw4A1E/C7IxVl0Scdgma8MbJFDlnE3IJwGtqkGnOx3qEKpuZS
+	LIs2G250rEn7/9EA1Vt/SC11dp4V2vgJ0otx69+7AnC8R1W/hh0JNUod98NzgdPxrS8x2BKTQRd
+	Yyv89VEnFkJb5cTTunYisZkcLp7nE6aAI2O0FUVVDnhrHwyHy9Nd5zrPXOrHIGSD7v1gUU1scWd
+	Rbqtc1H/M7t9iu0RNFE+o2omur+VXaSUArA2NpsPRxZYI0KjvErUilvl7SW0X323UHjnkXFtd6O
+	g99RDp3MhdNYPZ+60/enU=
+X-Google-Smtp-Source: AGHT+IE0r9BfXZwwCs8FxodI7q7TaoHaAIhaO6CL+8zbXIknTrrEsGAV9Dt1QcHGcpWUSxtAtrNqnw==
+X-Received: by 2002:a05:600c:37c8:b0:479:3a87:2092 with SMTP id 5b1f17b1804b1-47d84b3db2cmr177108365e9.36.1768224375401;
+        Mon, 12 Jan 2026 05:26:15 -0800 (PST)
 Received: from [192.168.1.187] ([161.230.67.253])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-47d86c6ff40sm284618595e9.2.2026.01.12.05.21.08
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-47d8717d9e7sm128261375e9.8.2026.01.12.05.26.14
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 12 Jan 2026 05:21:09 -0800 (PST)
-Message-ID: <d36d38b2ae691371c653927fcba310bc525e0aac.camel@gmail.com>
-Subject: Re: [PATCH 2/2] iio: adc: ad9467: make iio backend optional
+        Mon, 12 Jan 2026 05:26:15 -0800 (PST)
+Message-ID: <bf02e226e8010e973ba1477259bedf0006f02292.camel@gmail.com>
+Subject: Re: [PATCH 2/2] iio: accel: adxl380: Add support for 1 kHz sampling
+ frequency
 From: Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
-To: Jonathan Cameron <jic23@kernel.org>
-Cc: Tomas Melin <tomas.melin@vaisala.com>, Michael Hennerich	
- <Michael.Hennerich@analog.com>, Nuno Sa <nuno.sa@analog.com>, Lars-Peter
- Clausen <lars@metafoo.de>, David Lechner <dlechner@baylibre.com>, Andy
- Shevchenko <andy@kernel.org>, 	linux-iio@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Date: Mon, 12 Jan 2026 13:21:51 +0000
-In-Reply-To: <20260111114109.28b01266@jic23-huawei>
-References: 
-	<20251216-b4-ad9467-optional-backend-v1-0-83e61531ef4d@vaisala.com>
-		<20251216-b4-ad9467-optional-backend-v1-2-83e61531ef4d@vaisala.com>
-		<20251221200014.29af7df8@jic23-huawei>
-		<356a75b0-dc3e-4d10-a827-1af3b4ab638f@vaisala.com>
-		<997f9d13f44031170a4518abf23ee6806d526054.camel@gmail.com>
-	 <20260111114109.28b01266@jic23-huawei>
+To: Francesco Lavra <flavra@baylibre.com>, Ramona Gradinariu	
+ <ramona.gradinariu@analog.com>, Antoniu Miclaus
+ <antoniu.miclaus@analog.com>,  Lars-Peter Clausen	 <lars@metafoo.de>,
+ Michael Hennerich <Michael.Hennerich@analog.com>,  Jonathan Cameron	
+ <jic23@kernel.org>, David Lechner <dlechner@baylibre.com>, Nuno
+ =?ISO-8859-1?Q?S=E1?=	 <nuno.sa@analog.com>, Andy Shevchenko
+ <andy@kernel.org>, 	linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Date: Mon, 12 Jan 2026 13:26:57 +0000
+In-Reply-To: <371503c267d9ded0195da126b58bc8339cb864e8.camel@baylibre.com>
+References: <20260107123518.4017292-1-flavra@baylibre.com>
+		 <20260107123518.4017292-3-flavra@baylibre.com>
+		 <52e5cea72b99fc23c922cf74d7dce3403f43c9cd.camel@gmail.com>
+		 <9a5db937dc7072d95d6757cdf2eb8d6fde4abbd0.camel@baylibre.com>
+		 <5cd68e397bb45f606f59038290e4f3ac09d241da.camel@gmail.com>
+	 <371503c267d9ded0195da126b58bc8339cb864e8.camel@baylibre.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 User-Agent: Evolution 3.58.2 
@@ -100,65 +101,38 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-On Sun, 2026-01-11 at 11:41 +0000, Jonathan Cameron wrote:
-> On Mon, 05 Jan 2026 14:57:02 +0000
-> Nuno S=C3=A1 <noname.nuno@gmail.com> wrote:
->=20
-> > On Mon, 2026-01-05 at 13:06 +0200, Tomas Melin wrote:
-> > > Hi,
+On Thu, 2026-01-08 at 15:07 +0100, Francesco Lavra wrote:
+> On Thu, 2026-01-08 at 13:45 +0000, Nuno S=C3=A1 wrote:
+> > On Wed, 2026-01-07 at 16:39 +0100, Francesco Lavra wrote:
+> > > On Wed, 2026-01-07 at 13:56 +0000, Nuno S=C3=A1 wrote:
 > > >=20
-> > > On 21/12/2025 22:00, Jonathan Cameron wrote:=C2=A0=20
-> > > > On Tue, 16 Dec 2025 11:40:06 +0000
-> > > > Tomas Melin <tomas.melin@vaisala.com> wrote:
-> > > > =C2=A0=20
-> > > > > Not all users can or want to use the device with an iio-backend.
-> > > > > For these users, let the driver work in standalone mode, not coup=
-led
-> > > > > to the backend or the services it provides.
-> > > > >=20
-> > > > > Signed-off-by: Tomas Melin <tomas.melin@vaisala.com>=C2=A0=20
-> > > > Hi Tomas,
-> > > > =C2=A0=20
-> > > > > =C2=A0static int ad9467_probe(struct spi_device *spi)
-> > > > > @@ -1352,21 +1361,25 @@ static int ad9467_probe(struct spi_device=
- *spi)
-> > > > > =C2=A0	indio_dev->channels =3D st->info->channels;
-> > > > > =C2=A0	indio_dev->num_channels =3D st->info->num_channels;
-> > > > > =C2=A0
-> > > > > +	/* Using a backend is optional */=C2=A0=20
-> > > >=20
-> > > > I'll largely defer to Nuno on the backend aspects but I would like =
-a
-> > > > lot more than a statement that it is optional in this comment.
-> > > > At least something about where the data goes and what a real system
-> > > > that didn't provide a backend would look like etc.=C2=A0=20
+> > > > 3. Other thing that comes to mind is if it makes sense to allow
+> > > > controlling odr if
+> > > > Activity/Inactivity detection is enabled?
 > > >=20
-> > > Having the backend as optional is about flexibility to incorporate th=
-ese
-> > > devices as fits best with the system. The current backend approach is
-> > > pretty much dictated with how the ADI default backend is implemented.
-> > > These devices are fully configurable via SPI interface so the backend
-> > > doesn't necessarily need to be anything fancy or even configurable.
-> > >=20
-> > > So there is atleast two use cases that promote the optional iio-backe=
-nd
-> > > approach
-> > > =C2=A0- simple backend that is not configurable, no need for a dedica=
-ted
-> > > driver. The backend (FPGA) sits and waits for data and handles it whe=
+> > > Disallowing odr control when activity detection is enabled could be a=
 n
-> > > it arrives=C2=A0=20
+> > > option, but what error code should be returned if the user tries to s=
+et
+> > > the
+> > > sampling frequency value when not allowed? -EBUSY?
 > >=20
-> > Agree on the above. Ideally we could have some dummy backend for the ab=
-ove but
-> > it is not really easy/maintainable to have it.
+> > I think it makes sense given the constrains on activity events. EBUSY
+> > would be my choice as well.
+> > Out of curiosity, do you know how the chip behaves if we change the odr
+> > with activity enabled? Is it
+> > just ignored?
 >=20
-> When we say the backend needs no driver, where does the data end up?
-> Is the idea that it goes into some processing pipeline and sent to
-> some external path that we have no visibility of? i.e. We configure the
-> data capture in Linux but never see the data?
+> The chip supports activity detection only when in low-power mode; changin=
+g
+> the odr to a value that requires exiting from low-power mode would mean
+> effectively disabling activity detection. The driver prevents this by
+> forcing low-power mode whenever detection is enabled, which means that an=
+y
+> odr changes by userspace do not take effect as long as detection is
+> enabled.
 
-Yes, that's also my assumption about Tomas's usecase.
+Thx for the explanation!
 
 - Nuno S=C3=A1
 

@@ -1,80 +1,46 @@
-Return-Path: <linux-iio+bounces-27639-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-27640-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 212A1D13470
-	for <lists+linux-iio@lfdr.de>; Mon, 12 Jan 2026 15:48:07 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 77E7FD14177
+	for <lists+linux-iio@lfdr.de>; Mon, 12 Jan 2026 17:37:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 19C5C3043F34
-	for <lists+linux-iio@lfdr.de>; Mon, 12 Jan 2026 14:41:28 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 14B5130AFF2C
+	for <lists+linux-iio@lfdr.de>; Mon, 12 Jan 2026 16:32:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8532226F2AD;
-	Mon, 12 Jan 2026 14:41:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A6B3365A13;
+	Mon, 12 Jan 2026 16:32:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="HNZqkUFv"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GGe/Zfdp"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ot1-f54.google.com (mail-ot1-f54.google.com [209.85.210.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1ED4624A069
-	for <linux-iio@vger.kernel.org>; Mon, 12 Jan 2026 14:41:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A2433644C3;
+	Mon, 12 Jan 2026 16:32:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768228887; cv=none; b=MzurJ+bcIYs7dU+G74RvqGA+ozXP5Sc6SRkkiGo1LZiHcprfW0ZnGKlILK9kojeh0gxu+FTxIjRqal0N0HUaVEdXBwHikMAHigcIkJSNgXJxq8EiEP4lQv7jRoh93W6Ku1drVz72kfibCqsUIeoIXb5x+7K25Xas/N+eiHvuAmI=
+	t=1768235567; cv=none; b=MXccEdKcemFZn79g/bezyXEbyUlvp3y64HRle8j3MO5u/XoOUniIflBja4cnsNMwh/NK5Kla50ZqIgsK6lnMxgKcT0FbvB6sIKtAAXKEUVCz7ozPILA1SAH0McT5MLZUwequgPZvWkrGRNzYQAqZfmoqwvsY13QjwNTwnXYJyJg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768228887; c=relaxed/simple;
-	bh=qZZHS1R4xLS4zgalA/gyx01MgICJsIzmaoHvIOl6qb0=;
+	s=arc-20240116; t=1768235567; c=relaxed/simple;
+	bh=vUpZrBUvVK6pKmzGvycTY1IBhwsVQMRQeewon3mbxcw=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=b3VTYooho3wFulqhfilgO8vR6X3fviSCxg0IpuF5kKb/1R11jXkusl9LWw7p1M8J7Hj9Y+lebnzFZcUIec2urBz7f/CvNYB8jtHCDbRnYL5aDHrms23aUbkj1XY/LsNkqaCKIdEjbjJhFFewEQzpY87wtfNFBo6kTKUgwWeLjsc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=HNZqkUFv; arc=none smtp.client-ip=209.85.210.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-ot1-f54.google.com with SMTP id 46e09a7af769-7c76d855ddbso2125273a34.3
-        for <linux-iio@vger.kernel.org>; Mon, 12 Jan 2026 06:41:24 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1768228884; x=1768833684; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=s/sLKRuQj5vG1Kuv5GOtqiWgAZD9RPOmY06hK0FQGGQ=;
-        b=HNZqkUFvm0+kLs8owPFULIQmnpmGjtRb5WDzG+N+OhdAKk/jeVswNAsvYW6T5+Ftx3
-         cS5eCgSQ878aNasXUKhGMJuorobjpXBVOWW9DhT0MmWahRIfwHx+DOpBF/i3mbWU66rE
-         NwzKHYQFT9NCZnem8BJF93CrTKP/WG31EhIAEvUSmh/5+dbyNqEmc2VmV8AUltHathDf
-         4fxIDRsYakDh54991yvDWIF5kHdJ8x2G+/ZsyM4Ff4zssEeDcOG2Du9HgTsGE/5N3Cnh
-         fQo4WTuJGtdE7h1J+snQI1NbI/QuFYcn8j0A5FUUXbG4FStJGvOOE6e5Th4C8SgIk0HO
-         NBOw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768228884; x=1768833684;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=s/sLKRuQj5vG1Kuv5GOtqiWgAZD9RPOmY06hK0FQGGQ=;
-        b=VtQMXODcfTKBptEyujQcGtDmshlIZTcbzyAFumFR/gqODvUoWrDOe7N5ET8knyq4oL
-         XWagfo0/MZci3clSBsuVTHIWgNaNKVKH2KwgL92udrSPJfLYPwXk7qLqDAmIjvRT70aK
-         Hdkp4X6YQwASAiEcZsgFVuztRRqOGJwdsA1qnytzW1bMqlNhPuOi3AiKjMoc8ujU4T+G
-         v9pV02yU5TuPGV5Sc57KTyhNMKcHdcsybQsnRJ29XAsh6/qyTBjYm8r8Wa9mJZ46EJxb
-         /x+Ya/m9SmQ/E7PFB6ndT+Gh7/5NOL6yrsXeIFbzDI6CZIJYPW1XbmJfd0fQ8lLx9UfH
-         vNww==
-X-Forwarded-Encrypted: i=1; AJvYcCUkR96Yq/HcFZNOOzIZh9LaGJq2WJRGdLLyaPbrKV7ff2ar0B3g97j6/65nlMqBZKTEXMvqiTkmRuU=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzyVmrncEmhe5rGGMZHwgQ+/7DUw7hQcnpgOkqg3O3U4Fdkd3+9
-	L4pm0eOjKYvmW360GNo4YHxMO1FdxDbuCgQGzQ1IRk9InstNBp5a++Oz4VYX2AY1wKE=
-X-Gm-Gg: AY/fxX5YRV61w5qrdBR4nPJZqRtfma07aCBB5s4kd9mu3NqGXXyZXLs+CG+AB1lkegx
-	WemotZk17VdaLlyXVD8l467fNFwzazbyA8GGKaEUJYBYZnO9Gi53xd+YgXRlz7tKuuEQtbYa1mX
-	qSF4CGTDlu1ljtAOfdVSt9lfEdFrfx4+Z1/V49NSiWYBXYdg2C5p2rdXYhWg1qTnoC/qWij6PQS
-	rfcYQoYn4O3JfRK9mZyF8mC1e1G9Ovooev5VB6KTpcltKRweG6okCluh3NDTtfO+fJ8fQAQqICJ
-	cCpjGRt58qfqNgDdBDC/3cYo+FSbThc/euErDHHIUYp20+WOy61io+e7cRiIOwIoNXvG7CrHXa0
-	0bKhEfhFT5754WyLplJkeju/0lgV/mR7fYyM0o+l++hnHzdxWjNoSFwonLJMmKsjntcLToL1S2F
-	/cP4GNNq/VN1o0zw2H1Bk7pSrVeHLtPIWo97aJ5Lapyt0dxwcG3ety6NsxdGKN
-X-Google-Smtp-Source: AGHT+IFVkCHz/WAcMVxHenTtbJnGTGBZ0KG5evvW5KHsPZudnryOg54Lm8P0MELlXtHKRRirnnSN7A==
-X-Received: by 2002:a05:6830:1cc2:b0:7c7:5a07:303e with SMTP id 46e09a7af769-7ce50ace54amr7836962a34.36.1768228883973;
-        Mon, 12 Jan 2026 06:41:23 -0800 (PST)
-Received: from ?IPV6:2600:8803:e7e4:500:6b4b:49b3:cce5:b58f? ([2600:8803:e7e4:500:6b4b:49b3:cce5:b58f])
-        by smtp.gmail.com with ESMTPSA id 46e09a7af769-7ce478da6f6sm13113563a34.25.2026.01.12.06.41.23
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 12 Jan 2026 06:41:23 -0800 (PST)
-Message-ID: <8b203e02-aed7-4acf-b6fe-9b470717fce2@baylibre.com>
-Date: Mon, 12 Jan 2026 08:41:22 -0600
+	 In-Reply-To:Content-Type; b=CfjQ8vFe3S7NfsCY7BFXMupP8OOmsq/FQbezX7abyR9DGkEVckDvbfvDJS+7/Ox+Vo7V1JuvkR8SNe0tSujkfhmBH7/RX7zyZo3zlJKpdY77SvgD2q/ZdXeiXKMvldmsepQOiP+fSv65Ao559a0Yo68JKl0kNymZ2ZP4Q+qyoJ8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GGe/Zfdp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08670C116D0;
+	Mon, 12 Jan 2026 16:32:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1768235567;
+	bh=vUpZrBUvVK6pKmzGvycTY1IBhwsVQMRQeewon3mbxcw=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=GGe/ZfdphsXO5nU7lfvE0ifsKNZLVM2RlwmLejdvcMXtVoE9N/LRcyUfFa+p63//m
+	 b0hzeKHISRfIqeUmKq/jujxhSkJ50TMUAuRh0yB7yayT5iwC/xsTNNIaXWrvmolduF
+	 fNoI5lO0vrWo7iCR8CCbJU53VZc8XYDWe03hpc76uxvv+sPGfjzNMGCAswoNV3PTTE
+	 E9i30ZMpBfgzYhxUKeDnSUyfUsSkIYgh4dCBjss8F0LP9InsGRA84WQ9sUMlkrt6yK
+	 jgNcL11xSwUP+sWLYLXSuIstvKlMV8oiO4UEv9V43q3IJScYAZAAQiKU0ILzRChlXa
+	 rYC7xYNVm1osg==
+Message-ID: <48f00a0b-667b-4aa0-93a2-e1045e20e309@kernel.org>
+Date: Mon, 12 Jan 2026 17:32:42 +0100
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -82,23 +48,83 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] iio: adc: ad7768-1: Select GPIOLIB
-To: Jonathan Cameron <jic23@kernel.org>, linux-iio@vger.kernel.org,
- Jonathan Santos <Jonathan.Santos@analog.com>
-Cc: =?UTF-8?Q?Nuno_S=C3=A1?= <nuno.sa@analog.com>,
- Andy Shevchenko <andy@kernel.org>,
- Jonathan Cameron <Jonathan.Cameron@huawei.com>,
- kernel test robot <lkp@intel.com>
-References: <20260111165528.284067-1-jic23@kernel.org>
+Subject: Re: [PATCH v3 1/6] dt-bindings: iio: frequency: add adf41513
+To: Rodrigo Alencar <455.rodrigo.alencar@gmail.com>,
+ Rodrigo Alencar <rodrigo.alencar@analog.com>
+Cc: linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-doc@vger.kernel.org,
+ Jonathan Cameron <jic23@kernel.org>, David Lechner <dlechner@baylibre.com>,
+ Andy Shevchenko <andy@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>,
+ Michael Hennerich <Michael.Hennerich@analog.com>,
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, Jonathan Corbet <corbet@lwn.net>
+References: <20260108-adf41513-iio-driver-v3-0-23d1371aef48@analog.com>
+ <20260108-adf41513-iio-driver-v3-1-23d1371aef48@analog.com>
+ <20260109-translucent-violet-smilodon-ed1917@quoll>
+ <7ck6vexpeak47kob7niupkdg3nbyvp4nab7rqmz6niq4frf64y@tjnph6hno32z>
+From: Krzysztof Kozlowski <krzk@kernel.org>
 Content-Language: en-US
-From: David Lechner <dlechner@baylibre.com>
-In-Reply-To: <20260111165528.284067-1-jic23@kernel.org>
+Autocrypt: addr=krzk@kernel.org; keydata=
+ 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 a/A=
+In-Reply-To: <7ck6vexpeak47kob7niupkdg3nbyvp4nab7rqmz6niq4frf64y@tjnph6hno32z>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 1/11/26 10:55 AM, Jonathan Cameron wrote:
-> From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+On 12/01/2026 11:04, Rodrigo Alencar wrote:
+>>
+>> One example - more complete, so the next one - is enough. They do not
+>> differ.
+>>
 > 
-> This driver provides a gpio chip a some related functions are not
-I think you mean "chip and ..."
+> Not sure I undestood this message:
+> - are those examples 'enough' as the second one is 'more complete'?
+> - do I need to change the second example to be 'more complete',
+>   because 'they do not differ'?
+> - do I need to create 'one example' 'more complete', apart from the existing ones?
+
+Just have one example, e.g. the second one.
+
+Best regards,
+Krzysztof
 

@@ -1,47 +1,64 @@
-Return-Path: <linux-iio+bounces-27656-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-27657-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 865F4D14DFD
-	for <lists+linux-iio@lfdr.de>; Mon, 12 Jan 2026 20:11:43 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 22A23D15114
+	for <lists+linux-iio@lfdr.de>; Mon, 12 Jan 2026 20:35:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 27C2A3008CA7
-	for <lists+linux-iio@lfdr.de>; Mon, 12 Jan 2026 19:11:37 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id BF29030433D1
+	for <lists+linux-iio@lfdr.de>; Mon, 12 Jan 2026 19:35:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F72D313540;
-	Mon, 12 Jan 2026 19:11:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7E5F324B0A;
+	Mon, 12 Jan 2026 19:35:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sUAKRbHk"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Gk4PYzyh"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C971313556;
-	Mon, 12 Jan 2026 19:11:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F28833242C0;
+	Mon, 12 Jan 2026 19:35:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768245092; cv=none; b=h/h+WN5QRevvBh1U/rr+y6J5Wr622vLdfmd6IHcP6v+mp5DnikquS5VACUaAy8lwACHpk225vJ5JTxDQ+h9h4MJ2XtoMZfxqmatn5ukd2ulxIcCslD8ugu5PknuB86mAlrfUOioxZr1AEzjAPxpdawMUOFAyy+g6Yl9mPCS2IpI=
+	t=1768246539; cv=none; b=p0wUqHuO0IsWjfpI1YsMRvJMuMH0SWhMU1KvAgbOuRersKse/a8yD4vv8NTx4LGx5tZwgjG3//XiXLZJ9EJ4NVEfwFIGhBFcxmNMHKc6WmXL+6qctlbmnsFpHfN1LqFVk2XciErabbc7js4sCucc2wrFmq1mB3WMFafLfe6JQN0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768245092; c=relaxed/simple;
-	bh=Bp7pBX+OGh6LLz01oUXLShkCkvbut93sLdXhad2VFwk=;
+	s=arc-20240116; t=1768246539; c=relaxed/simple;
+	bh=dwnfhhlWwjKBzZ/++zJtBbcRr4tEH0QKns5wtabi5Lc=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=cvF4UjnP2lKpvuDgk3jFFfopv2198vaADSYy5/HSO74YkL9Klhglx7GqPQt5g6wPeA7mru8c6/78H6E5+gxzmMp9GCHS734AnW0eVSR+KI1ewMVP9wPlMAilw+56P+jhs7Qnmp4EV4GeVBJdiD/YV62DqIYlrewZrUbYytD0nXQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sUAKRbHk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3A39C19422;
-	Mon, 12 Jan 2026 19:11:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768245091;
-	bh=Bp7pBX+OGh6LLz01oUXLShkCkvbut93sLdXhad2VFwk=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=sUAKRbHkFCWrda42Dj1GscGYuJdquAG5ax3pbRO/IC8r/0u8yg7S5AutOGWmy1qWi
-	 j1q8fZijtCmJQKWM4vAF6p2F4hz40B+62nSxlFWmASDP4c7O4PQsuGxhm0nrHiSUEi
-	 kJ6PwclMzdjNZ1uRlwbtxIQX1CEs9l2YbCjSm3F2m/R9vvNlpmdWp/NTBzTPLCrPtd
-	 DxOUUXbAKjOigtH6qcdpVD2PmLlf//AhB1WB6873Jkp1EJMXll2NFe0ZaCDwPnanEb
-	 tyNgLzOv+wy1ia2acKU89WrrNOYC80M/fqPzvdFsMYIi+lGpqKwDpY9ygNmvRjObAH
-	 d3JOb4b27W2bA==
-Date: Mon, 12 Jan 2026 19:11:26 +0000
-From: Mark Brown <broonie@kernel.org>
-To: Andy Shevchenko <andriy.shevchenko@intel.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=kO86dwS1x7aykmXIHeP+h6VFpjW84b6/FaDM9Qnz5Z8D63eL73oIk3HcLbIrdqRaMgg4bWYD6bqsk9DLOWjm4c0IfHjW4KFHIrCq/5ociU+cYcYaE49/4I17zttrySVhJo31uxoDe4ZrZ/zmFsmdUMAN+huod1Mm21PR7Gfhn2I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Gk4PYzyh; arc=none smtp.client-ip=192.198.163.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1768246538; x=1799782538;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=dwnfhhlWwjKBzZ/++zJtBbcRr4tEH0QKns5wtabi5Lc=;
+  b=Gk4PYzyhbu8xLjFxLRD+DMknoSilGNPgOeXtGC+kjSEOZUTAEqI9Mgx3
+   Q6ooGn8GnQsmux3XQyruhMR4em+KPj52F/quy4yzJO87HdEJUYe0uYtO2
+   cuOvnZL3kQWhUrFoH6d2UWRSxffdizycs169pklZvKpm1ckEYe0VtUHvY
+   2r0n0kSXgsSpiaYZ7r77HMnG53IQMymq39f2S+xWjkeU8GCAbmkF2gkWn
+   N6nu140aqlC3TLu8t0d7Zyi4yfI3tlekRpIXogm7bFnG6oM3e+1aHQYTa
+   JfEGkY1hFNpHa+O+kojn3yrou4BxVbu0EznSdv6WZ7Yiz5tSL7PB9nIS+
+   A==;
+X-CSE-ConnectionGUID: yiARljkAQPSeZ/raHA/pUw==
+X-CSE-MsgGUID: 5Z5koySvRjilCVjZ2bbjTA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11669"; a="68533984"
+X-IronPort-AV: E=Sophos;i="6.21,221,1763452800"; 
+   d="scan'208";a="68533984"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Jan 2026 11:35:37 -0800
+X-CSE-ConnectionGUID: Zviq7gKNSJqaRdB8e32U5A==
+X-CSE-MsgGUID: ymTWk6OkRX6QRA5xQm/dUA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,221,1763452800"; 
+   d="scan'208";a="204577132"
+Received: from dhhellew-desk2.ger.corp.intel.com (HELO localhost) ([10.245.245.37])
+  by fmviesa009-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Jan 2026 11:35:34 -0800
+Date: Mon, 12 Jan 2026 21:35:32 +0200
+From: Andy Shevchenko <andriy.shevchenko@intel.com>
+To: Mark Brown <broonie@kernel.org>
 Cc: David Lechner <dlechner@baylibre.com>, Rob Herring <robh@kernel.org>,
 	Krzysztof Kozlowski <krzk+dt@kernel.org>,
 	Conor Dooley <conor+dt@kernel.org>,
@@ -54,57 +71,48 @@ Cc: David Lechner <dlechner@baylibre.com>, Rob Herring <robh@kernel.org>,
 	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
 	linux-iio@vger.kernel.org
 Subject: Re: [PATCH v5 3/9] spi: support controllers with multiple data lanes
-Message-ID: <22a6a28c-0f03-4571-b2a0-8c9b82788b68@sirena.org.uk>
+Message-ID: <aWVNBPfv-R5erugo@smile.fi.intel.com>
 References: <20260112-spi-add-multi-bus-support-v5-0-295f4f09f6ba@baylibre.com>
  <20260112-spi-add-multi-bus-support-v5-3-295f4f09f6ba@baylibre.com>
  <aWVGZWg7zLpeG3Kz@smile.fi.intel.com>
+ <22a6a28c-0f03-4571-b2a0-8c9b82788b68@sirena.org.uk>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="Xpu6+ZOWxbgm4kEk"
-Content-Disposition: inline
-In-Reply-To: <aWVGZWg7zLpeG3Kz@smile.fi.intel.com>
-X-Cookie: Surprise due today.  Also the rent.
-
-
---Xpu6+ZOWxbgm4kEk
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
+In-Reply-To: <22a6a28c-0f03-4571-b2a0-8c9b82788b68@sirena.org.uk>
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
+ krs, Bertel Jungin Aukio 5, 02600 Espoo
 
-On Mon, Jan 12, 2026 at 09:07:17PM +0200, Andy Shevchenko wrote:
-> On Mon, Jan 12, 2026 at 11:45:21AM -0600, David Lechner wrote:
+On Mon, Jan 12, 2026 at 07:11:26PM +0000, Mark Brown wrote:
+> On Mon, Jan 12, 2026 at 09:07:17PM +0200, Andy Shevchenko wrote:
+> > On Mon, Jan 12, 2026 at 11:45:21AM -0600, David Lechner wrote:
 
-> > +	/* Multi-lane SPI controller support. */
-> > +	u32			tx_lane_map[SPI_DEVICE_DATA_LANE_CNT_MAX];
-> > +	u32			num_tx_lanes;
-> > +	u32			rx_lane_map[SPI_DEVICE_DATA_LANE_CNT_MAX];
-> > +	u32			num_rx_lanes;
+...
 
-> This adds 72 bytes in _each_ instance of spi_device on the platforms that do
-> not use the feature and might not ever use it. Can we move to the pointer
-> and allocate the mentioned fields separately, please?
+> > > +	/* Multi-lane SPI controller support. */
+> > > +	u32			tx_lane_map[SPI_DEVICE_DATA_LANE_CNT_MAX];
+> > > +	u32			num_tx_lanes;
+> > > +	u32			rx_lane_map[SPI_DEVICE_DATA_LANE_CNT_MAX];
+> > > +	u32			num_rx_lanes;
+> 
+> > This adds 72 bytes in _each_ instance of spi_device on the platforms that do
+> > not use the feature and might not ever use it. Can we move to the pointer
+> > and allocate the mentioned fields separately, please?
+> 
+> Do we have real systems where we have enough SPI devices for anyone to
+> care?
 
-Do we have real systems where we have enough SPI devices for anyone to
-care?
+Define "enough" :-) To me even dozen of devices is enough (it gets almost a 1kB
+of space) esp. if we are talking about quite low profile embedded systems.
 
---Xpu6+ZOWxbgm4kEk
-Content-Type: application/pgp-signature; name="signature.asc"
+-- 
+With Best Regards,
+Andy Shevchenko
 
------BEGIN PGP SIGNATURE-----
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmllR10ACgkQJNaLcl1U
-h9Bt8Qf6A6TBxg40SLuzYnQ9ggqj5mOnIE3sg7K/MtWzFZ75iD3MySRpJUNXMA5e
-GbRbN0PimlOqQT3ACFUaDMGuMCH+cLYzuMjMsWz9Cn0/DgHh7DG5C5cYGwToptaB
-XxUKmI16nzObMN2ENGJ8Xg6RFn0B8eBEzLvZsNZa2tFxkg0qINMIjIpKi7RkvTTC
-en9aAgNJ4K98B5C1nl+YMVI/OeX7Je7k7lueu1T89b3iwLhjlQ9sc44Ez86dbzf8
-Vi4Xycgb0lTCB8GsxP11lyrMDgPrjEsaueqBouOjbio59SpwtwcH2KKMdhJBoIro
-eS/qCHvCAlDJMqrex2kEk38lc6tzvg==
-=rtW3
------END PGP SIGNATURE-----
-
---Xpu6+ZOWxbgm4kEk--
 

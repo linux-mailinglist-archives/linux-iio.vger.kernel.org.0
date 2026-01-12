@@ -1,148 +1,164 @@
-Return-Path: <linux-iio+bounces-27636-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-27637-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 688C0D121DF
-	for <lists+linux-iio@lfdr.de>; Mon, 12 Jan 2026 12:01:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C347D12BA4
+	for <lists+linux-iio@lfdr.de>; Mon, 12 Jan 2026 14:21:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 1D85930F3EDB
-	for <lists+linux-iio@lfdr.de>; Mon, 12 Jan 2026 10:58:14 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 1F0A1300C6D4
+	for <lists+linux-iio@lfdr.de>; Mon, 12 Jan 2026 13:21:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E142354AE3;
-	Mon, 12 Jan 2026 10:58:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34946357725;
+	Mon, 12 Jan 2026 13:21:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ndGEgoYK"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="TEdAe+H+"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC325350A2D;
-	Mon, 12 Jan 2026 10:58:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 748152222C4
+	for <linux-iio@vger.kernel.org>; Mon, 12 Jan 2026 13:21:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768215487; cv=none; b=YGVQnjLHryq2cJ++su+4Ns6KM+HjEDgwbJ2Rhzienm1n7/jZKa1ywT5VUluqKicvHlvv6LzbtudA+Xl3cGr8nT5JOaydPXYwMmLf8Olpq0Df3q23ZwhjUjPHj97Md94ob/p0tpPVnizS+13t1f56Wvq/EcSmt0ox2mRsYGoJcPc=
+	t=1768224073; cv=none; b=k2+uP60DUp30jceF/g8B7kDzzHhpd18fKEduy/pCyue4iTzAb2fX8pehfr00PKhhOj/mSbZutC93ZXrnH1qdRnBYU4LFQDfV89HaiYFRs2Evidb/9NdplWGopI0frA8Os5RwqADdy1ax6+0ey96jAjiokpLesGGFrWr9Kx84kEA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768215487; c=relaxed/simple;
-	bh=2CxAOQdm9pfGqDTstJ8atlI08gE5e3UXHrQse7CP0Zw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=CW43uYLUg7O8+uvxLWOYiKHL5YL7i/PUld0DgjyL/B6O1R+O9fU6ghfzn6noGETWCMKEJsi1DW4gS/6LHXef/v5No19E2+ETtKQwdlefgFIypnxbdsC1dbPGNBmW+wGvsbXePcUaT+p7UdYsQJ5U6VxlV2AAjXXJEglx6xSNI1E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ndGEgoYK; arc=none smtp.client-ip=198.175.65.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1768215484; x=1799751484;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:content-transfer-encoding:in-reply-to;
-  bh=2CxAOQdm9pfGqDTstJ8atlI08gE5e3UXHrQse7CP0Zw=;
-  b=ndGEgoYKWyNSqTWYgUyVrEA0ObTO/XyBYAYqZw92K8E45tSgibAWw2Dv
-   h+b9PFnEtGUl1Cw9HgOA5ZvcQZi5AT1xRR2J/x65Qr+wcRvZ5nh+VxJBz
-   0vtGWt6lVgU5R2yZ3xNPsV3fGgjtf62ORktgB/vF/5z5I5Zn10oSbNVXP
-   2mFRJDgy8nQ6mCMGwFjxbJz00eVqZ23Kja98sNwkcl56YyrgVHc1IWdyO
-   4pwstHeMRGEufwLgmGGVIEB+IZNrCP66hR5s2eh48DkbZ5+/lJsdMQiVj
-   kgIyQls5W/5G0YhN3zFL0azfDPyvvXCThiMS6/GLqQNH4+089YSFklO6u
-   w==;
-X-CSE-ConnectionGUID: +sKY7mYSSJ63GcAo/z8ugQ==
-X-CSE-MsgGUID: jXpcU17eS9uKZ7ZfuOc/9Q==
-X-IronPort-AV: E=McAfee;i="6800,10657,11668"; a="69539637"
-X-IronPort-AV: E=Sophos;i="6.21,219,1763452800"; 
-   d="scan'208";a="69539637"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
-  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Jan 2026 02:58:01 -0800
-X-CSE-ConnectionGUID: 4mhKBSP3SFSJa1yd0GqT+A==
-X-CSE-MsgGUID: v4/FUKHxT9ab2jMUfkyIJQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,219,1763452800"; 
-   d="scan'208";a="203219426"
-Received: from dhhellew-desk2.ger.corp.intel.com (HELO localhost) ([10.245.245.37])
-  by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Jan 2026 02:57:57 -0800
-Date: Mon, 12 Jan 2026 12:57:55 +0200
-From: Andy Shevchenko <andriy.shevchenko@intel.com>
-To: Rodrigo Alencar <455.rodrigo.alencar@gmail.com>
-Cc: rodrigo.alencar@analog.com, linux-kernel@vger.kernel.org,
-	linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-doc@vger.kernel.org, Jonathan Cameron <jic23@kernel.org>,
-	David Lechner <dlechner@baylibre.com>,
-	Andy Shevchenko <andy@kernel.org>,
-	Lars-Peter Clausen <lars@metafoo.de>,
-	Michael Hennerich <Michael.Hennerich@analog.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Jonathan Corbet <corbet@lwn.net>
-Subject: Re: [PATCH v3 2/6] iio: frequency: adf41513: driver implementation
-Message-ID: <aWTTs1n_N0dVjpbV@smile.fi.intel.com>
-References: <20260108-adf41513-iio-driver-v3-0-23d1371aef48@analog.com>
- <20260108-adf41513-iio-driver-v3-2-23d1371aef48@analog.com>
- <aWFPEa9HI4wmYLpn@smile.fi.intel.com>
- <6hcqrcy3meskddrklb3jtlpca2snrs4upwms56lhq7mkes7krm@vdiaqkfc6lgg>
+	s=arc-20240116; t=1768224073; c=relaxed/simple;
+	bh=QrUQeHmuD7Kq7P+N9j6XZkXNDTrh42rBy966fxPI1wM=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=dEQkgWnU10h/Bandc0daEhvaeSwrknmjOyN+YPKo5G3hJF0gzBylKXryzBUKpoQu54QzfTf2OAyDfGSL5FpZucIUI0V1IPP3oC+nMk4cYri7h5fhi9ECCIdqB78x5zKaEo2nFTEFXTXQbR5YfxaUd8gTAFME4PHgahBGFKYVRhM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=TEdAe+H+; arc=none smtp.client-ip=209.85.128.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-4779cc419b2so59912825e9.3
+        for <linux-iio@vger.kernel.org>; Mon, 12 Jan 2026 05:21:11 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1768224070; x=1768828870; darn=vger.kernel.org;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=qaUR1iXVEZCuCvQZbgMPmGmuTJhDs6JoaR/MCARuHcA=;
+        b=TEdAe+H+43QdOHfm9wP0Xq1F7IwfrXGs1AWQc2fvgQwjq5lPrTds/CS4o/Z0UtBLu/
+         D2H/nMnGlfH5e1EOVU89WnVudObyqkM0vt27py4WOCQmC2fpxdBICJEHHSDQOIt3DB2b
+         7qUNE5OD86SUD/A+NjO75ALqvYH2o4plcoo9dmvU4z4j+PmdAyaUUH/zkDXvFpcUXIUn
+         fLO8OkAn8mPQ8ojNoHfeqv+Re1Biqm/mydCohE3aSkR6oBpsqhY+POuQ4KjeFd033elN
+         gB+wt6pF1flWqfxQuI+9jIg8qbxwZkewOb9hqxCmbecAL/DurWAQxYwBHRMqwXEtGjtW
+         Q2ZQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1768224070; x=1768828870;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=qaUR1iXVEZCuCvQZbgMPmGmuTJhDs6JoaR/MCARuHcA=;
+        b=D1u/O1xqCjeWF4NOg7nDL/aRAWLHAEIjAzolNfJ1lVQJTrO3vpWfK5uLDVwLXHe5Tj
+         iaU01J67Ba/wa75fJpCi6ExNDFPsOmc7ZQ1SxK8kGt9FO+y4ugLDlz6wRMAk0aqeKo4H
+         n63THLe7VwbfdBJJUFty5HrEI0nB6C5tkqCMPDKPcZXvw78kG+N2XNcyGfgBgHS6jBI4
+         g4wbVu96/OXDSlQvuyHTnWbyZUAR2tEB4fi8E+CqiD9K3BYs94Y35aVzKs+DnL7lqWQj
+         ZM5UIUhqAqeM3YTrfoF8NSTq8HJzCvkkQXmYpeIDiM5P0thLEg0JJuEKjdsPMH2FmaYx
+         5PDQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVqkC0nLBcYC4WhGVz3FufHEVZPSup2NrnSD4JAqB8oMES3sUdbAd4UhiAoE1gncbl5WzdI9lpLhes=@vger.kernel.org
+X-Gm-Message-State: AOJu0YycEdBj4Z503jEnuMd96djiM+2TkStDWbklM5dInrebDMVmP8jg
+	jx7bqIfr165RvECD31q5yqaq1o1hohLcgO8YMnAZFq3UZEHxMMxLwyQJ
+X-Gm-Gg: AY/fxX6pSEEpzVGTazL3zOBUNYkAJxFEW57ZADfZz8kXSQ5K4YMM532SLkovs4Bkcal
+	fWlAExPN1yjNMRXJlIKpee+d3zzFvnnqIUxiMEyrzeghCz9qYkZQmVT8N89XJvmluUAZWF+tkta
+	ATmiWD7ykN7n7/xigdQfwgDEuEf05WN3Q595vEwK9zKKww3jnIMiZhLsNSoacZ/TXUQxwyDLd2T
+	Nn3GTNpZm4F996I0MJdHbaWqwLRnS0SArTTJcBTr8+kYhUGbzmYggvZrQaMVfL6GONapjYpsTlw
+	4HL4eN6vXkkMrzOIOdDUab98d6vX5WxUrMrtUEbyNMJRE/mFUbomlkdeQaP/BZsY8jQikCZwMmF
+	e5sNXCe61IlAc2E2sFPJVi5usHsvia8dGGRbMI+TsFVdHmLRtGqtn7se9FHYSR7ymvieOHX1zf4
+	xEXcBMwtAv7fubhugr1Iz1186jKjSfyw==
+X-Google-Smtp-Source: AGHT+IFK+bTXgrx0rrDtsi2mZgSzqRkancBWy+9OHXmBOnd3lcCOJSOYbZz3Wv2tOFi5TLTuZs94xA==
+X-Received: by 2002:a05:600c:8b57:b0:47d:586e:2fea with SMTP id 5b1f17b1804b1-47d84b182a7mr202762515e9.15.1768224069584;
+        Mon, 12 Jan 2026 05:21:09 -0800 (PST)
+Received: from [192.168.1.187] ([161.230.67.253])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-47d86c6ff40sm284618595e9.2.2026.01.12.05.21.08
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 12 Jan 2026 05:21:09 -0800 (PST)
+Message-ID: <d36d38b2ae691371c653927fcba310bc525e0aac.camel@gmail.com>
+Subject: Re: [PATCH 2/2] iio: adc: ad9467: make iio backend optional
+From: Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
+To: Jonathan Cameron <jic23@kernel.org>
+Cc: Tomas Melin <tomas.melin@vaisala.com>, Michael Hennerich	
+ <Michael.Hennerich@analog.com>, Nuno Sa <nuno.sa@analog.com>, Lars-Peter
+ Clausen <lars@metafoo.de>, David Lechner <dlechner@baylibre.com>, Andy
+ Shevchenko <andy@kernel.org>, 	linux-iio@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Date: Mon, 12 Jan 2026 13:21:51 +0000
+In-Reply-To: <20260111114109.28b01266@jic23-huawei>
+References: 
+	<20251216-b4-ad9467-optional-backend-v1-0-83e61531ef4d@vaisala.com>
+		<20251216-b4-ad9467-optional-backend-v1-2-83e61531ef4d@vaisala.com>
+		<20251221200014.29af7df8@jic23-huawei>
+		<356a75b0-dc3e-4d10-a827-1af3b4ab638f@vaisala.com>
+		<997f9d13f44031170a4518abf23ee6806d526054.camel@gmail.com>
+	 <20260111114109.28b01266@jic23-huawei>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.58.2 
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <6hcqrcy3meskddrklb3jtlpca2snrs4upwms56lhq7mkes7krm@vdiaqkfc6lgg>
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
- krs, Bertel Jungin Aukio 5, 02600 Espoo
 
-On Mon, Jan 12, 2026 at 09:56:25AM +0000, Rodrigo Alencar wrote:
-> On 26/01/09 08:55PM, Andy Shevchenko wrote:
-> > On Thu, Jan 08, 2026 at 12:14:51PM +0000, Rodrigo Alencar via B4 Relay wrote:
+On Sun, 2026-01-11 at 11:41 +0000, Jonathan Cameron wrote:
+> On Mon, 05 Jan 2026 14:57:02 +0000
+> Nuno S=C3=A1 <noname.nuno@gmail.com> wrote:
+>=20
+> > On Mon, 2026-01-05 at 13:06 +0200, Tomas Melin wrote:
+> > > Hi,
+> > >=20
+> > > On 21/12/2025 22:00, Jonathan Cameron wrote:=C2=A0=20
+> > > > On Tue, 16 Dec 2025 11:40:06 +0000
+> > > > Tomas Melin <tomas.melin@vaisala.com> wrote:
+> > > > =C2=A0=20
+> > > > > Not all users can or want to use the device with an iio-backend.
+> > > > > For these users, let the driver work in standalone mode, not coup=
+led
+> > > > > to the backend or the services it provides.
+> > > > >=20
+> > > > > Signed-off-by: Tomas Melin <tomas.melin@vaisala.com>=C2=A0=20
+> > > > Hi Tomas,
+> > > > =C2=A0=20
+> > > > > =C2=A0static int ad9467_probe(struct spi_device *spi)
+> > > > > @@ -1352,21 +1361,25 @@ static int ad9467_probe(struct spi_device=
+ *spi)
+> > > > > =C2=A0	indio_dev->channels =3D st->info->channels;
+> > > > > =C2=A0	indio_dev->num_channels =3D st->info->num_channels;
+> > > > > =C2=A0
+> > > > > +	/* Using a backend is optional */=C2=A0=20
+> > > >=20
+> > > > I'll largely defer to Nuno on the backend aspects but I would like =
+a
+> > > > lot more than a statement that it is optional in this comment.
+> > > > At least something about where the data goes and what a real system
+> > > > that didn't provide a backend would look like etc.=C2=A0=20
+> > >=20
+> > > Having the backend as optional is about flexibility to incorporate th=
+ese
+> > > devices as fits best with the system. The current backend approach is
+> > > pretty much dictated with how the ADI default backend is implemented.
+> > > These devices are fully configurable via SPI interface so the backend
+> > > doesn't necessarily need to be anything fancy or even configurable.
+> > >=20
+> > > So there is atleast two use cases that promote the optional iio-backe=
+nd
+> > > approach
+> > > =C2=A0- simple backend that is not configurable, no need for a dedica=
+ted
+> > > driver. The backend (FPGA) sits and waits for data and handles it whe=
+n
+> > > it arrives=C2=A0=20
+> >=20
+> > Agree on the above. Ideally we could have some dummy backend for the ab=
+ove but
+> > it is not really easy/maintainable to have it.
+>=20
+> When we say the backend needs no driver, where does the data end up?
+> Is the idea that it goes into some processing pipeline and sent to
+> some external path that we have no visibility of? i.e. We configure the
+> data capture in Linux but never see the data?
 
-...
+Yes, that's also my assumption about Tomas's usecase.
 
-> > > +/* Specifications */
-> > > +#define ADF41510_MAX_RF_FREQ			(10000ULL * HZ_PER_MHZ)
-> > > +#define ADF41513_MIN_RF_FREQ			(1000ULL * HZ_PER_MHZ)
-> > > +#define ADF41513_MAX_RF_FREQ			(26500ULL * HZ_PER_MHZ)
-> > 
-> > We need HZ_PER_GHZ. I think it's easy to have one be present in units.h.
-> 
-> 26.5 GHz is not going to use HZ_PER_GHZ, so for consistency I think it makes
-> sense to keep HZ_PER_MHZ for the others.
-
-It's about readability and less error prone numbers (anything with 3+ 0:s is
-already prone to mistakes).
-
-...
-
-> > > +#define ADF41513_MIN_INT_4_5			20
-> > > +#define ADF41513_MAX_INT_4_5			511
-> > > +#define ADF41513_MIN_INT_8_9			64
-> > > +#define ADF41513_MAX_INT_8_9			1023
-> > 
-> > Not sure if we want (BIT(x) - 1) for the limits as we have non-0 minimums.
-
-Any comment on this?
-
-...
-
-> > > +#define ADF41513_MAX_CLK_DIVIDER		4095
-> > 
-> > Sounds like a candidate for (BIT(12) - 1).
-> 
-> limits for INT are taken from the datasheet as is, so I think it makes to leave them
-> like this, as for CLK1/CLK2 max divider, indeed I can make it (BIT(12) - 1) as it
-> refers to a 12-bit register field.
-
-...
-
-> > > +#define ADF41513_MAX_PHASE_MICRORAD		6283185UL
-> > 
-> > Basically I'm replying to this just for this line. 180° is PI radians, which is
-> > something like 31415926... Can we use here (2 * 314...) where PI is provided in
-> > one of the used form? This will help to grep and replace in case we will have a
-> > common PI constant defined in the kernel (units.h).
-
-Any comment on this?
-
--- 
-With Best Regards,
-Andy Shevchenko
-
-
+- Nuno S=C3=A1
 

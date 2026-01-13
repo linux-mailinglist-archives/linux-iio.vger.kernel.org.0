@@ -1,145 +1,164 @@
-Return-Path: <linux-iio+bounces-27674-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-27675-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 55197D19D11
-	for <lists+linux-iio@lfdr.de>; Tue, 13 Jan 2026 16:20:06 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E3BBAD1A6DD
+	for <lists+linux-iio@lfdr.de>; Tue, 13 Jan 2026 17:55:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id A01143005189
-	for <lists+linux-iio@lfdr.de>; Tue, 13 Jan 2026 15:20:05 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 80BB930194C4
+	for <lists+linux-iio@lfdr.de>; Tue, 13 Jan 2026 16:52:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4A1E38F92E;
-	Tue, 13 Jan 2026 15:20:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ABCB734DCE4;
+	Tue, 13 Jan 2026 16:52:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="LMVbzxrg"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="Zuh5SqVI"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-oi1-f173.google.com (mail-oi1-f173.google.com [209.85.167.173])
+Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6F2922083
-	for <linux-iio@vger.kernel.org>; Tue, 13 Jan 2026 15:20:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D59F21F461D
+	for <linux-iio@vger.kernel.org>; Tue, 13 Jan 2026 16:52:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768317602; cv=none; b=bO13QQEKa0maB7GWVIlGs7t7w2DmGmPA+40YTL6Dz9+TOCjwQiE0JjkUTKWfYYTR4JKn1QhYMuuS6vGiusjVvhLo6wv5ZHUg/E5QfeZXXA+6gJGxTusHT0THthQtXQ9XjIh08dR6e5gt6K/irLlUvGrknGVS/v8T5q5+bvszY9s=
+	t=1768323149; cv=none; b=NitLooAmCw/ojwxwdM1myhbiXkjH0nxKT0wkE5+LiZHi2JK44SBaO6YDbDqmoVFmJaPr6a1nQ5qepx42q73P+Yx00wP9WvKwfO17uonZ+K918PY3HhqDnvWogYmvR8StxDcngRcKTPvCU+jQ6CD+3bslrKZsn5JQuZ1IryYWI6o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768317602; c=relaxed/simple;
-	bh=u9QDlVi5vshsl+vRhqqYxfjpSezB/lW7iF66MEmIA8U=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=uN9wLpgIVRqH+mvG0utj9E9ZWfQkCx07bspJfVOS6ValXI60NHcKn3+2oq4EYhw5sFdI576F6i9DAay+CfTfF5+HWoaNSklHR6f5ops22b0qwSAVgYaPYYZOiqbLUD32fdWaW9wsCk53fzeAAliEx0eqAKvmp+QyupgBZWiu4D8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=LMVbzxrg; arc=none smtp.client-ip=209.85.167.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-oi1-f173.google.com with SMTP id 5614622812f47-45a3145faddso2319562b6e.2
-        for <linux-iio@vger.kernel.org>; Tue, 13 Jan 2026 07:20:00 -0800 (PST)
+	s=arc-20240116; t=1768323149; c=relaxed/simple;
+	bh=87sM8oKP90w0z33dkwRxWaZIAcg0ysEHSvMr/Qcbr1U=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ebsJy+wjqlGXhVzN7DiWP+kaYxK/Igo5pEy1ft/OtqAfPfJJqveAhWTFbe591+n7+rlFS2TkjXjNJWgvA54CVyg3jScPVteJOKoP8ZyfPcN/A/yiCrtZ2nMsvQCTt7hdCQDNu0ejo5fS+qa0wZWWDaKjIj3aLRuoDR1nH5X+aVk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=Zuh5SqVI; arc=none smtp.client-ip=209.85.128.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-47edffe5540so4698685e9.0
+        for <linux-iio@vger.kernel.org>; Tue, 13 Jan 2026 08:52:27 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1768317600; x=1768922400; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=jyu7NzFFuKWq53tGsr5pg2vni176XxXnsvICQ50qCzI=;
-        b=LMVbzxrg4bWkZAy1sHPi1J3Aik5C4kGVfzwnuZ8nnWcB7fj/o8NPgzXilzpt1J7a0Q
-         /IUFwWlBvHKVBkwSq3inO1jixUIQFHLfnFceJy/KavsB/8ZVeHSn0Cjn9zHMM7G5v0sM
-         Ti14b8LRUQVKPro5VkXSwnfMwNCq7sHcX0Ed2lQKNHlmmGwCOQ/yMcxeIXmKnThWZryD
-         Hixb5uxf8goggI/n61ioai3GEnNMORtrmavhUB7xQ1LC4kCi5oxakkUMXJOAzj3Gcx07
-         Bq2Ictovo+PLUAjIKYUe480oNWpfCAfX+JPwLIroPkQi01SCnjHErsVTfSH4dhDaYcvC
-         1f6g==
+        d=linaro.org; s=google; t=1768323146; x=1768927946; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=Pccbmgwn2QEBQTzOfFfVx5vnJQO1AdZUP/7cqVG+l70=;
+        b=Zuh5SqVI3nB1f2A6D0Xwke4Uwe7iANDCX52uSozJ/uEowwwbOREqM8UKK7zqgZN4rJ
+         9juBxgesr1nARzjrm9Ik/P4KpZn0BjKK1wckKEhT7Npqvm8fDFfPg020JKZ5fFx+zyzw
+         BZfi97nYZ2nYmLfIH4xgh2dPCeQao3xGq7LWUfDI1iHujMwvfgeQN1ijs5zq7GDvlNW5
+         U+6lBtnzrOkWCBhF8/419BZ0S0qeruKEg7wgaarORgmxw1o8mO42+Vk6N9XYIc+PvaD4
+         IoLFNB9U0qvnkH9mp6Rvmxp06jETnrEP9SnZ9YFvu+9QLYXRjWlmUjkP8vbJYUnERv6a
+         RA4g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768317600; x=1768922400;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=jyu7NzFFuKWq53tGsr5pg2vni176XxXnsvICQ50qCzI=;
-        b=h7s8Vyq0fGNaXwQP45GnAhl3acGnXBa09YoG5dNmz2i5bIHyFDiKt+slin9JWVoiMZ
-         lG/KlmmSceqmtw59QKIm197WFl4We1cblmWf0NruAF1nALhWRrUhCEiX5Xbo5enj1Cft
-         aCL11YBqQcORJA/wSNz30ZY4/c9hm1R2kvqq6H+BQ5SqB1gD8PI0DccLhM4/CQYAEmO4
-         rpMPM2FGsvTv1Nc2mi2fn9gXghPvYXsb0OvnXOtGijAkk8Hoi7CeflMB0WkTqBu+yW70
-         h6SnvfC/OutmpgMm7O7yU6z+UU//0PiCWzq6HE+JB+yWacO3CCsxE5NP1SGLdaWlP/rx
-         jvpA==
-X-Gm-Message-State: AOJu0Yz3ZuJUaHvSoWRS803nGLUVHx+aeD6wvGRr4+3Bo20FtvZ6zQh/
-	jrpTxNZ4SO2HwuEZvqoATyQZjVwWurXRDkuCaX5d20Nx70GRzGu82XNB9kU9/gTIlOo=
-X-Gm-Gg: AY/fxX6ayeqd+RpPE6Fh6Z2dPQRZw0Ni1Om+d/gOVP/S0Ac7TLbrrYDJLGx8+Y9v2WK
-	Ln9L+yZAwWiaibLievYeprLkVoJ7jVPbU130IL83ZyNfBgwMAPeRXl/WIMrerMF39AzLu2HyguJ
-	b20Z7HNjAHW2P8UNlvam3pPDquFZClTW9L5yCGQ5iJSh378n9mtJ6VzobTozD2Y7WRjZRAgM1xJ
-	LCMy9unV+W90WOleMx0iH60lig8+sTNG8qU1+ZS3B6FR1t2oYMmW6/X4iQcK8pMlhFKsw1C2r0l
-	/lA6h14X2VRKVOnBx9Iv5wd48OhOHbrOyZD3UF53IkP93K4EOxPeTDpbfvZEysSopvRGgJuCrTI
-	DUbOQ/PTP7PkW8FJOPQQlYRnbQtpnX1sccsVpfkjfonbbjRJfzVyN8Ch8ufcfWrFZUBM8tNPG3Z
-	CwLfCHXlnY1qD7+sfI4RA3U+8IePrPuQAWC9izNvtYDetviWGf+ZoE6q+fa7h/
-X-Google-Smtp-Source: AGHT+IF1pGQlTvSNUkaOR8+ke2GdpdxW5UboFnSiwOvVZ/7w1O4JoRpMuIbNcLLEOUliN4nj8DK/Fw==
-X-Received: by 2002:a05:6808:4a58:10b0:459:b48b:c731 with SMTP id 5614622812f47-45a6bccccdfmr8266556b6e.2.1768317599608;
-        Tue, 13 Jan 2026 07:19:59 -0800 (PST)
-Received: from ?IPV6:2600:8803:e7e4:500:2f58:e1e3:bd08:f09e? ([2600:8803:e7e4:500:2f58:e1e3:bd08:f09e])
-        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-3ffa50e1e29sm14572053fac.19.2026.01.13.07.19.57
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 13 Jan 2026 07:19:58 -0800 (PST)
-Message-ID: <f92e41e6-ab01-4693-8d0e-d5a9df6f6c6b@baylibre.com>
-Date: Tue, 13 Jan 2026 09:19:57 -0600
+        d=1e100.net; s=20230601; t=1768323146; x=1768927946;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Pccbmgwn2QEBQTzOfFfVx5vnJQO1AdZUP/7cqVG+l70=;
+        b=Ytk13YqtOan5OPQ8BepcqqsZKPu8T3GC9x0KSxpNjpd5pR0TOehxsvlSdZ6N6+nBrz
+         cW2x1lrnqYscUokbWFYwx6+dv5bcJ+shOuHSEg7bXe8qteB3QmeAVOYr6d4P/AVvA8UV
+         lhXjmheue2oXRX5r+p8mYB+LhC8vTOaV0VRY5L2d+bM01iYckko9w2AUok4x0HB4JFdb
+         laxO/XHTq33ZOCjqs0JWY21oqKut/AzHWOkb/sBfPQ1dkHmuUE+MBYIybmGGMuhpPdj9
+         gZ5TWY4owdwGKFXhzlZcPWzixwyin3uDtfwRbPirlXaN/LSBfjvXiElf6iy9EOk4K2KU
+         YZQg==
+X-Forwarded-Encrypted: i=1; AJvYcCXMbOqWHIKOBFEDPqtQ8bP3TT2LGgD6RfuDBSQ9luJq22X9RsMl6m1btmdtEiLVD13FD8uMz4CCOBI=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwSTBzSyFodyHR6U/qELjtJ7Ampo1zTptpua4V2LTSunTkkyPCK
+	yuhl2udpxWYavf9YEPEiCqy/BgL5WoLviGWE/nTObpIuRtovI0YFdBGsaT2d7RtSG7E=
+X-Gm-Gg: AY/fxX4Xx4Bejpz6jXhwYFDvgNzo8aBkZ+34F/dcuTjQmvt5XvIXKUUWLLxPrAKR/hq
+	EVZLWR1IVvFcNj7tCn8HjK/g8/XRrQwwRTH9hPqdjWEB6xPInalfEGK9NY1E50rwYffEVihv/e8
+	kgN4WzfT8DK1L1ILPyUG934P4RjrOtVsimxiqNRenYD1B25ooHm3tdq0Nk0ZTjsA/luZiKDBpTw
+	Ez2HX+zN6hLXEKbcJJmRz3tzzZ++lbSf1spkz1s36pmlK96oks1cP0m1W6SdOG6sI2+AO9gSrUQ
+	SQaxNq6PoJGS9/ABWm91CFaFEHMSNM+CyZN8m9hlBfAR1pbZ19sIW8lMWSgGXBuCaHDuXvYaEHp
+	KtMxkYIK+crTXa7aD2oAvz0/9bWK4TCa+8gQ+LTjwgcUCkzIQZ/qBF0/6fjdkrr20mU2Zoh/QM7
+	rRG9tWzYplO2eiuyUQyt12l9WgZQ8aA5M=
+X-Google-Smtp-Source: AGHT+IEIp1YZBUlweYWaCnnIBVy0+bF1LqyJ+T0qOr1ZxyTRb97O7yWvJcGGelOgdVfuRVXXKCscSg==
+X-Received: by 2002:a05:600c:3114:b0:47d:3ffa:5c75 with SMTP id 5b1f17b1804b1-47d84b31531mr215631915e9.20.1768323146177;
+        Tue, 13 Jan 2026 08:52:26 -0800 (PST)
+Received: from mai.box.freepro.com ([2a05:6e02:1041:c10:3594:70ab:9964:c5ec])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-47d7f41eb3bsm431684925e9.7.2026.01.13.08.52.25
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 13 Jan 2026 08:52:25 -0800 (PST)
+From: Daniel Lezcano <daniel.lezcano@linaro.org>
+To: wbg@kernel.org
+Cc: Frank.li@nxp.com,
+	robh@kernel.org,
+	conor+dt@kernel.org,
+	krzk+dt@kernel.org,
+	s32@nxp.com,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-iio@vger.kernel.org
+Subject: [PATCH v5 0/3] Add the System Timer Module counter
+Date: Tue, 13 Jan 2026 17:52:17 +0100
+Message-ID: <20260113165220.1599038-1-daniel.lezcano@linaro.org>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 3/3] iio: adc: ad9467: check for backend capabilities
-To: Tomas Melin <tomas.melin@vaisala.com>,
- Michael Hennerich <Michael.Hennerich@analog.com>,
- Nuno Sa <nuno.sa@analog.com>, Lars-Peter Clausen <lars@metafoo.de>,
- Jonathan Cameron <jic23@kernel.org>, Andy Shevchenko <andy@kernel.org>,
- Olivier Moysan <olivier.moysan@foss.st.com>
-Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20260113-b4-ad9467-optional-backend-v2-0-0a27e7e72f41@vaisala.com>
- <20260113-b4-ad9467-optional-backend-v2-3-0a27e7e72f41@vaisala.com>
-Content-Language: en-US
-From: David Lechner <dlechner@baylibre.com>
-In-Reply-To: <20260113-b4-ad9467-optional-backend-v2-3-0a27e7e72f41@vaisala.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 1/13/26 6:12 AM, Tomas Melin wrote:
-> For cases when the backend does not support test patterns or calibration,
-> do not attempt to use those features.
-> 
-> Signed-off-by: Tomas Melin <tomas.melin@vaisala.com>
-> ---
->  drivers/iio/adc/ad9467.c | 9 +++++++++
->  1 file changed, 9 insertions(+)
-> 
-> diff --git a/drivers/iio/adc/ad9467.c b/drivers/iio/adc/ad9467.c
-> index 9cfe66425d4e91e215cccc40e24a92c5e99e9b87..ce7dde8b79540bb0eabfba9470b3984e8723d4b7 100644
-> --- a/drivers/iio/adc/ad9467.c
-> +++ b/drivers/iio/adc/ad9467.c
-> @@ -645,6 +645,9 @@ static int ad9467_backend_testmode_on(struct ad9467_state *st,
->  	};
->  	int ret;
->  
-> +	if (!iio_backend_caps(st->back, IIO_BACKEND_CAP_TEST_PATTERNS))
-> +		return 0;
-> +
->  	ret = iio_backend_data_format_set(st->back, chan, &data);
->  	if (ret)
->  		return ret;
-> @@ -665,6 +668,9 @@ static int ad9467_backend_testmode_off(struct ad9467_state *st,
->  	};
->  	int ret;
->  
-> +	if (!iio_backend_caps(st->back, IIO_BACKEND_CAP_TEST_PATTERNS))
-> +		return 0;
-> +
->  	ret = iio_backend_chan_disable(st->back, chan);
->  	if (ret)
->  		return ret;
-> @@ -807,6 +813,9 @@ static int ad9467_calibrate(struct ad9467_state *st)
->  	bool invert = false, stat;
->  	int ret;
->  
-> +	if (!iio_backend_caps(st->back, IIO_BACKEND_CAP_CALIBRATION))
-> +		return 0;
-> +
->  	/* all points invalid */
->  	bitmap_fill(st->calib_map, st->calib_map_size);
->  
-> 
+The NXP S32 family provides a System Timer Module (STM), a 32-bit
+free-running counter clocked from a peripheral clock. The STM includes
+a prescaler and one or more compare channels generating optional
+interrupts. When used as a generic hardware counter, only the main
+free-running counter is required, while the compare channels are
+typically unused.
 
-Same comments from my review of patch 2 apply here.
+On S32G2 devices, the STM is exposed as a simple counter block that
+can operate continuously and be shared across subsystems such as the
+Linux kernel, firmware components running on Cortex-M7 cores, or other
+co-processors. The counter can be read atomically and provides a
+stable timestamp source to correlate events occurring in different
+execution contexts.
+
+The Linux kernel controls the STM through a memory-mapped interface,
+configuring the prescaler, enabling or disabling the counter, and
+accounting for wrap-arounds. Other subsystems access the counter in
+read-only mode, making it a shared timestamp reference across the
+platform.
+
+This driver adds support for the STM when used as a counter on S32G2
+platforms. The device is described in the device tree using the
+following compatible:
+
+compatible = "nxp,s32g2-stm-cnt";
+
+The driver exposes basic counter functionality: start, stop, reset,
+prescaler configuration, and overflow handling.
+
+Changelog:
+	* v5
+	  - Use a lockless version to implement accumulated time (Frank Li)
+
+	* v4
+	  - Split context structure to suspend/resume
+	  - Converted counter to a u64 to accumulate the time
+	  - Replaced 'reset' to a count write to reset (William Breathitt Gray)
+	  - Added events for userspace (William Breathitt Gray)
+	  - Added action COUNTER_SYNAPSE_ACTION_RISING_EDGE for signal (William Breathitt Gray)
+	  - Renamed counter name to "System Timer Module Counter" (William Breathitt Gray)
+
+	* v3
+	  - Fixed compatible typo "nxp,s32g2-stm" to "nxp,s32g2-stm-cnt"
+
+	* v2
+	  - Added Rob's tag
+	  ** kbuild
+	  - Reordered alphabetically the headers
+	  - Added bitfield.h header
+	  - Use DEFINE_SIMPLE_DEV_PM_OPS() and pm_sleep_ptr()
+
+Daniel Lezcano (3):
+  counters: Reorder the Makefile
+  dt-bindings: counter: Add NXP System Timer Module Counter
+  counter: Add STM based counter
+
+ .../bindings/counter/nxp,s32g2-stm-cnt.yaml   |  64 +++
+ arch/arm64/boot/dts/freescale/s32g2.dtsi      |   6 +-
+ .../boot/dts/freescale/s32g274a-rdb2.dts      |  10 +-
+ drivers/counter/Kconfig                       |  10 +
+ drivers/counter/Makefile                      |  21 +-
+ drivers/counter/nxp-stm-cnt.c                 | 432 ++++++++++++++++++
+ 6 files changed, 524 insertions(+), 19 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/counter/nxp,s32g2-stm-cnt.yaml
+ create mode 100644 drivers/counter/nxp-stm-cnt.c
+
+-- 
+2.43.0
+
 

@@ -1,79 +1,79 @@
-Return-Path: <linux-iio+bounces-27673-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-27674-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 35F39D19CD5
-	for <lists+linux-iio@lfdr.de>; Tue, 13 Jan 2026 16:18:28 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 55197D19D11
+	for <lists+linux-iio@lfdr.de>; Tue, 13 Jan 2026 16:20:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id AAA9F3004E3E
-	for <lists+linux-iio@lfdr.de>; Tue, 13 Jan 2026 15:18:27 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id A01143005189
+	for <lists+linux-iio@lfdr.de>; Tue, 13 Jan 2026 15:20:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D6D73164D8;
-	Tue, 13 Jan 2026 15:18:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4A1E38F92E;
+	Tue, 13 Jan 2026 15:20:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="Fq9jHppC"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="LMVbzxrg"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-oi1-f175.google.com (mail-oi1-f175.google.com [209.85.167.175])
+Received: from mail-oi1-f173.google.com (mail-oi1-f173.google.com [209.85.167.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FD232BEC2A
-	for <linux-iio@vger.kernel.org>; Tue, 13 Jan 2026 15:18:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6F2922083
+	for <linux-iio@vger.kernel.org>; Tue, 13 Jan 2026 15:20:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768317504; cv=none; b=vFuxH95b//w3j4f/c6nHx/OHfE/f6rvhzwOH2sR88hbjIbj62JFxNZpi2o9BGAuOCjM3Y59zFqWWKofyZiFK1ZBDqIo7VAQGtz0ZFr1clW5v4C73Dt3jCPuQfLFDRvya4wj1Pph2BjrC7vP2sUDl11e6HvniCorHWvfGUS/4xA0=
+	t=1768317602; cv=none; b=bO13QQEKa0maB7GWVIlGs7t7w2DmGmPA+40YTL6Dz9+TOCjwQiE0JjkUTKWfYYTR4JKn1QhYMuuS6vGiusjVvhLo6wv5ZHUg/E5QfeZXXA+6gJGxTusHT0THthQtXQ9XjIh08dR6e5gt6K/irLlUvGrknGVS/v8T5q5+bvszY9s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768317504; c=relaxed/simple;
-	bh=AAxq7k2bfhjX0BCu8MUMz5QoOhirq9XPHtu6DKWTO5M=;
+	s=arc-20240116; t=1768317602; c=relaxed/simple;
+	bh=u9QDlVi5vshsl+vRhqqYxfjpSezB/lW7iF66MEmIA8U=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=BXu3TwwmUMShVrW4GW/ytBXvBuyyyqsdP0Ya0QJ1avcAUps3nlKYpVpd9Puh+xs4hj0/QEbP2oMZw1MQbUSsc2U55D2YaClDheRdMPHRArCsYuwfDNTQADeuYB/oFbW40UzA1aI+fx1+Y97vcffJdVRVu3Bku3AGk0HesUDY7Vo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=Fq9jHppC; arc=none smtp.client-ip=209.85.167.175
+	 In-Reply-To:Content-Type; b=uN9wLpgIVRqH+mvG0utj9E9ZWfQkCx07bspJfVOS6ValXI60NHcKn3+2oq4EYhw5sFdI576F6i9DAay+CfTfF5+HWoaNSklHR6f5ops22b0qwSAVgYaPYYZOiqbLUD32fdWaW9wsCk53fzeAAliEx0eqAKvmp+QyupgBZWiu4D8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=LMVbzxrg; arc=none smtp.client-ip=209.85.167.173
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-oi1-f175.google.com with SMTP id 5614622812f47-45c60ecc0f8so493282b6e.3
-        for <linux-iio@vger.kernel.org>; Tue, 13 Jan 2026 07:18:22 -0800 (PST)
+Received: by mail-oi1-f173.google.com with SMTP id 5614622812f47-45a3145faddso2319562b6e.2
+        for <linux-iio@vger.kernel.org>; Tue, 13 Jan 2026 07:20:00 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1768317501; x=1768922301; darn=vger.kernel.org;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1768317600; x=1768922400; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=EODg6UvjGU0Bpxy1ibYdGbWyRiJXLp+tPE7r+z8uYu0=;
-        b=Fq9jHppCa+6IYatqzwRm472OCAS/+v+ifswicZS8vfWc/BnPnuqsT0rHRkz1eKFMOt
-         gLUtnJ5/mKrQgF/64J6Rw8etzTtamd1aadYnckdDaJoXF69zx3ua2kDkbue402hN4OmO
-         hbsU1LWcxUJLU98BGkkcN7oectLrNv+4uJpbexaUPS6sjoiKAc+knSsSOV7LXZnnA/KD
-         udj8CWNKOdaJhjHnn45bjlj6zDD7DrkC5KL+yq5ACNHr2l4WJ0cs0JTYDpyZjMGALoTY
-         LGsphbU4t0vlpDdamZlNyKj+vUR1NYTQHT+8FdsBclhD/akylNBb4BBlKOEDCpiuu198
-         kJ4Q==
+        bh=jyu7NzFFuKWq53tGsr5pg2vni176XxXnsvICQ50qCzI=;
+        b=LMVbzxrg4bWkZAy1sHPi1J3Aik5C4kGVfzwnuZ8nnWcB7fj/o8NPgzXilzpt1J7a0Q
+         /IUFwWlBvHKVBkwSq3inO1jixUIQFHLfnFceJy/KavsB/8ZVeHSn0Cjn9zHMM7G5v0sM
+         Ti14b8LRUQVKPro5VkXSwnfMwNCq7sHcX0Ed2lQKNHlmmGwCOQ/yMcxeIXmKnThWZryD
+         Hixb5uxf8goggI/n61ioai3GEnNMORtrmavhUB7xQ1LC4kCi5oxakkUMXJOAzj3Gcx07
+         Bq2Ictovo+PLUAjIKYUe480oNWpfCAfX+JPwLIroPkQi01SCnjHErsVTfSH4dhDaYcvC
+         1f6g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768317501; x=1768922301;
+        d=1e100.net; s=20230601; t=1768317600; x=1768922400;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=EODg6UvjGU0Bpxy1ibYdGbWyRiJXLp+tPE7r+z8uYu0=;
-        b=P+hqlwP75iIsiYaR8GgGjjhPbaOvDC4R0StKFAgxdIBbquS+mIn1a1MiT4J9OsjltD
-         0UDFwYWbTaeDKaQU6D9D0WG6LphT8VVEeG9+uiJWI7ZF82hRzzPAbw9NdADT8eYOsNoH
-         GQvpxuyUdqVEsq6OPwH4CnQOYQpQmLWsgNIqxyoVuEUigEq1Px95SA2hYfyBQuBvzxmd
-         bTBkpgYRnqDBl2dhJ39KH7lYo9hRkVYcqi0dzxk3RtBmC9IsKdql8Wi00YXC/VFPr9IG
-         xQqqDu9sq/iFW2FcFIR8Ol1DZ0dNTtXA8B/hIlFQHBonEFzF8MT/Q8Qd16/4TCm8vk1C
-         iztA==
-X-Gm-Message-State: AOJu0YzFEQZC0aBvD0fdu0hyBUT1sdlST2LSAnnsNkF+aZh0KTF6kK+5
-	YPwVPbnvI0GQQYguna6rbzpmSYVLEJcqBSkWWaup8RALTaAYcWP8Da5/5bZM+LvTOjA=
-X-Gm-Gg: AY/fxX67GCe5J0P98jAySklkHEYJxssYOsb5GFRI0UZGCtqoRIT12aPl/K49yxgagvH
-	+fpystpwiY2QTnRIKMC2GoyHYtOCzuF67/AbIh/IIvDSxNIiGZh2R0GhXtITjovcp8lx0+d5nzx
-	pCdidxskvzchBXJZwrFhgsKDjyfDeRKKD3YVpiMYldaBIYoCUI/GxFxwhTdQGvg6a+X2krhEjDb
-	NrKlmaGMc3B32p4SlaZW7YXfjsYoYOiFz7t0jJ67qf/yaJzKBmYC9ersCNS/fKxWruLuX/RUK7g
-	W9E20K9B7AyLy0kCr99pl1ilQvs0nR1H5qahnWgcr37ZHnOsoOYx2FJCN0Zb/sPG12UWn52fc87
-	ulp2HUrdkTjU1mZH4PomVF36mIoaTZ6JF88fbI1XBu1FwWVDf8mvmWyyUtm8SodCzrUbNuqiYgo
-	s1qqFpKg4MT9xtCrs6em8c0gw4AiK7k4B2kS/YlYxP1jrkr6WYuSviizi12vql
-X-Google-Smtp-Source: AGHT+IFT92M9Z0Q4ZGT5QM0lnf9elMyYEJCafpkOjg2G5CeEnSg7iOZ3w04Rr1IfnpHkqeUw/jn17g==
-X-Received: by 2002:a05:6808:c319:b0:45a:6d59:44f5 with SMTP id 5614622812f47-45a6d5950eamr8885303b6e.30.1768317501063;
-        Tue, 13 Jan 2026 07:18:21 -0800 (PST)
+        bh=jyu7NzFFuKWq53tGsr5pg2vni176XxXnsvICQ50qCzI=;
+        b=h7s8Vyq0fGNaXwQP45GnAhl3acGnXBa09YoG5dNmz2i5bIHyFDiKt+slin9JWVoiMZ
+         lG/KlmmSceqmtw59QKIm197WFl4We1cblmWf0NruAF1nALhWRrUhCEiX5Xbo5enj1Cft
+         aCL11YBqQcORJA/wSNz30ZY4/c9hm1R2kvqq6H+BQ5SqB1gD8PI0DccLhM4/CQYAEmO4
+         rpMPM2FGsvTv1Nc2mi2fn9gXghPvYXsb0OvnXOtGijAkk8Hoi7CeflMB0WkTqBu+yW70
+         h6SnvfC/OutmpgMm7O7yU6z+UU//0PiCWzq6HE+JB+yWacO3CCsxE5NP1SGLdaWlP/rx
+         jvpA==
+X-Gm-Message-State: AOJu0Yz3ZuJUaHvSoWRS803nGLUVHx+aeD6wvGRr4+3Bo20FtvZ6zQh/
+	jrpTxNZ4SO2HwuEZvqoATyQZjVwWurXRDkuCaX5d20Nx70GRzGu82XNB9kU9/gTIlOo=
+X-Gm-Gg: AY/fxX6ayeqd+RpPE6Fh6Z2dPQRZw0Ni1Om+d/gOVP/S0Ac7TLbrrYDJLGx8+Y9v2WK
+	Ln9L+yZAwWiaibLievYeprLkVoJ7jVPbU130IL83ZyNfBgwMAPeRXl/WIMrerMF39AzLu2HyguJ
+	b20Z7HNjAHW2P8UNlvam3pPDquFZClTW9L5yCGQ5iJSh378n9mtJ6VzobTozD2Y7WRjZRAgM1xJ
+	LCMy9unV+W90WOleMx0iH60lig8+sTNG8qU1+ZS3B6FR1t2oYMmW6/X4iQcK8pMlhFKsw1C2r0l
+	/lA6h14X2VRKVOnBx9Iv5wd48OhOHbrOyZD3UF53IkP93K4EOxPeTDpbfvZEysSopvRGgJuCrTI
+	DUbOQ/PTP7PkW8FJOPQQlYRnbQtpnX1sccsVpfkjfonbbjRJfzVyN8Ch8ufcfWrFZUBM8tNPG3Z
+	CwLfCHXlnY1qD7+sfI4RA3U+8IePrPuQAWC9izNvtYDetviWGf+ZoE6q+fa7h/
+X-Google-Smtp-Source: AGHT+IF1pGQlTvSNUkaOR8+ke2GdpdxW5UboFnSiwOvVZ/7w1O4JoRpMuIbNcLLEOUliN4nj8DK/Fw==
+X-Received: by 2002:a05:6808:4a58:10b0:459:b48b:c731 with SMTP id 5614622812f47-45a6bccccdfmr8266556b6e.2.1768317599608;
+        Tue, 13 Jan 2026 07:19:59 -0800 (PST)
 Received: from ?IPV6:2600:8803:e7e4:500:2f58:e1e3:bd08:f09e? ([2600:8803:e7e4:500:2f58:e1e3:bd08:f09e])
-        by smtp.gmail.com with ESMTPSA id 46e09a7af769-7ce4781c286sm16607374a34.8.2026.01.13.07.18.19
+        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-3ffa50e1e29sm14572053fac.19.2026.01.13.07.19.57
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 13 Jan 2026 07:18:20 -0800 (PST)
-Message-ID: <a9c067c6-287d-4bd7-91d3-fabd6d5b67a4@baylibre.com>
-Date: Tue, 13 Jan 2026 09:18:19 -0600
+        Tue, 13 Jan 2026 07:19:58 -0800 (PST)
+Message-ID: <f92e41e6-ab01-4693-8d0e-d5a9df6f6c6b@baylibre.com>
+Date: Tue, 13 Jan 2026 09:19:57 -0600
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -81,8 +81,7 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 2/3] iio: industrialio-backend: support backend
- capabilities
+Subject: Re: [PATCH v2 3/3] iio: adc: ad9467: check for backend capabilities
 To: Tomas Melin <tomas.melin@vaisala.com>,
  Michael Hennerich <Michael.Hennerich@analog.com>,
  Nuno Sa <nuno.sa@analog.com>, Lars-Peter Clausen <lars@metafoo.de>,
@@ -90,127 +89,57 @@ To: Tomas Melin <tomas.melin@vaisala.com>,
  Olivier Moysan <olivier.moysan@foss.st.com>
 Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
 References: <20260113-b4-ad9467-optional-backend-v2-0-0a27e7e72f41@vaisala.com>
- <20260113-b4-ad9467-optional-backend-v2-2-0a27e7e72f41@vaisala.com>
+ <20260113-b4-ad9467-optional-backend-v2-3-0a27e7e72f41@vaisala.com>
 Content-Language: en-US
 From: David Lechner <dlechner@baylibre.com>
-In-Reply-To: <20260113-b4-ad9467-optional-backend-v2-2-0a27e7e72f41@vaisala.com>
+In-Reply-To: <20260113-b4-ad9467-optional-backend-v2-3-0a27e7e72f41@vaisala.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
 On 1/13/26 6:12 AM, Tomas Melin wrote:
-> Not all backends support the full set of capabilities provided by the
-> industrialio-backend framework. Capability bits can be used in frontends
-> and backends for checking for a certain feature set, or if using
-> related functions can be expected to fail.
-> 
-> Capability bits should be set by a compatible backend and provided when
-> registering the backend.
+> For cases when the backend does not support test patterns or calibration,
+> do not attempt to use those features.
 > 
 > Signed-off-by: Tomas Melin <tomas.melin@vaisala.com>
 > ---
->  drivers/iio/industrialio-backend.c | 10 ++++++++++
->  include/linux/iio/backend.h        |  9 +++++++++
->  2 files changed, 19 insertions(+)
+>  drivers/iio/adc/ad9467.c | 9 +++++++++
+>  1 file changed, 9 insertions(+)
 > 
-> diff --git a/drivers/iio/industrialio-backend.c b/drivers/iio/industrialio-backend.c
-> index 447b694d6d5f72dc6f018b1697fdb88e555bd61e..997ec743dc67e7cf420ff667af33b4f6a71a5377 100644
-> --- a/drivers/iio/industrialio-backend.c
-> +++ b/drivers/iio/industrialio-backend.c
-> @@ -62,6 +62,7 @@ struct iio_backend {
->  	 * backend. Used for the debugfs directory name.
->  	 */
->  	u8 idx;
-> +	u32 caps;
->  };
+> diff --git a/drivers/iio/adc/ad9467.c b/drivers/iio/adc/ad9467.c
+> index 9cfe66425d4e91e215cccc40e24a92c5e99e9b87..ce7dde8b79540bb0eabfba9470b3984e8723d4b7 100644
+> --- a/drivers/iio/adc/ad9467.c
+> +++ b/drivers/iio/adc/ad9467.c
+> @@ -645,6 +645,9 @@ static int ad9467_backend_testmode_on(struct ad9467_state *st,
+>  	};
+>  	int ret;
 >  
->  /*
-> @@ -542,6 +543,9 @@ int devm_iio_backend_request_buffer(struct device *dev,
->  	struct iio_backend_buffer_pair *pair;
->  	struct iio_buffer *buffer;
->  
-> +	if (!iio_backend_caps(back, IIO_BACKEND_CAP_BUFFERING))
+> +	if (!iio_backend_caps(st->back, IIO_BACKEND_CAP_TEST_PATTERNS))
 > +		return 0;
-
-I would be inclined to return an error here and leave it up to the
-caller to decide it if is OK to ignore the error or not. Otherwise,
-the return value of 0 has two possible meanings and the caller would
-have to separately check the flags to see which one it is.
-
-We also need to add this flag to existing backends in the same patch,
-otherwise it is going to break existing callers. (Or we could split
-it into multiple patches - 1) add new enum and fields, 2) set flags
-on existing backends - 3) introduce new checks).
-
 > +
->  	pair = devm_kzalloc(dev, sizeof(*pair), GFP_KERNEL);
->  	if (!pair)
->  		return -ENOMEM;
-> @@ -774,6 +778,12 @@ int iio_backend_extend_chan_spec(struct iio_backend *back,
->  }
->  EXPORT_SYMBOL_NS_GPL(iio_backend_extend_chan_spec, "IIO_BACKEND");
+>  	ret = iio_backend_data_format_set(st->back, chan, &data);
+>  	if (ret)
+>  		return ret;
+> @@ -665,6 +668,9 @@ static int ad9467_backend_testmode_off(struct ad9467_state *st,
+>  	};
+>  	int ret;
 >  
-> +int iio_backend_caps(struct iio_backend *back, u32 cap)
-
-This would be more understandable to me as:
-
-bool iio_backend_has_capabilities(struct iio_backend *back, u32 flags)
-
-(caps is fine too if we want to keep it short)
-
-Also could use kerneldoc comments.
-
-> +{
-> +	return back->caps & cap;
-> +}
-> +EXPORT_SYMBOL_NS_GPL(iio_backend_caps, "IIO_BACKEND");
+> +	if (!iio_backend_caps(st->back, IIO_BACKEND_CAP_TEST_PATTERNS))
+> +		return 0;
 > +
->  static void iio_backend_release(void *arg)
->  {
->  	struct iio_backend *back = arg;
-> diff --git a/include/linux/iio/backend.h b/include/linux/iio/backend.h
-> index 7f815f3fed6ae34c65ffc579d5101020fc9bd336..c020bc48cc05d6fcea00d23e471b12a29b5c0551 100644
-> --- a/include/linux/iio/backend.h
-> +++ b/include/linux/iio/backend.h
-> @@ -84,6 +84,12 @@ enum iio_backend_filter_type {
->  	IIO_BACKEND_FILTER_TYPE_MAX
->  };
+>  	ret = iio_backend_chan_disable(st->back, chan);
+>  	if (ret)
+>  		return ret;
+> @@ -807,6 +813,9 @@ static int ad9467_calibrate(struct ad9467_state *st)
+>  	bool invert = false, stat;
+>  	int ret;
 >  
-> +enum iio_backend_capabilities {
-> +	IIO_BACKEND_CAP_TEST_PATTERNS = BIT(0),
-> +	IIO_BACKEND_CAP_BUFFERING = BIT(1),
-> +	IIO_BACKEND_CAP_CALIBRATION = BIT(2)
-> +};
-
-These could use kernel doc comments the specifically call out the
-functions that these correspond to. And also an explanation on why
-we don't have them for everything (I assume we are just adding them
-on an as-needed basis).
-
+> +	if (!iio_backend_caps(st->back, IIO_BACKEND_CAP_CALIBRATION))
+> +		return 0;
 > +
->  /**
->   * struct iio_backend_ops - operations structure for an iio_backend
->   * @enable: Enable backend.
-> @@ -179,10 +185,12 @@ struct iio_backend_ops {
->   * struct iio_backend_info - info structure for an iio_backend
->   * @name: Backend name.
->   * @ops: Backend operations.
-> + * @caps: Backend capabilities.
->   */
->  struct iio_backend_info {
->  	const char *name;
->  	const struct iio_backend_ops *ops;
-> +	u32 caps;
->  };
+>  	/* all points invalid */
+>  	bitmap_fill(st->calib_map, st->calib_map_size);
 >  
->  int iio_backend_chan_enable(struct iio_backend *back, unsigned int chan);
-> @@ -235,6 +243,7 @@ int iio_backend_read_raw(struct iio_backend *back,
->  			 long mask);
->  int iio_backend_extend_chan_spec(struct iio_backend *back,
->  				 struct iio_chan_spec *chan);
-> +int iio_backend_caps(struct iio_backend *back, u32 cap);
->  void *iio_backend_get_priv(const struct iio_backend *conv);
->  struct iio_backend *devm_iio_backend_get(struct device *dev, const char *name);
->  struct iio_backend *devm_iio_backend_fwnode_get(struct device *dev,
 > 
 
+Same comments from my review of patch 2 apply here.
 

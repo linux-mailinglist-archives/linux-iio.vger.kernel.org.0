@@ -1,77 +1,77 @@
-Return-Path: <linux-iio+bounces-27676-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-27678-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 80AC9D1A6E6
-	for <lists+linux-iio@lfdr.de>; Tue, 13 Jan 2026 17:55:49 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id CA0C9D1A6BF
+	for <lists+linux-iio@lfdr.de>; Tue, 13 Jan 2026 17:53:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 9C267308EA01
-	for <lists+linux-iio@lfdr.de>; Tue, 13 Jan 2026 16:52:32 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 9318E30476A3
+	for <lists+linux-iio@lfdr.de>; Tue, 13 Jan 2026 16:52:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5924434DCD6;
-	Tue, 13 Jan 2026 16:52:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E340434EEF2;
+	Tue, 13 Jan 2026 16:52:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="mD2Z9EEl"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="zwbBaG9E"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
+Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7612134D938
-	for <linux-iio@vger.kernel.org>; Tue, 13 Jan 2026 16:52:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CBFE34E74E
+	for <linux-iio@vger.kernel.org>; Tue, 13 Jan 2026 16:52:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768323152; cv=none; b=M4ocNo0CoX+qEZieB1BCdq06tmZlwiAzwKHIaQosRC44ITKZitWXt9Ie97wFFLVv47cXvX1aN/dpblygKcr8Qu7bGf4kF+64qbsd9fuiUMP2pMfSnXumgz20VUis8URBKB40ObVFmpHykR71/mo2ITsqOsyQmsM/qsvwXPkupJw=
+	t=1768323157; cv=none; b=Z13b58ytkY66EnBbsTS76mjbjrVjhwlvZzfpNrWDob7mjR51mlEs1/07cIGe0y9wBfpajLox2V6NCE5BIaLmLtLQP10QvoZvmtMVTfCz8YxKch2tzi2tNj4VtNULSOTOxX7xGS6Gqrhu4gHlGiVnMlNshsHMRLkhhaFFePeA2ic=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768323152; c=relaxed/simple;
-	bh=m0D9V4x0TDiYMScx+B2rDcfNHpt1W4utB08H2EYXkTI=;
+	s=arc-20240116; t=1768323157; c=relaxed/simple;
+	bh=oJ9gKow6S8KEzSj2K6q1yw7J3LdgtVU6Q9IVbH+UGBA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=R4QXpp5e/gPpVLZLDqKDGfWSd5augM1HX000Gjtv0R9CZl+9uKRpvcsG20HYvmSF556bfaukv7r/QvBiAEaYUSj/6DTtOL5CmxC0O/ea9lZUVpVSVkz1LXJt3GvkMwav0lno2PQLzXEkIKaCozkEQoRMFBi7CMpbf7D8Wv402/c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=mD2Z9EEl; arc=none smtp.client-ip=209.85.128.41
+	 MIME-Version; b=dh1Hb5qbP7+vAqzxB19mJau+5yiGeS8wAed8VGibBmn8sgKxL9FCizvl7MDecKE1AO1Qc61LdzWwJdcmvZTahuq10BDwfL05ux72wUjHfGwNQfNEQx34wV8ScGiQ6PMva1C1Z4vZ+0dY7bkbwvc+GKGzygIBDl8TyjQ8SxDYrmo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=zwbBaG9E; arc=none smtp.client-ip=209.85.128.45
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-47ed987d51aso8917955e9.2
-        for <linux-iio@vger.kernel.org>; Tue, 13 Jan 2026 08:52:29 -0800 (PST)
+Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-47d6a1f08bbso32052395e9.2
+        for <linux-iio@vger.kernel.org>; Tue, 13 Jan 2026 08:52:30 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1768323148; x=1768927948; darn=vger.kernel.org;
+        d=linaro.org; s=google; t=1768323149; x=1768927949; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=reHYsRVhVlhU9/XLdVBvX/hBxL5PqvrIU5ifd6VhtQI=;
-        b=mD2Z9EElqKO/hQhsq9tOguQfawJojXnQNFJ4eey+mu+S/YDB57FMwV+D41IhXfKKvc
-         OXqJA21UXgmBZVxarYyOCTYbPD/9HKJ6W7fhj0iSTMT1mRd3DuOUF9i/0SRg7HuNf41j
-         8g5owQ2OsouP+UJWETa6gn8JzTQlHJ/tpyYL7+5MI9G4DR+XniahuTtsZy80w2KfRqdE
-         w3gpmEMVnqz+w2sq94Tz/iYd0/Hbo1XgUYZI9rW4E8KMtVXSoKtY/ur82nhM1XyRYHP7
-         GwPrWPlltPJdnJczlViPTIh9vslFbQH79H/ADhi62PcSg5daIjdc2arouTzrTgcgls4d
-         l6kg==
+        bh=2y3xJj6Lny5hNArf79Fe/OIMoyByArkbsGtk/c71GuI=;
+        b=zwbBaG9E9CT3bHkBVCk/NesvscQ6HCIPhHJJnDHqd0Au4gCM0t22ztbvAaBj2O98hN
+         z5q8yHR++mVuIMMn7p+el8C9vdsL05inlYW57mggWhanJ/MKLWRaW3UZuqYIHl5El69r
+         X4TDVJGd81U1ET7fSvVIU6E289/MN9swdP2wziDvfRnBMtJs+vavyNzEuXNduy1JFwP1
+         MKwMXTx6KdNlZ5sZ4MJz37hboVLu9LLvRSQ8ICSIBQSjDfDvPRrBDSrjkFoRqVn7AXBB
+         jU9tisF/eHn/S5E7+63COSmbG136NCrr/1JKgsUlZr2Zg61BBmK8W7qAF3v/DUfXXNEP
+         y2sg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768323148; x=1768927948;
+        d=1e100.net; s=20230601; t=1768323149; x=1768927949;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=reHYsRVhVlhU9/XLdVBvX/hBxL5PqvrIU5ifd6VhtQI=;
-        b=CZ17nP9MEujKenB9VT9PVz0zJ/45RUz4n5e6umMcpw6cHyb+acvuxJw/PqOpm7h0AH
-         wok9cpqFV3Ri2duaxPQDgUAU9s0SY0OOyzTHnzjVeOfyB9m4cIJok5MtXPM/DarfP3tl
-         X/gpcjWX9b7FsJr9PhV1ltvJJMyzGiiNvEdTcKgyeI+npRHwdol6wYUoI2zPG8qppyF7
-         TZ7iwMsAxt6lFDVgInBhe4ze7VGRfCEjPBb9J3w6bRaDKYars6LLrzgWoNKFFLVTtr39
-         PZQJ3od8DA35Z0y76nRRy84onO+wqhsfxvP7hAO+NZ7fRsJrRePvinccYz/N6mbik4oi
-         D0AA==
-X-Forwarded-Encrypted: i=1; AJvYcCUwIWkS6jrD79dRjiqyZIHWhjTPUgob5Fosbq+HdU3Ye+GihDLkeuz3M3n4VjD11MX/5qAsN52iBEg=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxd30zbOD81hA/HWrS8a4ReZwBjZbK3694rT9O70UNWH+o8ld7m
-	VciJEUO4nhrbSGQPKCZeBAbduOBvOF+y4IAVT3eJSnBMuN5FIkO/o06argNTb9ptZBs=
-X-Gm-Gg: AY/fxX6wddZk/jaKYEtc/33LxxnvQwCP1EuAjAZzpHjjQRrjqASxa9CYBeyO1Z6vfqy
-	1V5TLNJk15cVLG4hsTbK8f/X9/LaJlFpU4OOawUsEzR/PWW3OBPtb/obneQ9NyFJa/WO+xQ0LsL
-	kH/Uxq1H2mTtbCtYWFGe+TsUSHVhIvOqj6RSGK99QKTacAWJKEqbaQgeZfU2A1BFQ0BRUckxAB+
-	jiTuLpUD2j6z+XLWuCka7f93jG30Clcsolh7jx78DsZ+e2O5wy5PwQLnPpmrugqghnZtDWaQCmR
-	FaJZxPtavXwkXHNyHshxEbNTHe40/yu2EeV5xmrNaXPQtwWaLVa5FZWSRs2yFS4C3OSjcn12iOh
-	mzW2nyaeUdXiYO6bD/pogYej5qWiePBFbDklkqAuToUwz4x8h36Lv/BLlv/UkOhfmcTm0QfayDN
-	q+U7rMJamOdt2Euu6Bs+gShS1tFRnlXSs=
-X-Google-Smtp-Source: AGHT+IE2mf8KyPtT6cpp9Z+sIL+E+Nhzb//si5kbvx2m3OmBsCtIM58L0qqoJtaQDiBQE8qxSXV8Ag==
-X-Received: by 2002:a05:600c:500d:b0:477:9d54:58d7 with SMTP id 5b1f17b1804b1-47d84b3b881mr210609265e9.29.1768323147822;
-        Tue, 13 Jan 2026 08:52:27 -0800 (PST)
+        bh=2y3xJj6Lny5hNArf79Fe/OIMoyByArkbsGtk/c71GuI=;
+        b=xOdMhnKjfjD7eynzz/Ow5kLoIKnhCfzm4Wl43cgDz7NjQzUMQBhc72GJAd0VBWD+Xg
+         PZPCX8nUFGkBomTbG9y0kW1dZkwGx8kzVb2kjfxFQL0VpvbrBrouYz4kUSj/MkawHs5v
+         8uRiINASjvARxq9d0jf3SfsUQPQMPKRg/vJSjbGoeZHuHAg6C8PRNrjhZj3M8VqgXXo1
+         8qH8GSHoAu6IfXaxGwOOLZ8OVFEOQypvyDNtuSicQbikYx6ZVeplt6uqw0dDb7+N3CZY
+         UBwgmk6ZC6d7hDmbMpne66Hexb955zYLoTr4WWaEL3ixaNpuUN+1yLIk4t2EVoOvZ5Zn
+         uNvg==
+X-Forwarded-Encrypted: i=1; AJvYcCXWl5y8/QwtVRKb5CNMPeuaZ5M10kghR6rGEQEey52hiwqsvKbdQ/hEFM6hIYHtcjHP/DvnYdJhl/k=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyTTd1ppGbYGHboXVxaZ9KfcoAE9S9YxhtWAcnVPrGKsv+kAeOM
+	dV4kB2OcsmSlZn1uODJkdGMuEss18mURrwBtatiIjWGF7llbC+DpWjpNZHn+mDbCmLo=
+X-Gm-Gg: AY/fxX7fmU41TEVbC1YSocDSq/r61mUkM4MGDQWyNKkXM0xEjShde2CpatSVvuyHVwN
+	IvKmh5LTHUbaZSRNpz+ziMODL6KcLWKZgqeFpig1Usuj8qtflBkZW/3cIflIc35N9hUjjMH0knA
+	+si9UQmEte5mvuiKQ5a09j+uVJFRjkklzv3p3k5qPpRPyQazbVDhh66S5lL/F/2sK9u37ridIzD
+	Ii1fX6MYSCnNEJb4XnkJ4/LDHicMEkmc2pklvvUfPz5BMaR1aonJxUNft50WfnFOVdm0ktUxkmX
+	VpslTZP32oxgPdBo1+jqDvWHZneg/gc2mA9PCEomFRTkTpf+4dFAOukLnBMFAQ74g+/ZNyuAuaF
+	FDLU944AXAmFu/76r9xj78uQuJdyBi+0XadIUJnidMMsMYmumN6V8Syllz0jo5UBS/J1gx0HkrM
+	m/poz/VGiWAmovIUILcZjMJGW5zu0LMOQ=
+X-Google-Smtp-Source: AGHT+IEicAP01cQZjkyG01ghspfKpykhlK3qAoBCk+2ayoqlIhLWC13pIjU/Acop8PMmfgPDXUsETw==
+X-Received: by 2002:a05:600c:444c:b0:477:7b16:5f77 with SMTP id 5b1f17b1804b1-47d84b0b303mr225376805e9.3.1768323148712;
+        Tue, 13 Jan 2026 08:52:28 -0800 (PST)
 Received: from mai.box.freepro.com ([2a05:6e02:1041:c10:3594:70ab:9964:c5ec])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-47d7f41eb3bsm431684925e9.7.2026.01.13.08.52.26
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-47d7f41eb3bsm431684925e9.7.2026.01.13.08.52.27
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 13 Jan 2026 08:52:26 -0800 (PST)
+        Tue, 13 Jan 2026 08:52:28 -0800 (PST)
 From: Daniel Lezcano <daniel.lezcano@linaro.org>
 To: wbg@kernel.org
 Cc: Frank.li@nxp.com,
@@ -82,9 +82,9 @@ Cc: Frank.li@nxp.com,
 	devicetree@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	linux-iio@vger.kernel.org
-Subject: [PATCH v5 1/3] counters: Reorder the Makefile
-Date: Tue, 13 Jan 2026 17:52:18 +0100
-Message-ID: <20260113165220.1599038-2-daniel.lezcano@linaro.org>
+Subject: [PATCH v5 2/3] dt-bindings: counter: Add NXP System Timer Module Counter
+Date: Tue, 13 Jan 2026 17:52:19 +0100
+Message-ID: <20260113165220.1599038-3-daniel.lezcano@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260113165220.1599038-1-daniel.lezcano@linaro.org>
 References: <20260113165220.1599038-1-daniel.lezcano@linaro.org>
@@ -96,46 +96,146 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-The next changes provide a new driver. For the sake of clarity,
-reorder the Makefile alphabetically.
+Add the System Timer Module description found on the NXP s32 platform
+when it is used as a counter and the compatible for the s32g2 variant.
 
-No functional changes intended.
-
+Reviewed-by: Rob Herring (Arm) <robh@kernel.org>
 Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
 ---
- drivers/counter/Makefile | 20 +++++++++++---------
- 1 file changed, 11 insertions(+), 9 deletions(-)
+ .../bindings/counter/nxp,s32g2-stm-cnt.yaml   | 64 +++++++++++++++++++
+ arch/arm64/boot/dts/freescale/s32g2.dtsi      |  6 +-
+ .../boot/dts/freescale/s32g274a-rdb2.dts      | 10 +--
+ 3 files changed, 70 insertions(+), 10 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/counter/nxp,s32g2-stm-cnt.yaml
 
-diff --git a/drivers/counter/Makefile b/drivers/counter/Makefile
-index fa3c1d08f706..40e644948e7a 100644
---- a/drivers/counter/Makefile
-+++ b/drivers/counter/Makefile
-@@ -6,14 +6,16 @@
- obj-$(CONFIG_COUNTER) += counter.o
- counter-y := counter-core.o counter-sysfs.o counter-chrdev.o
+diff --git a/Documentation/devicetree/bindings/counter/nxp,s32g2-stm-cnt.yaml b/Documentation/devicetree/bindings/counter/nxp,s32g2-stm-cnt.yaml
+new file mode 100644
+index 000000000000..4d42996f5ad3
+--- /dev/null
++++ b/Documentation/devicetree/bindings/counter/nxp,s32g2-stm-cnt.yaml
+@@ -0,0 +1,64 @@
++# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/counter/nxp,s32g2-stm-cnt.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
++
++title: NXP System Timer Module (STM)
++
++maintainers:
++  - Daniel Lezcano <daniel.lezcano@kernel.org>
++
++description:
++  The System Timer Module supports commonly required system and application
++  software timing functions. STM includes a 32-bit count-up timer and four
++  32-bit compare channels with a separate interrupt source for each channel.
++  The counter is driven by the STM module clock divided by an 8-bit prescale
++  value.
++
++properties:
++  compatible:
++    oneOf:
++      - const: nxp,s32g2-stm-cnt
++      - items:
++          - const: nxp,s32g3-stm-cnt
++          - const: nxp,s32g2-stm-cnt
++
++  reg:
++    maxItems: 1
++
++  interrupts:
++    maxItems: 1
++
++  clocks:
++    items:
++      - description: Counter clock
++      - description: Module clock
++      - description: Register clock
++
++  clock-names:
++    items:
++      - const: counter
++      - const: module
++      - const: register
++
++required:
++  - compatible
++  - reg
++  - interrupts
++  - clocks
++  - clock-names
++
++additionalProperties: false
++
++examples:
++  - |
++    #include <dt-bindings/interrupt-controller/arm-gic.h>
++
++    timer@4011c000 {
++        compatible = "nxp,s32g2-stm-cnt";
++        reg = <0x4011c000 0x3000>;
++        interrupts = <GIC_SPI 24 IRQ_TYPE_LEVEL_HIGH>;
++        clocks = <&clks 0x3b>, <&clks 0x3c>, <&clks 0x3c>;
++        clock-names = "counter", "module", "register";
++    };
+diff --git a/arch/arm64/boot/dts/freescale/s32g2.dtsi b/arch/arm64/boot/dts/freescale/s32g2.dtsi
+index 51d00dac12de..6bc0c75b574f 100644
+--- a/arch/arm64/boot/dts/freescale/s32g2.dtsi
++++ b/arch/arm64/boot/dts/freescale/s32g2.dtsi
+@@ -579,7 +579,7 @@ swt6: watchdog@40208000 {
+ 		};
  
--obj-$(CONFIG_I8254)		+= i8254.o
--obj-$(CONFIG_104_QUAD_8)	+= 104-quad-8.o
-+obj-$(CONFIG_104_QUAD_8)		+= 104-quad-8.o
-+obj-$(CONFIG_FTM_QUADDEC)		+= ftm-quaddec.o
-+obj-$(CONFIG_I8254)			+= i8254.o
-+obj-$(CONFIG_INTEL_QEP)			+= intel-qep.o
- obj-$(CONFIG_INTERRUPT_CNT)		+= interrupt-cnt.o
--obj-$(CONFIG_RZ_MTU3_CNT)	+= rz-mtu3-cnt.o
--obj-$(CONFIG_STM32_TIMER_CNT)	+= stm32-timer-cnt.o
--obj-$(CONFIG_STM32_LPTIMER_CNT)	+= stm32-lptimer-cnt.o
--obj-$(CONFIG_TI_EQEP)		+= ti-eqep.o
--obj-$(CONFIG_FTM_QUADDEC)	+= ftm-quaddec.o
- obj-$(CONFIG_MICROCHIP_TCB_CAPTURE)	+= microchip-tcb-capture.o
--obj-$(CONFIG_INTEL_QEP)		+= intel-qep.o
--obj-$(CONFIG_TI_ECAP_CAPTURE)	+= ti-ecap-capture.o
-+obj-$(CONFIG_RZ_MTU3_CNT)		+= rz-mtu3-cnt.o
-+obj-$(CONFIG_STM32_TIMER_CNT)		+= stm32-timer-cnt.o
-+obj-$(CONFIG_STM32_LPTIMER_CNT)		+= stm32-lptimer-cnt.o
-+obj-$(CONFIG_TI_ECAP_CAPTURE)		+= ti-ecap-capture.o
-+obj-$(CONFIG_TI_EQEP)			+= ti-eqep.o
-+
-+
+ 		stm4: timer@4021c000 {
+-			compatible = "nxp,s32g2-stm";
++			compatible = "nxp,s32g2-stm-cnt";
+ 			reg = <0x4021c000 0x3000>;
+ 			clocks = <&clks 0x3b>, <&clks 0x3c>, <&clks 0x3c>;
+ 			clock-names = "counter", "module", "register";
+@@ -588,7 +588,7 @@ stm4: timer@4021c000 {
+ 		};
+ 
+ 		stm5: timer@40220000 {
+-			compatible = "nxp,s32g2-stm";
++			compatible = "nxp,s32g2-stm-cnt";
+ 			reg = <0x40220000 0x3000>;
+ 			clocks = <&clks 0x3b>, <&clks 0x3c>, <&clks 0x3c>;
+ 			clock-names = "counter", "module", "register";
+@@ -597,7 +597,7 @@ stm5: timer@40220000 {
+ 		};
+ 
+ 		stm6: timer@40224000 {
+-			compatible = "nxp,s32g2-stm";
++			compatible = "nxp,s32g2-stm-cnt";
+ 			reg = <0x40224000 0x3000>;
+ 			clocks = <&clks 0x3b>, <&clks 0x3c>, <&clks 0x3c>;
+ 			clock-names = "counter", "module", "register";
+diff --git a/arch/arm64/boot/dts/freescale/s32g274a-rdb2.dts b/arch/arm64/boot/dts/freescale/s32g274a-rdb2.dts
+index ee3121b192e5..bde5d3726825 100644
+--- a/arch/arm64/boot/dts/freescale/s32g274a-rdb2.dts
++++ b/arch/arm64/boot/dts/freescale/s32g274a-rdb2.dts
+@@ -41,19 +41,15 @@ &uart1 {
+ 	status = "okay";
+ };
+ 
+-&stm0 {
++&stm4 {
+ 	status = "okay";
+ };
+ 
+-&stm1 {
++&stm5 {
+ 	status = "okay";
+ };
+ 
+-&stm2 {
+-	status = "okay";
+-};
+-
+-&stm3 {
++&stm6 {
+ 	status = "okay";
+ };
+ 
 -- 
 2.43.0
 

@@ -1,97 +1,97 @@
-Return-Path: <linux-iio+bounces-27665-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-27666-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5CD80D1818D
-	for <lists+linux-iio@lfdr.de>; Tue, 13 Jan 2026 11:40:17 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D0F3D1845E
+	for <lists+linux-iio@lfdr.de>; Tue, 13 Jan 2026 12:00:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 5FD653019B9A
-	for <lists+linux-iio@lfdr.de>; Tue, 13 Jan 2026 10:38:08 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 247693023A2D
+	for <lists+linux-iio@lfdr.de>; Tue, 13 Jan 2026 10:53:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7313C34164B;
-	Tue, 13 Jan 2026 10:38:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A431387350;
+	Tue, 13 Jan 2026 10:51:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fI5y+FIe"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PXpgZpr8"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
+Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 542FE328638
-	for <linux-iio@vger.kernel.org>; Tue, 13 Jan 2026 10:38:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB259325702
+	for <linux-iio@vger.kernel.org>; Tue, 13 Jan 2026 10:51:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768300686; cv=none; b=Nxv+V01VxUPVAMmGHNc096qvaSPsYL1hFyd2jJmPcvEInrT/a6ozmBmZK3i1Xk4gyyfAAaKDjtkOtc8+T6UuOE827oJMbscD9KB+b1eMwUcDv/C+MYkCDCZURI0lyqkk2cPkd4rGJJY4IvfJJxHdSo+5u058fkH+DXFkxN01ktU=
+	t=1768301518; cv=none; b=MTH0PJHQatAbtOUNOGkio2D2eVl/HB2PGSHLIbcZG913FFw1NXcdeiA0ob94popY9VgyvBCw8CdLLtflZnsvpiI3NX/7bndsB2txWNdHEI2w00X4nhL0PL/DhMkG9O0hIPD4TZzZwnukil2ooZ+uhLV3DOKBilCwCFLfMxaDCCc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768300686; c=relaxed/simple;
-	bh=mxOcD1cA12y/6rHKrAjW+DtvChOgFYiutRcSmEc8Wp4=;
+	s=arc-20240116; t=1768301518; c=relaxed/simple;
+	bh=wngbeCWJ78AgQdVs8Y4OTon8UJX5Zt1LgSTkbzRSAwY=;
 	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=ayhH1SDGEO5Jzcmqn+y7NuDWfpnstMmZz/OA7vJBZ1iV73cGD3VNFq6Zz9Gg8Oh+MzMgcjWJDNuOV7TrFMcB3thGqF87Gwrqh9AxXljPsO07kVmk3PpMmvunqPXzoc94EIvhJck/8+lmztmrPt5FiQLagYvBmJe+mxWG66B9R6Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=fI5y+FIe; arc=none smtp.client-ip=209.85.128.43
+	 Content-Type:MIME-Version; b=fyv/GdzhZk3HUGE9hSwP867nhJH6hvaEiFSg2nZJ7V1e3wgl2tV+FIwgThLz+a/x/CogLyE7Rx+BAx3ieEXbKesn36Y9SEgCTA2JtaCaCFmyIfRrmJNjdwFJtV/5cR/iNjbi6U6dk41E0JVoHAHlU0SJtu2w7iw8ZQp/WyZP2Ws=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=PXpgZpr8; arc=none smtp.client-ip=209.85.128.45
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-477a2ab455fso67557355e9.3
-        for <linux-iio@vger.kernel.org>; Tue, 13 Jan 2026 02:38:04 -0800 (PST)
+Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-4779aa4f928so74599075e9.1
+        for <linux-iio@vger.kernel.org>; Tue, 13 Jan 2026 02:51:56 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1768300683; x=1768905483; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1768301515; x=1768906315; darn=vger.kernel.org;
         h=mime-version:user-agent:content-transfer-encoding:references
          :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
          :date:message-id:reply-to;
-        bh=mxOcD1cA12y/6rHKrAjW+DtvChOgFYiutRcSmEc8Wp4=;
-        b=fI5y+FIe4yVLc4F3IT8ErlddaAz/KTmNu+1DAHYz5w4I7XgNDhmpT5kRoZQjTN3ihS
-         grq1zk9DvwnI8nlgfy/n531XvFS1mOj6DRPsaNc70uDYvVK1okWUB7g0WKmtunxJpKLg
-         wgu4u1fsFxxQvyg0Ti7nfHNC/j3Apfkhj0rOXqzKCQOnPt9gNQFXzV1F9Yxs0UWBV6qt
-         bcBEeV8+ovstlYBmtn7AyVQCqod/dx48AOQCoY5IjcvZp4cmF2YdB1n6TRikeoy2zCCE
-         PJfaZPWug+yffPoFICVZo4c7sR15lYRgmGYc1QS4zmNEhCD027Jh1kTzhPvrt5FT5AaI
-         F0iA==
+        bh=wynvHKPpqBYNwHxzvvXe3nHnYg6avn76hgMgeTYQIVA=;
+        b=PXpgZpr8wcjXOAWALCVHmJw1Hws4lruBkIfSlJDaphTcXbXvpMVfh/WArrepnnk0o+
+         C+IeSNhm8zvVlMOO2EuJ4gYoCavC8mULLZxcWkiQ9lJL/7s+blQP+v5kkobt67+3vA5M
+         Ox3f4+8deeXjedH6suMUGCWWV+LXDJy1drM/tJO1+ds1BuN28xd/bUOw8szsoKvvxAVH
+         1NS1AEFDi4G+equCcKSjUVE9SjFdi0xx204ys5Cw63SfH1hkzV++gJ6e+KPxZIfRQRT7
+         kmtczGkgwqaXrIGU9cXF/X0TLUQuHBlcSi2DUax4llejUkEcLr9UG4H9Za07jiflFwkx
+         86IA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768300683; x=1768905483;
+        d=1e100.net; s=20230601; t=1768301515; x=1768906315;
         h=mime-version:user-agent:content-transfer-encoding:references
          :in-reply-to:date:cc:to:from:subject:message-id:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=mxOcD1cA12y/6rHKrAjW+DtvChOgFYiutRcSmEc8Wp4=;
-        b=mMe78nE9SBZ4iMczU2pkqe+zLDQUN9t4O7Rwsbd5FMDBZF7HLYrOn+1ZkJ7Si4lwV7
-         Coic5pYGIrWc3xWInLdyU+BWJu3JJShgixpPvpjLVp3Vl8c2C6dxUGOpXlbVvnBQWnzV
-         0VaYMHgJkEknho7+RXFjfnTxTuPBO6CmF5BgCV/zmwpCSR/qbOiMA4T3Gud90PAsjFr0
-         8k/LaUpVAVHUuHju5tpi9Rc0lQE81CDMvKIgU06cEdi4MO6s48kLHU9WL2/84VPze8vG
-         8PjlzrqjQRoCSLKMeHQ3sti3gQaI51Nk32GjGAJbol1a3Hi8o6VDXY8GPtbyAhLiLhJO
-         6qWQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVW+Frz3FVcEb63hoxtLmJnqkunyRn4YsDTN82XMpHYNuhXe8X4TYn1LJwgPdef3sVEu3JqEgzL5/w=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzwyURpZWlWg6oCBe+w3sQIWm6Dlie2Sg9LfTjkYSLceNBkdZBF
-	NRqMN5xHafBUuc0OftoXt0PTv1ofNMUWZMfOncCfM3foQYw7MArPXPOq
-X-Gm-Gg: AY/fxX46YiONxpxSOWhFGfLQADvZBLOeuPwTDPICpCw3VCc0mMPVf5VQ6XDELC+T7M9
-	x6O4nJgtEGT5PzvfiT0Z3V2N2ptRqAPtSnLfnIX+7z/QqSWr+5kiyKxHA6FpzR1LeN1kaCo56wW
-	s+HqHejgZ/1eORCnBn1FyhQ8Kz+/HeYKcCDCoiifZEghkuPt70bJHRlmsMOO0tCZRnsqAzCR3Gt
-	eyYkoZpHJt78TG+A2XiZWXWnHRDHcQmTXwSRF94+zhVeiNoL/VywgOdTHfmQxdD4u8PqTLbkgyt
-	8TG+0cAG11RRG6xRc/COC2FSw5A9rCWPpMpOPP9qAuOnmTt1gx+D5DS/KhZcH1F2fj9o14rpglq
-	j5+6NhynkM0paP36yxM2FkF9CHYe6N7yii5fHGIJHA7Z0Q5wU0qEan2eE0ggKTTz7rNbr4o7Aby
-	kKK93VypohwBpCmVi8llE=
-X-Google-Smtp-Source: AGHT+IGZWI8BC0XO4q/PcONBO/S1NJ8k2S4bjAnGk5dNdRHI+QqShN6+xW8K63IsOGXYRmKeEVVOOw==
-X-Received: by 2002:a05:600c:19cc:b0:47d:264e:b35a with SMTP id 5b1f17b1804b1-47d84b19f69mr237676935e9.13.1768300682455;
-        Tue, 13 Jan 2026 02:38:02 -0800 (PST)
+        bh=wynvHKPpqBYNwHxzvvXe3nHnYg6avn76hgMgeTYQIVA=;
+        b=wkV148mmXDVd0rI7WvHXKHNvbkE0ED0MspxwJYmKQzOfyYhpPVbPx9o/nPStF/tDj8
+         YpwjpJULH0Kgir/9BXYuT8O0I+Z99pHTDNoNztNaiLKKyNAaXsMt37I+fJ+6s1XZgjpS
+         +sZxUtOGnHD1ncZ39ytGNe4p9jXGgFo/jt7BpI904Ue8VJgM9crRhvaLKHLtfJLwUkC9
+         0MsUfBql4quHKIXx7Y1DMsJDJOQ8x3HgYdJwUPtok4fvL1ee2pLOrSB5cFAmxy7rFSyB
+         eiUs7r1Q25K8p7qQo0ArcKOs2051Cu6jcP6TVFltPipYo0nezeabn2+HY44uv8ufhjEB
+         i8lQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVTFGBvbeKMdE4TWEslHCjhaA78epTIM1z7JDX0KoNfwSlF7IxQdaTIixCZlRC39AbYhn0olZ/YA3k=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzhsiY1sXZkLkZVselHMbIt3MdW5NLrNhNi5MzvHuLrLtdswORM
+	oeM6l3cEdVLizkgZVTf/PDX2jVm4a8d6hV7VfVCvN6vn0otss3DVHirt
+X-Gm-Gg: AY/fxX6q8T6BucItBiUDNAgqRahJbyDcEgE/nuEun/dbnXcZoiiOW2CbYN8WxrEMLh3
+	3/vwt2C2zeuRivvCU6Ketf4dVdVmINmcCLDc/y3lJL1oSeJrgtDLJ9XvHBfzKPMg9lYmknT7JT8
+	klSnes7QADypnP9Q//FdjOu1yCP5bKE+3LM8oc4/3Sh8rBwTYAnbwxbIVnYRHDLSDcM4gSSFYvA
+	YoGtU3TAoMrgrtA3ngeGWF4Q2Iyke+qtIPz4H/6MSn7/TFIs1LQzhCF32H1vNnMxxsz9zypHMhS
+	NI8NljQflEZuFuLDkgTwFQRw7/Dsfqs9s0Yu+KiDhnfgQSLttjrIKkANDS7ZvBkchDGb+kW3V69
+	2gFOfxVJgDb8IKBW8g7giF2uAZ3oxWMsMMwhvqKu4mRCFHi9RcKwVZoLTElHvIZiN7ihFjhmJk+
+	IUcsWB1oM2Nyi0KIwJtVU=
+X-Google-Smtp-Source: AGHT+IGMA+7T9erPHocCgSnFpUv/3TN84QugGnjX7iRNwN55w6o7MZeCKJyui0VotySzOLBaIOL7HQ==
+X-Received: by 2002:a5d:64c8:0:b0:431:32f:3140 with SMTP id ffacd0b85a97d-432c376107dmr25271814f8f.12.1768301514847;
+        Tue, 13 Jan 2026 02:51:54 -0800 (PST)
 Received: from [192.168.1.187] ([161.230.67.253])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-47d7f65d9f0sm409588395e9.12.2026.01.13.02.38.01
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-432bd0e16d2sm44998383f8f.13.2026.01.13.02.51.53
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 13 Jan 2026 02:38:02 -0800 (PST)
-Message-ID: <98897c0488e67f543f437b96412c78e10a59a81c.camel@gmail.com>
-Subject: Re: [PATCH v2 3/7] iio: core: Match iio_device_claim_*() semantics
- and implementation
+        Tue, 13 Jan 2026 02:51:54 -0800 (PST)
+Message-ID: <f4cd3b85c47b2829cc54c514dffd254433f796e4.camel@gmail.com>
+Subject: Re: [PATCH 2/2] iio: adc: ad9467: make iio backend optional
 From: Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
-To: Jonathan Cameron <jic23@kernel.org>, Kurt Borja <kuurtb@gmail.com>
-Cc: Andy Shevchenko <andriy.shevchenko@intel.com>, Lars-Peter Clausen	
- <lars@metafoo.de>, Michael Hennerich <Michael.Hennerich@analog.com>, Benson
- Leung <bleung@chromium.org>, Antoniu Miclaus <antoniu.miclaus@analog.com>,
- Gwendal Grignou	 <gwendal@chromium.org>, Shrikant Raskar
- <raskar.shree97@gmail.com>,  Per-Daniel Olsson <perdaniel.olsson@axis.com>,
- David Lechner <dlechner@baylibre.com>, Nuno =?ISO-8859-1?Q?S=E1?=	
- <nuno.sa@analog.com>, Andy Shevchenko <andy@kernel.org>, Guenter Roeck	
- <groeck@chromium.org>, Jonathan Cameron <Jonathan.Cameron@huawei.com>, 
-	linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	chrome-platform@lists.linux.dev
-Date: Tue, 13 Jan 2026 10:38:44 +0000
-In-Reply-To: <20251227144707.1bebcf27@jic23-huawei>
-References: <20251211-lock-impr-v2-0-6fb47bdaaf24@gmail.com>
-		<20251211-lock-impr-v2-3-6fb47bdaaf24@gmail.com>
-	 <20251227144707.1bebcf27@jic23-huawei>
+To: Tomas Melin <tomas.melin@vaisala.com>, Jonathan Cameron
+ <jic23@kernel.org>
+Cc: Michael Hennerich <Michael.Hennerich@analog.com>, Nuno Sa
+	 <nuno.sa@analog.com>, Lars-Peter Clausen <lars@metafoo.de>, David Lechner
+	 <dlechner@baylibre.com>, Andy Shevchenko <andy@kernel.org>, 
+	linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Date: Tue, 13 Jan 2026 10:52:36 +0000
+In-Reply-To: <51085acb-91c9-43ad-8f7e-94f1e9c995ed@vaisala.com>
+References: 
+	<20251216-b4-ad9467-optional-backend-v1-0-83e61531ef4d@vaisala.com>
+	 <20251216-b4-ad9467-optional-backend-v1-2-83e61531ef4d@vaisala.com>
+	 <20251221200014.29af7df8@jic23-huawei>
+	 <356a75b0-dc3e-4d10-a827-1af3b4ab638f@vaisala.com>
+	 <997f9d13f44031170a4518abf23ee6806d526054.camel@gmail.com>
+	 <20260111114109.28b01266@jic23-huawei>
+	 <d36d38b2ae691371c653927fcba310bc525e0aac.camel@gmail.com>
+	 <51085acb-91c9-43ad-8f7e-94f1e9c995ed@vaisala.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 User-Agent: Evolution 3.58.2 
@@ -102,45 +102,127 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-On Sat, 2025-12-27 at 14:47 +0000, Jonathan Cameron wrote:
-> On Thu, 11 Dec 2025 21:45:21 -0500
-> Kurt Borja <kuurtb@gmail.com> wrote:
+On Tue, 2026-01-13 at 09:47 +0200, Tomas Melin wrote:
+> Hi,
 >=20
-> > Implement iio_device_claim_buffer_mode() fully inline with the use of
-> > __iio_dev_mode_lock(), which takes care of sparse annotations.
+> On 12/01/2026 15:21, Nuno S=C3=A1 wrote:
+> > On Sun, 2026-01-11 at 11:41 +0000, Jonathan Cameron wrote:
+> > > On Mon, 05 Jan 2026 14:57:02 +0000
+> > > Nuno S=C3=A1 <noname.nuno@gmail.com> wrote:
+> > >=20
+> > > > On Mon, 2026-01-05 at 13:06 +0200, Tomas Melin wrote:
+> > > > > Hi,
+> > > > >=20
+> > > > > On 21/12/2025 22:00, Jonathan Cameron wrote:=C2=A0=20
+> > > > > > On Tue, 16 Dec 2025 11:40:06 +0000
+> > > > > > Tomas Melin <tomas.melin@vaisala.com> wrote:
+> > > > > > =C2=A0=20
+> > > > > > > Not all users can or want to use the device with an iio-backe=
+nd.
+> > > > > > > For these users, let the driver work in standalone mode, not =
+coupled
+> > > > > > > to the backend or the services it provides.
+> > > > > > >=20
+> > > > > > > Signed-off-by: Tomas Melin <tomas.melin@vaisala.com>=C2=A0=
+=20
+> > > > > > Hi Tomas,
+> > > > > > =C2=A0=20
+> > > > > > > =C2=A0static int ad9467_probe(struct spi_device *spi)
+> > > > > > > @@ -1352,21 +1361,25 @@ static int ad9467_probe(struct spi_de=
+vice *spi)
+> > > > > > > =C2=A0	indio_dev->channels =3D st->info->channels;
+> > > > > > > =C2=A0	indio_dev->num_channels =3D st->info->num_channels;
+> > > > > > > =C2=A0
+> > > > > > > +	/* Using a backend is optional */=C2=A0=20
+> > > > > >=20
+> > > > > > I'll largely defer to Nuno on the backend aspects but I would l=
+ike a
+> > > > > > lot more than a statement that it is optional in this comment.
+> > > > > > At least something about where the data goes and what a real sy=
+stem
+> > > > > > that didn't provide a backend would look like etc.=C2=A0=20
+> > > > >=20
+> > > > > Having the backend as optional is about flexibility to incorporat=
+e these
+> > > > > devices as fits best with the system. The current backend approac=
+h is
+> > > > > pretty much dictated with how the ADI default backend is implemen=
+ted.
+> > > > > These devices are fully configurable via SPI interface so the bac=
+kend
+> > > > > doesn't necessarily need to be anything fancy or even configurabl=
+e.
+> > > > >=20
+> > > > > So there is atleast two use cases that promote the optional iio-b=
+ackend
+> > > > > approach
+> > > > > =C2=A0- simple backend that is not configurable, no need for a de=
+dicated
+> > > > > driver. The backend (FPGA) sits and waits for data and handles it=
+ when
+> > > > > it arrives=C2=A0=20
+> > > >=20
+> > > > Agree on the above. Ideally we could have some dummy backend for th=
+e above but
+> > > > it is not really easy/maintainable to have it.
+> > >=20
+> > > When we say the backend needs no driver, where does the data end up?
+> > > Is the idea that it goes into some processing pipeline and sent to
+> > > some external path that we have no visibility of? i.e. We configure t=
+he
+> > > data capture in Linux but never see the data?
 > >=20
-> > To completely match iio_device_claim_direct() semantics, we need to
-> > also change iio_device_claim_buffer_mode() return semantics to usual
-> > true/false conditional lock semantics.
+> > Yes, that's also my assumption about Tomas's usecase.
 >=20
-> I wasn't rushing to review this set because I want it to sit
-> a little longer than a typical series to get more eyes on it.
-> Anyhow, long enough for this version at least!
+> The data becomes available to user space but there is currently no
+> immediate need or natural place to create a separate instance to
+> function as a backend device.
+
+So do you have some completely different data path bypassing IIO (just curi=
+ous)?
+
 >=20
-> Whilst I find it hard to care strongly about out of tree drivers
-> and in place flip of the return logic seems a bit unfair on anyone
-> trying to keep those rebased on mainline!
+> But that being said, I'm leaning towards thinking that perhaps a
+> minimalistic backend should always be registered after all. That would
+> keep the idea of the backend always existing intact.
+> But since the backend can be missing a lot of the features defined for
+> the current ADI backend, capability handling would need to be added to
+> the backend framework to make it functional.
 >=20
-> So with that in mind, maybe we need to name it differently even
-> if we are getting rid of the old implementation all in one patch.
+> Looking into how this could be achieved with reasonable impact, I have
+> tried to identify capabilities that we could add for starters, and then
+> have the frontend behave differently depending on what features are prese=
+nt.
 >=20
-> Given earlier discussion about this one being rather more tricky
-> to name than the claim_direct because claim_buffer sounds like
-> we are grabbing the buffer, I'm not sure on the best naming to have
-> here. iio_device_claim_buffer_m maybe?=C2=A0 Ugly though and
-> these are super rare so maybe this isn't a particularly major
-> concern.
->=20
-> Given I think the people maintaining most out of tree drivers
-> are Analog Devices maybe this is a question Nuno can answer
-> for us?
+> Something like this (added to backend_info),
+> .caps =3D IIO_BACKEND_CAP_TEST_PATTERNS |=C2=A0 --> backend patterns are =
+avail.
+> 	IIO_BACKEND_CAP_BUFFERING |=C2=A0 --> backend has buffering cap.
+> 	IIO_BACKEND_CAP_CALIBRATION, --> backend supports calibration
 >=20
 
-Whatever you prefer :). I'll be the one taking care of any conflict
-that comes and I do not mind dealing with something more painful if
-the diff flow makes more sense for upstream.
+Looks reasonable but I'm still a bit afraid to open this can of worms. But =
+as Jonathan
+pointed out multiple times on the backend code, this is mostly inkernel int=
+erfaces so
+it is easier to deal with bad choices :).
+=20
 
-Also not sure we have any out of tree user for these claim buffer APIs
+We would still need to "combine" these capabilities feature with a dummy ba=
+ckend that
+would dummy implement the more common/expected like (chan)enable/disable an=
+d so on.
+
+We can then decide on a usecase by usecase basis on what should be a capabi=
+lity or what
+should be dummy implemented.
+
+Bottom line, I'm leaning on "I'm ok with the above" since I expect usecases=
+ like this to
+be fairly rare (famous last words :)). And It would be nice to have more fe=
+edback
+on this one.
 
 - Nuno S=C3=A1
+
 

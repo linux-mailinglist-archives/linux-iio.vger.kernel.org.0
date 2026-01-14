@@ -1,218 +1,125 @@
-Return-Path: <linux-iio+bounces-27685-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-27688-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E3350D1CE4D
-	for <lists+linux-iio@lfdr.de>; Wed, 14 Jan 2026 08:42:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BA7E0D1CF70
+	for <lists+linux-iio@lfdr.de>; Wed, 14 Jan 2026 08:55:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 281FD30AD249
-	for <lists+linux-iio@lfdr.de>; Wed, 14 Jan 2026 07:42:08 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id AF0CF302FCDA
+	for <lists+linux-iio@lfdr.de>; Wed, 14 Jan 2026 07:55:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1AAD379998;
-	Wed, 14 Jan 2026 07:42:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1104C37BE6B;
+	Wed, 14 Jan 2026 07:55:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=vaisala.com header.i=@vaisala.com header.b="zLXjcIJD"
+	dkim=pass (2048-bit key) header.d=subdimension.ro header.i=@subdimension.ro header.b="TQxxAPiT"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from OSPPR02CU001.outbound.protection.outlook.com (mail-norwayeastazon11023108.outbound.protection.outlook.com [40.107.159.108])
+Received: from nalicastle.subdimension.ro (nalicastle.subdimension.ro [172.105.74.154])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D56B35E546;
-	Wed, 14 Jan 2026 07:41:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.159.108
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768376523; cv=fail; b=QFKo6qUWLfx7l14CAWgh9qFtc45drimtj7Sur4Xbu3FZchPeoTUHR+DubXFoY6aMnExS54ApJECypl7Bv4EVuK/g87G/PHuMY3oWhmuN5EfO4Ez6bsZBuzqvnr8hq0p7xzYBn9Vn4hD9ytWZuNLiCkHc9V6uOJGIr8UJeEjeyY8=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768376523; c=relaxed/simple;
-	bh=3Abe4qU+VQmNzhJg7lMvsdly7w3qOV0P/0nnrmWIMZ0=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=Wjb35qElmH2VehUsL/HE1zhs8IaAAwdnvWRcp7y8QyZvgixC6D1vBCQ3hG+iNG+WxGJVa9aFYxOkeEZ6tTMQZlvV3jT4c/IooJ+FAQsHcHuss1k8XsXlDxERx1R1oH6Sc62/3dd9tfEpSrHiFax/UFbGWWXahfKk3Y7qjV+s5Qg=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=vaisala.com; spf=pass smtp.mailfrom=vaisala.com; dkim=pass (2048-bit key) header.d=vaisala.com header.i=@vaisala.com header.b=zLXjcIJD; arc=fail smtp.client-ip=40.107.159.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=vaisala.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=vaisala.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=RujmLW9qdxFgySmKWRPpseerWuVDDPYczUHllFbTYp2lg3ki7XQePGsSdR9xYF6Hp3Yz3Mux7inKC3T0MjOX+ij/ChhB3QvWesAUnaOo3/umcNkF+NH82bG1vp7AgFulXX6jwxwf++wA5+0EspPOmRBJkXqvpSQk1bTMvIP6PBLZD0VsHMiWpjhfoSwNDdl/1yko6IAw57m3Z62QNR+P/oWGJvE4RLddM+xrxLiLfq4HHP4NHQN9U1bU5/vAGYzus/iSVuq+HjkB7Qr4bk/QgUiLGT0oVoSneQOz02RUunc7H21ejz6PrwgZILFocmsA5dj6iDSQL7iOZQIxsZQ5Rw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=SIIVzU0Oxhlu1IwOSHfAFwBZQxQu9ygx7rIlEWGmO14=;
- b=zMRubBkG4QVcIuWnNRBVhNEm3q2Qp9oeTy837NOiSMY5sk0o7IM9mCnPbM2yPnQXq0vU7cU02fi0BdjofP5ZOpZPyZqSjH71YMADAQRb9uOUwq5c2FzrDu0cnwbPnXlq0XEVHB2Mx/+JnjhlJhcvOlGlIYTQyX2TNDn7vm1RV4wJ4AXK+hU8M2gFPL3hPFzTqax+57mbI9c8I/bShyOH4CYmFHNa5ahUNAAez5UGIxuNIxie4Aac3yd2nemaipbAqJs96XMYPBeqkEOoi8WdkjhXOkSYrk+RjPEsADnq44sj2ml1UO2rmeTx4S6h4sW8tz21gijlNhc3HzlehQfECg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=vaisala.com; dmarc=pass action=none header.from=vaisala.com;
- dkim=pass header.d=vaisala.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=vaisala.com;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=SIIVzU0Oxhlu1IwOSHfAFwBZQxQu9ygx7rIlEWGmO14=;
- b=zLXjcIJD80CCOm5aAfGrovrh7wLCN3MvFo0hvXS3dpiDLTP/S0pyz9MwH+yGfyFNBeGQTKxE8vYStSIAPnw6iTC1T9yoa/vZ9HfvlUaCvKZrTi8P5UqA8FTC+Yv4gx+9JPQVgc0gXDDKIsRfhAqsENbWoM9isi9b2CKw4d69d5k5OjYoK+tOCZ5109dXAOOwrGFCN+mFoFfP5KSSm9+aR7+tkGHB3UWhTSZvaTzAUJXnUVVozmI40m7WQ8uP6QRE+TbBMBEwiURlYvE8+oUUnQNFZJPKHSUlZoFFKD/iF/t9PDhu5O1TynwmAeZJOJiUDP87qSlaezElPMxapjSzrw==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=vaisala.com;
-Received: from AMBPR06MB10365.eurprd06.prod.outlook.com (2603:10a6:20b:6f0::7)
- by AS8PR06MB7734.eurprd06.prod.outlook.com (2603:10a6:20b:33f::21) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9520.5; Wed, 14 Jan
- 2026 07:41:51 +0000
-Received: from AMBPR06MB10365.eurprd06.prod.outlook.com
- ([fe80::4606:8e25:96e6:bede]) by AMBPR06MB10365.eurprd06.prod.outlook.com
- ([fe80::4606:8e25:96e6:bede%5]) with mapi id 15.20.9520.005; Wed, 14 Jan 2026
- 07:41:51 +0000
-Message-ID: <2fe971bc-9ab0-42c6-a498-b67edb54dfb5@vaisala.com>
-Date: Wed, 14 Jan 2026 09:41:48 +0200
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/3] iio: adc: ad9467: include two's complement in
- default mode
-To: Andy Shevchenko <andriy.shevchenko@intel.com>
-Cc: Michael Hennerich <Michael.Hennerich@analog.com>,
- Nuno Sa <nuno.sa@analog.com>, Lars-Peter Clausen <lars@metafoo.de>,
- Jonathan Cameron <jic23@kernel.org>, David Lechner <dlechner@baylibre.com>,
- Andy Shevchenko <andy@kernel.org>,
- Olivier Moysan <olivier.moysan@foss.st.com>, linux-iio@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <20260113-b4-ad9467-optional-backend-v2-0-0a27e7e72f41@vaisala.com>
- <20260113-b4-ad9467-optional-backend-v2-1-0a27e7e72f41@vaisala.com>
- <aWaza9cRb0kpsE0w@smile.fi.intel.com>
-Content-Language: en-US
-From: Tomas Melin <tomas.melin@vaisala.com>
-In-Reply-To: <aWaza9cRb0kpsE0w@smile.fi.intel.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: GVZP280CA0083.SWEP280.PROD.OUTLOOK.COM
- (2603:10a6:150:274::16) To AMBPR06MB10365.eurprd06.prod.outlook.com
- (2603:10a6:20b:6f0::7)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 755172E7BB6;
+	Wed, 14 Jan 2026 07:55:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=172.105.74.154
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1768377329; cv=none; b=LhabnK1AWuZmtHJlv6cIBwYeJpvPAba+Qz7sBsS1REhX+Ogb9c/nebXWF8NCg2xVq4IJGUKyl8K+PReynYtGxUtCfaA/kwUHU+AurAWUbJpzLf/oekrzdOa4PIbSXHnQ5Tly6//Cqenht1LyQNTvMSC4B9kVYm0pvmJCTbab9F4=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1768377329; c=relaxed/simple;
+	bh=b5tlNjz/pW72IqhgkeZRT35OhNnwVKu21GrLirtBSSM=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=OvHba09e3R4daiCapsj/Y1k41kO2hKBQw4r8TXzno0rUdc+YDDybOnC+8iLoKGcTCxATFQ7DxbEeTeufWag8WFTLSgYX2PIWYt/DjWD/3U6xOwsrT8zE2lhKacaoaS3w//e28h27ck+rmuXu5gYh9llya0AKNaOcHuj3qsFodtQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=subdimension.ro; spf=pass smtp.mailfrom=subdimension.ro; dkim=pass (2048-bit key) header.d=subdimension.ro header.i=@subdimension.ro header.b=TQxxAPiT; arc=none smtp.client-ip=172.105.74.154
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=subdimension.ro
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=subdimension.ro
+Received: from sunspire.home.arpa (unknown [IPv6:2a02:2f0e:300:8a00:e2d5:5eff:fed9:f1c4])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	by nalicastle.subdimension.ro (Postfix) with ESMTPSA id BFEFB160209;
+	Wed, 14 Jan 2026 09:51:58 +0200 (EET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=subdimension.ro;
+	s=mail; t=1768377119;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=zU9uwfq7bgNvZu7k1gs3x7WhjiUXa64yiSIvSgJLu24=;
+	b=TQxxAPiT656R3roYYBpRHUjLtMFG7ADNsK6qXxnkaCJDN4teYM+MquS8sIpiQKUxf6Fb6p
+	96SVGcVTZyjloOOiXauligF5dodDrvpA9612F2/OM6buCrmdteOJZcZi76ZL9grodk5JFJ
+	q5uh0vRZfkooA1lUovbkYilBcSx2AJV0Lb1xZr+1H0SAfs9n+6mLAbJX1056yOcEX8W+3g
+	L32gKGQrTnq3P1+nhR3w89eBID6NvRyvZqujVeHTodVxDNvqzg9z3olVk4E0pMDsDd7qbR
+	OS0AB4ugvhKRhKPqh16JauPrMLnwPVKz2ajMCaGUbaCKgrFN1Rap9XEelFsqRA==
+From: Petre Rodan <petre.rodan@subdimension.ro>
+Subject: [PATCH v6 0/2] iio: pressure: abp2030pa: cleanup
+Date: Wed, 14 Jan 2026 09:51:36 +0200
+Message-Id: <20260114-honeywell_abp2_driver-v6-0-231c3a8c222b@subdimension.ro>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AMBPR06MB10365:EE_|AS8PR06MB7734:EE_
-X-MS-Office365-Filtering-Correlation-Id: 36565b6b-ccab-4a4e-d68e-08de53406187
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|366016|7416014|376014;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?UThkMXdveVBuVzExVkpaVUVxSVJFK1ZBYjZOd0RxK3BBTDE0R3ZiKzl0SmVF?=
- =?utf-8?B?T3Q5YkIxV1Q2aXpZak1VZTFycVFNUTMvNXo2ZWhacTk5L0VKWjd6V1YydHZl?=
- =?utf-8?B?LzRFd3VNVjZoaWtxa04yWjlNZDZ2VEIyOGdqV2p3aVBHR2Y0TjhiR3Y5Yyt3?=
- =?utf-8?B?ZDloMG5aeGpmZjZZcWRJSXVVa2xIWmE4Z0MzU3BkR0MvZE42VDdiVHhHUWJJ?=
- =?utf-8?B?dlZkWWNYcDBDd1ZBbUxDMXNVNnJ4bUdUV2NJeVZGQzZ3WW1SSHFTRkIrQVB1?=
- =?utf-8?B?YU1KNk54U1lpcEJ5bDV4TjFqWlpkdHViL3dKU0hWOGRhOGlzM3VwZmFxNlN2?=
- =?utf-8?B?dGt4RW0vT0ZXR1JJa0RiUjYwZzBKMWJDZ3VQMUFjQTkyMWR0M1JPbFRNczUr?=
- =?utf-8?B?cWd2cVUyRUVzeHArZjN1MmUvYVVIamgrWllDZGFJZzR2RThsUVROU0tvQ2FU?=
- =?utf-8?B?K09JeUlRV2pYaG1JY25RUDhoZWhaaE5SRm1pTHBRNk5EeHdHcU9Pdk1MRFhX?=
- =?utf-8?B?bmd3Z1RrcFI0cm90Y3BXcmJhNFJlZU4vNlcxWHRuRWJWa0szZ1QyUnZUVUhF?=
- =?utf-8?B?TUpYd2ZmQzZ3YVlKQnJyMkc4TmhjbFphTWowUVZFb1NjNEJmS3ljNG1HUXQ2?=
- =?utf-8?B?QVpBR3BHNk9MNVhKdlozUHR5V2xGRktwT0tmaE5TUHJxSEM3eFlJL2dSaGR3?=
- =?utf-8?B?THFVeUExUVRlMDFZR0UvMEphMlpZTmExdnJnYWwzNTZsNndxaWZHZTkxc04r?=
- =?utf-8?B?bkx0dmZKVkU5Tm1MVVZjWGt3WVZ3NndpKzUxSG5YVXZHQU42amptZFZDR2tP?=
- =?utf-8?B?aGtkeTAxcHJabjRRWEczMlFLWlBjMlRtSVdRTkxFaXY5ME1DM3VJL0UwamhE?=
- =?utf-8?B?cXdQUEtoZ0ZoT3dpTnpyRkUrL3ZBTmM0R1dZVE9mdVpQbyt0cWFxN2FzNzR3?=
- =?utf-8?B?cTVVRDdPUXQ3UDV4bmJDNktydXBuUmt1MXl0R1RJM2ttUWwvM0dpak42d1A5?=
- =?utf-8?B?Y1NRU1RWME5vMlRZY2Z2ZFVleHc2U3crcm80eENnUXhrS0xHVnlHaU1KVWsz?=
- =?utf-8?B?c0NFWUxKN3FSS0hqeXRTRUZlMzE3V0JhYml1RDdpcmhhSnNXM2grZmFkWFJL?=
- =?utf-8?B?UGNieDRLQ3loSG9BdUZhMzZiMGE2QWdtQktDVU4zdG53UDVIejYwV0pMS0V6?=
- =?utf-8?B?SjVYL3RQQmNRMmJUOGlOMHMvbS9qK1huODRqZWd1Z0Qybm8rQWhFbjVxTU1z?=
- =?utf-8?B?SERadjFBRGFYdlpmUTZlUGdZcjc5eFpGcEpaN2dTUVUwcWVhb2RhV3QrZVEv?=
- =?utf-8?B?OHFPekxJTWk1TWxYaTdydy94TEdHTTNldjdLbmRwaUdlZXRiamw5NC9iNVNO?=
- =?utf-8?B?R0djWCtVaS91YzF2VHNPc0JLTmp4NGI4RzMvT2xSM2RyeElTSytPSitaUm1n?=
- =?utf-8?B?a0YzZVVmQ0NsekZqUGdiMXdrL2cvZGNFaEJsN1pxazlxYUlqMXZBd1AvbnNG?=
- =?utf-8?B?Vlh0aTBhelJ0NTA5NTN1K3NwUTRJakI3Mi9yYUE4M3V1UTVOcklKQ3FySnFK?=
- =?utf-8?B?QUswNUErMW5pRlVzcmJLVlF1YWhHNi9COWUzelVXcUpBeHl4OEdmM1IzTUdL?=
- =?utf-8?B?dTJielgrQUdEdkd0OGppWEhXZlVWcmI2NElsdW8zbzJmdUphU3BSdDBabFNW?=
- =?utf-8?B?T1kxMUNaU3g5MVJnTnNYSW1VenkvZmNHSTVnZ3IrMHlQN1V0cm9PVm1JdWxI?=
- =?utf-8?B?UEJPV05NS3dhUXdkY1FuaUl2ZmpWU3pXNGxodmlXeUV5c3hZdzgxMjZzSTZX?=
- =?utf-8?B?UTVLYTErS2NyZjZNQW1OVkZ5VksvTHYwUGxQdklCTFdrdThKKzNzWXhCTWhS?=
- =?utf-8?B?Rk9KV1UySU5saXM3dmtwcndjTnkwSDh6U0hra2ZURGMyQ3VkcFJkcDB3bHJp?=
- =?utf-8?Q?VHTrexqZ0ACoBbSW6epTvg/6PrG0sM6N?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AMBPR06MB10365.eurprd06.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(7416014)(376014);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?MWJkbGxMRng4ZTJ4aWhVL1hLQVU2RkpHQXFaYWVESHZyR1BYeEVwTUVsRWRi?=
- =?utf-8?B?KzNZR3JBZ3FxMGllaHoyL29uVFV0bHQ5cVdyV0ZvZ21YbGNyUmUzY2t6L3pV?=
- =?utf-8?B?SlJJRld0ZWFZSWo0bmNJTi95RXR4Z2FEdThTM1BqRHYxSk1YdFA0b3EydDkx?=
- =?utf-8?B?TndQdm9DajVvcTIybnptMldueGxHc3ZaWFFrMjVCWExITDZ3NWlIc2hyWGpu?=
- =?utf-8?B?UU5CVlJGYVIvRnpwYjdPT0UwWTlaellMcG8zSkZUbC94V0U1a1ZmcW52VDhk?=
- =?utf-8?B?TnFXcUFERGw0bDRKUFlaZVZ2bFc1Q0xEVjhGUy91V296V3BVTFBraFUyVlRM?=
- =?utf-8?B?RHdzTjFpcFo4b3NEZXVsdEhQT1FCUkFzNWx2SFNlODEyZG1HaHpmNUVqZ3hV?=
- =?utf-8?B?VTZkdXI1RkdxTm9KOVBubDZ4eE01R2lSbjlkdXAzUUFOaldCRHpGSFdKeHhL?=
- =?utf-8?B?eDEwNDVTbEU2bVE1NmxicHV2MUF5dWI2RVNuejBNNWZuVjA2ZjNOR3hheGE3?=
- =?utf-8?B?UkJ4aVJGVE14U2s4S1drUmRGK1kvQnJkdTBNM3JlT3hPY09yUDgxUmM0ZzNF?=
- =?utf-8?B?NUdHcVUwWFBTZ3NqTy9zRFdvUjE4WVAxTFozQTRZd2txQjNkcEtjSjFuRHNu?=
- =?utf-8?B?ekZQWXp4YlgzdE1NZjE1bnJWTzRDRVc3Vm5oOEpzY05JYktWT1B0Y3NvcEJk?=
- =?utf-8?B?aEMxZ1JDM21idEZqOXFpbG93UThKamdCVzA0anJqNGg0eWlOQ1ZDaG5xNWJ3?=
- =?utf-8?B?N0hCMjBYbktDYVROemJGV0VBdXJ6ZTFxMitEdXJLZ2l4cEY0dnE4dDlGd1VD?=
- =?utf-8?B?RDl4QXF6UnJqNHNjV1B1eUNlSjRlQTB5ZVpsZmdOK3Y1aFJiTmtVVkJ0amhL?=
- =?utf-8?B?d2ZackxOQkk1cmJWZy9SVE5FVnZCbjJISjNEWjJrbjJtWCsweitDM2ROZEFo?=
- =?utf-8?B?TklXK0tnQ3dWVERiVUNlcnhBcFJERm80b3hlTHVKaWVpemNWL1FUdzdud1NQ?=
- =?utf-8?B?WjVIZHBtdjcvdjg3VnNIVlFHbjVZTjJMdEE1NHZ1UGdvc3poUEZmTzhPUXNX?=
- =?utf-8?B?Q3hXZkM0bkNqRlo4QmZicVBsejQvK25FQ2xMMjBvU3l5RWtPbksrZmlkTXM4?=
- =?utf-8?B?RmdpSU1zNE52Q3dQNXo2YlpiQ1lhMlA2K3dzcjU1cUZJdGZvdm45L3hPYlFx?=
- =?utf-8?B?UkVua3Q3RHNuUytIcCtKUWozaURpY0xxUzJxUE1ITlRLckUwaGxkeVY4dG9G?=
- =?utf-8?B?cW1IaEtyTmV0KzlLckZCdEwxQjl3NVJZdG9BL0JwbVZVbVphUjFReTNZM2Z3?=
- =?utf-8?B?dW1tUGozclVPcm9iNjYvOHZWSWJubHNvejNEWGJDVjZkTXYvb3dnN29YOXgr?=
- =?utf-8?B?SUxBbTZTb3ZsbnUwR25sdmI3emRrR0J0L0JrWXlLb3hwKzBpSGs5OE5vVlBv?=
- =?utf-8?B?N2dQaXdVNjl4UHJvZDBUWE0zc1NTTzJaeXZPVDhqNjB4eVZma1pFNFRlSWJL?=
- =?utf-8?B?QnBtRlNSVUtaVC9MbWxnQUJiamZ3cU5RdGthTFpMMWNNVUhTa0FKQU1qNktY?=
- =?utf-8?B?d2JqbkZWcGVRcEJFeEVXejBZOXFHZnJqdkhYZXJscGxHb1ZMYTRhR1dqTzJN?=
- =?utf-8?B?dHBDOVgxQnFhR2JMdnVuZVo4aFphM0tSMWlxaFd5ekFIcnR5MXlEeGoyRXRP?=
- =?utf-8?B?aThwVmhrVlhLN0pCTVVSRnZYQ0QybXZYNWN3MnN6MGxybFZER0VOM0tkWVFw?=
- =?utf-8?B?QklWL3Q5bFg3dFFiZmJVMVJwUHU0VWtYQmplaThlTzJYY3kyRy9jQlNhWXls?=
- =?utf-8?B?YlNMdjlzR29RMTU3OER2VHl0UE5hQXAreHhDZHVVMzU5dUFycG1PSjNHRDZD?=
- =?utf-8?B?ekdGWjNlcmJyenIwYnV3dkh6Z2EzN0w5dnppTzlLSTBmbnBCQWJnTlNWR0FI?=
- =?utf-8?B?NzYwNS94U2ZYajNHVG8vUVBKMU01SWdLYk9RWllmY3VYRGE3cFVEZmlTOENP?=
- =?utf-8?B?RHM5RkRWM2NSN3NKTkpRWDQzWHFyYzlVbU1UVjEzeFZ1bDhyRlJEdTQzL0dE?=
- =?utf-8?B?VHJNQXZZVHNCN2VGZjlqRGZObnpnRkRsK1p5bFl4Vm9oR3owWnZiNE5GbW1Z?=
- =?utf-8?B?SjN2dVBPU2FSVTZlMTNHOGpxU0p6SU8vTWJ6SG9mLzNTdkp2ZXFIbTFXV1Qr?=
- =?utf-8?B?cjh2NDVxNUNZa0EweERHUWJ6M2V2czdqV2NBTXJxRnh3RXdIMVM4L2pISGRP?=
- =?utf-8?B?Vlh3Tno2NjRTRE5xbk96NDluQlBVYnlJZkdyclhuT0VrOFNkYW5lUk1nM2h0?=
- =?utf-8?B?WlhWYkY1bGhQL3o5aDNQeHpoNFhnR2tEOGFHbVRvQnUxdjlQeklLZzR6bFRz?=
- =?utf-8?Q?cCdm9Tycpf72o8i4=3D?=
-X-OriginatorOrg: vaisala.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 36565b6b-ccab-4a4e-d68e-08de53406187
-X-MS-Exchange-CrossTenant-AuthSource: AMBPR06MB10365.eurprd06.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Jan 2026 07:41:51.4260
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 6d7393e0-41f5-4c2e-9b12-4c2be5da5c57
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: xaWC10MsDw9QguQJx1hhSoWVbbcLPweF3URGk47hVY7be+437MYba1Ay15dlY5tf+sDbd3CGR2A4pPdxhCKeSw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR06MB7734
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAAhLZ2kC/4XO20oDMRAG4FcpuTaSTE67XvkeUkoOEzdQd0tio
+ 6Xsu5stiAUNXg3/wHzzX0nBnLCQp92VZKyppGVuQT/siJ/s/Io0hZYJMFCcA9BpmfHygcfjwbo
+ THEJOFTMdvRk1RualA9JuTxlj+ry5L/uWp1Tel3y5val82/4nVk4ZNXZA0CqOGsxzObuQ3nDeK
+ j7mhWxuhXtr6FmwWUwJIweLPnYs8WMBkz1LNMsGAUa5NhT+bcl7y/Qs2SynwEo3aud6vdS3pRl
+ nomepZjEplI0+CqbDb2td1y/LXu1A8AEAAA==
+X-Change-ID: 20251122-honeywell_abp2_driver-9c796ef0c4b2
+To: Jonathan Cameron <jic23@kernel.org>, 
+ David Lechner <dlechner@baylibre.com>, 
+ =?utf-8?q?Nuno_S=C3=A1?= <nuno.sa@analog.com>, 
+ Andy Shevchenko <andy@kernel.org>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>
+Cc: linux-iio@vger.kernel.org, devicetree@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, 
+ Jonathan Cameron <Jonathan.Cameron@huawei.com>, 
+ Andy Shevchenko <andriy.shevchenko@intel.com>
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=openpgp-sha256; l=820;
+ i=petre.rodan@subdimension.ro; h=from:subject:message-id;
+ bh=b5tlNjz/pW72IqhgkeZRT35OhNnwVKu21GrLirtBSSM=;
+ b=LS0tLS1CRUdJTiBQR1AgTUVTU0FHRS0tLS0tCgpvd0o0bkFHSkFuYjlrQTBEQUFvQmRDc25wM
+ k02U1dNQnl5WmlBR2xuU3hTeit5VEM4ZHdPajN4R1FqeU1VdXdvCmlaQnE1UVBCKzgxTEdCaVlR
+ UmNYUzRrQ1R3UUFBUW9BT1JZaEJCb2ltQncrRGJ4UXBFNmlkM1FySjZkak9rbGoKQlFKcFowc1V
+ HeFNBQUFBQUFBUUFEbTFoYm5VeUxESXVOU3N4TGpFeExESXNNZ0FLQ1JCMEt5ZW5ZenBKWXd2Ng
+ pELzRpNi8rb2h2RjNNQitSMUlFZUJhWnd4czI2K01PdzkxR1FnTG5tdWVjTzg5NFhPZkFmay9hQ
+ kQ5TEU0Vy9pCjMrYXh1cENybG1TY092bVBVYTRJLytwVlRnQXh1d0lRdXFBdGpzRWVRVU16M3pF
+ aW5rWm5PRmlIM2h1NGZwSEQKd05hYXk2VTBHaFdiTU04QXRpVG1WMXo5TnlrOEhlUXVKTHRJMk9
+ FMURDQ0N0LzFZNU9hYWRwTExZVUd0bWxMMgpJVGhYdWczb3UyYk85Zk1wWk56SGxHNFcxUnpIZ3
+ FiRWdBbjlBa3VVd1MrNUZzaElpSkxuV1c5d2ZJR1MyWmcwCmxKdXJwdEpvaHk5bnI5SG9XeWNLT
+ kVmTjFJY3VQaTc2UGRrR0dRbHA0ZVZ5RzlvUXZWQ003bUptZm9oMXdMV3IKTmNQR2JVVm9vQVpK
+ a2x4aWZLRkIvQ2xhaC84T3VDR0dzQnVEUzB5L0pIM2tJNDVWWHUzWVlzMFErRXdocVk5SAp2NFZ
+ lcjBtbHpIZWFZWGc4ckFoSm44T1IyRlo1UFUraFljM3BGS1ducEYzanMwTE1KQUlNNXB4Q1B0T3
+ dycHBPCjNsY29DdXZGZ0hXa1ZLUTlhcENVNVdJQm9ROFNwcHRLcmF1K1FQczY0M1A2N2k4RmkyY
+ zczZmFna3VEV01IQzcKbU1LaXBNT2djNmN3ek1ZUUFKcVhON3lzWjFtYzhjdENaQXJ5MUdiaHNV
+ SGVIOWdHRVZHY01GVENOUEtlY29FNwpSSkpoYVpiZG1XNkZmWWE4TDI5ZzVUV0F5RFhKSEpqY29
+ qWEdjVU1iek5CS1Q2NUVZRFY3Y3JMay9iSzd1Z1E3CjVKMEFsaEpkZE1ZWnhvT0NBWVpYSFN5cU
+ 02c2pEY0N3c1RIYlFTTkQzOTFoSjU1eUt6ND0KPUx6WFkKLS0tLS1FTkQgUEdQIE1FU1NBR0UtL
+ S0tLQo=
+X-Developer-Key: i=petre.rodan@subdimension.ro; a=openpgp;
+ fpr=D80A7FC176151935EC3E5FA9CF269999844E7F30
 
+Fix one typo within a Kconfig description and remove redundant error message
+if devm_request_irq() fails.
 
+This cleanup series is now based on the testing branch as requested by Jonathan.
 
-On 13/01/2026 23:04, Andy Shevchenko wrote:
-> On Tue, Jan 13, 2026 at 12:12:47PM +0000, Tomas Melin wrote:
->> All supported drivers currently implicitly use two's complement mode.
->> Make this clear by declaring two's complement in the default
->> output mode. Calibration mode uses offset binary, so change the output
->> mode only when running the calibration or other test mode.
-> 
-> ...
-> 
->>  #include <linux/bitmap.h>
->>  #include <linux/bitops.h>
-> 
-> Side note: bitmap.h implies and guarantees all bit ops to be provided. No need
-> to include bitops.h when bitmap.h is present.
-> 
-> ...
-> 
->>  #define CHIPID_AD9652                   0xC1
->> +#define AD9652_DEF_OUTPUT_MODE		0x01
->>  #define AD9652_REG_VREF_MASK            0xC0
-> 
-> Another side note: The other definitions around (mistakenly) have been indented
-> with spaces. You can see the problem in the diff.
-I noticed this too but kept it out of this diff as not directly related.
-Thanks for these remarks, keeping in mind for further updates.
+- Link to v5: https://lore.kernel.org/r/20260103-honeywell_abp2_driver-v5-0-0435afcf306d@subdimension.ro
 
-BR,
-Tomas
+Signed-off-by: Petre Rodan <petre.rodan@subdimension.ro>
+---
+Petre Rodan (2):
+      iio: pressure: abp2030pa: fix typo in Kconfig description
+      iio: pressure: abp2030pa: remove error message
 
+ drivers/iio/pressure/Kconfig     | 2 +-
+ drivers/iio/pressure/abp2030pa.c | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
+---
+base-commit: e0bc6d7e258486c10bb11e31fd4421c134063b1d
+change-id: 20251122-honeywell_abp2_driver-9c796ef0c4b2
 
-
-> 
+Best regards,
+-- 
+Petre Rodan <petre.rodan@subdimension.ro>
 
 

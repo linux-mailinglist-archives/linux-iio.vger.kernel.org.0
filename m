@@ -1,62 +1,60 @@
-Return-Path: <linux-iio+bounces-27711-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-27707-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 31EECD1D558
-	for <lists+linux-iio@lfdr.de>; Wed, 14 Jan 2026 10:03:13 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F2F4D1D5F5
+	for <lists+linux-iio@lfdr.de>; Wed, 14 Jan 2026 10:08:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 81F1F3014D78
-	for <lists+linux-iio@lfdr.de>; Wed, 14 Jan 2026 09:00:38 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A2EA8306A0E5
+	for <lists+linux-iio@lfdr.de>; Wed, 14 Jan 2026 08:57:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2ECD83815C3;
-	Wed, 14 Jan 2026 09:00:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4BB43803D2;
+	Wed, 14 Jan 2026 08:57:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Ipsp5rRR"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="examljUg"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 403C137F8AE;
-	Wed, 14 Jan 2026 09:00:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F41B237F75A;
+	Wed, 14 Jan 2026 08:57:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768381209; cv=none; b=cf0acyeh+GjTGLKgcBWWK6GJHuFXcZhduSdiiMI6RrdKtVdEWm6krfHHBblEZ+Xi2nrgXqkyHtzfPL4RD4Cb9kVTd7+eb1str56Lpi2pdDEpSZU8tQibH/2TSVsTNtHvm033l79Xzzkzfl1L5gQ+CiqL/Rav6Xs7oKuVHW8en38=
+	t=1768381039; cv=none; b=ocErAeSrdkVFPtCeMgWrgNXWNt5DVRFslBCjjqK+KvtUrxoqtNcqaEn+JUzAh3Gow/FeuJJvEXjXL1O2K+VKA5119/z36mhsoGMyhP2XEWpeqxW8orTZ1N1kOgNRqgT0bx/HBXqJ3f1eBOnSpfx264xRVDzueqp1ti1HWEa6iko=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768381209; c=relaxed/simple;
-	bh=34jVjerwqYxOEQcuaSsWoBv5CsPOOzGoscXW0zoe/5M=;
+	s=arc-20240116; t=1768381039; c=relaxed/simple;
+	bh=HIkzILhgmWy3kG68XFN5wNFScMmkW6IPVLk8hi5sn5g=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=c4hv4nA69wk3dtnvMn/GsDSaQW71W/sDDWN/Xo4YF5OnqEpfr0YHgmQqxlLHkH7/3VIs7dsSV1f3uy9UIB9zbOxw+cq/Ej8CwI0hQq7WIKgjbcyt0EtF6Fjy/CYOdCHe4V4moJVJ838bqL3lTu6oMhWe5sRA4xUV6bU4PB33w4o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Ipsp5rRR; arc=none smtp.client-ip=192.198.163.16
+	 Content-Type:Content-Disposition:In-Reply-To; b=lKvHc3jtlVoKjYJmg+etqSZLvCRjl6vkxgqBz++3XBfRl/cjg6OUfBW49uBflRTJh/3mpVuH4PN55o9e1zvfwBy3nq7qajgFxakxxiawPoDWHlNK1I1ntoHoueo22fBP9sQ8C60KapJ9QQctLzeW5X/nte/zpgW+zcdJLuA3vXU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=examljUg; arc=none smtp.client-ip=198.175.65.15
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1768381205; x=1799917205;
+  t=1768381035; x=1799917035;
   h=date:from:to:cc:subject:message-id:references:
    mime-version:in-reply-to;
-  bh=34jVjerwqYxOEQcuaSsWoBv5CsPOOzGoscXW0zoe/5M=;
-  b=Ipsp5rRR24BVLxOcWuNHS2DSXGJY6pVJZ9jt+v53lMnDVwfSyzGOvyH0
-   7++nJxT+uLoIOcaXmTuv5a4FDIrn6cu4H4s+s4F2VJ3IX0cMqYoEooMhH
-   QPaGSwsxQmA35HuzHMsnBRYOg1HsLIOu603zrBHtXPGZ4aYZaeDd2It3h
-   4FWcpKhXNbHMksHDVoU40fvPhsaivpfnHUoZKlYb/QSXLhpYsBlU7U3us
-   ouspzOJUemkcllEU+ULuzL5rJILb6X9j+p1BIR2Bzco18Ej//hiUd3o7n
-   C7Mcc0ObTZJJdIHHoIyUXHua9XNtGZYbGGre4t+u6ofnMp7jFnE7EAnQ7
-   w==;
-X-CSE-ConnectionGUID: ytV/iaIkR923y+DNY+NWRQ==
-X-CSE-MsgGUID: L5QjEpDfRy6xoQyIE5D/iA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11670"; a="57231526"
+  bh=HIkzILhgmWy3kG68XFN5wNFScMmkW6IPVLk8hi5sn5g=;
+  b=examljUgrFxwp25DDVBzwRjb7aM5G5PafO2HECBRrLEgZRxD12xYyhN9
+   vIl/GGff5SOpmH6oGDJEvBbNEvoIvlTxT7IxybFxwwtr3gDKkKU7QOjxb
+   hIIPWa+Uwp0p/z8oaDFGRmKCZhEFA12KNYx9kRz0dakA1cvryGxYNZj21
+   ANngab86lFXX1NhyWBQEjVRLuot6WLGdzVignCJOE3i0Cv2KZ+zWnjYCJ
+   GTzGZWiA0jRhjzOT3gVKSsJlSZMw/Ko3v8qiM3W0MGpaE2cDItpvQSe0u
+   qRctU+nkfop2i8iy+XsS+Ahyf/5kVwQXX861qSzabAi+eP2sc4IQRpBq0
+   A==;
+X-CSE-ConnectionGUID: cpGBxTezQ7m+AKjDpWy40g==
+X-CSE-MsgGUID: CChaLPZmQKWS5RgbYKai3g==
+X-IronPort-AV: E=McAfee;i="6800,10657,11670"; a="73311197"
 X-IronPort-AV: E=Sophos;i="6.21,225,1763452800"; 
-   d="scan'208";a="57231526"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
-  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Jan 2026 01:00:01 -0800
-X-CSE-ConnectionGUID: MR0yAgE+ROqJn82tw1i+XQ==
-X-CSE-MsgGUID: NYAbW1r9RHeVJwJIuq4/aw==
+   d="scan'208";a="73311197"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Jan 2026 00:57:09 -0800
+X-CSE-ConnectionGUID: JwC21BClT52N5BFbRPnySQ==
+X-CSE-MsgGUID: RAtdZy/tSs2IStYTIHc58g==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,225,1763452800"; 
-   d="scan'208";a="204636173"
 Received: from pgcooper-mobl3.ger.corp.intel.com (HELO localhost) ([10.245.244.83])
-  by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Jan 2026 00:59:54 -0800
-Date: Wed, 14 Jan 2026 10:59:51 +0200
+  by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Jan 2026 00:56:59 -0800
+Date: Wed, 14 Jan 2026 10:56:57 +0200
 From: Andy Shevchenko <andriy.shevchenko@intel.com>
 To: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
 Cc: jic23@kernel.org, dlechner@baylibre.com, nuno.sa@analog.com,
@@ -70,13 +68,12 @@ Cc: jic23@kernel.org, dlechner@baylibre.com, nuno.sa@analog.com,
 	mitltlatltl@gmail.com, krishna.kurapati@oss.qualcomm.com,
 	linux-arm-msm@vger.kernel.org, linux-iio@vger.kernel.org,
 	linux-kernel@vger.kernel.org, linux-phy@lists.infradead.org,
-	linux-pm@vger.kernel.org, kernel@collabora.com,
-	Abel Vesa <abel.vesa@linaro.org>
-Subject: Re: [PATCH v7 07/10] phy: qualcomm: eusb2-repeater: Migrate to
+	linux-pm@vger.kernel.org, kernel@collabora.com
+Subject: Re: [PATCH v7 05/10] nvmem: qcom-spmi-sdam: Migrate to
  devm_spmi_subdevice_alloc_and_add()
-Message-ID: <aWdbB4vJ6Z8k0g4s@smile.fi.intel.com>
+Message-ID: <aWdaWY2tWUMllOHH@smile.fi.intel.com>
 References: <20260114083957.9945-1-angelogioacchino.delregno@collabora.com>
- <20260114083957.9945-8-angelogioacchino.delregno@collabora.com>
+ <20260114083957.9945-6-angelogioacchino.delregno@collabora.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -85,17 +82,16 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260114083957.9945-8-angelogioacchino.delregno@collabora.com>
+In-Reply-To: <20260114083957.9945-6-angelogioacchino.delregno@collabora.com>
 Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
  krs, Bertel Jungin Aukio 5, 02600 Espoo
 
-On Wed, Jan 14, 2026 at 09:39:54AM +0100, AngeloGioacchino Del Regno wrote:
-> Some Qualcomm PMICs integrate an USB Repeater device, used to
-> convert between eUSB2 and USB 2.0 signaling levels, reachable
-> in a specific address range over SPMI.
+On Wed, Jan 14, 2026 at 09:39:52AM +0100, AngeloGioacchino Del Regno wrote:
+> Some Qualcomm PMICs integrate a SDAM device, internally located in
+> a specific address range reachable through SPMI communication.
 > 
 > Instead of using the parent SPMI device (the main PMIC) as a kind
-> of syscon in this driver, register a new SPMI sub-device for EUSB2
+> of syscon in this driver, register a new SPMI sub-device for SDAM
 > and initialize its own regmap with this sub-device's specific base
 > address, retrieved from the devicetree.
 > 
@@ -103,22 +99,36 @@ On Wed, Jan 14, 2026 at 09:39:54AM +0100, AngeloGioacchino Del Regno wrote:
 > every R/W call in this driver, as this can be, and is now, handled
 > by the regmap API instead.
 
-Same comments and actually one more.
-
 ...
 
-> +	struct regmap_config eusb2_regmap_config = {
+> +	struct regmap_config sdam_regmap_config = {
 > +		.reg_bits = 16,
 > +		.val_bits = 8,
+
 > +		.max_register = 0x100,
+
+Are you sure? This might be a bad naming, but here max == the last accessible.
+I bet it has to be 0xff (but since the address is 16-bit it might be actually
+257 registers, but sounds very weird).
+
 > +		.fast_io = true,
 > +	};
 
-This is third time of the same. Make it part of SPMI core and export to
-the users. Or are they semantically different like different slices?
-In that case you can export it under generic name like
+...
 
-	spmi_default_slice_regmap_config
+> +	rc = of_property_read_u32(dev->of_node, "reg", &sdam_regmap_config.reg_base);
+
+Why not device_property_read_u32(dev, ...) ?
+
+...
+
+> +	sdam->regmap = devm_regmap_init_spmi_ext(&sub_sdev->sdev, &sdam_regmap_config);
+> +	if (IS_ERR(sdam->regmap))
+> +		return dev_err_probe(&pdev->dev, PTR_ERR(sdam->regmap),
+
+You have "dev".
+
+> +				     "Failed to get regmap handle\n");
 
 -- 
 With Best Regards,

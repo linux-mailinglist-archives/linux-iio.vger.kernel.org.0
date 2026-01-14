@@ -1,120 +1,172 @@
-Return-Path: <linux-iio+bounces-27755-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-27757-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id DCFE0D1DE37
-	for <lists+linux-iio@lfdr.de>; Wed, 14 Jan 2026 11:13:12 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E0C25D1DE5E
+	for <lists+linux-iio@lfdr.de>; Wed, 14 Jan 2026 11:14:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id D88123047FF2
-	for <lists+linux-iio@lfdr.de>; Wed, 14 Jan 2026 10:08:38 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 3390B3022F08
+	for <lists+linux-iio@lfdr.de>; Wed, 14 Jan 2026 10:11:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57A0038E5DE;
-	Wed, 14 Jan 2026 10:07:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D4AD38F23D;
+	Wed, 14 Jan 2026 10:09:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=subdimension.ro header.i=@subdimension.ro header.b="mAil5V4W"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="DnO5CjoR"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from nalicastle.subdimension.ro (nalicastle.subdimension.ro [172.105.74.154])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2159638B9B2;
-	Wed, 14 Jan 2026 10:07:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=172.105.74.154
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D107C38E12E;
+	Wed, 14 Jan 2026 10:09:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768385276; cv=none; b=qMXoR0j4YvY/s3ElNWvXIqo7UK4mATEwq/F30cYzSozBGZBE6X8+PtjuSH3ygHTteo2ekMzuHCBdS1CsP8Qh5bs2awfBG+PGtyIj0GqZPQB7UsntG53MaUt9rICzTYRff2+/xVIrOF6ocqGnS4iz6R2m4715QjtlTtcOZu60s1U=
+	t=1768385365; cv=none; b=E/GBbPpK+CF9xexSTRsSoQX27Dw/w/rnV7Dn8+ewU9hbfzoLD2dloK/bsY3oG5l2O7R5CwnEC3zglCB03ghTRQugf+O4MtJ4r0/x14Xd0KQDA8PivzisSQ7mFrUBYdo1Zr5+/mtjjoGs7geIcqEYnDW15TZWTfP2tBH5Qt6lKpc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768385276; c=relaxed/simple;
-	bh=u8nJdjLQUjSOqf5UERLRYhKgjyBHVISmP1XXJDWr4TI=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=NEvDnWOv2ySpYHnhm75C4mTESFz2zatE6P/uLdrrvmj3PHMSk3bPkAd0c5AbJAwKOqM4zLGzBbAGNQkwZ/+mtQL47skNC/I/oenD/CFB4WRWx6l4wt9WJQXFnPAmGX754QcDWjU/3Gp1I4p4x14emG4G/7AdMyA7DZDTwOY1mpM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=subdimension.ro; spf=pass smtp.mailfrom=subdimension.ro; dkim=pass (2048-bit key) header.d=subdimension.ro header.i=@subdimension.ro header.b=mAil5V4W; arc=none smtp.client-ip=172.105.74.154
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=subdimension.ro
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=subdimension.ro
-Received: from sunspire.home.arpa (unknown [IPv6:2a02:2f0e:300:8a00:e2d5:5eff:fed9:f1c4])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	by nalicastle.subdimension.ro (Postfix) with ESMTPSA id D70CC160217;
-	Wed, 14 Jan 2026 12:07:51 +0200 (EET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=subdimension.ro;
-	s=mail; t=1768385272;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=5P0EmzE+tJqaBdRgoKLXjuTwM+IXH2WiY1ySV5bS6Dw=;
-	b=mAil5V4W0ICOX3cP+HZ1higUC+gYvrbLbTzfY3LUSZnonsPtVzT/WAghEqUw8NwOyXBuSu
-	UL2k15V7WHdGG0xU2BDJd9UYzPyS3rAz9z7VI8V3a6L3zsGmY40d1u21ysNbIX4sx+e1Yz
-	PKrvaFRAYwwjcG735WxH3bOkh5hVKLa3eF/WogBBqbaq3Ymv4Pp1p3OyQ5sk0sw9LcKYwR
-	P37KK7Ksj7YyDmqvy2gTtZieUnUWqnP6WyOkUXUCoya4hOlXqo7KiCMaji8jL+Y+Gl6l/Q
-	/oghho6zX8e1My2cz9S0SYSTbvsqzJ93RQ1UTQSAKIzIIYIR9jXGaOu5dvBvig==
-From: Petre Rodan <petre.rodan@subdimension.ro>
-Date: Wed, 14 Jan 2026 12:05:47 +0200
-Subject: [PATCH v2 13/13] iio: pressure: mprls0025pa: add copyright line
+	s=arc-20240116; t=1768385365; c=relaxed/simple;
+	bh=mVfiznKpM9yXiJNBoD3mVJIRyBtj3lhbh1JGsuuuN9g=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=hOIgQzz9LCr9YtmIPNuC98q5PPGqpXUBJw625edFl3e1ac4Vmk6nI9iU0bKMNPCWIbvvVMwp5Q6A0qB+6rmke314zVI837Hsh0su9uaKzQzkvZ1ZsbucqUzv9dP1jmJVV6NZgcHItlyiiqX/ZGH6TNwMotas9HXtbRIbZuB1oVg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=DnO5CjoR; arc=none smtp.client-ip=198.175.65.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1768385364; x=1799921364;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:content-transfer-encoding:in-reply-to;
+  bh=mVfiznKpM9yXiJNBoD3mVJIRyBtj3lhbh1JGsuuuN9g=;
+  b=DnO5CjoR9d+yp25a+zms9j7s9lZx3NPeDx1T4jtlWV/OlYMUkskArozU
+   uphAuS7qfrrOp4onyLI2KHojEJlYQ6DrBJ4qK1nriYrGNcOLq5XwQ1T/7
+   o8onKYGxRvmgJqL+60IPBdEIKuTID9z+XqE+PgNTh4X0CHBhNsuBZzEsN
+   wrmzyMZTr0qP0vfwbhprRRPVgjusA+q3RMigEZautLWtdNT7+xMNAJgaz
+   M5mG5Vqy1Bk78nxBVV2hVgowC9dYazg5AQgUnq2aY/riQCBBhm0GwPRTu
+   qWDFE3bPXtMeIMkcCGqdX0RCORH6L/R3A0kFkdUf2dt6/8TsBlyLMKmEU
+   Q==;
+X-CSE-ConnectionGUID: QzidEKrCQqywFoEvvMIDaQ==
+X-CSE-MsgGUID: hHxC7f/QT9qE4H8kD+6Z6w==
+X-IronPort-AV: E=McAfee;i="6800,10657,11670"; a="79977251"
+X-IronPort-AV: E=Sophos;i="6.21,225,1763452800"; 
+   d="scan'208";a="79977251"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Jan 2026 02:09:23 -0800
+X-CSE-ConnectionGUID: nCgo7y7nS+SB6ivhyZ/2wA==
+X-CSE-MsgGUID: 9QmYMU7TQKK9zutJt+nHog==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,225,1763452800"; 
+   d="scan'208";a="209484837"
+Received: from pgcooper-mobl3.ger.corp.intel.com (HELO localhost) ([10.245.244.83])
+  by fmviesa004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Jan 2026 02:09:17 -0800
+Date: Wed, 14 Jan 2026 12:09:15 +0200
+From: Andy Shevchenko <andriy.shevchenko@intel.com>
+To: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Cc: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	jic23@kernel.org, dlechner@baylibre.com, nuno.sa@analog.com,
+	andy@kernel.org, arnd@arndb.de, gregkh@linuxfoundation.org,
+	srini@kernel.org, vkoul@kernel.org, neil.armstrong@linaro.org,
+	sre@kernel.org, sboyd@kernel.org, krzk@kernel.org,
+	dmitry.baryshkov@oss.qualcomm.com, quic_wcheng@quicinc.com,
+	melody.olvera@oss.qualcomm.com, quic_nsekar@quicinc.com,
+	ivo.ivanov.ivanov1@gmail.com, abelvesa@kernel.org,
+	luca.weiss@fairphone.com, mitltlatltl@gmail.com,
+	krishna.kurapati@oss.qualcomm.com, linux-arm-msm@vger.kernel.org,
+	linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-phy@lists.infradead.org, linux-pm@vger.kernel.org,
+	kernel@collabora.com
+Subject: Re: [PATCH v7 05/10] nvmem: qcom-spmi-sdam: Migrate to
+ devm_spmi_subdevice_alloc_and_add()
+Message-ID: <aWdrS7poHyhTzyfN@smile.fi.intel.com>
+References: <aWdaWY2tWUMllOHH@smile.fi.intel.com>
+ <8bf79979-0946-4ed9-b8d4-c442a6e54833@collabora.com>
+ <aWdbPze-f_2_5EbL@smile.fi.intel.com>
+ <401c5e7b-ff33-44e8-98a5-8cc6af4f2a87@collabora.com>
+ <aWdcy2ouQHtkPd6q@smile.fi.intel.com>
+ <647b4acc-3310-4329-ac7a-77e86bab74a3@collabora.com>
+ <aWdk-RP-59cJeCBo@smile.fi.intel.com>
+ <ae46b504-58d3-4042-be05-f31e9e01091b@oss.qualcomm.com>
+ <aWdn_j7SOKq97vpY@smile.fi.intel.com>
+ <dd877ea8-b634-4cc9-8280-08663f82776d@oss.qualcomm.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260114-mprls_cleanup-v2-13-5868b0045316@subdimension.ro>
-References: <20260114-mprls_cleanup-v2-0-5868b0045316@subdimension.ro>
-In-Reply-To: <20260114-mprls_cleanup-v2-0-5868b0045316@subdimension.ro>
-To: Jonathan Cameron <jic23@kernel.org>, 
- David Lechner <dlechner@baylibre.com>, 
- =?utf-8?q?Nuno_S=C3=A1?= <nuno.sa@analog.com>, 
- Andy Shevchenko <andy@kernel.org>, Andreas Klinger <ak@it-klinger.de>
-Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, 
- Jonathan Cameron <Jonathan.Cameron@huawei.com>
-X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=909;
- i=petre.rodan@subdimension.ro; h=from:subject:message-id;
- bh=u8nJdjLQUjSOqf5UERLRYhKgjyBHVISmP1XXJDWr4TI=;
- b=LS0tLS1CRUdJTiBQR1AgTUVTU0FHRS0tLS0tCgpvd0o0bkFHSkFuYjlrQTBEQUFvQmRDc25wM
- k02U1dNQnl5WmlBR2xuYXU3ZzNkMjg3RkFSVlp4N3czTnFjUU1pCk1PSVlhb29XV2lvWnFjSTVX
- NTZ3VTRrQ1R3UUFBUW9BT1JZaEJCb2ltQncrRGJ4UXBFNmlkM1FySjZkak9rbGoKQlFKcFoycnV
- HeFNBQUFBQUFBUUFEbTFoYm5VeUxESXVOU3N4TGpFeExESXNNZ0FLQ1JCMEt5ZW5ZenBKWTZiVg
- pEL3NGTkVOUHpObWxvdnBqaDEycy81a1lWazdPZDU3a2h0NURjTmhBYmFRNytXOW1PblhtNithZ
- 0djWUQzcmR5CmpZMC9LMjRYbmlQN3NuV3ppbEludllobDlkcWZ6TVZlNWZUQUtuem93VmFVSTlE
- SWJ0OEQ0KzFQZXl5emZIU04KdXpyWDAxT0Q3ZlNaYW9oR3dyU0gxbGo4ZmlhRm51TDZSeXJDSkt
- FM2JrUi9Od0c1Q1dHSDlqZyt4a0ZQZWRRSAozTy9vaUowdS9nMlpWOUZZRndIQVdzOUtlWURlZG
- JVQVo4V2EvZS9EQ2pFQjlNOXBZNWxKazUwSStqL29XNWY0CnRDM0VIeHBXaU0vS2QzbnFLSGZFV
- HpKbEQ5LzhVc2pYVG1UdlBHaVBHY0hwQzg2dUE2d1dTVjMvbDc0TzdjWmoKOWg4SXpuTEw2azFa
- M1ZNSktMYUFIeTMxODdOZDBjaWFPTENJR3pENlI2aU8vQlBkN01iR2tXM3dhQUZYYjhCagpnb0x
- YcCtHckc3S0ltNDEvSFBCbWZKYVNkMnNEMDN0cEtsdWxGMTFndGxhcEk0V0NQdC9UVkpSMy8wRH
- JTY1lVCkRjMEVWYS9NK1ZMVzBzTUN6UXBPRTh0cVdlbG1kTW0rUDhhZHhvRGtvaStBQlZpQXJQd
- GdtOEJ5WHdjaDNGRXIKM3A0NVZIS3ZGSWZRMDBQR3VESUkrL3A2ZEo2bjlyWTZCUVUrcDN0dUFt
- aHlMcHZUZ29nNVUvOFljTTl4R0lCQwppTVA1dnMxRjBEYzA2TEN4U3J4djFjSG5XejVHVkZXa2o
- zdFZoUGZlZzZlUFdkTHdDNkZFQWREd1ZBNWVia212CmJpT1JuK0wwMnNkV25wZWRDNVFEZFg2Z2
- 5nS2JFTmphVzlsRStYRmhNY20zRkxWc05Tdz0KPXpNWm4KLS0tLS1FTkQgUEdQIE1FU1NBR0UtL
- S0tLQo=
-X-Developer-Key: i=petre.rodan@subdimension.ro; a=openpgp;
- fpr=D80A7FC176151935EC3E5FA9CF269999844E7F30
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <dd877ea8-b634-4cc9-8280-08663f82776d@oss.qualcomm.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
+ krs, Bertel Jungin Aukio 5, 02600 Espoo
 
-Add copyright line to the core driver.
+On Wed, Jan 14, 2026 at 11:04:30AM +0100, Konrad Dybcio wrote:
+> On 1/14/26 10:55 AM, Andy Shevchenko wrote:
+> > On Wed, Jan 14, 2026 at 10:47:20AM +0100, Konrad Dybcio wrote:
+> >> On 1/14/26 10:42 AM, Andy Shevchenko wrote:
+> >>> On Wed, Jan 14, 2026 at 10:09:45AM +0100, AngeloGioacchino Del Regno wrote:
+> >>>> Il 14/01/26 10:07, Andy Shevchenko ha scritto:
+> >>>>> On Wed, Jan 14, 2026 at 10:03:57AM +0100, AngeloGioacchino Del Regno wrote:
+> >>>>>> Il 14/01/26 10:00, Andy Shevchenko ha scritto:
+> >>>>>>> On Wed, Jan 14, 2026 at 09:59:40AM +0100, AngeloGioacchino Del Regno wrote:
+> >>>>>>>> Il 14/01/26 09:56, Andy Shevchenko ha scritto:
+> >>>>>>>>> On Wed, Jan 14, 2026 at 09:39:52AM +0100, AngeloGioacchino Del Regno wrote:
 
-Signed-off-by: Petre Rodan <petre.rodan@subdimension.ro>
----
-v1 -> v2 no change
----
- drivers/iio/pressure/mprls0025pa.c | 1 +
- 1 file changed, 1 insertion(+)
+...
 
-diff --git a/drivers/iio/pressure/mprls0025pa.c b/drivers/iio/pressure/mprls0025pa.c
-index 8218d931647b..0122108f1f3e 100644
---- a/drivers/iio/pressure/mprls0025pa.c
-+++ b/drivers/iio/pressure/mprls0025pa.c
-@@ -3,6 +3,7 @@
-  * MPRLS0025PA - Honeywell MicroPressure pressure sensor series driver
-  *
-  * Copyright (c) Andreas Klinger <ak@it-klinger.de>
-+ * Copyright (c) 2023-2025 Petre Rodan <petre.rodan@subdimension.ro>
-  *
-  * Data sheet:
-  *  https://prod-edam.honeywell.com/content/dam/honeywell-edam/sps/siot/en-us/products/sensors/pressure-sensors/board-mount-pressure-sensors/micropressure-mpr-series/documents/sps-siot-mpr-series-datasheet-32332628-ciid-172626.pdf
+> >>>>>>>>>> +	struct regmap_config sdam_regmap_config = {
+> >>>>>>>>>> +		.reg_bits = 16,
+> >>>>>>>>>> +		.val_bits = 8,
+> >>>>>>>>>
+> >>>>>>>>>> +		.max_register = 0x100,
+> >>>>>>>>>
+> >>>>>>>>> Are you sure? This might be a bad naming, but here max == the last accessible.
+> >>>>>>>>> I bet it has to be 0xff (but since the address is 16-bit it might be actually
+> >>>>>>>>> 257 registers, but sounds very weird).
+> >>>>>>>>
+> >>>>>>>> Yes, I'm sure.
+> >>>>>>>
+> >>>>>>> So, what is resided on address 0x100 ?
+> >>>>>>
+> >>>>>> I don't remember, this is research from around 5 months ago, when I've sent
+> >>>>>> the v1 of this.
+> >>>>>>
+> >>>>>> If you really want though, I can incorrectly set max_register to 0xff.
+> >>>>>
+> >>>>> Why incorrectly? Can you dig into the datasheet and check, please? We don't
+> >>>>> know what is the 0x100 address means.
+> >>>>
+> >>>> I don't have any datasheets for Qualcomm IPs.
+> >>>
+> >>> Hmm... Can we have somebody from QC to check on this?
+> >>> Perhaps Dmitry?
+> >>
+> >> 0xe6 is the last usable register today
+> > 
+> > Thanks for checking!
+> > 
+> >> But I wouldn't mind either 0xff or 0x100 because I don't want
+> >> anyone to pull their hair out if a regmap access is dropped some day..
+> > 
+> > There is actually about the exact window size where registers are belong to the
+> > same entity (subdevice). As in the HW world most of the things are stuck with
+> > power-of-two numbers, and taking into account the naming of the field, I do not
+> > believe one provides a 257 (256 + 1 = 2⁸ + 1) register _windows_ ("s" is also
+> > important here, as it points out to the pattern) for the subdevices. I bet the
+> > 0xff, i.e. 256, is the *correct* window from the HW perspective.
+> 
+> Right, [0x100n, 0x100n + 0xff] inclusive is the reserved register window
+> for all Qualcomm PMIC peripherals, so I guess 0xff is the correct choice
+> here
+
+Thanks for the clarification, v8 addresses that, so seems to me good to go.
+
+> If a peripheral is more complex, it's split into a couple of these
+> same-sized blocks
+
+Right.
 
 -- 
-2.52.0
+With Best Regards,
+Andy Shevchenko
+
 
 

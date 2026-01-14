@@ -1,126 +1,206 @@
-Return-Path: <linux-iio+bounces-27719-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-27720-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id DCCBBD1D740
-	for <lists+linux-iio@lfdr.de>; Wed, 14 Jan 2026 10:18:20 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D80CD1D625
+	for <lists+linux-iio@lfdr.de>; Wed, 14 Jan 2026 10:10:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 7B6E43014608
-	for <lists+linux-iio@lfdr.de>; Wed, 14 Jan 2026 09:09:52 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 3294430090C7
+	for <lists+linux-iio@lfdr.de>; Wed, 14 Jan 2026 09:10:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0985F3816E0;
-	Wed, 14 Jan 2026 09:09:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6FA6C3806B3;
+	Wed, 14 Jan 2026 09:10:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="mAi6pcvA"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Xvd9BtOQ"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8595636D4FB;
-	Wed, 14 Jan 2026 09:09:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.251.105.195
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30FFE354AEC;
+	Wed, 14 Jan 2026 09:10:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768381789; cv=none; b=qMrDAqqFwi0gx14Wx95C+pdvZQ6qW35IrkJ18QE+0kWYe4PHXyrqyoA8U6wCiYZiW2EkiWnDEs+3fTy2sh97JBUSXvkohWwoE3kaRmNMgX+o5nW6754OIDu6HWQikhFQXULZDASjM6OKee7K111N6Hifg3GjSc0XOmhAru2faHA=
+	t=1768381834; cv=none; b=JG8oyxACr5V1/foSKWB8JBtoTZHWNtd1ushn4C+ngMEUf44m4AiZweEtohKYFIclwoGlidrJ4aixnp9IEJrvhrv+uwssnJpDnelA71b1rh5ZBxCAq5J+Bp52DefDc0OcPs2c+7yPtOm+L8+ZEhjXL7OyAF0Dokvvx/92xpvOmyo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768381789; c=relaxed/simple;
-	bh=S696D/o/SmDuyHHVUz/db4ZX1yDLl8DiEZX+ZVrJT8A=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=dVJEhD1wghAMMKVp3y3zDkB2pTD+hKbfecYzXTRpcqKQW41F1O6ltie5UnslVteQeNLFAn8Dp4RmzNd8XHbbbHGNJY1SpRhxpnR6quJXGjYGpYPbwAdyR5Prcu9mrcxMuKyzXsEDsHXIUwdc5GYln3OnXpMTuDajK4HAjFO2I7M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=mAi6pcvA; arc=none smtp.client-ip=148.251.105.195
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-	s=mail; t=1768381787;
-	bh=S696D/o/SmDuyHHVUz/db4ZX1yDLl8DiEZX+ZVrJT8A=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=mAi6pcvA+pcWkAnf8KWCQzsHZ/kxE90P+qmo/GY3FotQTzx/2NFnieaDFkPSBSIm3
-	 Bme93Ye4yrwZh73GV33CWAMgulP2daIjLMo1fOY2XdktNYhp0VkaJev1vy/E285X6w
-	 N2Q+OrR/jUhUSUl9WdSUM2apDpwVIxuLqE6tNRUdt5U5RcaYXoBV2bBm7LXARHt5fb
-	 gZvAetbLPlm+x8wcTb8DvjmrcW7wQy9DDY42H6M/h9BWr/Ge3dv/ntjUqy1el1Dm+L
-	 GFEP3U3I6IQnKY8944gzImaGwYFNXI/y++qhq41IVerqRXZVcLGB/jpIdW17vZ47J5
-	 zULJiOvR66Ylw==
-Received: from [192.168.1.100] (2-237-20-237.ip236.fastwebnet.it [2.237.20.237])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: kholk11)
-	by bali.collaboradmins.com (Postfix) with ESMTPSA id F1DD917E13C3;
-	Wed, 14 Jan 2026 10:09:45 +0100 (CET)
-Message-ID: <647b4acc-3310-4329-ac7a-77e86bab74a3@collabora.com>
-Date: Wed, 14 Jan 2026 10:09:45 +0100
+	s=arc-20240116; t=1768381834; c=relaxed/simple;
+	bh=FqQYIhi1gEHPr0Al0KQJ5kpiMUVkj4Z6T+IkvCgJlHQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=J0ML+KdPehcE//g+e0RIci+0S/30LaBC2TguMzIFQGgZYxZgLjrjfwc7i7A2XBzkMS/hAirTYQ50QCs/l8hzLU2tKUkFlCAjp7qC/Q+FzTIMW8FyIdFeAXCi7vD1gxYAzuG/JJRBuc6zMg3JvEorIEXTY73NUfOrNwEKzXUGj6s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Xvd9BtOQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2E25C19423;
+	Wed, 14 Jan 2026 09:10:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1768381833;
+	bh=FqQYIhi1gEHPr0Al0KQJ5kpiMUVkj4Z6T+IkvCgJlHQ=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=Xvd9BtOQib5sDzf5hysV51eR5b9p045kAeSvXaz0VhtzXejh63hWNwqib9O4wo2xh
+	 kIJmGiqkH5/eg0n7CgK/7c0dgq3ijCeF7KtrLE5SSZCyUsgtfV1oWaQIOeS/jAchGM
+	 mBBRNz2afbtlUED3p1aOIix5jUsrR+i7gY9zCrqyw6x5DXJ53BWbJ4oSq/t0W2bK7/
+	 ykiZw2ihAeje/aNTaKj1mAsgrc/auMuoeEXNY34Tnxf+pq8Ma/KxLHx2KAs9Bn1kE0
+	 gZj6TNxqGbmRHRQsyEGCSuN4kNPm7CzdUNgcr3uEaXgfYKoiQJTg6Zrdadp8cvnVnL
+	 jDE4F6C5YnZ/Q==
+Date: Wed, 14 Jan 2026 09:10:24 +0000
+From: Jonathan Cameron <jic23@kernel.org>
+To: David Lechner <dlechner@baylibre.com>
+Cc: Mark Brown <broonie@kernel.org>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Marcelo Schmitt <marcelo.schmitt@analog.com>,
+ Michael Hennerich <michael.hennerich@analog.com>, Nuno =?UTF-8?B?U8Oh?=
+ <nuno.sa@analog.com>, Andy Shevchenko <andy@kernel.org>, Sean Anderson
+ <sean.anderson@linux.dev>, linux-spi@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-iio@vger.kernel.org
+Subject: Re: [PATCH v5 5/9] spi: Documentation: add page on multi-lane
+ support
+Message-ID: <20260114091024.390432c0@jic23-huawei>
+In-Reply-To: <20260112-spi-add-multi-bus-support-v5-5-295f4f09f6ba@baylibre.com>
+References: <20260112-spi-add-multi-bus-support-v5-0-295f4f09f6ba@baylibre.com>
+	<20260112-spi-add-multi-bus-support-v5-5-295f4f09f6ba@baylibre.com>
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v7 05/10] nvmem: qcom-spmi-sdam: Migrate to
- devm_spmi_subdevice_alloc_and_add()
-To: Andy Shevchenko <andriy.shevchenko@intel.com>
-Cc: jic23@kernel.org, dlechner@baylibre.com, nuno.sa@analog.com,
- andy@kernel.org, arnd@arndb.de, gregkh@linuxfoundation.org,
- srini@kernel.org, vkoul@kernel.org, neil.armstrong@linaro.org,
- sre@kernel.org, sboyd@kernel.org, krzk@kernel.org,
- dmitry.baryshkov@oss.qualcomm.com, quic_wcheng@quicinc.com,
- melody.olvera@oss.qualcomm.com, quic_nsekar@quicinc.com,
- ivo.ivanov.ivanov1@gmail.com, abelvesa@kernel.org, luca.weiss@fairphone.com,
- konrad.dybcio@oss.qualcomm.com, mitltlatltl@gmail.com,
- krishna.kurapati@oss.qualcomm.com, linux-arm-msm@vger.kernel.org,
- linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-phy@lists.infradead.org, linux-pm@vger.kernel.org, kernel@collabora.com
-References: <20260114083957.9945-1-angelogioacchino.delregno@collabora.com>
- <20260114083957.9945-6-angelogioacchino.delregno@collabora.com>
- <aWdaWY2tWUMllOHH@smile.fi.intel.com>
- <8bf79979-0946-4ed9-b8d4-c442a6e54833@collabora.com>
- <aWdbPze-f_2_5EbL@smile.fi.intel.com>
- <401c5e7b-ff33-44e8-98a5-8cc6af4f2a87@collabora.com>
- <aWdcy2ouQHtkPd6q@smile.fi.intel.com>
-From: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Content-Language: en-US
-In-Reply-To: <aWdcy2ouQHtkPd6q@smile.fi.intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-Il 14/01/26 10:07, Andy Shevchenko ha scritto:
-> On Wed, Jan 14, 2026 at 10:03:57AM +0100, AngeloGioacchino Del Regno wrote:
->> Il 14/01/26 10:00, Andy Shevchenko ha scritto:
->>> On Wed, Jan 14, 2026 at 09:59:40AM +0100, AngeloGioacchino Del Regno wrote:
->>>> Il 14/01/26 09:56, Andy Shevchenko ha scritto:
->>>>> On Wed, Jan 14, 2026 at 09:39:52AM +0100, AngeloGioacchino Del Regno wrote:
-> 
-> ...
-> 
->>>>>> +	struct regmap_config sdam_regmap_config = {
->>>>>> +		.reg_bits = 16,
->>>>>> +		.val_bits = 8,
->>>>>
->>>>>> +		.max_register = 0x100,
->>>>>
->>>>> Are you sure? This might be a bad naming, but here max == the last accessible.
->>>>> I bet it has to be 0xff (but since the address is 16-bit it might be actually
->>>>> 257 registers, but sounds very weird).
->>>>
->>>> Yes, I'm sure.
->>>
->>> So, what is resided on address 0x100 ?
->>
->> I don't remember, this is research from around 5 months ago, when I've sent
->> the v1 of this.
->>
->> If you really want though, I can incorrectly set max_register to 0xff.
-> 
-> Why incorrectly? Can you dig into the datasheet and check, please? We don't
-> know what is the 0x100 address means.
-> 
+On Mon, 12 Jan 2026 11:45:23 -0600
+David Lechner <dlechner@baylibre.com> wrote:
 
-I don't have any datasheets for Qualcomm IPs.
-
-Cheers,
-Angelo
-
->>>>>> +		.fast_io = true,
->>>>>> +	};
+> Add a new page to Documentation/spi/ describing how multi-lane SPI
+> support works. This is uncommon functionality so it deserves its own
+> documentation page.
 > 
+> Reviewed-by: Marcelo Schmitt <marcelo.schmitt@analog.com>
+> Signed-off-by: David Lechner <dlechner@baylibre.com>
+Hi David,
+
+A few things inline.
+
+> diff --git a/Documentation/spi/multiple-data-lanes.rst b/Documentation/spi/multiple-data-lanes.rst
+> new file mode 100644
+> index 000000000000..96d6997ecf77
+> --- /dev/null
+> +++ b/Documentation/spi/multiple-data-lanes.rst
+
+...
+
+> +---------------------
+> +Describing the wiring
+> +---------------------
+> +
+> +The ``spi-tx-bus-width`` and ``spi-rx-bus-width`` properties in the devicetree
+> +are used to describe how many data lanes are connected between the controller
+> +and how wide each lane is. The number of items in the array indicates how many
+> +lanes there are, and the value of each item indicates how many bits wide that
+> +lane is.
+> +
+> +For example, a dual-simultaneous-sampling ADC with two 4-bit lanes might be
+> +wired up like this::
+> +
+> +    +--------------+    +----------+
+> +    | SPI          |    | AD4630   |
+> +    | Controller   |    | ADC      |
+> +    |              |    |          |
+> +    |          CS0 |--->| CS       |
+> +    |          SCK |--->| SCK      |
+> +    |          SDO |--->| SDI      |
+> +    |              |    |          |
+> +    |        SDIA0 |<---| SDOA0    |
+> +    |        SDIA1 |<---| SDOA1    |
+> +    |        SDIA2 |<---| SDOA2    |
+> +    |        SDIA3 |<---| SDOA3    |
+> +    |              |    |          |
+> +    |        SDIB0 |<---| SDOB0    |
+> +    |        SDIB1 |<---| SDOB1    |
+> +    |        SDIB2 |<---| SDOB2    |
+> +    |        SDIB3 |<---| SDOB3    |
+> +    |              |    |          |
+> +    +--------------+    +----------+
+> +
+> +It is described in a devicetree like this::
+> +
+> +    spi {
+> +        compatible = "my,spi-controller";
+> +
+> +        ...
+> +
+> +        adc@0 {
+> +            compatible = "adi,ad4630";
+> +            reg = <0>;
+> +            ...
+> +            spi-rx-bus-width = <4>, <4>; /* 2 lanes of 4 bits each */
+> +            ...
+> +        };
+> +    };
+> +
+> +In most cases, lanes will be wired up symmetrically (A to A, B to B, etc). If
+> +this isn't the case, extra ``spi-rx-bus-width`` and ``spi-tx-bus-width``
+
+Wrong properties.  They are those sizes but spi-tx-lane-map and spi-rx-lane-map
+
+> +properties are needed to provide a mapping between controller lanes and the
+> +physical lane wires.
+> +
+> +Here is an example where a multi-lane SPI controller has each lane wired to
+> +separate single-lane peripherals::
+> +
+> +    +--------------+    +----------+
+> +    | SPI          |    | Thing 1  |
+> +    | Controller   |    |          |
+> +    |              |    |          |
+> +    |          CS0 |--->| CS       |
+> +    |         SDO0 |--->| SDI      |
+> +    |         SDI0 |<---| SDO      |
+> +    |        SCLK0 |--->| SCLK     |
+> +    |              |    |          |
+> +    |              |    +----------+
+> +    |              |
+> +    |              |    +----------+
+> +    |              |    | Thing 2  |
+> +    |              |    |          |
+> +    |          CS1 |--->| CS       |
+> +    |         SDO1 |--->| SDI      |
+> +    |         SDI1 |<---| SDO      |
+> +    |        SCLK1 |--->| SCLK     |
+> +    |              |    |          |
+> +    +--------------+    +----------+
+> +
+> +This is described in a devicetree like this::
+> +
+> +    spi {
+> +        compatible = "my,spi-controller";
+> +
+> +        ...
+> +
+> +        thing1@0 {
+> +            compatible = "my,thing1";
+> +            reg = <0>;
+> +            ...
+> +        };
+> +
+> +        thing2@1 {
+> +            compatible = "my,thing2";
+> +            reg = <1>;
+> +            ...
+> +            spi-tx-lane-map = <1>; /* lane 0 is not used, lane 1 is used for tx wire */
+> +            spi-rx-lane-map = <1>; /* lane 0 is not used, lane 1 is used for rx wire */
+
+Whilst simple I'd kind of expect a multi lane case as the example, or this and
+the multilane one? For me the comment that follows is sufficient for the 1 lane
+offset case you have here.
+
+> +            ...
+> +        };
+> +    };
+> +
+> +
+> +The default values of ``spi-rx-bus-width`` and ``spi-tx-bus-width`` are ``<1>``,
+> +so these properties can still be omitted even when ``spi-rx-lane-map`` and
+> +``spi-tx-lane-map`` are used.
+
+
 
 

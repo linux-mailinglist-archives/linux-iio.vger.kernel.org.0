@@ -1,120 +1,110 @@
-Return-Path: <linux-iio+bounces-27803-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-27806-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B68BD2065A
-	for <lists+linux-iio@lfdr.de>; Wed, 14 Jan 2026 18:02:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E76F2D20750
+	for <lists+linux-iio@lfdr.de>; Wed, 14 Jan 2026 18:13:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B9B1830CF7EA
-	for <lists+linux-iio@lfdr.de>; Wed, 14 Jan 2026 16:56:50 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E9101307F02E
+	for <lists+linux-iio@lfdr.de>; Wed, 14 Jan 2026 17:08:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8AE83A7E0D;
-	Wed, 14 Jan 2026 16:56:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 201722E0925;
+	Wed, 14 Jan 2026 17:08:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=subdimension.ro header.i=@subdimension.ro header.b="0qypVIQT"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Q2qL/z1M"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from nalicastle.subdimension.ro (nalicastle.subdimension.ro [172.105.74.154])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7779C3A7820;
-	Wed, 14 Jan 2026 16:56:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=172.105.74.154
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60B962DEA87;
+	Wed, 14 Jan 2026 17:07:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768409799; cv=none; b=ewZ1WdL0x7rmygUvXqbJpjCY5dP5PlCO1QkS2D5BuV8zz3yshfGVrykieeROG58Cv1I07Dz7u5W1pkFDXrq03QkpuXr5Zxmsk/nktTZLvbkPLhg4QKpN0oRHrfMV7yaTzEB/wBPeUuG74pZpe8cV2OssTW4uqKnMbO9rdC2j7E8=
+	t=1768410480; cv=none; b=e89UhleTLA03le+8p3sTcmXBPhvBP1vlyKpElEFVftVHhi6a/qyQFNUNTTU31Im++Co3PtUwhxsjWWj6VNGcelLSAAlv4e3Pyt4qKrqVYI5h5zDMtSLOTbMZxwhk01/p5ZnLztlQ1obhDLpodiVWblTrywdfWuVNvBQhZuz2+JM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768409799; c=relaxed/simple;
-	bh=vFEDfthT2z+ZxE46oYIzbxzpnThOiTPtjzBws6rmMCM=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=ZN3wjXvJJVF4ScWcZlXTGXcAAnTdWJv0+U3q11gLAdHwANYXCRRp1edt5pPD98cb8SBj1DywO5CNYasMnUGIecb8n+ddrMy/V5MKnqsRZrlA6nMawpNd+cG9xsREgfCfM9y2PR2XQVRI5JpY7zCyIbIvXD0qowp4+AQuFtIu44c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=subdimension.ro; spf=pass smtp.mailfrom=subdimension.ro; dkim=pass (2048-bit key) header.d=subdimension.ro header.i=@subdimension.ro header.b=0qypVIQT; arc=none smtp.client-ip=172.105.74.154
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=subdimension.ro
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=subdimension.ro
-Received: from sunspire.home.arpa (unknown [IPv6:2a02:2f0e:300:8a00:e2d5:5eff:fed9:f1c4])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	by nalicastle.subdimension.ro (Postfix) with ESMTPSA id 8C1F5160217;
-	Wed, 14 Jan 2026 18:56:28 +0200 (EET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=subdimension.ro;
-	s=mail; t=1768409788;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=aBSFj4guSw4TZ/tZ1ql2UrIIgqgc/RJ0B+/JMDKWqxI=;
-	b=0qypVIQTgKNJi+TUoJfvZ42ohmTqHh9zAy1js+twltvh0B5MmP1HrWK4Z+ChMnEO7jPkjX
-	AONtbY8e0c8M0NUry12kWYQ08NOWb53atk8o25gkm4oPYT29gpUhpVmYbstYkgBl6zrDqB
-	dl29FfVBYP9i+aj+4yE5aFAsUVc89DKMLBlH4NupeC3MGf6LHGui5QyZ5LlnGq+jyaX44B
-	vRz/eCGb6czAW+fzsxAvgzgMZsL5WxSIZw6dCpRo18Af7ElUaEt3CCg8dfjChHy9qzQPEG
-	2a1n6zCLOArAa+w6f3xPGP7ikUaaaEXb6jtYYyEIT9A6GMQ/s6BW5VZGnbx1tA==
-From: Petre Rodan <petre.rodan@subdimension.ro>
-Date: Wed, 14 Jan 2026 18:55:42 +0200
-Subject: [PATCH v3 13/13] iio: pressure: mprls0025pa: add copyright line
+	s=arc-20240116; t=1768410480; c=relaxed/simple;
+	bh=hKfowasPUYc6X15pRratDjXGaeplP5F30WbBuGKI164=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=gKVM3stiBkmRRoSalafVDUmttdymA/GaMCjMsscyT/voCJDAzzsPLFYJsHyHaixO4+0B1ZqJAheQPv6L4BZVOkOxg1tIhz7MbarxzZhqWjMcMpln3JNYy1ajxPXTpoeffnYOVYMdSHy8H5nYmLY5zs4g2lMbpXqg2FAqM9M6rRY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Q2qL/z1M; arc=none smtp.client-ip=192.198.163.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1768410479; x=1799946479;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=hKfowasPUYc6X15pRratDjXGaeplP5F30WbBuGKI164=;
+  b=Q2qL/z1MGYXUCd4oew/AlLf32wmXmhYrRD1sFT2BxWXe9yVwxIqjw2K6
+   KIZGgWERkbVSP880OVIVz9WxpM8L6TLIxHoLDwt1wys0rUhiPmPVFFA0K
+   GL7VO+ilFFiv6NkXHmpNjtFLC8qgyixsD+AoePwwFLLpMKGg6dfKGjmk5
+   KNVxa5XqPFoPTZ78uK+iD1D2uCaP4LXPVoChFZ8HFN3ueR/czlcBZLjxR
+   IPJVEQMdcnhlAeb0YvzQzeDauWbvnRGZ1sd+MBnNHmoD+KUnBTkdHuitn
+   RCbgodO6oZn8wbk8W0Yb2c1mSSdGeNYvR7663xp7EtpjSA3wJF/mx+hdl
+   g==;
+X-CSE-ConnectionGUID: lBtTuEDkRaCSxHEcijauqw==
+X-CSE-MsgGUID: 8KF37U8lQmKOoPrREgICwQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11671"; a="68724641"
+X-IronPort-AV: E=Sophos;i="6.21,225,1763452800"; 
+   d="scan'208";a="68724641"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Jan 2026 09:07:59 -0800
+X-CSE-ConnectionGUID: 8N32nG9+S5icAp6ohdoLZw==
+X-CSE-MsgGUID: xG8eJajxTBujxjxaWEr0hg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,225,1763452800"; 
+   d="scan'208";a="204514222"
+Received: from pgcooper-mobl3.ger.corp.intel.com (HELO localhost) ([10.245.244.83])
+  by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Jan 2026 09:07:57 -0800
+Date: Wed, 14 Jan 2026 19:07:54 +0200
+From: Andy Shevchenko <andriy.shevchenko@intel.com>
+To: Petre Rodan <petre.rodan@subdimension.ro>
+Cc: Jonathan Cameron <jic23@kernel.org>,
+	David Lechner <dlechner@baylibre.com>,
+	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
+	Andy Shevchenko <andy@kernel.org>,
+	Andreas Klinger <ak@it-klinger.de>, linux-iio@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: Re: [PATCH v3 03/13] iio: pressure: mprls0025pa: fix interrupt flag
+Message-ID: <aWfNauwMv1EFczD8@smile.fi.intel.com>
+References: <20260114-mprls_cleanup-v3-0-bc7f1c2957c2@subdimension.ro>
+ <20260114-mprls_cleanup-v3-3-bc7f1c2957c2@subdimension.ro>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260114-mprls_cleanup-v3-13-bc7f1c2957c2@subdimension.ro>
-References: <20260114-mprls_cleanup-v3-0-bc7f1c2957c2@subdimension.ro>
-In-Reply-To: <20260114-mprls_cleanup-v3-0-bc7f1c2957c2@subdimension.ro>
-To: Jonathan Cameron <jic23@kernel.org>, 
- David Lechner <dlechner@baylibre.com>, 
- =?utf-8?q?Nuno_S=C3=A1?= <nuno.sa@analog.com>, 
- Andy Shevchenko <andy@kernel.org>, Andreas Klinger <ak@it-klinger.de>
-Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, 
- Jonathan Cameron <Jonathan.Cameron@huawei.com>, 
- Petre Rodan <petre.rodan@subdimension.ro>
-X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=910;
- i=petre.rodan@subdimension.ro; h=from:subject:message-id;
- bh=vFEDfthT2z+ZxE46oYIzbxzpnThOiTPtjzBws6rmMCM=;
- b=LS0tLS1CRUdJTiBQR1AgTUVTU0FHRS0tLS0tCgprQTBEQUFvQmRDc25wMk02U1dNQnl5WmlBR
- 2xueXJLakJSNTFzd3BwNEhQUGpEdWcyUkxhZmZpQkhVVmtGejBQClZpYTBBNTRHWUlrQ1R3UUFB
- UW9BT1JZaEJCb2ltQncrRGJ4UXBFNmlkM1FySjZkak9rbGpCUUpwWjhxeUd4U0EKQUFBQUFBUUF
- EbTFoYm5VeUxESXVOU3N4TGpFeExESXNNZ0FLQ1JCMEt5ZW5ZenBKWTNXWEQvNHp4VVdZTlFNQw
- pRMjRFRWdlNWtGakhpRTdrcy9oaHArajRpMGMzemc0UFRTWkRsYVhUMWsrQlc2RUlyVFREbk5SM
- 1VMT3lDcEovCmRPTnlVbzhMK29wMTNZd0xlTEZUenp3QmY4blpRMkF4bHYxNVR2QmlYSzFNWVdj
- b1d6T2l4ZEQ2TGdMWXR5WHEKdVEzeFRpenBBa0wrdlp2ODdSL1NtZFdQUUtxcy8xR1ZFNE5QSFh
- sV2xaMkRTd3dCTjVxa2R0akZWek9JVGtUdgppUi9Vd2VOaXNMSGszb1YraUxzZVZudnlOYWlGSF
- R1UlVqb0tudXVuTklabzNFOHgzcUxYL1ZibklsWlR2S09kCk9zZFlYNVdTdnJYdWYzVUZUeEZPS
- FBSMGNUNUU0cDVjYjJvNnJ6OWdVWFFaVkdvaDQ1TVZndVpuUlNVZGpJTDYKd1VKZ1FZR05RYUVa
- R1EyQ0VTOG9lbkpaSHRPazduUXFwWnRFdlVZSEpDdFlQSFNrTXBhMEdDbEZhNTN5azh2MQpsQXd
- zcm1uU2c0MzJiY3JuZkUyVk10V0orWmlVNEpUa1pGRmNFYVRMejh6ZWR6ODQweUd3YkpqZnhzRS
- 92cXB6Cm8rZTVCSHpQWEdRSFdhVUVTVnJIV3VORDQ0YVQ5MnIxOUxIVlZhc3haczZPQXYwRWdTT
- VNjdEI1cXhVRDhMUG0KdXJUeUdKcnd0STA5WWhTdUh0L1ZtWTZYZjZNREJxVTZ1bGF6aEMxTjFK
- ZC9BVkFYZDhDMysxbGZmVVFRQTY3UgpIK0NFUGZqcDRSK2s2d040ZU5SY2dQamFDY1VZUU40UXd
- PZU1TenEwa3BVRjZiTkVTYjYxeEFqMjdIV243dW8yCjFLNUErN2xkQ0VOa1gzSk9RdnlON1ZCcl
- VWNm9vVTFnWVE9PQo9czVjcgotLS0tLUVORCBQR1AgTUVTU0FHRS0tLS0tCg==
-X-Developer-Key: i=petre.rodan@subdimension.ro; a=openpgp;
- fpr=D80A7FC176151935EC3E5FA9CF269999844E7F30
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260114-mprls_cleanup-v3-3-bc7f1c2957c2@subdimension.ro>
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
+ krs, Bertel Jungin Aukio 5, 02600 Espoo
 
-Add copyright line to the core driver.
+On Wed, Jan 14, 2026 at 06:55:32PM +0200, Petre Rodan wrote:
+> Interrupt falling/rising flags should only be defined in the device tree.
 
-Signed-off-by: Petre Rodan <petre.rodan@subdimension.ro>
----
-v1 -> v3 no changes
----
- drivers/iio/pressure/mprls0025pa.c | 1 +
- 1 file changed, 1 insertion(+)
+...
 
-diff --git a/drivers/iio/pressure/mprls0025pa.c b/drivers/iio/pressure/mprls0025pa.c
-index b1122ace6bac..587d0dcad89b 100644
---- a/drivers/iio/pressure/mprls0025pa.c
-+++ b/drivers/iio/pressure/mprls0025pa.c
-@@ -3,6 +3,7 @@
-  * MPRLS0025PA - Honeywell MicroPressure pressure sensor series driver
-  *
-  * Copyright (c) Andreas Klinger <ak@it-klinger.de>
-+ * Copyright (c) 2023-2025 Petre Rodan <petre.rodan@subdimension.ro>
-  *
-  * Data sheet:
-  *  https://prod-edam.honeywell.com/content/dam/honeywell-edam/sps/siot/en-us/products/sensors/pressure-sensors/board-mount-pressure-sensors/micropressure-mpr-series/documents/sps-siot-mpr-series-datasheet-32332628-ciid-172626.pdf
+>  	if (data->irq > 0) {
+> -		ret = devm_request_irq(dev, data->irq, mpr_eoc_handler,
+> -				       IRQF_TRIGGER_RISING,
+> -				       dev_name(dev),
+> -				       data);
+> +		ret = devm_request_irq(dev, data->irq, mpr_eoc_handler, 0,
+> +				       dev_name(dev), data);
+>  		if (ret)
+
+>  			return dev_err_probe(dev, ret,
+>  					  "request irq %d failed\n", data->irq);
+
+Also drop this (in a separate change?) as devm_request_*irq*() prints the
+similar one.
 
 -- 
-2.52.0
+With Best Regards,
+Andy Shevchenko
+
 
 

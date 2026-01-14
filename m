@@ -1,55 +1,55 @@
-Return-Path: <linux-iio+bounces-27798-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-27805-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id A97D7D2063F
-	for <lists+linux-iio@lfdr.de>; Wed, 14 Jan 2026 18:02:00 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 374F8D205FC
+	for <lists+linux-iio@lfdr.de>; Wed, 14 Jan 2026 17:57:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id DB83A30C62D3
-	for <lists+linux-iio@lfdr.de>; Wed, 14 Jan 2026 16:56:43 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id BEA8330167B6
+	for <lists+linux-iio@lfdr.de>; Wed, 14 Jan 2026 16:56:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C94FF3A7831;
-	Wed, 14 Jan 2026 16:56:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A85913A7F57;
+	Wed, 14 Jan 2026 16:56:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=subdimension.ro header.i=@subdimension.ro header.b="ihVBKfxK"
+	dkim=pass (2048-bit key) header.d=subdimension.ro header.i=@subdimension.ro header.b="xLIwVY3v"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from nalicastle.subdimension.ro (nalicastle.subdimension.ro [172.105.74.154])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8E963A784A;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C59303A7847;
 	Wed, 14 Jan 2026 16:56:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=172.105.74.154
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768409796; cv=none; b=Lo8nmFSYA0OP+NjWyQ1OE2CsSZdCy6Igws9Jxgs8ZpPfKv8kayCqXkrXmMSzpfPeJFytu0zP9PljBuB5ZgbUaGHI5U9V1TygXZb0/Ncxrk0IXHHNJkpRySeIynKVzNZurP3xk3Z6qdkg3mnaJq4CKbzBwG7HQqsOypNNfa3QA30=
+	t=1768409800; cv=none; b=rJNPf5Sr8jpRqw2VeZ+t15qUziZ7NI0sIeMXx/jKCfjn+m4imhPOlG1Ybh1Ez1dwWVjttbHR7c2rLe05WisUc086OIahv/EvzLlSk4Zlj/fB73MQtHMHbRSYtKz5Y4N085G/ctMppRsMj0a6iD2f/YA1cRQK0VtFBvhWB5hTXpM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768409796; c=relaxed/simple;
-	bh=NLtzNINdqdQVjTYfusVEMA6v2Hd9sfieKb6m9NFWaQQ=;
+	s=arc-20240116; t=1768409800; c=relaxed/simple;
+	bh=Jagc9iqtf55Qs8ItH4kLzosR5Ollu8YjKJgssBpycWo=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=G3+cs7KS8iTav4nsTU1KP6BoOqvyeS2HLGmpl423NRi9lfOjPEHcRD2e3tczK32gY+IAgCL1MyqaxhAhcukwWi2kQvn/ZPsDEnNqedG/YeKqR+V1A+8xhugrF0P2cgZg7JdHVgBNqA04bEi15/Piydnq4UlvkCN9yRbI+5aoW5M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=subdimension.ro; spf=pass smtp.mailfrom=subdimension.ro; dkim=pass (2048-bit key) header.d=subdimension.ro header.i=@subdimension.ro header.b=ihVBKfxK; arc=none smtp.client-ip=172.105.74.154
+	 In-Reply-To:To:Cc; b=bbCym0KX4iKgs90yzY6yuitZLAdkHTLnRp+kGqnrOf198JXVaHknNXYreMUBFe85YRbGi08YZ7P5ngnbQyr3NeFBkFxQHD1Jzp7AXOIB6i76cYL+8hGjiABBSiTNynFXABPWQcH3T+Mo++9r115HcDsbVMbuAabILrXd3CmBx9U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=subdimension.ro; spf=pass smtp.mailfrom=subdimension.ro; dkim=pass (2048-bit key) header.d=subdimension.ro header.i=@subdimension.ro header.b=xLIwVY3v; arc=none smtp.client-ip=172.105.74.154
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=subdimension.ro
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=subdimension.ro
 Received: from sunspire.home.arpa (unknown [IPv6:2a02:2f0e:300:8a00:e2d5:5eff:fed9:f1c4])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(Client did not present a certificate)
-	by nalicastle.subdimension.ro (Postfix) with ESMTPSA id DD6C5160213;
-	Wed, 14 Jan 2026 18:56:25 +0200 (EET)
+	by nalicastle.subdimension.ro (Postfix) with ESMTPSA id 8358D160214;
+	Wed, 14 Jan 2026 18:56:26 +0200 (EET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=subdimension.ro;
 	s=mail; t=1768409786;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=HI3XnUHvvMs32B1ep4cLtSCZ2YnL5LoVIfJiMS1/rgg=;
-	b=ihVBKfxKcDZ5yxhvrt1NOs4mLHFIrh0Ao6IcoptvIf6c3Lvi7THhTAkrbbmMGshuAWKoCk
-	Mpp+V2XjTx7p0CRKTZg0vLeQR1Je8VvdwKhftAJtXJ4CsEaavQsGE9IP+KYUi10S3S1d/N
-	s0zVfmTrG0sdok+aXJVqVr2a5oAX1iIIqPQv8vB37XrI60vAgSODhGhayHamKJhO7H/dSC
-	MyYYbmV9kI4E8ZcnlJ/EhvZd2qgqcQKepACDdsH4NHYtiVmU04srMCgT0QuPnHMZPe74SM
-	3ziPdf4Jw5ej+R/4wekylFQtsjBj9V0s2CFcD2E0P3EjJcvM8LCbpXTelIF1rA==
+	bh=9Id3DMlIC2cKbVHHR7YX17+YiedfAbBmVLYJX5OObzk=;
+	b=xLIwVY3veW8AyTftU8CsxKFDWuTBYdCc+wGzpXMWn4eijYPZwuBR0K2cYcWXNm6wgS1DMA
+	KI0P5nORdwA7Qg+7DprEFofGlGoU8KTjJOcd3hKXJQMl/Cu7O5tAHUKIgDZc7VafDFfO8C
+	1U80c17Y09544gidvnjpZw3b38rrCHzwuJZIRQKbwdoUVAogLIxh844L/yuKVZpW6lUw2b
+	rriut8XbWpwfn6enYsb6JM4zVbZF4tH8OiTl7Mh1l6XXRjiwObg9uE3Rq4o+CDwNI0bXho
+	T5yfPrM5nHwGIBljsis6YbXYsNV5f75W2/QbCMih+y0myHeIelr9UOmaT6ZRHQ==
 From: Petre Rodan <petre.rodan@subdimension.ro>
-Date: Wed, 14 Jan 2026 18:55:38 +0200
-Subject: [PATCH v3 09/13] iio: pressure: mprls0025pa: introduce tx buffer
+Date: Wed, 14 Jan 2026 18:55:39 +0200
+Subject: [PATCH v3 10/13] iio: pressure: mprls0025pa: move memset to core
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -58,7 +58,7 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260114-mprls_cleanup-v3-9-bc7f1c2957c2@subdimension.ro>
+Message-Id: <20260114-mprls_cleanup-v3-10-bc7f1c2957c2@subdimension.ro>
 References: <20260114-mprls_cleanup-v3-0-bc7f1c2957c2@subdimension.ro>
 In-Reply-To: <20260114-mprls_cleanup-v3-0-bc7f1c2957c2@subdimension.ro>
 To: Jonathan Cameron <jic23@kernel.org>, 
@@ -67,179 +67,88 @@ To: Jonathan Cameron <jic23@kernel.org>,
  Andy Shevchenko <andy@kernel.org>, Andreas Klinger <ak@it-klinger.de>
 Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, 
  Jonathan Cameron <Jonathan.Cameron@huawei.com>, 
- Petre Rodan <petre.rodan@subdimension.ro>, 
- Marcelo Schmitt <marcelo.schmitt1@gmail.com>
+ Petre Rodan <petre.rodan@subdimension.ro>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=4745;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2248;
  i=petre.rodan@subdimension.ro; h=from:subject:message-id;
- bh=NLtzNINdqdQVjTYfusVEMA6v2Hd9sfieKb6m9NFWaQQ=;
- b=LS0tLS1CRUdJTiBQR1AgTUVTU0FHRS0tLS0tCgprQTBEQUFvQmRDc25wMk02U1dNQnl5WmlBR
- 2xueXFtaEVOT2JWRmtKZ2tUOGsrZnFMcW1UL2lXbW1FUU5EcmxaCkJyVTdONUdLVUlrQ1R3UUFB
- UW9BT1JZaEJCb2ltQncrRGJ4UXBFNmlkM1FySjZkak9rbGpCUUpwWjhxcEd4U0EKQUFBQUFBUUF
- EbTFoYm5VeUxESXVOU3N4TGpFeExESXNNZ0FLQ1JCMEt5ZW5ZenBKWSsrNkQvNGt3TGp5MHA4OQ
- pzeGwxb0VUaGxyTE9LdWR4K283eXlMOTdNZWs1ZnNCY2daelRvbnllSE1xbUJpVDM0dnRHN2UwR
- GpneEJ5SWhCClphMi9GY25jREZ4K081cmkxNUNmUFFsekJjRXlGTW51NHNNVmdxK04yTmdKN1FS
- cUZhcVpvSS85VGxrTUhCOVoKRmh6NmFBYjdpR0NVc2FKcG1UMGFWcEEzZU80OVJqNVA5ank3RW1
- HQ2hCVW5kL2hJcUYwNkJjVlZtdUpCdFhrdQp1RUp5eWp6Yjdoc0trOEJGMmRPRkhqOWV4QzBuT2
- ZjTi9KL2l1Rlc3aWZZMFM0ZTREcExQczhnQjkvUkNxbzUxCjR4Wmsrd0ZjOVg2MkpHT29pOHd0N
- ERDTjRBYW9TWGF5YjRPaW1BeThST2JhK1d2b3FDODNQSlhRWktsRHJXYWsKOWtvdjVtbUh1azYx
- bzA5bVVQc2FpVjlVYVgyRlRIV2RYSHA2UTBHRFBSemNmajZ2VXBVZ0Z0QUFlek9UQUwrZwpOeWd
- vMDFBYWVqd205N0ZqMzBWemdwMGdTK1NyV3pCNndKRUtiaFBHeTdCN0VzM2t6NTk1TGhCZkk1T0
- ZkS2hQCnBSa0FKd2IvNWFpTGVrVEw1TlZsSDd5b243a0ZQS3ZFUS92NHU2MTdXZjZrRVZTSktIb
- WtzOVA3Qk9SMWE0TDQKLzBWUEMyOUMwbmVlbnc4clpWMmJObkRhcDZlY2g3K3dpOU5sUHlsaVJX
- NWR4S0ZNcnQ5WFNKbXlsQ0JDdHlrUQpqazA2NTc3RDFmd0g3ZXJ5OXFNd3I1Y2IzelAzTThOTkJ
- wYTcybFpaRjVrOWR5YkVlOFJ1a01QWWE3eUVEMDVvCnI5R1RmcUU3MnJvZFg2ZytZdWRjd3ViZ2
- doQ2ljMWdzMlE9PQo9VTNMdwotLS0tLUVORCBQR1AgTUVTU0FHRS0tLS0tCg==
+ bh=Jagc9iqtf55Qs8ItH4kLzosR5Ollu8YjKJgssBpycWo=;
+ b=LS0tLS1CRUdJTiBQR1AgTUVTU0FHRS0tLS0tCgpvd0o0bkFHSkFuYjlrQTBEQUFvQmRDc25wM
+ k02U1dNQnl5WmlBR2xueXF2OVRxNEV6VXBzSFZnUWNIbVB3bm9hCitEMVN3Zks2VmdKWjRhZm5h
+ b3lpZklrQ1R3UUFBUW9BT1JZaEJCb2ltQncrRGJ4UXBFNmlkM1FySjZkak9rbGoKQlFKcFo4cXJ
+ HeFNBQUFBQUFBUUFEbTFoYm5VeUxESXVOU3N4TGpFeExESXNNZ0FLQ1JCMEt5ZW5ZenBKWXlMYg
+ pELzloTGthS3Bnc3pQaFRPQ09qTG1hQzhrU2dZb1A1bmRvNGQ2czB3UFZmdTFLaEttY213TTUvY
+ VpaTFRaK3NQCkRka1I3NGxGTmsvVjk2eWRRZ3NoT1RhN0VTSUlYeDNaQjFUbmUveWkwVHdtTzdo
+ QWJoWmZhUmVGQ3hpV0pWdEgKV2E4Z1NacjFSd2tKN1ljOVRMMkpxRlRIK1paemgwYkNhN2t0OTB
+ hVGRNdktMY2tockdzNm1ibEE2bjU4UllITwpGbFRCTXFNYnQ3QkwrZ0VqTllnRERLV3owT3B0RT
+ VyaXU4TUpHWFlRYkFURlRkQUlqbUYyWlpmemt4NHdKVktOCjU1NUJiL1BsWi8xa2xGdmlWclNWU
+ nhMTjVjR21kTkFrRjNwVEU0YjZ3dVNCaGNUUml0ci9QcWRTdUtjdFpkUmEKQW9lWGMweGRnSFBZ
+ ZFlaQ1lRRldqc29QMXVBZjV0Y2ZKWlpSS2x6cmpYcVJSQjlSd2N4blZoc0drT2k1VHA4MwppVDV
+ janpWd293Q2ZqVTNXNGtLaVVwMEFPTkluSTVBamNOSksyWUxjbElRUWRWdEFtUUpCME1kSFpPUk
+ F3aURECmdZS3luWXp0bUpGTngxeFJTR2xoeXFzWnZ2SUNNQjNCRDg4M3l6TysrNEVZZDJBZWovb
+ mwvWkNOOFUzZGdGckUKdUE2ZUYxZ3ExcE90Ry8wTHA5S1VVNURjNVUxK3VHQkxMOTdMWFB2VVR1
+ QzZ0Qktnb01Md1hQL0ZBUnk3UjR3Kwo5bEpMb1ZNRCtjc0JyWEN2a0Z2K2swZEVSR2p0L01sSWF
+ lUEtCT2RRWlFZa1JLUWVKS1pjRWlueUF0ZGJ2QzQ5CnA5VkdWODdYRjE5aDVjSk5FcHlPck5FaT
+ RCV3RNczFFaW9GSEY2a3h0WEgrUE9Db0pEND0KPWlGWkwKLS0tLS1FTkQgUEdQIE1FU1NBR0UtL
+ S0tLQo=
 X-Developer-Key: i=petre.rodan@subdimension.ro; a=openpgp;
  fpr=D80A7FC176151935EC3E5FA9CF269999844E7F30
 
-Use a tx_buf that is part of the priv struct for transferring data to
-the sensor instead of relying on a devm_kzalloc()-ed array.
-Remove the .init operation in the process.
+Move memset() from the bus specific code into core.
 
-Reviewed-by: Marcelo Schmitt <marcelo.schmitt1@gmail.com>
+Zeroing out the buffer is performed because the sensor has noticeable
+latch-up sensitivity and in some cases it clamps the MISO signal to GND
+in sync with SCLK [1]. A raw conversion of zero is out of bounds since
+valid values have to be between output_min and output_max (and the
+smallest output_min is 2.5% of 2^24 = 419430).
+
+The user is expected to discard out of bounds pressure values.
+
+Given the fact that we can't follow the behaviour of all SPI controllers
+when faced to this clamping of an output signal, a raw conversion of zero
+is used as an early warning in case the low level SPI API reacts
+unexpectedly.
+
+Link: https://e2e.ti.com/support/processors-group/processors/f/processors-forum/1588325/am3358-spi-tx-data-corruption [1]
 Signed-off-by: Petre Rodan <petre.rodan@subdimension.ro>
 ---
-v1 -> v3 no functional changes
+v1 -> v3 no changes
 ---
- drivers/iio/pressure/mprls0025pa.c     |  4 ----
- drivers/iio/pressure/mprls0025pa.h     |  3 ++-
- drivers/iio/pressure/mprls0025pa_i2c.c | 10 ++--------
- drivers/iio/pressure/mprls0025pa_spi.c | 24 ++----------------------
- 4 files changed, 6 insertions(+), 35 deletions(-)
+ drivers/iio/pressure/mprls0025pa.c     | 2 ++
+ drivers/iio/pressure/mprls0025pa_i2c.c | 1 -
+ 2 files changed, 2 insertions(+), 1 deletion(-)
 
 diff --git a/drivers/iio/pressure/mprls0025pa.c b/drivers/iio/pressure/mprls0025pa.c
-index 245d7ed82b6b..2bcd339dc84e 100644
+index 2bcd339dc84e..a7041a503bde 100644
 --- a/drivers/iio/pressure/mprls0025pa.c
 +++ b/drivers/iio/pressure/mprls0025pa.c
-@@ -363,10 +363,6 @@ int mpr_common_probe(struct device *dev, const struct mpr_ops *ops, int irq)
- 		return dev_err_probe(dev, ret,
- 				     "can't get and enable vdd supply\n");
+@@ -22,6 +22,7 @@
+ #include <linux/mod_devicetable.h>
+ #include <linux/module.h>
+ #include <linux/property.h>
++#include <linux/string.h>
+ #include <linux/units.h>
  
--	ret = data->ops->init(data->dev);
--	if (ret)
--		return ret;
--
- 	ret = device_property_read_u32(dev,
- 				       "honeywell,transfer-function", &func);
- 	if (ret)
-diff --git a/drivers/iio/pressure/mprls0025pa.h b/drivers/iio/pressure/mprls0025pa.h
-index 119ebb0ba567..9f43273e635f 100644
---- a/drivers/iio/pressure/mprls0025pa.h
-+++ b/drivers/iio/pressure/mprls0025pa.h
-@@ -55,6 +55,7 @@ enum mpr_func_id {
-  * @chan.pres: pressure value
-  * @chan.ts: timestamp
-  * @rx_buf: raw conversion data
-+ * @tx_buf: output buffer
-  */
- struct mpr_data {
- 	struct device		*dev;
-@@ -76,10 +77,10 @@ struct mpr_data {
- 		aligned_s64 ts;
- 	} chan;
- 	u8 rx_buf[MPR_MEASUREMENT_RD_SIZE] __aligned(IIO_DMA_MINALIGN);
-+	u8 tx_buf[MPR_MEASUREMENT_RD_SIZE];
- };
+ #include <linux/gpio/consumer.h>
+@@ -247,6 +248,7 @@ static int mpr_read_pressure(struct mpr_data *data, s32 *press)
+ 		}
+ 	}
  
- struct mpr_ops {
--	int (*init)(struct device *dev);
- 	int (*read)(struct mpr_data *data, const u8 cmd, const u8 cnt);
- 	int (*write)(struct mpr_data *data, const u8 cmd, const u8 cnt);
- };
-diff --git a/drivers/iio/pressure/mprls0025pa_i2c.c b/drivers/iio/pressure/mprls0025pa_i2c.c
-index 36da0059b19f..a0bbc6af9283 100644
---- a/drivers/iio/pressure/mprls0025pa_i2c.c
-+++ b/drivers/iio/pressure/mprls0025pa_i2c.c
-@@ -17,11 +17,6 @@
- 
- #include "mprls0025pa.h"
- 
--static int mpr_i2c_init(struct device *unused)
--{
--	return 0;
--}
--
- static int mpr_i2c_read(struct mpr_data *data, const u8 unused, const u8 cnt)
- {
- 	int ret;
-@@ -44,9 +39,9 @@ static int mpr_i2c_write(struct mpr_data *data, const u8 cmd, const u8 unused)
- {
- 	int ret;
- 	struct i2c_client *client = to_i2c_client(data->dev);
--	u8 wdata[MPR_PKT_SYNC_LEN] = { cmd };
- 
--	ret = i2c_master_send(client, wdata, MPR_PKT_SYNC_LEN);
-+	data->tx_buf[0] = cmd;
-+	ret = i2c_master_send(client, data->tx_buf, MPR_PKT_SYNC_LEN);
++	memset(data->rx_buf, 0, sizeof(data->rx_buf));
+ 	ret = data->ops->read(data, MPR_CMD_NOP, MPR_PKT_NOP_LEN);
  	if (ret < 0)
  		return ret;
- 	else if (ret != MPR_PKT_SYNC_LEN)
-@@ -56,7 +51,6 @@ static int mpr_i2c_write(struct mpr_data *data, const u8 cmd, const u8 unused)
- }
- 
- static const struct mpr_ops mpr_i2c_ops = {
--	.init = mpr_i2c_init,
- 	.read = mpr_i2c_read,
- 	.write = mpr_i2c_write,
- };
-diff --git a/drivers/iio/pressure/mprls0025pa_spi.c b/drivers/iio/pressure/mprls0025pa_spi.c
-index 247b65226bb9..8c8c726f703f 100644
---- a/drivers/iio/pressure/mprls0025pa_spi.c
-+++ b/drivers/iio/pressure/mprls0025pa_spi.c
-@@ -19,34 +19,15 @@
- 
- #include "mprls0025pa.h"
- 
--struct mpr_spi_buf {
--	u8 tx[MPR_MEASUREMENT_RD_SIZE] __aligned(IIO_DMA_MINALIGN);
--};
--
--static int mpr_spi_init(struct device *dev)
--{
--	struct spi_device *spi = to_spi_device(dev);
--	struct mpr_spi_buf *buf;
--
--	buf = devm_kzalloc(dev, sizeof(*buf), GFP_KERNEL);
--	if (!buf)
--		return -ENOMEM;
--
--	spi_set_drvdata(spi, buf);
--
--	return 0;
--}
--
- static int mpr_spi_xfer(struct mpr_data *data, const u8 cmd, const u8 pkt_len)
- {
- 	struct spi_device *spi = to_spi_device(data->dev);
--	struct mpr_spi_buf *buf = spi_get_drvdata(spi);
- 	struct spi_transfer xfers[2] = { };
- 
- 	if (pkt_len > MPR_MEASUREMENT_RD_SIZE)
+diff --git a/drivers/iio/pressure/mprls0025pa_i2c.c b/drivers/iio/pressure/mprls0025pa_i2c.c
+index a0bbc6af9283..0fe8cfe0d7e7 100644
+--- a/drivers/iio/pressure/mprls0025pa_i2c.c
++++ b/drivers/iio/pressure/mprls0025pa_i2c.c
+@@ -25,7 +25,6 @@ static int mpr_i2c_read(struct mpr_data *data, const u8 unused, const u8 cnt)
+ 	if (cnt > MPR_MEASUREMENT_RD_SIZE)
  		return -EOVERFLOW;
  
--	buf->tx[0] = cmd;
-+	data->tx_buf[0] = cmd;
- 
- 	/*
- 	 * Dummy transfer with no data, just cause a 2.5us+ delay between the CS assert
-@@ -55,7 +36,7 @@ static int mpr_spi_xfer(struct mpr_data *data, const u8 cmd, const u8 pkt_len)
- 	xfers[0].delay.value = 2500;
- 	xfers[0].delay.unit = SPI_DELAY_UNIT_NSECS;
- 
--	xfers[1].tx_buf = buf->tx;
-+	xfers[1].tx_buf = data->tx_buf;
- 	xfers[1].rx_buf = data->rx_buf;
- 	xfers[1].len = pkt_len;
- 
-@@ -63,7 +44,6 @@ static int mpr_spi_xfer(struct mpr_data *data, const u8 cmd, const u8 pkt_len)
- }
- 
- static const struct mpr_ops mpr_spi_ops = {
--	.init = mpr_spi_init,
- 	.read = mpr_spi_xfer,
- 	.write = mpr_spi_xfer,
- };
+-	memset(data->rx_buf, 0, MPR_MEASUREMENT_RD_SIZE);
+ 	ret = i2c_master_recv(client, data->rx_buf, cnt);
+ 	if (ret < 0)
+ 		return ret;
 
 -- 
 2.52.0

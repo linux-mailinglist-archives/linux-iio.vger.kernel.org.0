@@ -1,51 +1,51 @@
-Return-Path: <linux-iio+bounces-27696-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-27697-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4D872D1D395
-	for <lists+linux-iio@lfdr.de>; Wed, 14 Jan 2026 09:47:53 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B9A2D1D3DA
+	for <lists+linux-iio@lfdr.de>; Wed, 14 Jan 2026 09:50:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 4EFCC30BDB78
-	for <lists+linux-iio@lfdr.de>; Wed, 14 Jan 2026 08:41:10 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 670E030BE389
+	for <lists+linux-iio@lfdr.de>; Wed, 14 Jan 2026 08:41:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA09437F8DF;
-	Wed, 14 Jan 2026 08:40:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A2DC38171F;
+	Wed, 14 Jan 2026 08:40:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="Pbpe0MIc"
+	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="UxSv0weQ"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C946E37BE95;
-	Wed, 14 Jan 2026 08:40:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 513CC37F8B0;
+	Wed, 14 Jan 2026 08:40:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.251.105.195
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768380014; cv=none; b=AhaXXZgZ9ralUKZnCISsOsdNWWEUmoO7h9zcs/G3+O74jdCn9jAITCeqlAXb9kb9YsHJ1GLawNWW91BGqqksOjf27qVUaU9Fje0wXe0cII/IuqPp2LBRFn8uzaGK8p+pRqx06YQO7GiA+Y+fFkKz6hXpL2NoZnSv7sV9n+3E0G8=
+	t=1768380015; cv=none; b=C9D5OjimScpjNITzW5kKW+w/EkmZ1acVIFFHsC6dLJ2kRWLD1lr5ZrWb7wo02hxEhqRZUeagMTmfgKSDTEPNz21AetfyrClXdFqco3Ma0KaSCaSYSTrvXG2RVG/EE2dHC5e0zutuyWT48EzPyfulX4B9z1a1nvjSf05n+uOcUyU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768380014; c=relaxed/simple;
-	bh=9qqAIo46KhQuXsgFQsdnD3jFP1I1WfwgUesSwY5T+/Q=;
+	s=arc-20240116; t=1768380015; c=relaxed/simple;
+	bh=W/Xdc4q5uf9EXODX7RGfJfR8vms+lmhm3p73fuPdOjU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VYjIKUt0lvD86NRXR5q4Rfx6E9tFzTzA3sjgO5R7YASvMpawtEIaRAaUeVPOn2+efFb7l20Bafx0NmfoepnkV2toDHj/cuHD1cqzNPg5ifF2Nyr+yUxTgofbGUIUhQaBNwKbCS7f/zP1lQHy4nQxq/8eUVgyS4N5iUghGTvxyp0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=Pbpe0MIc; arc=none smtp.client-ip=148.251.105.195
+	 MIME-Version; b=LRfDeB+hQkHopNanCqmQqm1mg7uu9WYSIqCN9RjC3VlMFApXuBsRQFFn+z+LSKRNfAMZ/mWKKEo6tbtk36WS9Qt/s+eLeRbw2JJAd2hHxpOZ4mhFHA1PDh41xANl7VFzWx/U6+mQcO0b44KGXpKQAeIsKDyAVSLYnnff/Y6htpU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=UxSv0weQ; arc=none smtp.client-ip=148.251.105.195
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-	s=mail; t=1768380006;
-	bh=9qqAIo46KhQuXsgFQsdnD3jFP1I1WfwgUesSwY5T+/Q=;
+	s=mail; t=1768380008;
+	bh=W/Xdc4q5uf9EXODX7RGfJfR8vms+lmhm3p73fuPdOjU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Pbpe0MIc6u4kZz1vRAOe2HoD7XGi6/NtlCE1j+MoRy+8i+IoVcgWKfLFNNzFklk8F
-	 CxDb8TdoFF7+Ij7fyFUX5jzPUFFhhTlaUP/zdBaL1EkYVPeb4z+jiclfSILtCsXKow
-	 IqdycaB543A+KCJFIN+K4NVWH9/AbAajANIsQLAsjYZqvuDT/V12vxCPOYKKiL2PAQ
-	 XSApKcRMNcwTsuoy15wFntoMlyxqXCux9wEtde71dv4fC2ArHcgKvFif7xXfM0W63K
-	 YPSAq9tXmzrTjvlVeUPO7ceJZUbRAFacKPdeZDF5Q1OgBqywq36slgGz/rXW774rzd
-	 0a/tGFN6apI9g==
+	b=UxSv0weQiok9Y90UXfvNdjgI6nqGERQ27FMnoj0OfOEKo4XAvN8sx0KSQfc1nzKHz
+	 gzm6htwPOvFVOTJgfGLXfsOHF7226/8pNsCZxJDpQhonsImJEkL67VEBQCDOeywnSU
+	 OJBi/V7dFOtuVs2xlpHMnsmAo6GLJ0ZrwI4o4wfmXfCXWA+4odeortPK5Mpd01dY3e
+	 tIMupCnBIcW3bPy+WftZ8fUpccETwMn6qWZvUlyPzOPKggFPagtvdDMrWHQ2FrKaAF
+	 x66oroSHJ+xy1sN2iQBigDTk5aI2N4mBrZ+jqNccwaRTDfR2LqwLInFP22/5VTppdd
+	 hWgMt4qjjj1EQ==
 Received: from IcarusMOD.eternityproject.eu (2-237-20-237.ip236.fastwebnet.it [2.237.20.237])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
 	(Authenticated sender: kholk11)
-	by bali.collaboradmins.com (Postfix) with ESMTPSA id D978A17E1553;
-	Wed, 14 Jan 2026 09:40:05 +0100 (CET)
+	by bali.collaboradmins.com (Postfix) with ESMTPSA id 06E1817E157E;
+	Wed, 14 Jan 2026 09:40:06 +0100 (CET)
 From: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
 To: jic23@kernel.org
 Cc: dlechner@baylibre.com,
@@ -75,10 +75,11 @@ Cc: dlechner@baylibre.com,
 	linux-kernel@vger.kernel.org,
 	linux-phy@lists.infradead.org,
 	linux-pm@vger.kernel.org,
-	kernel@collabora.com
-Subject: [PATCH v7 05/10] nvmem: qcom-spmi-sdam: Migrate to devm_spmi_subdevice_alloc_and_add()
-Date: Wed, 14 Jan 2026 09:39:52 +0100
-Message-ID: <20260114083957.9945-6-angelogioacchino.delregno@collabora.com>
+	kernel@collabora.com,
+	Sebastian Reichel <sebastian.reichel@collabora.com>
+Subject: [PATCH v7 06/10] power: reset: qcom-pon: Migrate to devm_spmi_subdevice_alloc_and_add()
+Date: Wed, 14 Jan 2026 09:39:53 +0100
+Message-ID: <20260114083957.9945-7-angelogioacchino.delregno@collabora.com>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260114083957.9945-1-angelogioacchino.delregno@collabora.com>
 References: <20260114083957.9945-1-angelogioacchino.delregno@collabora.com>
@@ -90,11 +91,11 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Some Qualcomm PMICs integrate a SDAM device, internally located in
-a specific address range reachable through SPMI communication.
+Some Qualcomm PMICs integrates a Power On device supporting pwrkey
+and resin along with the Android reboot reason action identifier.
 
 Instead of using the parent SPMI device (the main PMIC) as a kind
-of syscon in this driver, register a new SPMI sub-device for SDAM
+of syscon in this driver, register a new SPMI sub-device for PON
 and initialize its own regmap with this sub-device's specific base
 address, retrieved from the devicetree.
 
@@ -102,125 +103,95 @@ This allows to stop manually adding the register base address to
 every R/W call in this driver, as this can be, and is now, handled
 by the regmap API instead.
 
-Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Reviewed-by: Sebastian Reichel <sebastian.reichel@collabora.com>
 Tested-by: Neil Armstrong <neil.armstrong@linaro.org> # on SM8650-QRD
 Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
 ---
- drivers/nvmem/Kconfig          |  1 +
- drivers/nvmem/qcom-spmi-sdam.c | 36 +++++++++++++++++++++++-----------
- 2 files changed, 26 insertions(+), 11 deletions(-)
+ drivers/power/reset/qcom-pon.c | 34 +++++++++++++++++++++++++---------
+ 1 file changed, 25 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/nvmem/Kconfig b/drivers/nvmem/Kconfig
-index bf47a982cf62..5e924c869e77 100644
---- a/drivers/nvmem/Kconfig
-+++ b/drivers/nvmem/Kconfig
-@@ -368,6 +368,7 @@ config NVMEM_SNVS_LPGPR
- config NVMEM_SPMI_SDAM
- 	tristate "SPMI SDAM Support"
- 	depends on SPMI
-+	select REGMAP_SPMI
- 	help
- 	  This driver supports the Shared Direct Access Memory Module on
- 	  Qualcomm Technologies, Inc. PMICs. It provides the clients
-diff --git a/drivers/nvmem/qcom-spmi-sdam.c b/drivers/nvmem/qcom-spmi-sdam.c
-index 4f1cca6eab71..2bb7b3bc497e 100644
---- a/drivers/nvmem/qcom-spmi-sdam.c
-+++ b/drivers/nvmem/qcom-spmi-sdam.c
-@@ -9,6 +9,7 @@
- #include <linux/nvmem-provider.h>
- #include <linux/platform_device.h>
+diff --git a/drivers/power/reset/qcom-pon.c b/drivers/power/reset/qcom-pon.c
+index 7e108982a582..0e075a2e5e48 100644
+--- a/drivers/power/reset/qcom-pon.c
++++ b/drivers/power/reset/qcom-pon.c
+@@ -11,6 +11,7 @@
+ #include <linux/reboot.h>
+ #include <linux/reboot-mode.h>
  #include <linux/regmap.h>
 +#include <linux/spmi.h>
  
- #define SDAM_MEM_START			0x40
- #define REGISTER_MAP_ID			0x40
-@@ -20,7 +21,6 @@
- struct sdam_chip {
- 	struct regmap			*regmap;
- 	struct nvmem_config		sdam_config;
--	unsigned int			base;
- 	unsigned int			size;
+ #define PON_SOFT_RB_SPARE		0x8f
+ 
+@@ -22,7 +23,6 @@
+ struct qcom_pon {
+ 	struct device *dev;
+ 	struct regmap *regmap;
+-	u32 baseaddr;
+ 	struct reboot_mode_driver reboot_mode;
+ 	long reason_shift;
  };
+@@ -35,7 +35,7 @@ static int qcom_pon_reboot_mode_write(struct reboot_mode_driver *reboot,
+ 	int ret;
  
-@@ -73,7 +73,7 @@ static int sdam_read(void *priv, unsigned int offset, void *val,
- 		return -EINVAL;
- 	}
+ 	ret = regmap_update_bits(pon->regmap,
+-				 pon->baseaddr + PON_SOFT_RB_SPARE,
++				 PON_SOFT_RB_SPARE,
+ 				 GENMASK(7, pon->reason_shift),
+ 				 magic << pon->reason_shift);
+ 	if (ret < 0)
+@@ -46,27 +46,42 @@ static int qcom_pon_reboot_mode_write(struct reboot_mode_driver *reboot,
  
--	rc = regmap_bulk_read(sdam->regmap, sdam->base + offset, val, bytes);
-+	rc = regmap_bulk_read(sdam->regmap, offset, val, bytes);
- 	if (rc < 0)
- 		dev_err(dev, "Failed to read SDAM offset %#x len=%zd, rc=%d\n",
- 						offset, bytes, rc);
-@@ -100,7 +100,7 @@ static int sdam_write(void *priv, unsigned int offset, void *val,
- 		return -EINVAL;
- 	}
- 
--	rc = regmap_bulk_write(sdam->regmap, sdam->base + offset, val, bytes);
-+	rc = regmap_bulk_write(sdam->regmap, offset, val, bytes);
- 	if (rc < 0)
- 		dev_err(dev, "Failed to write SDAM offset %#x len=%zd, rc=%d\n",
- 						offset, bytes, rc);
-@@ -110,8 +110,17 @@ static int sdam_write(void *priv, unsigned int offset, void *val,
- 
- static int sdam_probe(struct platform_device *pdev)
+ static int qcom_pon_probe(struct platform_device *pdev)
  {
-+	struct regmap_config sdam_regmap_config = {
++	struct regmap_config qcom_pon_regmap_config = {
 +		.reg_bits = 16,
 +		.val_bits = 8,
 +		.max_register = 0x100,
 +		.fast_io = true,
 +	};
- 	struct sdam_chip *sdam;
- 	struct nvmem_device *nvmem;
-+	struct spmi_device *sparent;
-+	struct spmi_subdevice *sub_sdev;
 +	struct device *dev = &pdev->dev;
- 	unsigned int val;
- 	int rc;
++	struct spmi_subdevice *sub_sdev;
++	struct spmi_device *sparent;
+ 	struct qcom_pon *pon;
+ 	long reason_shift;
+ 	int error;
  
-@@ -119,19 +128,23 @@ static int sdam_probe(struct platform_device *pdev)
- 	if (!sdam)
++	if (!dev->parent)
++		return -ENODEV;
++
+ 	pon = devm_kzalloc(&pdev->dev, sizeof(*pon), GFP_KERNEL);
+ 	if (!pon)
  		return -ENOMEM;
  
--	sdam->regmap = dev_get_regmap(pdev->dev.parent, NULL);
--	if (!sdam->regmap) {
--		dev_err(&pdev->dev, "Failed to get regmap handle\n");
--		return -ENXIO;
+ 	pon->dev = &pdev->dev;
+ 
+-	pon->regmap = dev_get_regmap(pdev->dev.parent, NULL);
+-	if (!pon->regmap) {
+-		dev_err(&pdev->dev, "failed to locate regmap\n");
+-		return -ENODEV;
 -	}
 +	sparent = to_spmi_device(dev->parent);
 +	sub_sdev = devm_spmi_subdevice_alloc_and_add(dev, sparent);
 +	if (IS_ERR(sub_sdev))
 +		return PTR_ERR(sub_sdev);
  
--	rc = of_property_read_u32(pdev->dev.of_node, "reg", &sdam->base);
-+	rc = of_property_read_u32(dev->of_node, "reg", &sdam_regmap_config.reg_base);
- 	if (rc < 0) {
- 		dev_err(&pdev->dev, "Failed to get SDAM base, rc=%d\n", rc);
- 		return -EINVAL;
- 	}
+-	error = of_property_read_u32(pdev->dev.of_node, "reg",
+-				     &pon->baseaddr);
++	error = of_property_read_u32(dev->of_node, "reg",
++				     &qcom_pon_regmap_config.reg_base);
+ 	if (error)
+ 		return error;
  
--	rc = regmap_read(sdam->regmap, sdam->base + SDAM_SIZE, &val);
-+	sdam->regmap = devm_regmap_init_spmi_ext(&sub_sdev->sdev, &sdam_regmap_config);
-+	if (IS_ERR(sdam->regmap))
-+		return dev_err_probe(&pdev->dev, PTR_ERR(sdam->regmap),
-+				     "Failed to get regmap handle\n");
++	pon->regmap = devm_regmap_init_spmi_ext(&sub_sdev->sdev, &qcom_pon_regmap_config);
++	if (IS_ERR(pon->regmap))
++		return PTR_ERR(pon->regmap);
 +
-+	rc = regmap_read(sdam->regmap, SDAM_SIZE, &val);
- 	if (rc < 0) {
- 		dev_err(&pdev->dev, "Failed to read SDAM_SIZE rc=%d\n", rc);
- 		return -EINVAL;
-@@ -159,7 +172,7 @@ static int sdam_probe(struct platform_device *pdev)
- 	}
- 	dev_dbg(&pdev->dev,
- 		"SDAM base=%#x size=%u registered successfully\n",
--		sdam->base, sdam->size);
-+		sdam_regmap_config.reg_base, sdam->size);
+ 	reason_shift = (long)of_device_get_match_data(&pdev->dev);
  
- 	return 0;
- }
-@@ -181,3 +194,4 @@ module_platform_driver(sdam_driver);
+ 	if (reason_shift != NO_REASON_SHIFT) {
+@@ -106,3 +121,4 @@ module_platform_driver(qcom_pon_driver);
  
- MODULE_DESCRIPTION("QCOM SPMI SDAM driver");
+ MODULE_DESCRIPTION("Qualcomm Power On driver");
  MODULE_LICENSE("GPL v2");
 +MODULE_IMPORT_NS("SPMI");
 -- 

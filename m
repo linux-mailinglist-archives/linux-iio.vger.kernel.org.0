@@ -1,56 +1,55 @@
-Return-Path: <linux-iio+bounces-27747-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-27746-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 987C7D1DDF7
-	for <lists+linux-iio@lfdr.de>; Wed, 14 Jan 2026 11:11:56 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id BD4B9D1DDC2
+	for <lists+linux-iio@lfdr.de>; Wed, 14 Jan 2026 11:10:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 933E93075D0A
+	by sin.lore.kernel.org (Postfix) with ESMTP id 4F0413023A3E
 	for <lists+linux-iio@lfdr.de>; Wed, 14 Jan 2026 10:08:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA65538B7CC;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ACAC138A2A2;
 	Wed, 14 Jan 2026 10:07:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=subdimension.ro header.i=@subdimension.ro header.b="BR58bJ0o"
+	dkim=pass (2048-bit key) header.d=subdimension.ro header.i=@subdimension.ro header.b="dYl+Sypx"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from nalicastle.subdimension.ro (nalicastle.subdimension.ro [172.105.74.154])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B51038A727;
-	Wed, 14 Jan 2026 10:07:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0D5E315760;
+	Wed, 14 Jan 2026 10:07:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=172.105.74.154
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768385272; cv=none; b=m8c1zOVJlD703zAO6W4ldXSPA0a1WFJBdyyqi/G4XRWEX8FriRkwa+tamIkL2PnTztdahfDhwT4XZmFF/MTJgRi0iiKJKabiA+6fXOau9Nusj+8tolwG5w8WRjAHeRcLpxS5QohEVyhQXWI4q0EDuZe9CzEuaH9VKqmJ4agIx4o=
+	t=1768385272; cv=none; b=ir9pHsOZPGHrw4Tbnimapm6Rw18Ux9v74v/Y+1ZUe8xZluvOvHaWhGX0dfG1nbUX3uC5ywDqsIa9QMr5dV5P28O+ZaQCTs364A+Q6GxiX60d2v3ZsApXixJjUQeoKOF5yooskwmLFBPMwRrzkS9ZALou6mu28n5cuTPpIAakhQ4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1768385272; c=relaxed/simple;
-	bh=JZsCYvArYiw2BVJX7iMWL2ZaOKYdTaYkGif2qRc37fc=;
+	bh=uMZ/2qhZPo2FEqne2iM7O/+A6QfQmq0ojRfiwGHhhkY=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=jDLRZzHlz8qQrHn2Pq9+eKOLqGvF7/3rOktxn1VvUBL3NZQ8E2X9tODoUOvB2/+N8HHFjx8Gq2uNl3vlTFd1LTdnJmLfuTdpjInkt7p9alIXyqRNgaM14AsBpaDW6rrmakuMJkJzPu6LCK2P/VzsIEv+lmAgqU70+dUsvHw9k2E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=subdimension.ro; spf=pass smtp.mailfrom=subdimension.ro; dkim=pass (2048-bit key) header.d=subdimension.ro header.i=@subdimension.ro header.b=BR58bJ0o; arc=none smtp.client-ip=172.105.74.154
+	 In-Reply-To:To:Cc; b=Zj5pXUqaEu77jPNgBdnFf0Fs4OuZZBDRf1dYwrKj4ImnQfR79jxlyrzYW7/Tzy6cmv/+rdxsE7cbptPkUtwL+Cn8V8c1bYxiBGcHWEILGeJPLWoFopSljvZlAVQLTAD3tiEyyePHEra6lMhwN+Pi1pG5eH0OBh0svJlfoamh2So=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=subdimension.ro; spf=pass smtp.mailfrom=subdimension.ro; dkim=pass (2048-bit key) header.d=subdimension.ro header.i=@subdimension.ro header.b=dYl+Sypx; arc=none smtp.client-ip=172.105.74.154
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=subdimension.ro
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=subdimension.ro
 Received: from sunspire.home.arpa (unknown [IPv6:2a02:2f0e:300:8a00:e2d5:5eff:fed9:f1c4])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(Client did not present a certificate)
-	by nalicastle.subdimension.ro (Postfix) with ESMTPSA id 532FB16020B;
+	by nalicastle.subdimension.ro (Postfix) with ESMTPSA id BE53616020D;
 	Wed, 14 Jan 2026 12:07:46 +0200 (EET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=subdimension.ro;
-	s=mail; t=1768385266;
+	s=mail; t=1768385267;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=lvD+Mz/V+BUQ9wfDWzvPQ+wQyq4iAUHqGEljuaj6y1Y=;
-	b=BR58bJ0o5LpJ3PpAoSp7fFNfFfsXPgzfW1amKVjaSySDiOyH9MgxTPzDKsIX6w0P2IY0cn
-	VhEKJ89x8MznUimpvL4xpfrbtyi3uoxTPg5c6VW70cDPBWJ5yc+Gvbs0MQSxihxVbL0MDo
-	ZLPi2ApTLZD9wzGtdT5aDY8iFTlWdkjYQHFhrHgtr2Ypc9EXpu5x+mEUvAq+/YGy8L3nZY
-	huJ5bk1si3E+jDKJAgls2tRJfSCaddhJAF8FzTS2Q7s5qHNt0OKasK7pttWkm1VUp4G4pc
-	zVZCs+a8vdnNUehprtfPF3mgcppW6Am0C2OwkSuuNJOQKxs5X+WgKercdJ3nQA==
+	bh=FE8a1uFbvKrcSUxZJ2v/byh4ni47RT1TTCYr2BpWGXc=;
+	b=dYl+Sypxr0825pQUZtl4zx9jase79QhOxqYrAGnkcZG4nr6S/w9HLymvpB7yG6F3FI77/2
+	FkWT8bPxPqslEm3izIuYhfUb2v9r+d0fyElBh/NoEYpIMgBvfnw/0PCA+X5ZZM7JBAjUzg
+	xKMPy6I058Jl06FL0YYSsAycowmagiwsygNFTDcjokXF1V5mKRTG1o/ZQottk1hWttmXSE
+	YMYdj/zdSgMgr6qmPfdwUECGKW8EVIjc2v1/+KfPfmXrwikoGL5lnMb6pph7K99sP8AnPS
+	1E8r6UjdFptcTNVAcae99IJuPvsfM/ceY0HzqxcnUXm7UMW+Jrw/7+4XTDiR1w==
 From: Petre Rodan <petre.rodan@subdimension.ro>
-Date: Wed, 14 Jan 2026 12:05:36 +0200
-Subject: [PATCH v2 02/13] iio: pressure: mprls0025pa: fix SPI CS delay
- violation
+Date: Wed, 14 Jan 2026 12:05:37 +0200
+Subject: [PATCH v2 03/13] iio: pressure: mprls0025pa: fix interrupt flag
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -59,7 +58,7 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260114-mprls_cleanup-v2-2-5868b0045316@subdimension.ro>
+Message-Id: <20260114-mprls_cleanup-v2-3-5868b0045316@subdimension.ro>
 References: <20260114-mprls_cleanup-v2-0-5868b0045316@subdimension.ro>
 In-Reply-To: <20260114-mprls_cleanup-v2-0-5868b0045316@subdimension.ro>
 To: Jonathan Cameron <jic23@kernel.org>, 
@@ -69,88 +68,63 @@ To: Jonathan Cameron <jic23@kernel.org>,
 Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, 
  Jonathan Cameron <Jonathan.Cameron@huawei.com>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2466;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1251;
  i=petre.rodan@subdimension.ro; h=from:subject:message-id;
- bh=JZsCYvArYiw2BVJX7iMWL2ZaOKYdTaYkGif2qRc37fc=;
+ bh=uMZ/2qhZPo2FEqne2iM7O/+A6QfQmq0ojRfiwGHhhkY=;
  b=LS0tLS1CRUdJTiBQR1AgTUVTU0FHRS0tLS0tCgpvd0o0bkFHSkFuYjlrQTBEQUFvQmRDc25wM
- k02U1dNQnl5WmlBR2xuYXRVRjBxcGlIdVJNK0dPQjd1QVhteDZxCitpZWh4WHhOWk9PZGg0MHZR
- YnB3SllrQ1R3UUFBUW9BT1JZaEJCb2ltQncrRGJ4UXBFNmlkM1FySjZkak9rbGoKQlFKcFoyclZ
- HeFNBQUFBQUFBUUFEbTFoYm5VeUxESXVOU3N4TGpFeExESXNNZ0FLQ1JCMEt5ZW5ZenBKWS9ZNg
- pELzlFMTkra0V5Z2lBdzg3R25mNU9YVC9aNXJmRjF2T0pYdW5odzQvY3lLVG1QbWZSZFRyTEdZe
- E1IeDdBUXd0CllUNy9nQmRnNzhoRE5HVjZHZWpUdHZ0Z1J3dDloT1EwNTh6TG5Wd3hscEYvUERa
- ZFJLdmdGS25oc1k4QVdIb1cKdnFUTmR1UitEbXRKWmtILzBDMmhsL205WjdJMlhOaWtUNllObXh
- 0YlcwcGRnclpmdmhRTTVJaVNpcGFReWF3RAo1Q2FvUVN4OHFjN25VdkRLNGs3OG5yaThDNnNydn
- oxa3creTRoZGZNZnlac1g0MTVVT2tWd3hNK2VEaFJZYXhLClUvenk0dGc3eEo3Ky9lWGdNbnRkT
- kQ4UDQvOFJ0K3RwTU5nOEd6WWJTQVRUdkNMa0lxbWhrSFZwY21UYVl5aWEKUytDeWE0cDRzaDZK
- Y0Vib1RiMS9kMVlPRlBJakFXbEtRTjFQdmMyQVk3TWNJbUZEeE4xWGM3a3IxazV1WVQvSQpDaXo
- wWUlONThxKy9DVERyQm9hNVArSUxqMkw0eFlqMGwrYXh6S0RVYWJSREZpUTB6eXVuRGVoTlF2U2
- V1cGxxClE2T2JpV2NKTk1yR0ZZRGx4WFlSN1lRZWVPZHlxQmw0dXFMSnFHcW04VHMzZkFId1RtZ
- FlDUU5GbUpzcHdrdGkKZjBJZE5LMU5jNkRrRHJoeXVCcDhiT1RQV01wVWpzcW1HSVBDUjdUcjl6
- aDFSRncrRVk2bnExbXRud3N2ek1SNgpGWjZZczkvL3gzRlN3ZUJwcU9PQm1paEhGa2pzZzR4VHh
- WWGsxSzhtR3lZcUU0WFNoU2h3TnNMUW5heGRrU0x6CklrRElUdTVVVjl3SmFsRHFOeGNLRi9UaF
- ZWcC9QU00zTGhGNVhaMjVJeGQva1Vrd0pUUT0KPVVIOGcKLS0tLS1FTkQgUEdQIE1FU1NBR0UtL
+ k02U1dNQnl5WmlBR2xuYXRkMUNUQXdEUmowdjc5QTZOOVhpYk8wCnI0QzcrU25IQkdva1hqWTBP
+ eWtjWVlrQ1R3UUFBUW9BT1JZaEJCb2ltQncrRGJ4UXBFNmlkM1FySjZkak9rbGoKQlFKcFoyclh
+ HeFNBQUFBQUFBUUFEbTFoYm5VeUxESXVOU3N4TGpFeExESXNNZ0FLQ1JCMEt5ZW5ZenBKWXkraQ
+ pELzR5M29LKzBoVHF6VUhnRmd0bEowUjcrRWJpVlM5T0NQMDRsMC80bkhPUmRXNm44dzFSQmlJQ
+ mlrdzRxUmxZClE0cHRDNVBLTytWMG9EMlcxSHorYUh4alNXSjk1aGp5Uy9BVXk5RTZZMmR3WnAz
+ dVNKeCtqTEZTNzhKdFZ3S2wKOFo3ckVGL1Q2TERwZTR1T1FWM2dXV0V2RWt6a1loVEhzMlhWOHM
+ 3dHBXNm41YTMzTlBVU1phN0V0OTRVYnJBaQp1c3cvQUh2bGpzdjlqMC9wcm1BMy85NWdnRk1CbV
+ BoQi9uQ25qRm5tY1JlTStVSlA5QTUvVXhScjJkY2dIaGx3CjFrNG9KMHJheVNIdmVUVWVFN2U3N
+ 2JKQ3ArQ29MNUJLNGdvV054OFhySmo2RXd1WWtyZGwzdzU0d1NkU0lBcUcKOEkzSVpVeElmT1l2
+ NGMrRktiVkpZRE4rRUpqWU5vTWNycllEc1N5TE11bDhReHZnbzJOaktMVDFrTzREZnNhWgplN2V
+ wWXlWQWlZR1UrcEUxWHpsTmxCdE5TMFI3ZjRwVW5GdTladmY3Y0x1aHN1MzBDSnhvVkNKM01HYl
+ BScmdvCkdUd2IreVljdUNYMUVxSVlnUmtDY0xpdFVhRHpEeWJSZ2c2akZLUkJ0bU91bGtwVkZBU
+ klGVXZqbkRnVWQwekcKeVd3NUNOSWhXd1YyRnEreWdmZVVsQlRrSXhZUGFVdjdycXBQWTJaY3FJ
+ eEdHZTFoM2NJZ2ZmbDhFaW16TDhWSgpvYWp6MllXS3VKdlhLN2hRcWhyUjhaVG1lVjUvUmFNaGh
+ sd1VmdFg1RzdQc0pHdXNtbUZnR0V3Q2JXV3dLaU1FCnBETXhkaDBWa0E4NzI1SVA3YzVUMW84Zn
+ N3Z0NRWVM1aGZqZmxaM09kc2luQmUzekh1RT0KPXIzeW8KLS0tLS1FTkQgUEdQIE1FU1NBR0UtL
  S0tLQo=
 X-Developer-Key: i=petre.rodan@subdimension.ro; a=openpgp;
  fpr=D80A7FC176151935EC3E5FA9CF269999844E7F30
 
-Based on the sensor datasheet in chapter 7.6 SPI timing, Table 20,
-during the SPI transfer there is a minimum time interval requirement
-between the CS being asserted and the first clock edge (tHDSS).
-This minimum interval of 2.5us is being violated if two consecutive SPI
-transfers are queued up.
+Interrupt falling/rising flags should only be defined in the device tree.
 
-Fixes: a0858f0cd28e ("iio: pressure: mprls0025pa add SPI driver")
-Datasheet: https://prod-edam.honeywell.com/content/dam/honeywell-edam/sps/siot/en-us/products/sensors/pressure-sensors/board-mount-pressure-sensors/micropressure-mpr-series/documents/sps-siot-mpr-series-datasheet-32332628-ciid-172626.pdf?download=false
+Fixes: 713337d9143e ("iio: pressure: Honeywell mprls0025pa pressure sensor")
 Signed-off-by: Petre Rodan <petre.rodan@subdimension.ro>
 ---
-v1 -> v2 use xfer.delay.value as per Marcelo Schmitt's review
+v1 -> v2 use IRQF_TRIGGER_NONE as Jonathan requested
 ---
- drivers/iio/pressure/mprls0025pa_spi.c | 19 ++++++++++++++-----
- 1 file changed, 14 insertions(+), 5 deletions(-)
+ drivers/iio/pressure/mprls0025pa.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/iio/pressure/mprls0025pa_spi.c b/drivers/iio/pressure/mprls0025pa_spi.c
-index e6bb75de3411..cf17eb2e7208 100644
---- a/drivers/iio/pressure/mprls0025pa_spi.c
-+++ b/drivers/iio/pressure/mprls0025pa_spi.c
-@@ -8,6 +8,7 @@
-  *  https://prod-edam.honeywell.com/content/dam/honeywell-edam/sps/siot/en-us/products/sensors/pressure-sensors/board-mount-pressure-sensors/micropressure-mpr-series/documents/sps-siot-mpr-series-datasheet-32332628-ciid-172626.pdf
-  */
- 
-+#include <linux/array_size.h>
- #include <linux/device.h>
- #include <linux/errno.h>
+diff --git a/drivers/iio/pressure/mprls0025pa.c b/drivers/iio/pressure/mprls0025pa.c
+index 2336f2760eae..80985c090aff 100644
+--- a/drivers/iio/pressure/mprls0025pa.c
++++ b/drivers/iio/pressure/mprls0025pa.c
+@@ -12,6 +12,7 @@
+ #include <linux/array_size.h>
+ #include <linux/bitfield.h>
+ #include <linux/bits.h>
++#include <linux/interrupt.h>
+ #include <linux/math64.h>
  #include <linux/mod_devicetable.h>
-@@ -40,17 +41,25 @@ static int mpr_spi_xfer(struct mpr_data *data, const u8 cmd, const u8 pkt_len)
- {
- 	struct spi_device *spi = to_spi_device(data->dev);
- 	struct mpr_spi_buf *buf = spi_get_drvdata(spi);
--	struct spi_transfer xfer = { };
-+	struct spi_transfer xfers[2] = { };
+ #include <linux/module.h>
+@@ -419,9 +420,7 @@ int mpr_common_probe(struct device *dev, const struct mpr_ops *ops, int irq)
  
- 	if (pkt_len > MPR_MEASUREMENT_RD_SIZE)
- 		return -EOVERFLOW;
- 
- 	buf->tx[0] = cmd;
--	xfer.tx_buf = buf->tx;
--	xfer.rx_buf = data->buffer;
--	xfer.len = pkt_len;
- 
--	return spi_sync_transfer(spi, &xfer, 1);
-+	/*
-+	 * Dummy transfer with no data, just cause a 2.5us+ delay between the CS assert
-+	 * and the first clock edge as per the datasheet tHDSS timing requirement.
-+	 */
-+	xfers[0].delay.value = 2500;
-+	xfers[0].delay.unit = SPI_DELAY_UNIT_NSECS;
-+
-+	xfers[1].tx_buf = buf->tx;
-+	xfers[1].rx_buf = data->buffer;
-+	xfers[1].len = pkt_len;
-+
-+	return spi_sync_transfer(spi, xfers, ARRAY_SIZE(xfers));
- }
- 
- static const struct mpr_ops mpr_spi_ops = {
+ 	if (data->irq > 0) {
+ 		ret = devm_request_irq(dev, data->irq, mpr_eoc_handler,
+-				       IRQF_TRIGGER_RISING,
+-				       dev_name(dev),
+-				       data);
++				       IRQF_TRIGGER_NONE, dev_name(dev), data);
+ 		if (ret)
+ 			return dev_err_probe(dev, ret,
+ 					  "request irq %d failed\n", data->irq);
 
 -- 
 2.52.0

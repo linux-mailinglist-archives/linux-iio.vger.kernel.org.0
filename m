@@ -1,108 +1,165 @@
-Return-Path: <linux-iio+bounces-27702-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-27703-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF177D1D3DD
-	for <lists+linux-iio@lfdr.de>; Wed, 14 Jan 2026 09:50:06 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D215FD1D3D1
+	for <lists+linux-iio@lfdr.de>; Wed, 14 Jan 2026 09:49:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 3E5273087788
-	for <lists+linux-iio@lfdr.de>; Wed, 14 Jan 2026 08:46:44 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 03EC5300879D
+	for <lists+linux-iio@lfdr.de>; Wed, 14 Jan 2026 08:49:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A34AD37F8C6;
-	Wed, 14 Jan 2026 08:46:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93CDE37F8B4;
+	Wed, 14 Jan 2026 08:49:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="OUECs5q0"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kU6kvEcK"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7714437C102;
-	Wed, 14 Jan 2026 08:46:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0158E36E493
+	for <linux-iio@vger.kernel.org>; Wed, 14 Jan 2026 08:49:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768380397; cv=none; b=nIFzbX7rO515CaHBhYoW9BH+Ov6OxNDjEurtf7e0d0unxKZ5OWN8klUubPdWeKd0HqWnTu7+TUyfByFlkyyQ23TU/oMGrMsLSmBTgDPPu+2jqOXES41nS7PZ4LzlMP7OMPUqo+GC74Ttjlss+gO96XBcPtfunp58HTfyD5yUaZI=
+	t=1768380590; cv=none; b=FlOg+pg3qY8/xwKaqWveD+Q+Fs/1uwtlyFteVI8P3n5cS6lCeyh6BV5lalmYB7u+Twq8EfJsyjYaO2SWE813mlwqq1Fo4oUHJSD1XFNhzADeUtrSOV6E3t6OMRAob4di4Spweri5KC2oE2/xlN/jOfLcQh5j5nZl3UPHXDT0UvQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768380397; c=relaxed/simple;
-	bh=0QdZ6wkztJki3d9zwW4Ck8xjQesrvonP+NIaGX6jeIU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=jjahieHT24MyZgSxWXsRxVAAPLbd5pyW+kfqsnLuqzBlMtOGleKkf0dhpL7nP+uQNrhjMtCS+AZWetBpshetDRSi5ksRrgEklFyVkTMTxayGDNSXX4CyUXner/3l8SCGLh1JjPv/3xmhacn9IBJbcdryB+b0i6BlsLR9siP+7Ws=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=OUECs5q0; arc=none smtp.client-ip=192.198.163.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1768380394; x=1799916394;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=0QdZ6wkztJki3d9zwW4Ck8xjQesrvonP+NIaGX6jeIU=;
-  b=OUECs5q0Vb9VUrFolxrittUGvumEDsBo+TQ+448ZXnotB1FBre6Yu0Um
-   LMg8NFfCoioiXFB4Ar3UaFAxI1MVwwCk3xxAX7S+zgYpeO97R2AV4DQOv
-   fohPRRM+UY+QZlbVWwJ2o5DS099RzbZs51JV3ELZS74lRbiCPhc9uPej1
-   hVufjKzdBcN7eJ6etmBPO95QpthY7fEu1BZNjeLo0e3s3FovT5rzPpEMr
-   3BDfwgq81Sjg7G3jhNQREcSVigmhEGsMdqhzw5eHD9omFaV+3zJTteEvK
-   5NImK65lPzR4ne8rAOEPtXt8+SqpjILBeREbryeZxVc3QDVO6HkjPNP5q
-   Q==;
-X-CSE-ConnectionGUID: da1PxSpJRBib7UI+G3ZLVw==
-X-CSE-MsgGUID: +3amV2FnQ8KzavN4z0kYZA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11670"; a="95150417"
-X-IronPort-AV: E=Sophos;i="6.21,225,1763452800"; 
-   d="scan'208";a="95150417"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
-  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Jan 2026 00:46:31 -0800
-X-CSE-ConnectionGUID: XPYsRDaDSBSfvl1XJ/VIcg==
-X-CSE-MsgGUID: ptXgIPWTR2u0wybTazACLw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,225,1763452800"; 
-   d="scan'208";a="209464491"
-Received: from pgcooper-mobl3.ger.corp.intel.com (HELO localhost) ([10.245.244.83])
-  by fmviesa004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Jan 2026 00:46:26 -0800
-Date: Wed, 14 Jan 2026 10:46:24 +0200
-From: Andy Shevchenko <andriy.shevchenko@intel.com>
-To: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Cc: jic23@kernel.org, dlechner@baylibre.com, nuno.sa@analog.com,
-	andy@kernel.org, arnd@arndb.de, gregkh@linuxfoundation.org,
-	srini@kernel.org, vkoul@kernel.org, neil.armstrong@linaro.org,
-	sre@kernel.org, sboyd@kernel.org, krzk@kernel.org,
-	dmitry.baryshkov@oss.qualcomm.com, quic_wcheng@quicinc.com,
-	melody.olvera@oss.qualcomm.com, quic_nsekar@quicinc.com,
-	ivo.ivanov.ivanov1@gmail.com, abelvesa@kernel.org,
-	luca.weiss@fairphone.com, konrad.dybcio@oss.qualcomm.com,
-	mitltlatltl@gmail.com, krishna.kurapati@oss.qualcomm.com,
-	linux-arm-msm@vger.kernel.org, linux-iio@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-phy@lists.infradead.org,
-	linux-pm@vger.kernel.org, kernel@collabora.com
-Subject: Re: [PATCH v7 02/10] spmi: Remove redundant dev_name() print in
- spmi_device_add()
-Message-ID: <aWdX4OiZSsXIqEH8@smile.fi.intel.com>
-References: <20260114083957.9945-1-angelogioacchino.delregno@collabora.com>
- <20260114083957.9945-3-angelogioacchino.delregno@collabora.com>
+	s=arc-20240116; t=1768380590; c=relaxed/simple;
+	bh=5QY+4cnI1kPX6DOw6uWveBsbg0atgoAQLjfQ23aLf8k=;
+	h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type; b=XXJDPSo0CkBNQzgKo+wcHN4Co5gr+ACWVzJWocEtLiLElaX5QRcoo5uCGraHB7HyXHC6XDFohLNbzuz9dfUeBnz4We3YcSLtEFOaBviD52JVp4vMl02bPmpctp3FIKJl9HRgCdC3zurERK+Gwkp2iahPT25gP0bOQGj1Mqv28Zs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kU6kvEcK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7F41C4CEF7;
+	Wed, 14 Jan 2026 08:49:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1768380589;
+	bh=5QY+4cnI1kPX6DOw6uWveBsbg0atgoAQLjfQ23aLf8k=;
+	h=Date:From:To:Subject:From;
+	b=kU6kvEcKh+7CqUYPPZR91DHS1z92q0jbhuaCsXV9fp4mpFSAiC0wfIoX6CJt6KRam
+	 Vc5Jhpw/s3Q+5DF4KWHSjXqwdLxVi5XCHmrSj9dM4xJbXAN2VhTTZ7roExok6deDoI
+	 4vDoAcohbd1Yh0veq4tN4c56C5QNrzN5v0npS3PdtIFmCvERN19CgVCaCoda2xxJU2
+	 8FeAMbW6Y4jlghM0veSWqkvFbIbyVu5GtiM2Lk6oMovqgn92kfVy5EOznBqESlidzf
+	 O4NX+5MHrGCdYDNmQBMb0/H/T/W8+A6JcK9gaM25dO+qgCXBqQd97Pb8FJO8bNPVh6
+	 hwoQP83EMhzNA==
+Date: Wed, 14 Jan 2026 08:49:45 +0000
+From: Jonathan Cameron <jic23@kernel.org>
+To: gregkh@linuxfoundation.org, linux-iio@vger.kernel.org
+Subject: [PULL] IIO: Fixes for 6.19 set 1
+Message-ID: <20260114084945.1a7d67ba@jic23-huawei>
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260114083957.9945-3-angelogioacchino.delregno@collabora.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
- krs, Bertel Jungin Aukio 5, 02600 Espoo
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, Jan 14, 2026 at 09:39:49AM +0100, AngeloGioacchino Del Regno wrote:
-> Function spmi_device_add() uses dev_{dbg,err}() for respectively
-> debug and error prints, and passes the same device pointer as both
-> the dev_{dbg,err}() parameters and to a dev_name() that is part of
-> the actual message.
-> This means that the device name gets printed twice!
-> 
-> Remove the redundant dev_name() from the messages.
+The following changes since commit 8f0b4cce4481fb22653697cced8d0d04027cb1e8:
 
-This should be the first patch in the series, then in the second you will have
-less churn.
+  Linux 6.19-rc1 (2025-12-14 16:05:07 +1200)
 
--- 
-With Best Regards,
-Andy Shevchenko
+are available in the Git repository at:
 
+  https://git.kernel.org/pub/scm/linux/kernel/git/jic23/iio.git tags/iio-fi=
+xes-for-6.19a
 
+for you to fetch changes up to 978d28136c53df38f8f0b747191930e2f95e9084:
+
+  iio: dac: ad3552r-hs: fix out-of-bound write in ad3552r_hs_write_data_sou=
+rce (2026-01-11 13:25:15 +0000)
+
+----------------------------------------------------------------
+IIO: 1st set of fixes for the 6.19 cycle
+
+The usual mixed bag of fixes for ancient problems plus some more
+recent ones.
+
+adi,ad7280a
+- Check for errors from spi_setup().
+adi,ad3552r
+- Fix potential buffer overflow when setting to use the internal ramp.
+adi,ax5695r
+- Fill in the data for this device in the chip info table.
+adi,ad7606
+- Don't store a negative error in an unsigned int.
+adi,ad9467
+- Fix incorrect register mask value.
+adi,adxl380
+- Fix inverted condition for whether INT1 interrupt present in dt.
+atmel,at91-sama5d2
+- Cancel work on remove to avoid a potential use-after-free
+invensense,icm45600
+- Fix temperature scaling.
+samsung,eynos_adc
+- Use of_platform_depolulate() to correctly clear up such that child
+  devices are created correctly if the driver is rebound.
+sensiron,scd4x
+- Fix incorrect endianness reported to user-space.
+st,accel
+- Fix gain reported for the iis329dq.
+st,lsm6dsx
+- Hide event related interfaces on parts that don't support events.
+ti,pac1934
+- Ensure output of clamp() is used rather than unclamped value.
+
+----------------------------------------------------------------
+Fiona Klute (1):
+      iio: chemical: scd4x: fix reported channel endianness
+
+Francesco Lavra (2):
+      iio: imu: st_lsm6dsx: fix iio_chan_spec for sensors without event det=
+ection
+      iio: accel: adxl380: fix handling of unavailable "INT1" interrupt
+
+Haotian Zhang (1):
+      iio: adc: ad7606: Fix incorrect type for error return variable
+
+Jean-Baptiste Maneyrol (1):
+      iio: imu: inv_icm45600: fix temperature offset reporting
+
+Johan Hovold (1):
+      iio: adc: exynos_adc: fix OF populate on driver rebind
+
+K=C3=BCbrich, Andreas (1):
+      iio: dac: ad5686: add AD5695R to ad5686_chip_info_tbl
+
+Markus Koeniger (1):
+      iio: accel: iis328dq: fix gain values
+
+Miaoqian Lin (1):
+      iio: dac: ad3552r-hs: fix out-of-bound write in ad3552r_hs_write_data=
+_source
+
+Pavel Zhigulin (1):
+      iio: adc: ad7280a: handle spi_setup() errors in probe()
+
+Pei Xiao (1):
+      iio: adc: at91-sama5d2_adc: Fix potential use-after-free in sama5d2_a=
+dc driver
+
+Rasmus Villemoes (1):
+      iio: core: add separate lockdep class for info_exist_lock
+
+Thorsten Blum (1):
+      iio: adc: pac1934: Fix clamped value in pac1934_reg_snapshot
+
+Tomas Melin (1):
+      iio: adc: ad9467: fix ad9434 vref mask
+
+ drivers/iio/accel/adxl380.c                      |  6 +-
+ drivers/iio/accel/st_accel_core.c                | 72 ++++++++++++++++++++=
++++-
+ drivers/iio/adc/ad7280a.c                        |  4 +-
+ drivers/iio/adc/ad7606_par.c                     |  3 +-
+ drivers/iio/adc/ad9467.c                         |  2 +-
+ drivers/iio/adc/at91-sama5d2_adc.c               |  1 +
+ drivers/iio/adc/exynos_adc.c                     | 15 +----
+ drivers/iio/adc/pac1934.c                        |  6 +-
+ drivers/iio/chemical/scd4x.c                     |  6 +-
+ drivers/iio/dac/ad3552r-hs.c                     |  5 +-
+ drivers/iio/dac/ad5686.c                         |  6 ++
+ drivers/iio/imu/inv_icm45600/inv_icm45600_core.c |  9 +--
+ drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c     | 15 +++--
+ drivers/iio/industrialio-core.c                  |  4 +-
+ include/linux/iio/iio-opaque.h                   |  2 +
+ 15 files changed, 120 insertions(+), 36 deletions(-)
 

@@ -1,226 +1,145 @@
-Return-Path: <linux-iio+bounces-27770-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-27771-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 720EED1EB4F
-	for <lists+linux-iio@lfdr.de>; Wed, 14 Jan 2026 13:20:58 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 34586D1EB58
+	for <lists+linux-iio@lfdr.de>; Wed, 14 Jan 2026 13:21:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 351E23008F60
-	for <lists+linux-iio@lfdr.de>; Wed, 14 Jan 2026 12:19:51 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 2EFCB3012942
+	for <lists+linux-iio@lfdr.de>; Wed, 14 Jan 2026 12:21:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9828396D21;
-	Wed, 14 Jan 2026 12:19:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="JTk3dYSS"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0917C396B85;
+	Wed, 14 Jan 2026 12:21:50 +0000 (UTC)
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8649356A24
-	for <linux-iio@vger.kernel.org>; Wed, 14 Jan 2026 12:19:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DAE063904D0;
+	Wed, 14 Jan 2026 12:21:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768393187; cv=none; b=cWmzBrjn9l3MVfteUmioX6YYk4h8e0SfiJeilIwuIYBYEiViI0M9KQaDasymVDoByks76+M6XdyNhJG5QPaXRYb8DNGHu4AsWR2RiYKqthMOtMxQtg3M/1TeQmjvWxup2S1wtIjXxkbZaEZb0VoXipKzPXP0xIZkZNYN/NRPkLo=
+	t=1768393309; cv=none; b=hSqyp+pWXT7w7uAKGQpd9shYztrB0rIvQAMMnjOU3uBZJahY5ASEwyo6eICG93WpgFoEjBZlSBIsEDl8MbF1vxr5M8q51PYS/HUOYTEkjpCRoS2GH3f8vQi/xvNKC3J2ZL/w+h3RyhEiBGupHsc1UIsy0A+Gl62YfQRiMNFAP4k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768393187; c=relaxed/simple;
-	bh=Ul9uRDIuNAEZD7yUfXJ+ahp5uEknivcplS5wg/nPt7I=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=o1umcNM4AusWYpjUC6ai70g8Bx8aMEM/Orwj1P7De10P0RBYKgsm+XiSH2ztQp9eNoNi9nCLdSXnzxL9j6bruV/GNSYASiY+SKR5+0dSF6OqvS/9EziFWfG/uYj5y+LUCYLG0m0gJWyheNZ3oNlcu+UyQ298xP1t4agcB64av3g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=JTk3dYSS; arc=none smtp.client-ip=209.85.128.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-477619f8ae5so64247235e9.3
-        for <linux-iio@vger.kernel.org>; Wed, 14 Jan 2026 04:19:45 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1768393184; x=1768997984; darn=vger.kernel.org;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=76S1+zeUbIQhxKsOZuHnISrzUIHK4b1ifpotuDCkHKk=;
-        b=JTk3dYSSjnezrKnrnnth3+CxtpQ0TLkVr5B41iZ5c1gB/wKJ/E7eWBjwVE3OEyIDJB
-         jAm5r3j3GrPc3lqLjkWEqSCn5k8xJD7m2SEOPOlm+oeBrQjzYE1ZOZ3RKvV733sreOhC
-         rQv1eMXzSIRlnLb3zst2LZ9vN4Mm+25rzZ73AIqsCWxK3VGaQVJKc7PI1D2XGTMSu57B
-         /BE+PITPyegEFUKa6dusTTK7xlBMhRybn7cp9K9V5VevTjUTha1GiKCKYv+Q7OC8ImR5
-         r0D29fOEBiC9Wre5qM7gDA0zVYL6GhJ/4WvR7XrpPowl4468vu/yXGUs3x2hfslGcPfW
-         lX5Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768393184; x=1768997984;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=76S1+zeUbIQhxKsOZuHnISrzUIHK4b1ifpotuDCkHKk=;
-        b=KeVZFgrzHOzoKcajQgInmLRenGwukazvfCsj77CDe+duhK6ZYFwbn1rEhvnyNsHYR9
-         EM7Zq7g8XIx3iOtUIcz4yB3cZXABcAFf3pdbYcJic0kgFZdVzN/QfnhwnvZaVMhEV1TU
-         CaWDXur+fd0X6s094BQww9xe5KIe8WrmmIgMWF1od5ZFUqSURzQPVBrPeA5Ry1pFAlTS
-         5aNUEpJgaGwcIE98N3baZ43UM+ScZozCH3hM8AorcSR8JVFbLT0F02x2/1gGqVVafGkD
-         D98pwCre6NhMWMcj/wuEJrP/UOHVXZKss9AM9J0IH4xkvq0pQNWxn3+ub+gnYMJ/pXrQ
-         qZrA==
-X-Gm-Message-State: AOJu0YyoqJz7co+UD+BSOFgIaBu/efE/u3BBnNTqYhWAyIZMjRGwChJ2
-	zNAOxCv6qQmwTgL6QfCGxbzKDMtR9olQAkVKelRJEthBwFVj/+lX7e+s
-X-Gm-Gg: AY/fxX7VIy78AyPkqIbMoBU0TlrW9pzk2B1AlXD9ilkuxD1skXef/ptfA3iJKeYTlyl
-	b22iSHZssq0T29k71jlgyHOVbyYV2KdO+FsfQcbI+dRs5VKeBD84d+8iWNTOzMGZux0LttRE8ow
-	T0T4qso70l/dQFEmBhG1Dh0nQYQh5ZpjF7OfO81W3y5Jp6vpOQDSfRf7o5t/ulCxOq9VFgXVDfq
-	Juyq4ALQfFNYC/FNo7zkLNQCDTjdwFq6C7Q3+/Eu/maNRsSet0S2+a6BVMhxZj/w1RvThKx+Yj/
-	Lk1VnFgDAVh2ylFg5JZezTDX+QMPonT0ekvNeXjGyuBLgAFiQ+e0GSr/Pkp99cEiUB5iP1noSyY
-	9WbZxYrsspznEG15cGKN+72IQYg6onsIY1tE7p0XS7oP8wrjzZ9FegXB/K+ggkwie463XsU3qzK
-	z63x6Ma/dhiwhiVzWDFyA=
-X-Received: by 2002:a05:600c:6287:b0:477:79f8:daa8 with SMTP id 5b1f17b1804b1-47ee3391744mr35341065e9.17.1768393183972;
-        Wed, 14 Jan 2026 04:19:43 -0800 (PST)
-Received: from [192.168.1.187] ([161.230.67.253])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-47ee55c5413sm28933635e9.6.2026.01.14.04.19.43
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 14 Jan 2026 04:19:43 -0800 (PST)
-Message-ID: <fda7d715e2cab2545c9ecdeead22d8a58ae5032d.camel@gmail.com>
-Subject: Re: [PATCH v3 2/4] iio: industrialio-backend: support backend
- capabilities
-From: Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
-To: Tomas Melin <tomas.melin@vaisala.com>, Michael Hennerich	
- <Michael.Hennerich@analog.com>, Nuno Sa <nuno.sa@analog.com>, Lars-Peter
- Clausen <lars@metafoo.de>, Jonathan Cameron <jic23@kernel.org>, David
- Lechner	 <dlechner@baylibre.com>, Andy Shevchenko <andy@kernel.org>,
- Olivier Moysan	 <olivier.moysan@foss.st.com>
-Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Date: Wed, 14 Jan 2026 12:20:26 +0000
-In-Reply-To: <20260114-b4-ad9467-optional-backend-v3-2-d2c84979d010@vaisala.com>
-References: 
-	<20260114-b4-ad9467-optional-backend-v3-0-d2c84979d010@vaisala.com>
-	 <20260114-b4-ad9467-optional-backend-v3-2-d2c84979d010@vaisala.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.58.2 
+	s=arc-20240116; t=1768393309; c=relaxed/simple;
+	bh=7zZcDF9gSmRnrONZN0KyqDT+wCk5pjDYznP+xYeRZqA=;
+	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=pS9w2EwZZjVRp9WYgIosQj0/i+JmN1P2n9ZswDdybNobJNkF8STKvOecPIivesif86uKneJ/e0lni4oXwlfoFOLe9KlcvhYffVkdyk0TtfRO5cY0HrjKnFczoyeDz6z3dL8tLRaekkyVOLeCzxeynJ1D5l4YRipSbI2V70UhmLA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.18.224.107])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTPS id 4drlbG4ftDzJ46pC;
+	Wed, 14 Jan 2026 20:21:30 +0800 (CST)
+Received: from dubpeml100005.china.huawei.com (unknown [7.214.146.113])
+	by mail.maildlp.com (Postfix) with ESMTPS id 45AB340570;
+	Wed, 14 Jan 2026 20:21:45 +0800 (CST)
+Received: from localhost (10.203.177.15) by dubpeml100005.china.huawei.com
+ (7.214.146.113) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.36; Wed, 14 Jan
+ 2026 12:21:44 +0000
+Date: Wed, 14 Jan 2026 12:21:43 +0000
+From: Jonathan Cameron <jonathan.cameron@huawei.com>
+To: Petre Rodan <petre.rodan@subdimension.ro>
+CC: Jonathan Cameron <jic23@kernel.org>, David Lechner
+	<dlechner@baylibre.com>, Nuno =?ISO-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
+	Andy Shevchenko <andy@kernel.org>, Andreas Klinger <ak@it-klinger.de>,
+	<linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>, Marcelo Schmitt
+	<marcelo.schmitt1@gmail.com>
+Subject: Re: [PATCH v2 00/13] iio: pressure: mprls0025pa: driver code
+ cleanup
+Message-ID: <20260114122143.000073cd@huawei.com>
+In-Reply-To: <20260114-mprls_cleanup-v2-0-5868b0045316@subdimension.ro>
+References: <20260114-mprls_cleanup-v2-0-5868b0045316@subdimension.ro>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: lhrpeml100012.china.huawei.com (7.191.174.184) To
+ dubpeml100005.china.huawei.com (7.214.146.113)
 
-On Wed, 2026-01-14 at 10:45 +0000, Tomas Melin wrote:
-> Not all backends support the full set of capabilities provided by the
-> industrialio-backend framework. Capability bits can be used in frontends
-> and backends for checking for a certain feature set, or if using
-> related functions can be expected to fail.
->=20
-> Capability bits should be set by a compatible backend and provided when
-> registering the backend.
->=20
-> Signed-off-by: Tomas Melin <tomas.melin@vaisala.com>
+On Wed, 14 Jan 2026 12:05:34 +0200
+Petre Rodan <petre.rodan@subdimension.ro> wrote:
+
+> This series contains a collection of patches to the MPR sensor based
+> on feedback I received for other drivers.
+
+Hi Petre,
+
+I took a look at the whole series and didn't have anything to add to
+Andy's review.
+
+As we are somewhat near the end of the cycle, if you have time,
+feel free to send a v3 sooner than the normal delay of 1ish weeks
+(unless there is something you want to wait for more feedback on!)
+
+I'll almost certainly take the lot for the merge window now rather
+than trying to get the fixes in this cycle.
+
+Thanks,
+
+Jonathan
+
+
+
+> 
+> major changes:
+>  - trigger flag fix (define edge direction only in the device tree)
+>  - fix SPI timing violation
+>  - fix scan_type struct
+>  - fix pressure calculation
+>     (does not affect users that define a sensor via the pressure-triplet)
+>  - stricter check for the status byte + better error return levels
+>  - drop the use of devm_kzalloc()
+>  - stick to the datasheet parameters while performing the measurement
+>     sequence
+> 
+> minor changes:
+>  - includes added and removed
+>  - rename generic 'buffer' variable to 'rx_buf'
+> 
+> I still included the memset patch for the reasons described in the v1 thread.
+> if you strongly consider that patch inadequate then please skip it.
+> 
+> Tested on two sensors - MPRLS0015PA0000SA and MPRLS0001BA00001A
+> 
+> Datasheet: https://prod-edam.honeywell.com/content/dam/honeywell-edam/sps/siot/en-us/products/sensors/pressure-sensors/board-mount-pressure-sensors/micropressure-mpr-series/documents/sps-siot-mpr-series-datasheet-32332628-ciid-172626.pdf?download=false
+> Signed-off-by: Petre Rodan <petre.rodan@subdimension.ro>
 > ---
-> =C2=A0drivers/iio/industrialio-backend.c | 17 +++++++++++++++++
-> =C2=A0include/linux/iio/backend.h=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0 | 17 +++++++++++++++++
-> =C2=A02 files changed, 34 insertions(+)
->=20
-> diff --git a/drivers/iio/industrialio-backend.c b/drivers/iio/industriali=
-o-backend.c
-> index 447b694d6d5f72dc6f018b1697fdb88e555bd61e..0a98fdd5df9db6cc233af819a=
-c5243ba8cd5266f 100644
-> --- a/drivers/iio/industrialio-backend.c
-> +++ b/drivers/iio/industrialio-backend.c
-> @@ -56,6 +56,7 @@ struct iio_backend {
-> =C2=A0	void *priv;
-> =C2=A0	const char *name;
-> =C2=A0	unsigned int cached_reg_addr;
-> +	u32 caps;
-> =C2=A0	/*
-> =C2=A0	 * This index is relative to the frontend. Meaning that for
-> =C2=A0	 * frontends with multiple backends, this will be the index of thi=
-s
-> @@ -774,6 +775,21 @@ int iio_backend_extend_chan_spec(struct iio_backend =
-*back,
-> =C2=A0}
-> =C2=A0EXPORT_SYMBOL_NS_GPL(iio_backend_extend_chan_spec, "IIO_BACKEND");
-> =C2=A0
-> +/**
-> + * iio_backend_has_caps - Check if backend has specific capabilities
-> + * @back: Backend device
-> + * @caps: Capabilities to check
-> + *
-> + * RETURNS:
-> + * Non-zero value if backend has all the requested capabilities,
-> + * 0 otherwise.
-> + */
-> +int iio_backend_has_caps(struct iio_backend *back, u32 caps)
-> +{
-> +	return back->caps & caps;
-> +}
-> +EXPORT_SYMBOL_NS_GPL(iio_backend_has_caps, "IIO_BACKEND");
-> +
-> =C2=A0static void iio_backend_release(void *arg)
-> =C2=A0{
-> =C2=A0	struct iio_backend *back =3D arg;
-> @@ -1114,6 +1130,7 @@ int devm_iio_backend_register(struct device *dev,
-> =C2=A0
-> =C2=A0	back->ops =3D info->ops;
-> =C2=A0	back->name =3D info->name;
-> +	back->caps =3D info->caps;
+> Changes in v2:
+> - reordered patches based on Marcelo's input
+> - implemented code changes based on Marcelo and Jonathan's reviews
+> - Link to v1: https://lore.kernel.org/r/20251218-mprls_cleanup-v1-0-b36a170f1a5c@subdimension.ro
+> 
+> ---
+> Petre Rodan (13):
+>       iio: pressure: mprls0025pa: fix spi_transfer struct initialisation
+>       iio: pressure: mprls0025pa: fix SPI CS delay violation
+>       iio: pressure: mprls0025pa: fix interrupt flag
+>       iio: pressure: mprls0025pa: fix scan_type struct
+>       iio: pressure: mprls0025pa: fix pressure calculation
+>       iio: pressure: mprls0025pa: cleanup includes
+>       iio: pressure: mprls0025pa: remove redundant declarations
+>       iio: pressure: mprls0025pa: rename buffer variable
+>       iio: pressure: mprls0025pa: introduce tx buffer
+>       iio: pressure: mprls0025pa: move memset to core
+>       iio: pressure: mprls0025pa: stricter checks for the status byte
+>       iio: pressure: mprls0025pa: change measurement sequence
+>       iio: pressure: mprls0025pa: add copyright line
+> 
+>  drivers/iio/pressure/mprls0025pa.c     | 112 +++++++++++++++------------------
+>  drivers/iio/pressure/mprls0025pa.h     |  15 ++---
+>  drivers/iio/pressure/mprls0025pa_i2c.c |  13 +---
+>  drivers/iio/pressure/mprls0025pa_spi.c |  41 +++++-------
+>  4 files changed, 73 insertions(+), 108 deletions(-)
+> ---
+> base-commit: f9e05791642810a0cf6237d39fafd6fec5e0b4bb
+> change-id: 20251215-mprls_cleanup-01de8971b439
+> 
+> Best regards,
 
-It would be nice to sanity check the registered backend here. If it adverti=
-ses some capability,
-then better to support the corresponding op.
-
-> =C2=A0	back->owner =3D dev->driver->owner;
-> =C2=A0	back->dev =3D dev;
-> =C2=A0	back->priv =3D priv;
-> diff --git a/include/linux/iio/backend.h b/include/linux/iio/backend.h
-> index 7f815f3fed6ae34c65ffc579d5101020fc9bd336..8a0df8e980e910ac2d5398275=
-963dc5adf077c8a 100644
-> --- a/include/linux/iio/backend.h
-> +++ b/include/linux/iio/backend.h
-> @@ -84,6 +84,20 @@ enum iio_backend_filter_type {
-> =C2=A0	IIO_BACKEND_FILTER_TYPE_MAX
-> =C2=A0};
-> =C2=A0
-> +/**
-> + * enum iio_backend_capabilities - Backend capabilities
-> + * Backend capabilities can be used by frontends to check if a given
-> + * functionality is supported by the backend. Capabilities are loosely
-> + * coupled with operations, meaning that a capability requires certain
-> + * operations to be implemented by the backend.
-> + * @IIO_BACKEND_CAP_CALIBRATION: Backend supports calibration. Needs at =
-least
-> + * iodelay_set(), test_pattern_set() data_sample_trigger(), chan_status(=
-)
-> + * and data_format_set() operations implemented.
-
-I would not be so explicit as the above. It is very specific to the ad9467 =
-process.
-There are other devices with other ways of calibrating the interface and I =
-don't want
-people to keep adding things into the comment. So it needs to be a bit more=
- generic
-and we should also be more explicit about it being about calibrating the da=
-ta interface.
-
-> + */
-> +enum iio_backend_capabilities {
-> +	IIO_BACKEND_CAP_CALIBRATION =3D BIT(0),
-> +};
-> +
-> =C2=A0/**
-> =C2=A0 * struct iio_backend_ops - operations structure for an iio_backend
-> =C2=A0 * @enable: Enable backend.
-> @@ -179,10 +193,12 @@ struct iio_backend_ops {
-> =C2=A0 * struct iio_backend_info - info structure for an iio_backend
-> =C2=A0 * @name: Backend name.
-> =C2=A0 * @ops: Backend operations.
-> + * @caps: Backend capabilities. @see iio_backend_capabilities
-> =C2=A0 */
-> =C2=A0struct iio_backend_info {
-> =C2=A0	const char *name;
-> =C2=A0	const struct iio_backend_ops *ops;
-> +	u32 caps;
-> =C2=A0};
-> =C2=A0
-> =C2=A0int iio_backend_chan_enable(struct iio_backend *back, unsigned int =
-chan);
-> @@ -235,6 +251,7 @@ int iio_backend_read_raw(struct iio_backend *back,
-> =C2=A0			 long mask);
-> =C2=A0int iio_backend_extend_chan_spec(struct iio_backend *back,
-> =C2=A0				 struct iio_chan_spec *chan);
-> +int iio_backend_has_caps(struct iio_backend *back, u32 caps);
-
-Not what David suggested and I do agree with him FWIW.
-
-- Nuno S=C3=A1
 

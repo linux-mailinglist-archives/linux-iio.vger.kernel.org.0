@@ -1,132 +1,128 @@
-Return-Path: <linux-iio+bounces-27708-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-27711-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 446E5D1D4E8
-	for <lists+linux-iio@lfdr.de>; Wed, 14 Jan 2026 09:59:55 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 31EECD1D558
+	for <lists+linux-iio@lfdr.de>; Wed, 14 Jan 2026 10:03:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 05DD2306162C
-	for <lists+linux-iio@lfdr.de>; Wed, 14 Jan 2026 08:58:17 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 81F1F3014D78
+	for <lists+linux-iio@lfdr.de>; Wed, 14 Jan 2026 09:00:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DCC813815C5;
-	Wed, 14 Jan 2026 08:58:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2ECD83815C3;
+	Wed, 14 Jan 2026 09:00:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sUY6FxWf"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Ipsp5rRR"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FF7C37F102;
-	Wed, 14 Jan 2026 08:57:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 403C137F8AE;
+	Wed, 14 Jan 2026 09:00:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768381079; cv=none; b=UNEOrvc0K8p4AyJQ+gUOm4XEcWMwgREb0kVImoyprMStIsD/yPfYkIaTXkn5JXqvzueLyQ3+f++u6FuAwLHwdqpBKgMc4mECj8Tie7oUXO4JctyHo/1dwWWmXwPOWcQg2OZJVB9ZGg3GgIiNmByMoaVPzZdYXYAYsLTko6NjjsU=
+	t=1768381209; cv=none; b=cf0acyeh+GjTGLKgcBWWK6GJHuFXcZhduSdiiMI6RrdKtVdEWm6krfHHBblEZ+Xi2nrgXqkyHtzfPL4RD4Cb9kVTd7+eb1str56Lpi2pdDEpSZU8tQibH/2TSVsTNtHvm033l79Xzzkzfl1L5gQ+CiqL/Rav6Xs7oKuVHW8en38=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768381079; c=relaxed/simple;
-	bh=WWJf+54MxE46DE9/OPvDJcvnLYSe4vAHk2WGR5k5PcE=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=i9jLMWdOdmTvOI64ZcmyUBvj7SrGNpmapzRa6coogxdsKP33E44ERpzA2U0SLp7aTchqXOh06gs8jKb/WYC6DPCHir7HNltzl8Jx5AvYCH5Wpdj3NpurTzpyxo2IVgwShsPTiWCkxD9Sv/keDZO+k4wcQYGyjLYJGtMuARxnZ2Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sUY6FxWf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA100C19423;
-	Wed, 14 Jan 2026 08:57:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768381078;
-	bh=WWJf+54MxE46DE9/OPvDJcvnLYSe4vAHk2WGR5k5PcE=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=sUY6FxWfr3a+td/KoTJz9Z1lQz1NY0kIowE+9h12lJ6kuVksBiD42Z3QfbhBkxV7b
-	 ikzce3BcKPI7wYB7OFDTSnsncq2YAW/Hf4jeGtmz6++WBXFw5zVBmuVCXwhPjRG2UI
-	 M81XC/aelGJh/7/GkZma6yNoX/l2vFtwEnk4Jir4BafOmsekHK/gQWK2V0F3mW1cb5
-	 L3lkyd2NWplsn1DkeQaHnwjsz7ig4qipaf8rg1XDFKyoSsdnUuu2JYmZ3LEY6dBDiy
-	 p1TiRVin6U3oUbPmQyxVTQKJtj+ccEr9j7Bq3bYizdZT1UUaNZuTEn1ZyapfaEfbhK
-	 GkoL55WlM9uiA==
-Date: Wed, 14 Jan 2026 08:57:47 +0000
-From: Jonathan Cameron <jic23@kernel.org>
-To: David Lechner <dlechner@baylibre.com>
-Cc: Mark Brown <broonie@kernel.org>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Marcelo Schmitt <marcelo.schmitt@analog.com>,
- Michael Hennerich <michael.hennerich@analog.com>, Nuno =?UTF-8?B?U8Oh?=
- <nuno.sa@analog.com>, Andy Shevchenko <andy@kernel.org>, Sean Anderson
- <sean.anderson@linux.dev>, linux-spi@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-iio@vger.kernel.org
-Subject: Re: [PATCH v5 2/9] spi: dt-bindings: add spi-{tx,rx}-lane-map
- properties
-Message-ID: <20260114085747.4c3ec953@jic23-huawei>
-In-Reply-To: <20260112-spi-add-multi-bus-support-v5-2-295f4f09f6ba@baylibre.com>
-References: <20260112-spi-add-multi-bus-support-v5-0-295f4f09f6ba@baylibre.com>
-	<20260112-spi-add-multi-bus-support-v5-2-295f4f09f6ba@baylibre.com>
-X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1768381209; c=relaxed/simple;
+	bh=34jVjerwqYxOEQcuaSsWoBv5CsPOOzGoscXW0zoe/5M=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=c4hv4nA69wk3dtnvMn/GsDSaQW71W/sDDWN/Xo4YF5OnqEpfr0YHgmQqxlLHkH7/3VIs7dsSV1f3uy9UIB9zbOxw+cq/Ej8CwI0hQq7WIKgjbcyt0EtF6Fjy/CYOdCHe4V4moJVJ838bqL3lTu6oMhWe5sRA4xUV6bU4PB33w4o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Ipsp5rRR; arc=none smtp.client-ip=192.198.163.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1768381205; x=1799917205;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=34jVjerwqYxOEQcuaSsWoBv5CsPOOzGoscXW0zoe/5M=;
+  b=Ipsp5rRR24BVLxOcWuNHS2DSXGJY6pVJZ9jt+v53lMnDVwfSyzGOvyH0
+   7++nJxT+uLoIOcaXmTuv5a4FDIrn6cu4H4s+s4F2VJ3IX0cMqYoEooMhH
+   QPaGSwsxQmA35HuzHMsnBRYOg1HsLIOu603zrBHtXPGZ4aYZaeDd2It3h
+   4FWcpKhXNbHMksHDVoU40fvPhsaivpfnHUoZKlYb/QSXLhpYsBlU7U3us
+   ouspzOJUemkcllEU+ULuzL5rJILb6X9j+p1BIR2Bzco18Ej//hiUd3o7n
+   C7Mcc0ObTZJJdIHHoIyUXHua9XNtGZYbGGre4t+u6ofnMp7jFnE7EAnQ7
+   w==;
+X-CSE-ConnectionGUID: ytV/iaIkR923y+DNY+NWRQ==
+X-CSE-MsgGUID: L5QjEpDfRy6xoQyIE5D/iA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11670"; a="57231526"
+X-IronPort-AV: E=Sophos;i="6.21,225,1763452800"; 
+   d="scan'208";a="57231526"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Jan 2026 01:00:01 -0800
+X-CSE-ConnectionGUID: MR0yAgE+ROqJn82tw1i+XQ==
+X-CSE-MsgGUID: NYAbW1r9RHeVJwJIuq4/aw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,225,1763452800"; 
+   d="scan'208";a="204636173"
+Received: from pgcooper-mobl3.ger.corp.intel.com (HELO localhost) ([10.245.244.83])
+  by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Jan 2026 00:59:54 -0800
+Date: Wed, 14 Jan 2026 10:59:51 +0200
+From: Andy Shevchenko <andriy.shevchenko@intel.com>
+To: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Cc: jic23@kernel.org, dlechner@baylibre.com, nuno.sa@analog.com,
+	andy@kernel.org, arnd@arndb.de, gregkh@linuxfoundation.org,
+	srini@kernel.org, vkoul@kernel.org, neil.armstrong@linaro.org,
+	sre@kernel.org, sboyd@kernel.org, krzk@kernel.org,
+	dmitry.baryshkov@oss.qualcomm.com, quic_wcheng@quicinc.com,
+	melody.olvera@oss.qualcomm.com, quic_nsekar@quicinc.com,
+	ivo.ivanov.ivanov1@gmail.com, abelvesa@kernel.org,
+	luca.weiss@fairphone.com, konrad.dybcio@oss.qualcomm.com,
+	mitltlatltl@gmail.com, krishna.kurapati@oss.qualcomm.com,
+	linux-arm-msm@vger.kernel.org, linux-iio@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-phy@lists.infradead.org,
+	linux-pm@vger.kernel.org, kernel@collabora.com,
+	Abel Vesa <abel.vesa@linaro.org>
+Subject: Re: [PATCH v7 07/10] phy: qualcomm: eusb2-repeater: Migrate to
+ devm_spmi_subdevice_alloc_and_add()
+Message-ID: <aWdbB4vJ6Z8k0g4s@smile.fi.intel.com>
+References: <20260114083957.9945-1-angelogioacchino.delregno@collabora.com>
+ <20260114083957.9945-8-angelogioacchino.delregno@collabora.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260114083957.9945-8-angelogioacchino.delregno@collabora.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
+ krs, Bertel Jungin Aukio 5, 02600 Espoo
 
-On Mon, 12 Jan 2026 11:45:20 -0600
-David Lechner <dlechner@baylibre.com> wrote:
+On Wed, Jan 14, 2026 at 09:39:54AM +0100, AngeloGioacchino Del Regno wrote:
+> Some Qualcomm PMICs integrate an USB Repeater device, used to
+> convert between eUSB2 and USB 2.0 signaling levels, reachable
+> in a specific address range over SPMI.
+> 
+> Instead of using the parent SPMI device (the main PMIC) as a kind
+> of syscon in this driver, register a new SPMI sub-device for EUSB2
+> and initialize its own regmap with this sub-device's specific base
+> address, retrieved from the devicetree.
+> 
+> This allows to stop manually adding the register base address to
+> every R/W call in this driver, as this can be, and is now, handled
+> by the regmap API instead.
 
-> Add spi-tx-lane-map and spi-rx-lane-map properties to the SPI peripheral
-> device tree binding. These properties allow specifying the mapping of
-> peripheral data lanes to controller data lanes. This is needed e.g. when
-> some lanes are skipped on the controller side so that the controller
-> can correctly route data to/from the peripheral.
-> 
-> Reviewed-by: Rob Herring (Arm) <robh@kernel.org>
-> Signed-off-by: David Lechner <dlechner@baylibre.com>
-LGTM
-Reviewed-by: Jonathan Cameron <jonathan.cameron@huawei.com>
+Same comments and actually one more.
 
-> ---
-> 
-> v5 changes:
-> - Use SDI/SDO terminology in descriptions. (Fixes incorrect use of TX/RX
->   when describing the peripheral lanes.)
-> 
-> v4 changes:
-> - This replaces the data-lanes property from the previous revision. Now
->   there are separate properties for tx and rx lane maps. And instead of
->   being the primary property for determining the number of lanes, this
->   is only needed in special cases where the mapping is non-trivial.
-> ---
->  .../devicetree/bindings/spi/spi-peripheral-props.yaml      | 14 ++++++++++++++
->  1 file changed, 14 insertions(+)
-> 
-> diff --git a/Documentation/devicetree/bindings/spi/spi-peripheral-props.yaml b/Documentation/devicetree/bindings/spi/spi-peripheral-props.yaml
-> index 59ddead7da14..880a9f624566 100644
-> --- a/Documentation/devicetree/bindings/spi/spi-peripheral-props.yaml
-> +++ b/Documentation/devicetree/bindings/spi/spi-peripheral-props.yaml
-> @@ -75,6 +75,13 @@ properties:
->        enum: [0, 1, 2, 4, 8]
->      default: [1]
->  
-> +  spi-rx-lane-map:
-> +    description: Mapping of peripheral SDO lanes to controller SDI lanes.
-> +      Each index in the array represents a peripheral SDO lane, and the value
-> +      at that index represents the corresponding controller SDI lane.
-> +    $ref: /schemas/types.yaml#/definitions/uint32-array
-> +    default: [0, 1, 2, 3, 4, 5, 6, 7]
-> +
->    spi-rx-delay-us:
->      description:
->        Delay, in microseconds, after a read transfer.
-> @@ -99,6 +106,13 @@ properties:
->        enum: [0, 1, 2, 4, 8]
->      default: [1]
->  
-> +  spi-tx-lane-map:
-> +    description: Mapping of peripheral SDI lanes to controller SDO lanes.
-> +      Each index in the array represents a peripheral SDI lane, and the value
-> +      at that index represents the corresponding controller SDO lane.
-> +    $ref: /schemas/types.yaml#/definitions/uint32-array
-> +    default: [0, 1, 2, 3, 4, 5, 6, 7]
-> +
->    spi-tx-delay-us:
->      description:
->        Delay, in microseconds, after a write transfer.
-> 
+...
+
+> +	struct regmap_config eusb2_regmap_config = {
+> +		.reg_bits = 16,
+> +		.val_bits = 8,
+> +		.max_register = 0x100,
+> +		.fast_io = true,
+> +	};
+
+This is third time of the same. Make it part of SPMI core and export to
+the users. Or are they semantically different like different slices?
+In that case you can export it under generic name like
+
+	spmi_default_slice_regmap_config
+
+-- 
+With Best Regards,
+Andy Shevchenko
+
 
 

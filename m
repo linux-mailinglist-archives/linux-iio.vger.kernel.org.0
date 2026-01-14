@@ -1,113 +1,132 @@
-Return-Path: <linux-iio+bounces-27709-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-27708-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 44735D1D4F5
-	for <lists+linux-iio@lfdr.de>; Wed, 14 Jan 2026 10:00:13 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 446E5D1D4E8
+	for <lists+linux-iio@lfdr.de>; Wed, 14 Jan 2026 09:59:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id CEFFB30428EE
-	for <lists+linux-iio@lfdr.de>; Wed, 14 Jan 2026 08:58:23 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 05DD2306162C
+	for <lists+linux-iio@lfdr.de>; Wed, 14 Jan 2026 08:58:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B3CE37F8CB;
-	Wed, 14 Jan 2026 08:58:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DCC813815C5;
+	Wed, 14 Jan 2026 08:58:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="QuVQm8pq"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sUY6FxWf"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 930973803D6;
-	Wed, 14 Jan 2026 08:57:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FF7C37F102;
+	Wed, 14 Jan 2026 08:57:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768381082; cv=none; b=bw4pbi2aRA7r4TtCWmEh6wqQDl5BbvKO9cdumWRLTjv4/hLEiR0KeTY+/9mqfu9QszeY8qUiHrn2Ub96ZSH1VCKQU0/ZgHWlKwul88FXUPWDNG34UXcosfLvBEzhG7LDQ1X442WTiPDibFs+zApvrGQTJXk2mjmXreIwQ4kMvDs=
+	t=1768381079; cv=none; b=UNEOrvc0K8p4AyJQ+gUOm4XEcWMwgREb0kVImoyprMStIsD/yPfYkIaTXkn5JXqvzueLyQ3+f++u6FuAwLHwdqpBKgMc4mECj8Tie7oUXO4JctyHo/1dwWWmXwPOWcQg2OZJVB9ZGg3GgIiNmByMoaVPzZdYXYAYsLTko6NjjsU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768381082; c=relaxed/simple;
-	bh=092LXwRtl3E3+JMBPc+hQPk7+1GDnDFvIMA9uYo3EgI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=MioOj43W4bjMJ4ViVA04DKiKyz3D3u8cxsoNel8eUH4U47lxdV2LEjTelvWd9tnM1dZ1xC2Joa8mfIu7a78RZeNm53KIaziYXseWzxaVz6+0ipu/dj+tkQ9nUjmcbqe+OvH+C7BKECf5kG5vIz7K5yxlmn5WaAvTo6M21B7T6hw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=QuVQm8pq; arc=none smtp.client-ip=192.198.163.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1768381079; x=1799917079;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=092LXwRtl3E3+JMBPc+hQPk7+1GDnDFvIMA9uYo3EgI=;
-  b=QuVQm8pqW2HnME4HNtP7MyQdI4KQmuOcd0hGaI16jaVnlSl3uvvOR7T2
-   4jM2BO+kvGPEUoenoN2JQbNH9bzpsPlBSHCJFflL0Nfyq/AY3K+ibtv9a
-   MplZMuYmz4Yz3clZw7RWUiGytRCjNKe3btf+6vB5pl09WsS9N5lajnqJC
-   uki52hXtF0xx7q0rfrkEf2OJDOu3GecEzPf1/WaViO3B39PWCqd5fbhqX
-   Vdwg4MCucRQ5RccRUoGxK40RXOEYka4CqjMsmZPW7a7PrHH2BMqdhwSl0
-   NI8mdd5yOxzbBuFRtT3sOdHzCXD1g8nOasWNRe615DlXLfyqG5LFLAwBE
-   w==;
-X-CSE-ConnectionGUID: y4qaBdONSMWvvbXHXerLjg==
-X-CSE-MsgGUID: R8WU+mW5TIyBPNwWFmlFkQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11670"; a="68882800"
-X-IronPort-AV: E=Sophos;i="6.21,225,1763452800"; 
-   d="scan'208";a="68882800"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
-  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Jan 2026 00:57:55 -0800
-X-CSE-ConnectionGUID: 7YkKbVRHRcKhwYylcXtH/Q==
-X-CSE-MsgGUID: BIuXDWFRSvWAcOZPm03Njg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,225,1763452800"; 
-   d="scan'208";a="205045288"
-Received: from pgcooper-mobl3.ger.corp.intel.com (HELO localhost) ([10.245.244.83])
-  by fmviesa009-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Jan 2026 00:57:48 -0800
-Date: Wed, 14 Jan 2026 10:57:46 +0200
-From: Andy Shevchenko <andriy.shevchenko@intel.com>
-To: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Cc: jic23@kernel.org, dlechner@baylibre.com, nuno.sa@analog.com,
-	andy@kernel.org, arnd@arndb.de, gregkh@linuxfoundation.org,
-	srini@kernel.org, vkoul@kernel.org, neil.armstrong@linaro.org,
-	sre@kernel.org, sboyd@kernel.org, krzk@kernel.org,
-	dmitry.baryshkov@oss.qualcomm.com, quic_wcheng@quicinc.com,
-	melody.olvera@oss.qualcomm.com, quic_nsekar@quicinc.com,
-	ivo.ivanov.ivanov1@gmail.com, abelvesa@kernel.org,
-	luca.weiss@fairphone.com, konrad.dybcio@oss.qualcomm.com,
-	mitltlatltl@gmail.com, krishna.kurapati@oss.qualcomm.com,
-	linux-arm-msm@vger.kernel.org, linux-iio@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-phy@lists.infradead.org,
-	linux-pm@vger.kernel.org, kernel@collabora.com,
-	Sebastian Reichel <sebastian.reichel@collabora.com>
-Subject: Re: [PATCH v7 06/10] power: reset: qcom-pon: Migrate to
- devm_spmi_subdevice_alloc_and_add()
-Message-ID: <aWdailGSr_RmJrP2@smile.fi.intel.com>
-References: <20260114083957.9945-1-angelogioacchino.delregno@collabora.com>
- <20260114083957.9945-7-angelogioacchino.delregno@collabora.com>
+	s=arc-20240116; t=1768381079; c=relaxed/simple;
+	bh=WWJf+54MxE46DE9/OPvDJcvnLYSe4vAHk2WGR5k5PcE=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=i9jLMWdOdmTvOI64ZcmyUBvj7SrGNpmapzRa6coogxdsKP33E44ERpzA2U0SLp7aTchqXOh06gs8jKb/WYC6DPCHir7HNltzl8Jx5AvYCH5Wpdj3NpurTzpyxo2IVgwShsPTiWCkxD9Sv/keDZO+k4wcQYGyjLYJGtMuARxnZ2Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sUY6FxWf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA100C19423;
+	Wed, 14 Jan 2026 08:57:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1768381078;
+	bh=WWJf+54MxE46DE9/OPvDJcvnLYSe4vAHk2WGR5k5PcE=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=sUY6FxWfr3a+td/KoTJz9Z1lQz1NY0kIowE+9h12lJ6kuVksBiD42Z3QfbhBkxV7b
+	 ikzce3BcKPI7wYB7OFDTSnsncq2YAW/Hf4jeGtmz6++WBXFw5zVBmuVCXwhPjRG2UI
+	 M81XC/aelGJh/7/GkZma6yNoX/l2vFtwEnk4Jir4BafOmsekHK/gQWK2V0F3mW1cb5
+	 L3lkyd2NWplsn1DkeQaHnwjsz7ig4qipaf8rg1XDFKyoSsdnUuu2JYmZ3LEY6dBDiy
+	 p1TiRVin6U3oUbPmQyxVTQKJtj+ccEr9j7Bq3bYizdZT1UUaNZuTEn1ZyapfaEfbhK
+	 GkoL55WlM9uiA==
+Date: Wed, 14 Jan 2026 08:57:47 +0000
+From: Jonathan Cameron <jic23@kernel.org>
+To: David Lechner <dlechner@baylibre.com>
+Cc: Mark Brown <broonie@kernel.org>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Marcelo Schmitt <marcelo.schmitt@analog.com>,
+ Michael Hennerich <michael.hennerich@analog.com>, Nuno =?UTF-8?B?U8Oh?=
+ <nuno.sa@analog.com>, Andy Shevchenko <andy@kernel.org>, Sean Anderson
+ <sean.anderson@linux.dev>, linux-spi@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-iio@vger.kernel.org
+Subject: Re: [PATCH v5 2/9] spi: dt-bindings: add spi-{tx,rx}-lane-map
+ properties
+Message-ID: <20260114085747.4c3ec953@jic23-huawei>
+In-Reply-To: <20260112-spi-add-multi-bus-support-v5-2-295f4f09f6ba@baylibre.com>
+References: <20260112-spi-add-multi-bus-support-v5-0-295f4f09f6ba@baylibre.com>
+	<20260112-spi-add-multi-bus-support-v5-2-295f4f09f6ba@baylibre.com>
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260114083957.9945-7-angelogioacchino.delregno@collabora.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
- krs, Bertel Jungin Aukio 5, 02600 Espoo
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Wed, Jan 14, 2026 at 09:39:53AM +0100, AngeloGioacchino Del Regno wrote:
-> Some Qualcomm PMICs integrates a Power On device supporting pwrkey
-> and resin along with the Android reboot reason action identifier.
+On Mon, 12 Jan 2026 11:45:20 -0600
+David Lechner <dlechner@baylibre.com> wrote:
+
+> Add spi-tx-lane-map and spi-rx-lane-map properties to the SPI peripheral
+> device tree binding. These properties allow specifying the mapping of
+> peripheral data lanes to controller data lanes. This is needed e.g. when
+> some lanes are skipped on the controller side so that the controller
+> can correctly route data to/from the peripheral.
 > 
-> Instead of using the parent SPMI device (the main PMIC) as a kind
-> of syscon in this driver, register a new SPMI sub-device for PON
-> and initialize its own regmap with this sub-device's specific base
-> address, retrieved from the devicetree.
+> Reviewed-by: Rob Herring (Arm) <robh@kernel.org>
+> Signed-off-by: David Lechner <dlechner@baylibre.com>
+LGTM
+Reviewed-by: Jonathan Cameron <jonathan.cameron@huawei.com>
+
+> ---
 > 
-> This allows to stop manually adding the register base address to
-> every R/W call in this driver, as this can be, and is now, handled
-> by the regmap API instead.
-
-Same comments as per previous patch.
-
-
--- 
-With Best Regards,
-Andy Shevchenko
-
+> v5 changes:
+> - Use SDI/SDO terminology in descriptions. (Fixes incorrect use of TX/RX
+>   when describing the peripheral lanes.)
+> 
+> v4 changes:
+> - This replaces the data-lanes property from the previous revision. Now
+>   there are separate properties for tx and rx lane maps. And instead of
+>   being the primary property for determining the number of lanes, this
+>   is only needed in special cases where the mapping is non-trivial.
+> ---
+>  .../devicetree/bindings/spi/spi-peripheral-props.yaml      | 14 ++++++++++++++
+>  1 file changed, 14 insertions(+)
+> 
+> diff --git a/Documentation/devicetree/bindings/spi/spi-peripheral-props.yaml b/Documentation/devicetree/bindings/spi/spi-peripheral-props.yaml
+> index 59ddead7da14..880a9f624566 100644
+> --- a/Documentation/devicetree/bindings/spi/spi-peripheral-props.yaml
+> +++ b/Documentation/devicetree/bindings/spi/spi-peripheral-props.yaml
+> @@ -75,6 +75,13 @@ properties:
+>        enum: [0, 1, 2, 4, 8]
+>      default: [1]
+>  
+> +  spi-rx-lane-map:
+> +    description: Mapping of peripheral SDO lanes to controller SDI lanes.
+> +      Each index in the array represents a peripheral SDO lane, and the value
+> +      at that index represents the corresponding controller SDI lane.
+> +    $ref: /schemas/types.yaml#/definitions/uint32-array
+> +    default: [0, 1, 2, 3, 4, 5, 6, 7]
+> +
+>    spi-rx-delay-us:
+>      description:
+>        Delay, in microseconds, after a read transfer.
+> @@ -99,6 +106,13 @@ properties:
+>        enum: [0, 1, 2, 4, 8]
+>      default: [1]
+>  
+> +  spi-tx-lane-map:
+> +    description: Mapping of peripheral SDI lanes to controller SDO lanes.
+> +      Each index in the array represents a peripheral SDI lane, and the value
+> +      at that index represents the corresponding controller SDO lane.
+> +    $ref: /schemas/types.yaml#/definitions/uint32-array
+> +    default: [0, 1, 2, 3, 4, 5, 6, 7]
+> +
+>    spi-tx-delay-us:
+>      description:
+>        Delay, in microseconds, after a write transfer.
+> 
 
 

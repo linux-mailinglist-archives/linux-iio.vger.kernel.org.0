@@ -1,166 +1,136 @@
-Return-Path: <linux-iio+bounces-27824-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-27825-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9C96AD24608
-	for <lists+linux-iio@lfdr.de>; Thu, 15 Jan 2026 13:04:20 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 87081D2475F
+	for <lists+linux-iio@lfdr.de>; Thu, 15 Jan 2026 13:27:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id ED0D43049199
-	for <lists+linux-iio@lfdr.de>; Thu, 15 Jan 2026 12:04:01 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 4A62A30221BB
+	for <lists+linux-iio@lfdr.de>; Thu, 15 Jan 2026 12:24:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A57E938A715;
-	Thu, 15 Jan 2026 12:03:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7611D395DBD;
+	Thu, 15 Jan 2026 12:24:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="J4BZ5x1R"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="ITJ/R6iV"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
+Received: from mail-ed1-f51.google.com (mail-ed1-f51.google.com [209.85.208.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07442361DA9
-	for <linux-iio@vger.kernel.org>; Thu, 15 Jan 2026 12:03:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D94928469E
+	for <linux-iio@vger.kernel.org>; Thu, 15 Jan 2026 12:24:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768478638; cv=none; b=VaAaI1SYiO7hi0dROSOneTvd4fwykDwW+kPNFEVU1rHLspO19L6xbJQCI99RCNSHwreSB1YskLT6gTX4U6gKz7PWR0ClhH8fuR5wJ8zJFsL025Jka1v94viVbBtaZSld5LiwDPh2q14mcF8ui0RVTZFOtlgBsUCEMfEQwqDtMJg=
+	t=1768479878; cv=none; b=ufsaiTqBg4fXOrilncromZGS3b8MiQ0K0fLfXvY8XKYdp8zHcsmrcDiF/vCKInk8EbQnS0OVjmdqkIBihinYgMLaMR4SyWdc2SYEasj7MuBzH+Q3xn8v4aaItFEnCQDO805Isp+XV2pfvvBsv5RBWuRRvdH4Y18tujXLOf2hKlg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768478638; c=relaxed/simple;
-	bh=v3RvmxHVsO2ozpqio30cO7yMCQjGcC9YRe8I4rw9Q3M=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=dWpSYRGA3f38hlIxuWfguRvOxhh9breovOmlcXFz9j5koI4MNHuTUhzdnVIaI6oWl/yigNfxw6WlPKaEIXceNSzQbinctO8XVCjwio4PzyFCCbSjbShJK9KttsP9d895IYWY+tIaaUAPla6rZuH985n0KDtQtnBVp7wg6UaVlL0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=J4BZ5x1R; arc=none smtp.client-ip=209.85.128.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-4801d24d91bso1288415e9.2
-        for <linux-iio@vger.kernel.org>; Thu, 15 Jan 2026 04:03:56 -0800 (PST)
+	s=arc-20240116; t=1768479878; c=relaxed/simple;
+	bh=q/+MOscl/md1a2Q943dhUJRpXKCdXx95NGeO7wjX/c8=;
+	h=From:To:Subject:Date:Message-Id:MIME-Version; b=f7yN3PjWwXBDT7P6v01d4+6PI9Bwk5IT5/t1p/34S+NE2WDNXURpuqGV4aSaZ6S9ZYnGEZA3gAhpy2BY12pr+O1dirl1Rc7aaipMg2h8NPGukzsp4lxQbTQNMd0DKyoLd5uI3T2+TEZv6Xnt+pygrMXKc3I/i4NjEggXE2Km0l8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=ITJ/R6iV; arc=none smtp.client-ip=209.85.208.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-ed1-f51.google.com with SMTP id 4fb4d7f45d1cf-64b92abe63aso1786276a12.0
+        for <linux-iio@vger.kernel.org>; Thu, 15 Jan 2026 04:24:34 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1768478635; x=1769083435; darn=vger.kernel.org;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=v3RvmxHVsO2ozpqio30cO7yMCQjGcC9YRe8I4rw9Q3M=;
-        b=J4BZ5x1RzIwKvyf2JPk7mUyKX1TFOcU7KwGFJktChruy1pxKTC5fHnxC2mp19375av
-         LeGY6Y5dHAmLieUdvW5h8P6ll7y0+uUwe+RcN+2BGEZx3/VyJOCHjSaYuUMNzZq0jY7x
-         FKsVc/AGyZayH1voYicnEAj3MWVCOAYWBvbWFImaJ/VJuglfHd6jL1KxTxEobs5/9m2M
-         6CTL/0A/XND8d6TWJYRSFCPDcS3/KK3YjWfiRgq+KSzBK4NJzCV5YYzUfC9jwGIrmaS8
-         Jocxml9VmPGMYGjAjf98n+lqolBy1raB0PqTmgEvy5J/2QW4pIiPE2WhnUMDQbFYPclf
-         /aig==
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1768479873; x=1769084673; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:to
+         :from:from:to:cc:subject:date:message-id:reply-to;
+        bh=lGyEKRHJB6WwePDhwb24jiceYhPUCYfTIdehJWyENAg=;
+        b=ITJ/R6iVK8vv2XYvkT0jN/s4W1z8RTRtsnojBN8Il/F7oQE7TFMIrJ2DPswKv3yCd9
+         8fltRHF2ab9ixIeUNOgmzqloBxFdfeHW0QuYACOzmaMg6BcISe3vvGX4XXnyPu/tkw7u
+         2ResfM67mUmYP3VBWjUDk6kEbLbcWqC8agB0+mfMRsn+onpJ2LnVBO0H5DeAxUpI4uGs
+         u2cmhhqsllhZ9axHPKudgYRjv6JGJle/nMG2Gm7ufHRvuxxxVzB1rQSz0b0DAARS66W1
+         uXh2dUFRodgBu+QKOnUHuH6WBcX37d9/b99dKwTPTaE5QY9i3J3jqu/Px6PMODJ6dUmV
+         U76g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768478635; x=1769083435;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=v3RvmxHVsO2ozpqio30cO7yMCQjGcC9YRe8I4rw9Q3M=;
-        b=mMZgq+AhH9xJD4q90Ddt0FtGQB2wxYwM7XPBzbgsAylHHF/1vRrLkJWEEaWRkLmODR
-         /lRsbxqodiPh5uWzBMnDHgkA/wCSS4OGqKiP5iV1T9bLj/r33cfvxeFm0N9nX5HwsRZv
-         eQLk4R/LznWwptcGnimw68d7SYlDLKaH0NKPPArfSqGua9JlGiqHKruCvjMoWv5UEr8m
-         jLKXl1nEfpF92gXyBBnCGWOCByfDR+yHc8+sKd984AA8R/d/VnecyFilVRHm1wcdpmrm
-         4cyrOfEe+XlVJmrjs51+Dt1EbldxNgYfQ29DSbz+mzniMusa4+amJ+VvFVwQGN7SDbbT
-         nnFQ==
-X-Gm-Message-State: AOJu0Yygww7KuJkN00dKz7mgT1OhGvgkbhcg2awOeRZeYx4hOpThJ323
-	HpVIf/Log2qUK0oL3ZWRufzc7xpWUCFIBCU9fJtB5pA2b/0pcGLQsFSj08ni1Q==
-X-Gm-Gg: AY/fxX60nh6CQBjfx6sQDxtjtOs0M37SJoeJLCDcxkFux8ZeWNrQ86ORR+Q0cNscJQl
-	P5cd9Xqr4cueCJZLnnS/j+NFVbvHk32F5vbGpkqC48JsI0dv64bcq1Ox/DaygE+o7OtQm5oFM27
-	WrSWRApVj1Ipej5uizJI0Ufa9vyZrZLSO5ooMwKRklfreyknLFHdGvkIhTnX5nSGbH4h34t3+Ug
-	RG+0ij04qwdUx9fhlCzJGZ1CgEYDMfZPicEbLEXA785CJGF1r+CrBpCptxRKByEZBiXXFXDpw6l
-	T+f3a+AqHFaWSON6iCBqKIO4Y//6EYcMn6bJTU+kIzqf93pJ5YBTLKE2DCScc2ELVcCATfXy/5x
-	AQvLSmkhBUUP16Bu0w7nYQIE+/1P9/QW4F15pO7/WpCt4aiZWgI8yCw8L5GA/frbtjouw6qzFJS
-	p0+Rk4gCsF5XYEPYVwxng=
-X-Received: by 2002:a05:600c:a03:b0:46e:761b:e7ff with SMTP id 5b1f17b1804b1-47ee3373036mr66744745e9.28.1768478635204;
-        Thu, 15 Jan 2026 04:03:55 -0800 (PST)
-Received: from [192.168.1.187] ([161.230.67.253])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-434af6d90aasm5428219f8f.29.2026.01.15.04.03.54
+        d=1e100.net; s=20230601; t=1768479873; x=1769084673;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:to
+         :from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=lGyEKRHJB6WwePDhwb24jiceYhPUCYfTIdehJWyENAg=;
+        b=JEUdrilPnSikyRBXUC3aGh2dEqA8/1qCYl2czlzPPqucH7cdUZhhQkXn9EeC7yGcjy
+         ldzhK1Bo139YfiDNo3Ezu/M0Or5DCh36Ljz85ZILGAiM/uasos0Be7kZdVgQX6Otud32
+         u5a2PvjTgOqtD52FxSbT8B8UdYAZsUd511yUw5NrPseahH8fo+gSdx4l0TEPzYjpTU6l
+         zUjlRvMNOaCr8jf2EFSOZrzeX5ygdPIb+u9t61OI38ovx+vWliAo5oodVKxhC3s6EDyb
+         VAmZccF+xoTjAbtI/VVIKqsYmI2tZkKHJbgeNv+pyktaoqpzN19bLfYoB+iL/8vCJJa4
+         PsXA==
+X-Forwarded-Encrypted: i=1; AJvYcCWoiKhe24lhQOiu8RMNcmfJCQ6JwDyqyCpTbk7BHNwsuLymqC8/OKX6nGbrCydYyw+KpCOmCpLMp6o=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxgbvwCfQC7vSTZibGyF9D8xLNImecw0tHWfYjUQFHF7s8PQfg2
+	9L+/r+mtninKpn4ZMhisCjcf2aBpox1nEV6jPbFyhaZRxTbsVE4yE754oe7U58fpMdY=
+X-Gm-Gg: AY/fxX7Eja8t3sCWtPg972TqcKB926jjfp8Re1PLotK3eGD/xD7nQ2AxOCwzT1wLt0f
+	PDLwpaohuBCXRgwsvEG7Q4qZCLwonrCyYkKHvq8XiAY58XHL+5OHfYpo8J1Q2/AvTeW+dpOFLkr
+	IZxkeYBd0IP/5e7KC5NK34ye5LbxdxAJe2Ia97uelFnpRNBZybbxPCmwh/IE9V5i54go1jpS3sn
+	+r6W5sIlZ+fGeRUsLIN8lBs7VFXbGqtcBxwLsUHjzpJQr80z4ohbhLSISF9jEfZVMwTgCUA30r6
+	6Q3Ipwtl1rS1j5vAINdoN7j/M3UshIqEEmURnQtRbRBbVcmCNOjAobbrx8SWGTwT0RQHLSpfk+3
+	Kr+XR+/ISVfmjwUfg+Pf7gePqPJB8dRHDeq+Q8AaJ5Ql+MQDd7eL0FfEH9w20so9BWjOe
+X-Received: by 2002:a17:907:1c14:b0:b87:1ffc:bfbc with SMTP id a640c23a62f3a-b8760fde847mr586522866b.12.1768479873526;
+        Thu, 15 Jan 2026 04:24:33 -0800 (PST)
+Received: from localhost ([151.47.157.182])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b8713416418sm1288982466b.49.2026.01.15.04.24.32
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 15 Jan 2026 04:03:54 -0800 (PST)
-Message-ID: <5896ab55e0d23d235908f9f592c8a7975428dc54.camel@gmail.com>
-Subject: Re: [PATCH v3 0/4] iio: adc: ad9467: Support alternative backends
-From: Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
-To: Tomas Melin <tomas.melin@vaisala.com>, Michael Hennerich	
- <Michael.Hennerich@analog.com>, Nuno Sa <nuno.sa@analog.com>, Lars-Peter
- Clausen <lars@metafoo.de>, Jonathan Cameron <jic23@kernel.org>, David
- Lechner	 <dlechner@baylibre.com>, Andy Shevchenko <andy@kernel.org>,
- Olivier Moysan	 <olivier.moysan@foss.st.com>
-Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Date: Thu, 15 Jan 2026 12:04:37 +0000
-In-Reply-To: <7ac7033a-2273-4556-a605-1ea0200665a9@vaisala.com>
-References: 
-	<20260114-b4-ad9467-optional-backend-v3-0-d2c84979d010@vaisala.com>
-	 <0ad12e16e3fffb4b72a460d7f2b2e627a781b93b.camel@gmail.com>
-	 <7ac7033a-2273-4556-a605-1ea0200665a9@vaisala.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.58.2 
+        Thu, 15 Jan 2026 04:24:33 -0800 (PST)
+From: Francesco Lavra <flavra@baylibre.com>
+To: Lorenzo Bianconi <lorenzo@kernel.org>,
+	Jonathan Cameron <jic23@kernel.org>,
+	David Lechner <dlechner@baylibre.com>,
+	=?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
+	Andy Shevchenko <andy@kernel.org>,
+	linux-iio@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v2 0/3] imu: st_lsm6dsx: Add support for rotation sensor
+Date: Thu, 15 Jan 2026 13:24:28 +0100
+Message-Id: <20260115122431.1014630-1-flavra@baylibre.com>
+X-Mailer: git-send-email 2.39.5
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1935; i=flavra@baylibre.com; h=from:subject; bh=q/+MOscl/md1a2Q943dhUJRpXKCdXx95NGeO7wjX/c8=; b=owEB7QES/pANAwAKAe3xO3POlDZfAcsmYgBpaNxiT5zsmxUWvA0EOwPEyVnC2ev0kmPBEAyph KGKkwo4ZI+JAbMEAAEKAB0WIQSGV4VPlTvcox7DFObt8TtzzpQ2XwUCaWjcYgAKCRDt8TtzzpQ2 X03EC/9jvk1oC4AauAPL2Mrbi6ex4yXVvUfEx/9Eyyp/ta/LPbVM9Wsi9cyOxR8TmOZKO8odsbe fpxLW5ALiI7q34nrMqO+JRtQ3pFF6rZ83pfMjFBM63gUd9bXcqMRxOEAqIciO19mtvAfuqU0E7N DssyK/VLc7D2VCjxKJo1rgmejvFW8zQclA0gm964er1IXfqMnBhThdPX+ZtiMSH2hyZuTsbsyBO Xoui3PB3+m9K7vrfznIZpvJTKrWU1iIix0AfeaECKftR+uBnivB0U8S2cjmom9ubDX6ui+d6zGB GNU3oo5btzh2AhAR/RrkHILiPYmr5TlwauxnTM/3jFJSQ1LWR8jVEXp8i3IDEFPE5Z5FCeEdbaD e3KBRzDpXB+lOsGfBvmAIEUahR748mfrWASG1Ka54oLQzlhZB/5vNmeMcwkzqli430+ym4Ru518 WWYL7KnAEsN8bIc5mAoUuQXY1t9CzR8QngzJr9yg58JlIjFoUCMWOaEuipiGuPEacg6J4=
+X-Developer-Key: i=flavra@baylibre.com; a=openpgp; fpr=8657854F953BDCA31EC314E6EDF13B73CE94365F
+Content-Transfer-Encoding: 8bit
 
-On Wed, 2026-01-14 at 17:32 +0200, Tomas Melin wrote:
-> Hi Nuno,
->=20
-> On 14/01/2026 15:32, Nuno S=C3=A1 wrote:
-> > On Wed, 2026-01-14 at 10:45 +0000, Tomas Melin wrote:
-> > > To facilitate backends with different set of features, add support
-> > > for defining capabilites provided by the backend. These capabilites
-> > > typically extend beyond a single operation and are therefore not
-> > > directly linked to if a single function call is implemented or not.
-> > > Furthermore, the capabilites determine if a certain set of operations
-> > > should be attempted, or skipped by the frontend. This way
-> > > the frontend driver can work with a minimalistic set of features and
-> > > still have the device in fully functional state.
-> > >=20
-> > > Signed-off-by: Tomas Melin <tomas.melin@vaisala.com>
-> > > ---
-> >=20
-> > Hi Tomas,
-> >=20
-> > > Changes in v3:
-> > > - Reduce set of capabilities to only include calibration. The other
-> > > =C2=A0 ones propsed in V2 can be seen as subset of calibration, or si=
-ngle
-> > > =C2=A0 operation failing with opnotsupported
-> >=20
-> > As stated in my patch comment. Using opnotsupported for buffers defeats
-> > the CAPS idea.
-> Please check my other reply, to me adding cap for a 1:1 mapping of a
-> operation seems like duplicating the information. But of course, this
-> can be viewed from different angles and it is also possible to look at
-> it like that.
->=20
-> >=20
-> >=20
-> > But more importantly, how are your usecase supposed to work with this
-> > series? I'm not seeing any new backend being added as part of the serie=
-s.
-> > Point is, if we are adding all of this, I would expect your usecase to
-> > have fully upstream support. If I'm not missing nothing, we would at le=
-ast
-> > need a dummy backend providing stubs for enable()/disable()
-> My usecase adds simplistic backend support and registers to the
-> framework via an related driver. So that use case works with that
-> approach. I think it is better to assume there is always some entity
-> that can take on the role of being backend, rather than adding a dummy
-> backend. Adding the capabilities are defining role here, as having that
+This series adds support for the rotation sensor functionality present in
+some chips from the ST LSM6DSX IMU family.
+The second commit is a fix to a previous commit of mine [*] which made it
+to 6.19-rcX; the fix technically changes userspace, but this should be OK
+as long as it goes in during this release cycle.
+Tested on LSM6DSV16X.
 
-Well, I would argue your backend is exactly that. A dummy one :)
+Changes from v1 [1]:
+- swapped patches 1 and 2 (Jonathan)
+- miscellaneous stylistic changes (Andy)
+- fixed usage of MICRO and MILLI constants in st_lsm6dsx_sf_read_raw and
+  st_lsm6dsx_sf_write_raw (Andy)
+- replaced scnprintf() with sysfs_emit_at() in
+  st_lsm6dsx_sf_sampling_freq_avail (Andy)
+- replaced scnprintf() with snprintf() in st_lsm6dsx_sf_probe (Andy)
+- clarified in a comment in st_lsm6dsx_set_fifo_odr() that only internal
+  sensors have a FIFO ODR configuration register (Jonathan)
+- modified patch 3 description to explain justification for the extra IIO
+  device (Jonathan)
+- moved page lock from st_lsm6dsx_sf_set_page() to the callers (Jonathan)
+- s/magnetometer/gyroscope/ in patch 2 description
 
-> allows for customer integrations with backends that differ but are of no
-> interest for the mainline.
->=20
+[*] https://lore.kernel.org/linux-iio/20251017164255.1251060-3-flavra@baylibre.com/
+[1] https://lore.kernel.org/linux-iio/20260109181528.154127-1-flavra@baylibre.com/T/
 
-It would still be nice to have this usecase fully supported upstream=C2=A0
-(having a black box backend).=C2=A0
+Francesco Lavra (3):
+  iio: imu: st_lsm6dsx: set FIFO ODR for accelerometer and gyroscope
+    only
+  iio: imu: st_lsm6dsx: set buffer sampling frequency for accelerometer
+    only
+  iio: imu: st_lsm6dsx: add support for rotation sensor
 
-What I have in mind would be really to do the same as regulators do. If you=
- call
-regulator_get() then the consumer really assumes a regulator must exist. Bu=
-t if it
-is something the kernel does not control we get a dummy one with very limit=
-ed
-functionality/stubs. If you call regulator_get_optional(), then the regulat=
-or is
-really optional and might not physically exist. Seems very similar to what =
-you have.
+ drivers/iio/imu/st_lsm6dsx/Makefile           |   2 +-
+ drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h       |  26 ++-
+ .../iio/imu/st_lsm6dsx/st_lsm6dsx_buffer.c    |  29 ++-
+ drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c  |  58 +++++
+ .../iio/imu/st_lsm6dsx/st_lsm6dsx_fusion.c    | 212 ++++++++++++++++++
+ 5 files changed, 320 insertions(+), 7 deletions(-)
+ create mode 100644 drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_fusion.c
 
-- Nuno S=C3=A1
+-- 
+2.39.5
+
 

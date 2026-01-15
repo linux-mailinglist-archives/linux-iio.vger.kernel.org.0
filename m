@@ -1,123 +1,204 @@
-Return-Path: <linux-iio+bounces-27822-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-27823-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 71E7AD23ECD
-	for <lists+linux-iio@lfdr.de>; Thu, 15 Jan 2026 11:25:03 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 738B8D24552
+	for <lists+linux-iio@lfdr.de>; Thu, 15 Jan 2026 12:56:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 54919308E99F
-	for <lists+linux-iio@lfdr.de>; Thu, 15 Jan 2026 10:24:21 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 495AA3087988
+	for <lists+linux-iio@lfdr.de>; Thu, 15 Jan 2026 11:53:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45A493624A3;
-	Thu, 15 Jan 2026 10:24:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1BC5B3933F9;
+	Thu, 15 Jan 2026 11:53:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NJpFJjBU"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="M6qgRXKg"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wr1-f52.google.com (mail-wr1-f52.google.com [209.85.221.52])
+Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CB6535502E
-	for <linux-iio@vger.kernel.org>; Thu, 15 Jan 2026 10:24:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 655A7389DF2
+	for <linux-iio@vger.kernel.org>; Thu, 15 Jan 2026 11:53:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768472660; cv=none; b=CM+F1eejVxyppJSWvE2x6ELL4bei4fA7nuKdgj8lIS23b79WWzJy3IPEs6mtLo2MEpBd1LroH8mixG9hVFCB07WCZO1ITc/gQTPZ0Xgu8jzuJcZLEsuJev/WSI1oK/ocCj/KSiE7ca1PFetLtQEJhIJPOfs1VLd74VSzOMRPzUg=
+	t=1768478029; cv=none; b=oSl7xgPoieiDESamj205MIzku9Q8f7R6OQJm4H6v+42Lf4yvsgqyX7wXex2rrgBpWM+eexJ44rCWT6ZfpUc80hweIJQ5trgbwSXWEDRr1fOoZKCFmy8B/cXYDta4JUac2jaUe6EjqT0DHdo8dsLyzga/rcPYjox0uNFbnUguVtI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768472660; c=relaxed/simple;
-	bh=LnL8PEILXOHYUFOavVHmQg3bEM1znin2GHQAseAU4rg=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Aip/aiQRGyZjomzTPZ+VQ+QAK8OuvR6fUvUA9TAh3TFWKAHupUJN9UpdCvxiv+vD4f6LklsV2OYqb62UU8JI2QBGS8nnZbPglbXQ6V5ZHG9G2kUmsS+X+Kkr5bJTQ2O/xH8MxcFdsfdvTddAKmsur0Xl448oAqI8Xw/jWrd6ics=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NJpFJjBU; arc=none smtp.client-ip=209.85.221.52
+	s=arc-20240116; t=1768478029; c=relaxed/simple;
+	bh=/XYcX4ZF6hkWrb5Pi3v0AQi1e8aX65EI/WLYoPfoLGo=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=S+OT2kCax5gmpkBwg4/Bf2tmqqf05XztnkwDXvgZK/hp7fHUB49QgMul+7dF0yGFlWOQALlX8RzsTshLcOeDc0mW/CD/sPU98hKrOaRBhqpmgmNZCVeWppzOwFVxbyBP80YYjaxX1oMbCMvZ493+f2byJ6RfFkaqOb3BQ6DUEWE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=M6qgRXKg; arc=none smtp.client-ip=209.85.128.48
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wr1-f52.google.com with SMTP id ffacd0b85a97d-432d256c2e6so610695f8f.3
-        for <linux-iio@vger.kernel.org>; Thu, 15 Jan 2026 02:24:18 -0800 (PST)
+Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-47edffe5540so8647015e9.0
+        for <linux-iio@vger.kernel.org>; Thu, 15 Jan 2026 03:53:48 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1768472657; x=1769077457; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=LnL8PEILXOHYUFOavVHmQg3bEM1znin2GHQAseAU4rg=;
-        b=NJpFJjBU3/XqtxVRr3RKFfQ16T9hVyIFJbV3/rWMI9sttdJgyh+GfoLix4B+3/7ijX
-         VP/uknAJhXlX8sg354swG7hAhAEsBjlmWwCliL/rkvnWTnqMXHDrzz6YmEZjPX4Wd2ea
-         AQBRKS8GpOQut4BCrfS+hyeNA88E/pmTqy1/yGU4jbzWDEn4r/BjVo2GDcbd/ug7Bttg
-         pJK8OTEUV1RkRV56rUfkBmLvIto05mmj/qgE3n+FRHPsODOThQXGDsPEK6tn+vLbAE5R
-         gjmLd6pimTEiU/ntiQig322ehmKuTDMBZpSOxsQgJTCW3XzvDGhKgv6GzkWHC9RoCjI9
-         RqMw==
+        d=gmail.com; s=20230601; t=1768478027; x=1769082827; darn=vger.kernel.org;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=FeN1NqskDMCkofNqgbz9AjaJHZXyD+S3GI7j/r2RdhE=;
+        b=M6qgRXKgxVAHUESQwY3+VZ44dwUydaqXms7yDCZxAGBxFJ5dHVDlWZGaKZQbZxlHhm
+         YLDc/9eDPFhOBImmZMyoxt6yt5BAsCWKwI5CqbXGZfklyXtACbR95G47lgtF4NHxcRtI
+         WHi4t9XmY7gZ/IQs59bkx9cbTS6DZdABu5T+GF+KC+BUJj4MMWzPvtBT6P7Vc2h+gLN5
+         3uyNRYiJ/X5qrE3Pfbc/zwR5faHBGvZBwBAwiJHDoLg1WhopO6WlUVw27UQ4HaXo00E+
+         AeYSaBH5k5FUxN2XgM99qTiPAU9IrBO7XjhwKn/8chEHc+YwWCgHEUJj0lsgFL4+XlhR
+         B/hg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768472657; x=1769077457;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=LnL8PEILXOHYUFOavVHmQg3bEM1znin2GHQAseAU4rg=;
-        b=evRNV0aZ82yVK00+lsHGiEoNQZmVPUHHnOYaOslq/cRgqrG+3etlU25grU7fADCzoj
-         Qhh2LctxSBeF/d+cJ2KY60eKgBXUyZCCUcZMFxU50ynlurpX2pTq7NScNwsF4If4zt2q
-         o9OQY7N6W07z14mXxMoFPEWsZGrqpZwuXsg8nLGMzjrFxE5Fr6D7rUcKDUyrfNTPaFwb
-         iYcZUc6UkYs6T+uaI3t5I5SgWOdimo/URKGEvGnzPiTxJDMsOGRTKqVavUIHShlVDztz
-         H4fJtSc9C+fu9JKjRiX/bKZwk9vBea1zTjCTbpYIF0avPcWRdwFqhCv3o+ft2Bj9PPKW
-         2vng==
-X-Forwarded-Encrypted: i=1; AJvYcCU+2V3UXmUizOnZ+j0B9EpI63S9TW3Hg16DbWKvQ/csxBl9dA+t1FC8kWqObln5ncz47aOcn9kUxPU=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw1rO+DIRR7jG6rA5eShrpMcKiIVQ1nh+S/R+sfyaoXxLiQYgX9
-	9dSUxpo8EZGgeVGKxlWvZy/uwIq5hS1wE1SfOuitR0attot6XcAKhwWG
-X-Gm-Gg: AY/fxX55vwBU6zA3VO4cV1WJlqbQm4SJ+WVMkKwDNqPsVNIhUil0xK7zBaFeK1Z8S64
-	Dz7PvxfVrHAEXXmx6pZT0TuJnputRztWiIneNe2w8IWGI2Zm/syHHHnQggJmwKGimXJzxVUxazY
-	grgvuVii+zShCyt/7H0b4N4BFC2i5cz3oDVqoDMjVM3q8q6Ame+3mLQTSWjhaI2i2pBYZBxwTzd
-	JkpLfdYjpAsUj4QZr9k7m3XlFd9Ya8YuAqXlpjIrvQNwhftMbAUtVQkxqv+1lnReRXP5C40q4ZU
-	cXHpOxAsRh3U3UJZvFQjLl56L0iqD/VnCtwjcH+K7YALl2rtMOGaeUeYGQbjNjoM64lm1NeTnJa
-	TqnWbJKFkYiR2ZC75eU/gdzLnCguTRfsoqu5X+ToZW4dPvF+BMQR2p6cp6PoIa5vWGEj/DhDqTF
-	7oxfPXuNUMXeAwhn3Ec8TSY4IYAQ==
-X-Received: by 2002:a5d:5f49:0:b0:42f:bab5:953b with SMTP id ffacd0b85a97d-4342c5010f2mr6772659f8f.16.1768472656687;
-        Thu, 15 Jan 2026 02:24:16 -0800 (PST)
-Received: from [172.24.138.145] ([137.71.226.102])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-434af6b29b7sm5062627f8f.23.2026.01.15.02.24.14
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 15 Jan 2026 02:24:16 -0800 (PST)
-Message-ID: <5b3cc813-9244-4ff2-b00a-cc8dbab7e144@gmail.com>
-Date: Thu, 15 Jan 2026 11:24:13 +0100
+        d=1e100.net; s=20230601; t=1768478027; x=1769082827;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=FeN1NqskDMCkofNqgbz9AjaJHZXyD+S3GI7j/r2RdhE=;
+        b=OINHFRoZFczlnT66ToxfbK6/lFbj/+t4pOMfUvGVRlkZLXuJn0yiGm5b41ZuBDODdR
+         ZS39A6ekW0nCftmdD8dEzSCWZDtavHNx7zlMDORRcDswvApFixcKVeTxJKkckHlpWBkI
+         7PLv2dQnF9lGeRK16DrtVHDPjeKt1d2aI8VjAT397Npexk23d6FzlrxMfAnv864djmUP
+         bNrvbx/f8VkqJOabeko5FLAldtNkS7r9ixQM8ze7kdk+Xpv8VZvZYFeZvPUwqRYaHI04
+         Si87JI+DHpKuuoQs5Oc2hRR7bYt0506H0mU4jP56RRsthx3JyEcW0QeyUqJOtFS86lsq
+         1fyg==
+X-Gm-Message-State: AOJu0Yysaw+Q2NDeQyJawAw7oWdEt7q0vwk9YpuiNZ4JGeSFaWRcAfSU
+	c7TMqmu3IigDT86FP8em7WhaZmp4Xqk5zzoWF3Pf27qXPQZ7MZtHMblW
+X-Gm-Gg: AY/fxX5WVXbrosM7lwcKQgvFub3vClaC0zw6Ph4kmw5SSXt69ebLRUXnkBE/ROmOkZL
+	m9XVr9sUWKiml3xPBv1ndi+oqThfupBOhK4UdB7FWKaGOF2ruJyu3b/Y1ocWPsfaO1QaNdOy23d
+	NLALQqSgNRJE4F6LHpk58fcQXdJR/rp/2nkgrl/KASiFwWdmdySXiiHAztwAbh2fNcvpm21iLFN
+	zNue+5Tbe3bLlNBnHEIAZAGIasruUucD8qE8QVNkP0TU4oEu0gGLFv2UOA9/+OUQSmOVi2P7UWi
+	Z2K8//Y1mlD2Vl7QiH4BhFZKJeLKzA0lcZdpA63QCBkeSAOROtVhIPv7vX/G02NlVj/hh5ryIjL
+	gzExTjWAcjDEdd5whLMX40967J3v+KNaTMvY7iSxaM6uw9NM+BXqTLg6ZWmRkTMRlY92pJ2YOPK
+	x9vWjr0vkq5G0xgFxvZ2U=
+X-Received: by 2002:a05:600c:3f16:b0:479:1b0f:dfff with SMTP id 5b1f17b1804b1-47ee32fd19emr69502975e9.10.1768478026429;
+        Thu, 15 Jan 2026 03:53:46 -0800 (PST)
+Received: from [192.168.1.187] ([161.230.67.253])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-47ee27d9aaesm44884595e9.3.2026.01.15.03.53.45
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 15 Jan 2026 03:53:46 -0800 (PST)
+Message-ID: <9214d1ba49ee31e4f35d8d3fe5d894142e1d6fef.camel@gmail.com>
+Subject: Re: [PATCH v3 4/4] iio: adc: ad9467: check for backend capabilities
+From: Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
+To: Tomas Melin <tomas.melin@vaisala.com>, Michael Hennerich	
+ <Michael.Hennerich@analog.com>, Nuno Sa <nuno.sa@analog.com>, Lars-Peter
+ Clausen <lars@metafoo.de>, Jonathan Cameron <jic23@kernel.org>, David
+ Lechner	 <dlechner@baylibre.com>, Andy Shevchenko <andy@kernel.org>,
+ Olivier Moysan	 <olivier.moysan@foss.st.com>
+Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Date: Thu, 15 Jan 2026 11:54:28 +0000
+In-Reply-To: <68cee45e-4822-41af-a0da-d1b88166425d@vaisala.com>
+References: 
+	<20260114-b4-ad9467-optional-backend-v3-0-d2c84979d010@vaisala.com>
+	 <20260114-b4-ad9467-optional-backend-v3-4-d2c84979d010@vaisala.com>
+	 <34e97dbb610e82953657d8354c0a343a9e1fa57a.camel@gmail.com>
+	 <68cee45e-4822-41af-a0da-d1b88166425d@vaisala.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.58.2 
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 1/2] dt-bindings: iio: dac: Add max22007
-To: Krzysztof Kozlowski <krzk@kernel.org>,
- Janani Sunil <janani.sunil@analog.com>
-Cc: Lars-Peter Clausen <lars@metafoo.de>,
- Michael Hennerich <Michael.Hennerich@analog.com>,
- Jonathan Cameron <jic23@kernel.org>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Jonathan Corbet <corbet@lwn.net>,
- linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, gastmaier@gmail.com
-References: <20260114-max22007-patch-v3-0-769298f50b8a@analog.com>
- <20260114-max22007-patch-v3-1-769298f50b8a@analog.com>
- <20260115-elegant-hopping-kangaroo-6cd32b@quoll>
-Content-Language: en-US
-From: Janani Sunil <jan.sun97@gmail.com>
-In-Reply-To: <20260115-elegant-hopping-kangaroo-6cd32b@quoll>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
 
-Hi Krzysztof,
+On Wed, 2026-01-14 at 17:23 +0200, Tomas Melin wrote:
+> Hi,
+>=20
+> On 14/01/2026 14:29, Nuno S=C3=A1 wrote:
+> > On Wed, 2026-01-14 at 10:45 +0000, Tomas Melin wrote:
+> > > Add capability checks for operation with backends that do not support
+> > > full set of features, but are otherwise compatible with the device.
+> > >=20
+>=20
+> > > +		return 0;
+> > > +
+> >=20
+> > As David suggested, it might make more sense to do the check from the c=
+allers. Not as
+> > important as within the backend functions though.
+> >=20
+> > > =C2=A0	/* all points invalid */
+> > > =C2=A0	bitmap_fill(st->calib_map, st->calib_map_size);
+> > > =C2=A0
+> > > @@ -1357,7 +1366,7 @@ static int ad9467_probe(struct spi_device *spi)
+> > > =C2=A0		return ret;
+> > > =C2=A0
+> > > =C2=A0	ret =3D devm_iio_backend_request_buffer(&spi->dev, st->back, i=
+ndio_dev);
+> > > -	if (ret)
+> > > +	if (ret && ret !=3D -EOPNOTSUPP)
+> > > =C2=A0		return ret;
+> >=20
+> > Don't agree with the above. I would prefer to see a dedicated CAP for b=
+uffering
+> > otherwise I would argue why not doing the same for everything? While it=
+ might
+> > be acceptable merging IIO_BACKEND_CAP_TEST_PATTERNS and IIO_BACKEND_CAP=
+_CALIBRATION
+> > (given they are related to some extent), that does not apply to bufferi=
+ng.
+>=20
+> Okay perhaps we first need to agree on how we define a capability;)
+>=20
+> So my thinking here was that calibration capability expands across
+> several or even many op calls, so it's a feature level thing and
+> requires several coordinated functions. So does the test pattern, but
+> it's a sub entity of the calibration so I merged the two together. So
+> checking for a capability in these cases makes sense, since checking
+> against a single operation call for determining if the capability is
+> present is not easy and which function would it be, etc.
 
-On 1/15/26 10:24, Krzysztof Kozlowski wrote:
-> On Wed, Jan 14, 2026 at 05:17:01PM +0100, Janani Sunil wrote:
->> Devicetree bindings for MAX22007 4-channel
->> 12-bit DAC that drives a voltage or current
->> output on each channel
-> What is happening with this patchset - why are you making somehow
-> unrelated, different, unexpected and incorrect changes like ones above?
->
-> You are supposed to work with Git e.g. on dedicated branch, so you
-> clearly see what you did. Why doing such changes?
+Makes sense.
 
-Apologies for the confusion- this was my mistake.
+>=20
+> The backend buffer on the other hand maps to a single op call (in theory
+> two). So checking for that buffering capability can be done by checking
+> if the op call is supported (eopnotsupp). I was kindof thinking that why
+> need a capability if the mapping is 1:1 and the information is available
+> through that error value directly?
 
-I picked up V1 of the patch by accident. I'll rework it to address the incorrect changes and will resend the corrected version.
+Yeah, TBH the only reason I can think of is readability. To me, it is more
+explicit:
 
-Regards,
-Janani Sunil
+if (has_buffering())
+	request_buffer(); //not allowed to fail
+
+And can be a bit confusing having a mix of has_capability() and checking fo=
+r
+error codes.
+
+But yes, checking for specific error codes for determining behavior is a co=
+mmon
+pattern so I won't be nitpicky about it.
+
+>=20
+> On frontend level, like here it is known that the driver can function
+> without that buffering, so if the backend does not supported it can be
+> okay to proceed.
+> If we add a capability for a single operation that has 1:1 mapping then
+> basically we should map all and that is not really the point?
+
+> I see the capability like a contract between the backend and frontend on
+> feature level, that the feature is there but the implementation of a
+> specific capability might actually differ depending on the use case
+> (like we see with ad9467 and ad485x calibration and their backends)
+>=20
+> What are your thoughts about this?
+>=20
+
+Ok, I think it makes sense to me but maybe we should be more explicit/clear=
+ in
+the docs:
+
+"... meaning that a capability requires certain=C2=A0
+operations to be implemented by the backend"
+
+Maybe s/certain/multiple and we could even mention that if a frontend is in=
+terested
+in knowing that a operation is not supported, the error code can be checked
+(though this could be obvious already).
+
+Let's see what Jonathan and others thinks about it.
+
+- Nuno S=C3=A1
+
+
+
+
 
 

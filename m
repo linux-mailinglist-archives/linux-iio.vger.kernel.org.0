@@ -1,62 +1,62 @@
-Return-Path: <linux-iio+bounces-27818-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-27819-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 93862D233C4
-	for <lists+linux-iio@lfdr.de>; Thu, 15 Jan 2026 09:47:28 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id AE940D233D6
+	for <lists+linux-iio@lfdr.de>; Thu, 15 Jan 2026 09:47:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 90BF23020FFF
-	for <lists+linux-iio@lfdr.de>; Thu, 15 Jan 2026 08:42:18 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id E71F5301BDE4
+	for <lists+linux-iio@lfdr.de>; Thu, 15 Jan 2026 08:43:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F264733ADBE;
-	Thu, 15 Jan 2026 08:42:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8ABCB311C19;
+	Thu, 15 Jan 2026 08:43:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="TXepCoHu"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="CUocwgXF"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42594229B12;
-	Thu, 15 Jan 2026 08:42:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.8
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 249033358C4;
+	Thu, 15 Jan 2026 08:43:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768466536; cv=none; b=DewPQoSnpsM1A2WA3ng08pJ3wmQJl2d5yjFY5t7ItArX2vzVnsfqPMXFGdswkaRW1lcZbjcr4EPYRuea9HCM3Lw6PWt75n6TNYPtLoApYBHWG5n0JGus32nRmVTVDNdaKsrQMF5CV9WkYFQgGvWQwmSA/na9x/n6jnC6gOuT0u8=
+	t=1768466628; cv=none; b=G01Nb2ZjuZKkfdZb0toG2ln6/NDpJyZItVDto1uaUFucH3yV9q2ptcdcoR54uM7sRYbY3Mfg9RNi8gjAMjAAvm3YphgS2iPlbdaNgzS6ZlW3qBTqOLkBagbf+E3S2za3YkHdhY6Rucyn+jYOoWWnRBC7oaps/EqEDTATb4zzFaM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768466536; c=relaxed/simple;
-	bh=Pwq3sPCxdOUq71ZvicnfELQF+2gCcUDmXLiFTSWvbdc=;
+	s=arc-20240116; t=1768466628; c=relaxed/simple;
+	bh=ptWUaNlici8SBGXKdCRew/hqq86HMoCsd1htiyaWuoQ=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=tPQmCTeO/VfZ/jjCH60OBjz/xzbSuJIrQIRq+/+btYlXm49StR2kdnopA9Bo7dJ0+Gc44IZ3HL630UYtGsNO/6PbCzdmhwnzsKbkjR1Kgtrr5VfMMoHphhlKWPmC/E++7PjwaDom7zhh78egxb45HyqCr6+g8pC03fo2n2k1mY0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=TXepCoHu; arc=none smtp.client-ip=192.198.163.8
+	 Content-Type:Content-Disposition:In-Reply-To; b=LmT9+7/Di7wJz2AM4iazoHZ0coBqkh91zrrcixdfGLxo+s93cguVUinfojRr4O7lMIaWTJy7kotR4d6IV7HOIgshfKCLJviVm5dU8EPTKYBBYqDSVW8oB7LEbth2pKhS30X9VzJa2gVwBPdUEHeUdtzgneHaaENnWyMdtFvdt/o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=CUocwgXF; arc=none smtp.client-ip=198.175.65.9
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1768466535; x=1800002535;
+  t=1768466628; x=1800002628;
   h=date:from:to:cc:subject:message-id:references:
    mime-version:in-reply-to;
-  bh=Pwq3sPCxdOUq71ZvicnfELQF+2gCcUDmXLiFTSWvbdc=;
-  b=TXepCoHujak07zvos88H/bXXK5VGtfhhIvf2xcOiSEMh8dPk9bY/Otmc
-   z77BkgFFlYnU0UW9PFiNIRF2eddQURlhXfrt7a117z81BT5ei2oJSx4bp
-   wuw0C+dO0Ci2D5Y7uCSpHXb1IjmdXma793+FC1vbtzmO42JUmFOmYg3J1
-   f7sSGk6ZDsKvVlWpl1qusbAIi8VW2BXeNR5BW66AuM4/xajV146+ZjXGa
-   TFte7w93p7bZeQP9wkel+vL23mL/heZVSY0d11EDznODrvnealBTuc/l1
-   Lb/ytRVog4ZHC6MnnPqSs1o/ogn0bEeXNM8r4yH80GBD2bxXUrZx5zQei
+  bh=ptWUaNlici8SBGXKdCRew/hqq86HMoCsd1htiyaWuoQ=;
+  b=CUocwgXFpPVsyDKZYesd3feW6f4DQd6B0vK0LdNSZYFWs8mvTYd23exT
+   m4QkmLAO3w+CjCZ7Clb1D+Tim5LLYkyqTUzwnjYECixWolvOnde6a9Jo5
+   pKc4IkR5V9q8dSSA9L59/zTMVC5muIaWbtIT1z2UIxSLIGZAw7oy2n2+o
+   xqDtYzx7qklW6TfJbgiw2KjvNDPbmoA2+L9KxyUR1JlIwRyNRLFyOgvO9
+   exM9JrjpbTOqFJZcQZJdqvBc8fr+IRA+Fno7dkadjXGcK7AXg8c83KLIs
+   ONIpN+lfh+bw+PuDOYRWIqVHYyWQtOyTe5oF/zW/7YRdTjsFQkmBzD4mM
    g==;
-X-CSE-ConnectionGUID: dnbpMswMSNqGwD5QPwz5vQ==
-X-CSE-MsgGUID: tvrOROefQfm8G0VTtS3PuA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11671"; a="87348069"
+X-CSE-ConnectionGUID: ef95VhyPSrueI31i+tLpAw==
+X-CSE-MsgGUID: MWUKnVR4RsGzojdEl55XWg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11671"; a="92439235"
 X-IronPort-AV: E=Sophos;i="6.21,226,1763452800"; 
-   d="scan'208";a="87348069"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
-  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Jan 2026 00:42:15 -0800
-X-CSE-ConnectionGUID: VqLRv7qzS6OElzbseGP7NQ==
-X-CSE-MsgGUID: YAyUJWKlSBWgTVq8LAiRiQ==
+   d="scan'208";a="92439235"
+Received: from orviesa010.jf.intel.com ([10.64.159.150])
+  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Jan 2026 00:43:47 -0800
+X-CSE-ConnectionGUID: 0atAEu8vQ0y+STmeYTXpsQ==
+X-CSE-MsgGUID: Av+lgORPQoGh9SxmTzWh4w==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.21,226,1763452800"; 
-   d="scan'208";a="205184891"
+   d="scan'208";a="204110199"
 Received: from egrumbac-mobl6.ger.corp.intel.com (HELO localhost) ([10.245.244.216])
-  by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Jan 2026 00:42:13 -0800
-Date: Thu, 15 Jan 2026 10:42:10 +0200
+  by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Jan 2026 00:43:43 -0800
+Date: Thu, 15 Jan 2026 10:43:41 +0200
 From: Andy Shevchenko <andriy.shevchenko@intel.com>
 To: raskar.shree97@gmail.com
 Cc: Jonathan Cameron <jic23@kernel.org>,
@@ -65,11 +65,11 @@ Cc: Jonathan Cameron <jic23@kernel.org>,
 	Andy Shevchenko <andy@kernel.org>, skhan@linuxfoundation.org,
 	david.hunter.linux@gmail.com, linux-iio@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v5 3/5] iio: proximity: rfd77402: Add interrupt handling
- support
-Message-ID: <aWioYpYPAPOGmnHD@smile.fi.intel.com>
+Subject: Re: [PATCH v5 5/5] iio: proximity: rfd77402: Document device private
+ data structure
+Message-ID: <aWiovW6h4B0zcMg6@smile.fi.intel.com>
 References: <20260115-rfd77402_v5-v5-0-594eb57683e4@gmail.com>
- <20260115-rfd77402_v5-v5-3-594eb57683e4@gmail.com>
+ <20260115-rfd77402_v5-v5-5-594eb57683e4@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -78,52 +78,31 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260115-rfd77402_v5-v5-3-594eb57683e4@gmail.com>
+In-Reply-To: <20260115-rfd77402_v5-v5-5-594eb57683e4@gmail.com>
 Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
  krs, Bertel Jungin Aukio 5, 02600 Espoo
 
-On Thu, Jan 15, 2026 at 01:57:39PM +0530, Shrikant Raskar via B4 Relay wrote:
+On Thu, Jan 15, 2026 at 01:57:41PM +0530, Shrikant Raskar via B4 Relay wrote:
 
-> Add interrupt handling support to enable event-driven data acquisition
-> instead of continuous polling. This improves responsiveness, reduces
-> CPU overhead, and supports low-power operation by allowing the system
-> to remain idle until an interrupt occurs.
+> Add kernel-doc style comments for struct rfd77402_data to describe
+> the purpose of each member.
 
-...
-
-Also
-
-+ bits.h // although it's preexisting problem, but you add a new user of it
-
-> +#include <linux/completion.h>
->  #include <linux/delay.h>
-
-+ dev_printk.h
-+ errno.h
-
->  #include <linux/i2c.h>
-> +#include <linux/interrupt.h>
->  #include <linux/iopoll.h>
-
-+ jiffies.h
-
->  #include <linux/module.h>
-
-+ types.h
-
-All on the same grounds as above,
+It's not a kernel-doc.
 
 ...
 
->  	mutex_init(&data->lock);
+> +/*
 
-Conversion to devm_mutext_init() change should be before this patch.
+This marker is of the regular comment.
 
-...
+> + * struct rfd77402_data - device-specific data for the RFD77402 sensor
+> + * @client: I2C client handle
+> + * @lock: mutex to serialize sensor reads
+> + * @completion: completion used for interrupt-driven measurements
+> + * @irq_en: indicates whether interrupt mode is enabled
+> + */
 
-> +	i2c_set_clientdata(client, indio_dev);
-
-Is it used?
+It should be done before the patch that adds new members to the data structure.
 
 -- 
 With Best Regards,

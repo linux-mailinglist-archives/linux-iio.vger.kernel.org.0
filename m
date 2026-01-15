@@ -1,77 +1,77 @@
-Return-Path: <linux-iio+bounces-27823-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-27824-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 738B8D24552
-	for <lists+linux-iio@lfdr.de>; Thu, 15 Jan 2026 12:56:16 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9C96AD24608
+	for <lists+linux-iio@lfdr.de>; Thu, 15 Jan 2026 13:04:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 495AA3087988
-	for <lists+linux-iio@lfdr.de>; Thu, 15 Jan 2026 11:53:53 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id ED0D43049199
+	for <lists+linux-iio@lfdr.de>; Thu, 15 Jan 2026 12:04:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1BC5B3933F9;
-	Thu, 15 Jan 2026 11:53:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A57E938A715;
+	Thu, 15 Jan 2026 12:03:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="M6qgRXKg"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="J4BZ5x1R"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
+Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 655A7389DF2
-	for <linux-iio@vger.kernel.org>; Thu, 15 Jan 2026 11:53:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07442361DA9
+	for <linux-iio@vger.kernel.org>; Thu, 15 Jan 2026 12:03:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768478029; cv=none; b=oSl7xgPoieiDESamj205MIzku9Q8f7R6OQJm4H6v+42Lf4yvsgqyX7wXex2rrgBpWM+eexJ44rCWT6ZfpUc80hweIJQ5trgbwSXWEDRr1fOoZKCFmy8B/cXYDta4JUac2jaUe6EjqT0DHdo8dsLyzga/rcPYjox0uNFbnUguVtI=
+	t=1768478638; cv=none; b=VaAaI1SYiO7hi0dROSOneTvd4fwykDwW+kPNFEVU1rHLspO19L6xbJQCI99RCNSHwreSB1YskLT6gTX4U6gKz7PWR0ClhH8fuR5wJ8zJFsL025Jka1v94viVbBtaZSld5LiwDPh2q14mcF8ui0RVTZFOtlgBsUCEMfEQwqDtMJg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768478029; c=relaxed/simple;
-	bh=/XYcX4ZF6hkWrb5Pi3v0AQi1e8aX65EI/WLYoPfoLGo=;
+	s=arc-20240116; t=1768478638; c=relaxed/simple;
+	bh=v3RvmxHVsO2ozpqio30cO7yMCQjGcC9YRe8I4rw9Q3M=;
 	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=S+OT2kCax5gmpkBwg4/Bf2tmqqf05XztnkwDXvgZK/hp7fHUB49QgMul+7dF0yGFlWOQALlX8RzsTshLcOeDc0mW/CD/sPU98hKrOaRBhqpmgmNZCVeWppzOwFVxbyBP80YYjaxX1oMbCMvZ493+f2byJ6RfFkaqOb3BQ6DUEWE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=M6qgRXKg; arc=none smtp.client-ip=209.85.128.48
+	 Content-Type:MIME-Version; b=dWpSYRGA3f38hlIxuWfguRvOxhh9breovOmlcXFz9j5koI4MNHuTUhzdnVIaI6oWl/yigNfxw6WlPKaEIXceNSzQbinctO8XVCjwio4PzyFCCbSjbShJK9KttsP9d895IYWY+tIaaUAPla6rZuH985n0KDtQtnBVp7wg6UaVlL0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=J4BZ5x1R; arc=none smtp.client-ip=209.85.128.47
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-47edffe5540so8647015e9.0
-        for <linux-iio@vger.kernel.org>; Thu, 15 Jan 2026 03:53:48 -0800 (PST)
+Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-4801d24d91bso1288415e9.2
+        for <linux-iio@vger.kernel.org>; Thu, 15 Jan 2026 04:03:56 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1768478027; x=1769082827; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1768478635; x=1769083435; darn=vger.kernel.org;
         h=mime-version:user-agent:content-transfer-encoding:references
          :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
          :date:message-id:reply-to;
-        bh=FeN1NqskDMCkofNqgbz9AjaJHZXyD+S3GI7j/r2RdhE=;
-        b=M6qgRXKgxVAHUESQwY3+VZ44dwUydaqXms7yDCZxAGBxFJ5dHVDlWZGaKZQbZxlHhm
-         YLDc/9eDPFhOBImmZMyoxt6yt5BAsCWKwI5CqbXGZfklyXtACbR95G47lgtF4NHxcRtI
-         WHi4t9XmY7gZ/IQs59bkx9cbTS6DZdABu5T+GF+KC+BUJj4MMWzPvtBT6P7Vc2h+gLN5
-         3uyNRYiJ/X5qrE3Pfbc/zwR5faHBGvZBwBAwiJHDoLg1WhopO6WlUVw27UQ4HaXo00E+
-         AeYSaBH5k5FUxN2XgM99qTiPAU9IrBO7XjhwKn/8chEHc+YwWCgHEUJj0lsgFL4+XlhR
-         B/hg==
+        bh=v3RvmxHVsO2ozpqio30cO7yMCQjGcC9YRe8I4rw9Q3M=;
+        b=J4BZ5x1RzIwKvyf2JPk7mUyKX1TFOcU7KwGFJktChruy1pxKTC5fHnxC2mp19375av
+         LeGY6Y5dHAmLieUdvW5h8P6ll7y0+uUwe+RcN+2BGEZx3/VyJOCHjSaYuUMNzZq0jY7x
+         FKsVc/AGyZayH1voYicnEAj3MWVCOAYWBvbWFImaJ/VJuglfHd6jL1KxTxEobs5/9m2M
+         6CTL/0A/XND8d6TWJYRSFCPDcS3/KK3YjWfiRgq+KSzBK4NJzCV5YYzUfC9jwGIrmaS8
+         Jocxml9VmPGMYGjAjf98n+lqolBy1raB0PqTmgEvy5J/2QW4pIiPE2WhnUMDQbFYPclf
+         /aig==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768478027; x=1769082827;
+        d=1e100.net; s=20230601; t=1768478635; x=1769083435;
         h=mime-version:user-agent:content-transfer-encoding:references
          :in-reply-to:date:cc:to:from:subject:message-id:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=FeN1NqskDMCkofNqgbz9AjaJHZXyD+S3GI7j/r2RdhE=;
-        b=OINHFRoZFczlnT66ToxfbK6/lFbj/+t4pOMfUvGVRlkZLXuJn0yiGm5b41ZuBDODdR
-         ZS39A6ekW0nCftmdD8dEzSCWZDtavHNx7zlMDORRcDswvApFixcKVeTxJKkckHlpWBkI
-         7PLv2dQnF9lGeRK16DrtVHDPjeKt1d2aI8VjAT397Npexk23d6FzlrxMfAnv864djmUP
-         bNrvbx/f8VkqJOabeko5FLAldtNkS7r9ixQM8ze7kdk+Xpv8VZvZYFeZvPUwqRYaHI04
-         Si87JI+DHpKuuoQs5Oc2hRR7bYt0506H0mU4jP56RRsthx3JyEcW0QeyUqJOtFS86lsq
-         1fyg==
-X-Gm-Message-State: AOJu0Yysaw+Q2NDeQyJawAw7oWdEt7q0vwk9YpuiNZ4JGeSFaWRcAfSU
-	c7TMqmu3IigDT86FP8em7WhaZmp4Xqk5zzoWF3Pf27qXPQZ7MZtHMblW
-X-Gm-Gg: AY/fxX5WVXbrosM7lwcKQgvFub3vClaC0zw6Ph4kmw5SSXt69ebLRUXnkBE/ROmOkZL
-	m9XVr9sUWKiml3xPBv1ndi+oqThfupBOhK4UdB7FWKaGOF2ruJyu3b/Y1ocWPsfaO1QaNdOy23d
-	NLALQqSgNRJE4F6LHpk58fcQXdJR/rp/2nkgrl/KASiFwWdmdySXiiHAztwAbh2fNcvpm21iLFN
-	zNue+5Tbe3bLlNBnHEIAZAGIasruUucD8qE8QVNkP0TU4oEu0gGLFv2UOA9/+OUQSmOVi2P7UWi
-	Z2K8//Y1mlD2Vl7QiH4BhFZKJeLKzA0lcZdpA63QCBkeSAOROtVhIPv7vX/G02NlVj/hh5ryIjL
-	gzExTjWAcjDEdd5whLMX40967J3v+KNaTMvY7iSxaM6uw9NM+BXqTLg6ZWmRkTMRlY92pJ2YOPK
-	x9vWjr0vkq5G0xgFxvZ2U=
-X-Received: by 2002:a05:600c:3f16:b0:479:1b0f:dfff with SMTP id 5b1f17b1804b1-47ee32fd19emr69502975e9.10.1768478026429;
-        Thu, 15 Jan 2026 03:53:46 -0800 (PST)
+        bh=v3RvmxHVsO2ozpqio30cO7yMCQjGcC9YRe8I4rw9Q3M=;
+        b=mMZgq+AhH9xJD4q90Ddt0FtGQB2wxYwM7XPBzbgsAylHHF/1vRrLkJWEEaWRkLmODR
+         /lRsbxqodiPh5uWzBMnDHgkA/wCSS4OGqKiP5iV1T9bLj/r33cfvxeFm0N9nX5HwsRZv
+         eQLk4R/LznWwptcGnimw68d7SYlDLKaH0NKPPArfSqGua9JlGiqHKruCvjMoWv5UEr8m
+         jLKXl1nEfpF92gXyBBnCGWOCByfDR+yHc8+sKd984AA8R/d/VnecyFilVRHm1wcdpmrm
+         4cyrOfEe+XlVJmrjs51+Dt1EbldxNgYfQ29DSbz+mzniMusa4+amJ+VvFVwQGN7SDbbT
+         nnFQ==
+X-Gm-Message-State: AOJu0Yygww7KuJkN00dKz7mgT1OhGvgkbhcg2awOeRZeYx4hOpThJ323
+	HpVIf/Log2qUK0oL3ZWRufzc7xpWUCFIBCU9fJtB5pA2b/0pcGLQsFSj08ni1Q==
+X-Gm-Gg: AY/fxX60nh6CQBjfx6sQDxtjtOs0M37SJoeJLCDcxkFux8ZeWNrQ86ORR+Q0cNscJQl
+	P5cd9Xqr4cueCJZLnnS/j+NFVbvHk32F5vbGpkqC48JsI0dv64bcq1Ox/DaygE+o7OtQm5oFM27
+	WrSWRApVj1Ipej5uizJI0Ufa9vyZrZLSO5ooMwKRklfreyknLFHdGvkIhTnX5nSGbH4h34t3+Ug
+	RG+0ij04qwdUx9fhlCzJGZ1CgEYDMfZPicEbLEXA785CJGF1r+CrBpCptxRKByEZBiXXFXDpw6l
+	T+f3a+AqHFaWSON6iCBqKIO4Y//6EYcMn6bJTU+kIzqf93pJ5YBTLKE2DCScc2ELVcCATfXy/5x
+	AQvLSmkhBUUP16Bu0w7nYQIE+/1P9/QW4F15pO7/WpCt4aiZWgI8yCw8L5GA/frbtjouw6qzFJS
+	p0+Rk4gCsF5XYEPYVwxng=
+X-Received: by 2002:a05:600c:a03:b0:46e:761b:e7ff with SMTP id 5b1f17b1804b1-47ee3373036mr66744745e9.28.1768478635204;
+        Thu, 15 Jan 2026 04:03:55 -0800 (PST)
 Received: from [192.168.1.187] ([161.230.67.253])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-47ee27d9aaesm44884595e9.3.2026.01.15.03.53.45
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-434af6d90aasm5428219f8f.29.2026.01.15.04.03.54
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 15 Jan 2026 03:53:46 -0800 (PST)
-Message-ID: <9214d1ba49ee31e4f35d8d3fe5d894142e1d6fef.camel@gmail.com>
-Subject: Re: [PATCH v3 4/4] iio: adc: ad9467: check for backend capabilities
+        Thu, 15 Jan 2026 04:03:54 -0800 (PST)
+Message-ID: <5896ab55e0d23d235908f9f592c8a7975428dc54.camel@gmail.com>
+Subject: Re: [PATCH v3 0/4] iio: adc: ad9467: Support alternative backends
 From: Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
 To: Tomas Melin <tomas.melin@vaisala.com>, Michael Hennerich	
  <Michael.Hennerich@analog.com>, Nuno Sa <nuno.sa@analog.com>, Lars-Peter
@@ -79,13 +79,12 @@ To: Tomas Melin <tomas.melin@vaisala.com>, Michael Hennerich
  Lechner	 <dlechner@baylibre.com>, Andy Shevchenko <andy@kernel.org>,
  Olivier Moysan	 <olivier.moysan@foss.st.com>
 Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Date: Thu, 15 Jan 2026 11:54:28 +0000
-In-Reply-To: <68cee45e-4822-41af-a0da-d1b88166425d@vaisala.com>
+Date: Thu, 15 Jan 2026 12:04:37 +0000
+In-Reply-To: <7ac7033a-2273-4556-a605-1ea0200665a9@vaisala.com>
 References: 
 	<20260114-b4-ad9467-optional-backend-v3-0-d2c84979d010@vaisala.com>
-	 <20260114-b4-ad9467-optional-backend-v3-4-d2c84979d010@vaisala.com>
-	 <34e97dbb610e82953657d8354c0a343a9e1fa57a.camel@gmail.com>
-	 <68cee45e-4822-41af-a0da-d1b88166425d@vaisala.com>
+	 <0ad12e16e3fffb4b72a460d7f2b2e627a781b93b.camel@gmail.com>
+	 <7ac7033a-2273-4556-a605-1ea0200665a9@vaisala.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 User-Agent: Evolution 3.58.2 
@@ -96,109 +95,72 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-On Wed, 2026-01-14 at 17:23 +0200, Tomas Melin wrote:
-> Hi,
+On Wed, 2026-01-14 at 17:32 +0200, Tomas Melin wrote:
+> Hi Nuno,
 >=20
-> On 14/01/2026 14:29, Nuno S=C3=A1 wrote:
+> On 14/01/2026 15:32, Nuno S=C3=A1 wrote:
 > > On Wed, 2026-01-14 at 10:45 +0000, Tomas Melin wrote:
-> > > Add capability checks for operation with backends that do not support
-> > > full set of features, but are otherwise compatible with the device.
+> > > To facilitate backends with different set of features, add support
+> > > for defining capabilites provided by the backend. These capabilites
+> > > typically extend beyond a single operation and are therefore not
+> > > directly linked to if a single function call is implemented or not.
+> > > Furthermore, the capabilites determine if a certain set of operations
+> > > should be attempted, or skipped by the frontend. This way
+> > > the frontend driver can work with a minimalistic set of features and
+> > > still have the device in fully functional state.
 > > >=20
->=20
-> > > +		return 0;
-> > > +
+> > > Signed-off-by: Tomas Melin <tomas.melin@vaisala.com>
+> > > ---
 > >=20
-> > As David suggested, it might make more sense to do the check from the c=
-allers. Not as
-> > important as within the backend functions though.
+> > Hi Tomas,
 > >=20
-> > > =C2=A0	/* all points invalid */
-> > > =C2=A0	bitmap_fill(st->calib_map, st->calib_map_size);
-> > > =C2=A0
-> > > @@ -1357,7 +1366,7 @@ static int ad9467_probe(struct spi_device *spi)
-> > > =C2=A0		return ret;
-> > > =C2=A0
-> > > =C2=A0	ret =3D devm_iio_backend_request_buffer(&spi->dev, st->back, i=
-ndio_dev);
-> > > -	if (ret)
-> > > +	if (ret && ret !=3D -EOPNOTSUPP)
-> > > =C2=A0		return ret;
+> > > Changes in v3:
+> > > - Reduce set of capabilities to only include calibration. The other
+> > > =C2=A0 ones propsed in V2 can be seen as subset of calibration, or si=
+ngle
+> > > =C2=A0 operation failing with opnotsupported
 > >=20
-> > Don't agree with the above. I would prefer to see a dedicated CAP for b=
-uffering
-> > otherwise I would argue why not doing the same for everything? While it=
- might
-> > be acceptable merging IIO_BACKEND_CAP_TEST_PATTERNS and IIO_BACKEND_CAP=
-_CALIBRATION
-> > (given they are related to some extent), that does not apply to bufferi=
-ng.
+> > As stated in my patch comment. Using opnotsupported for buffers defeats
+> > the CAPS idea.
+> Please check my other reply, to me adding cap for a 1:1 mapping of a
+> operation seems like duplicating the information. But of course, this
+> can be viewed from different angles and it is also possible to look at
+> it like that.
 >=20
-> Okay perhaps we first need to agree on how we define a capability;)
->=20
-> So my thinking here was that calibration capability expands across
-> several or even many op calls, so it's a feature level thing and
-> requires several coordinated functions. So does the test pattern, but
-> it's a sub entity of the calibration so I merged the two together. So
-> checking for a capability in these cases makes sense, since checking
-> against a single operation call for determining if the capability is
-> present is not easy and which function would it be, etc.
+> >=20
+> >=20
+> > But more importantly, how are your usecase supposed to work with this
+> > series? I'm not seeing any new backend being added as part of the serie=
+s.
+> > Point is, if we are adding all of this, I would expect your usecase to
+> > have fully upstream support. If I'm not missing nothing, we would at le=
+ast
+> > need a dummy backend providing stubs for enable()/disable()
+> My usecase adds simplistic backend support and registers to the
+> framework via an related driver. So that use case works with that
+> approach. I think it is better to assume there is always some entity
+> that can take on the role of being backend, rather than adding a dummy
+> backend. Adding the capabilities are defining role here, as having that
 
-Makes sense.
+Well, I would argue your backend is exactly that. A dummy one :)
 
->=20
-> The backend buffer on the other hand maps to a single op call (in theory
-> two). So checking for that buffering capability can be done by checking
-> if the op call is supported (eopnotsupp). I was kindof thinking that why
-> need a capability if the mapping is 1:1 and the information is available
-> through that error value directly?
-
-Yeah, TBH the only reason I can think of is readability. To me, it is more
-explicit:
-
-if (has_buffering())
-	request_buffer(); //not allowed to fail
-
-And can be a bit confusing having a mix of has_capability() and checking fo=
-r
-error codes.
-
-But yes, checking for specific error codes for determining behavior is a co=
-mmon
-pattern so I won't be nitpicky about it.
-
->=20
-> On frontend level, like here it is known that the driver can function
-> without that buffering, so if the backend does not supported it can be
-> okay to proceed.
-> If we add a capability for a single operation that has 1:1 mapping then
-> basically we should map all and that is not really the point?
-
-> I see the capability like a contract between the backend and frontend on
-> feature level, that the feature is there but the implementation of a
-> specific capability might actually differ depending on the use case
-> (like we see with ad9467 and ad485x calibration and their backends)
->=20
-> What are your thoughts about this?
+> allows for customer integrations with backends that differ but are of no
+> interest for the mainline.
 >=20
 
-Ok, I think it makes sense to me but maybe we should be more explicit/clear=
- in
-the docs:
+It would still be nice to have this usecase fully supported upstream=C2=A0
+(having a black box backend).=C2=A0
 
-"... meaning that a capability requires certain=C2=A0
-operations to be implemented by the backend"
-
-Maybe s/certain/multiple and we could even mention that if a frontend is in=
-terested
-in knowing that a operation is not supported, the error code can be checked
-(though this could be obvious already).
-
-Let's see what Jonathan and others thinks about it.
+What I have in mind would be really to do the same as regulators do. If you=
+ call
+regulator_get() then the consumer really assumes a regulator must exist. Bu=
+t if it
+is something the kernel does not control we get a dummy one with very limit=
+ed
+functionality/stubs. If you call regulator_get_optional(), then the regulat=
+or is
+really optional and might not physically exist. Seems very similar to what =
+you have.
 
 - Nuno S=C3=A1
-
-
-
-
-
 

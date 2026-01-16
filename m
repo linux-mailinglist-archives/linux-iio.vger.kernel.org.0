@@ -1,59 +1,59 @@
-Return-Path: <linux-iio+bounces-27866-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-27867-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B37AED38379
-	for <lists+linux-iio@lfdr.de>; Fri, 16 Jan 2026 19:06:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 05D63D3843E
+	for <lists+linux-iio@lfdr.de>; Fri, 16 Jan 2026 19:27:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 3B0DE302651C
-	for <lists+linux-iio@lfdr.de>; Fri, 16 Jan 2026 18:03:52 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 0954130AF1E4
+	for <lists+linux-iio@lfdr.de>; Fri, 16 Jan 2026 18:27:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7E0539B496;
-	Fri, 16 Jan 2026 18:03:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D67D3A0B3D;
+	Fri, 16 Jan 2026 18:27:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IxZnTOJR"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="P4CYF147"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A1A2335573;
-	Fri, 16 Jan 2026 18:03:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E86F3A0B27;
+	Fri, 16 Jan 2026 18:27:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768586630; cv=none; b=EBBr+oUM0MHP8uJ9UOyYkQZhNLVBkltzdZlVtHD77z762ikqMlnoC08W0l/bfwUVGAE4uGV4vM9N4tsI3cO0ANFnva1Efps8abpaG1LGWW2DMhkk85XK/n8NIRvO20QWQ/1UdhHDgdI3NBRctRA9NW/r1fxM4QH0ADLmB1SRiDI=
+	t=1768588045; cv=none; b=iyHoEuUAZXUC1rBStHTX7FbOUkdg8oS7XkRru/XHfQi8FthDlp3nac9zGTAKOFb6gHGsK4gaT5sz+64qsHdw0BzddeP2yTxe+EldOa7RJjn0BXnyG9OPcedRlUXAGDLmBCnQd58sRSrIAF2TotJtqCnAth5CxiB6vUI6Zrsp7jM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768586630; c=relaxed/simple;
-	bh=TTR0f4ZKlXR4PJn/VYIMKKYy5Gy/58/TnXXuQffOpmc=;
+	s=arc-20240116; t=1768588045; c=relaxed/simple;
+	bh=XaUJtlMPYF5HngWcYEwuheLzlEPLMGeAZCDJpOapo9M=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=XvaVH4LVXDurIqR4BW8/C2lr5x7rk+76C4F9W4WJkpftYR0Gbz3HhHj6hIAJdAw3j+NY+ixAqufvGG8naKmegm7abKexoDOqmDkAc+XYUMOsM2x3uDo7/u7K6m1p+kUc2DPnS9iqwMqa9gsoVQ/3sXwUS83Eo9QIe+pVdTXyDN8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IxZnTOJR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 131C8C19422;
-	Fri, 16 Jan 2026 18:03:45 +0000 (UTC)
+	 MIME-Version:Content-Type; b=EEefrWlVC+WZktEdcFnHIvUN8iYejVfT+Z5MFX05earFTlZaOPY1H3S6tJA3k1OAPFSQrrzCwE7Hoyqm4yk3dzqSXcrLz38D83YJa2Hvau0y4jwhd70hJpO8lCs8bgMGcOJbcSa4IG05H5ylPAQb22iLkrVhjLSGt6ysF9L+rs0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=P4CYF147; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7D85C19422;
+	Fri, 16 Jan 2026 18:27:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768586630;
-	bh=TTR0f4ZKlXR4PJn/VYIMKKYy5Gy/58/TnXXuQffOpmc=;
+	s=k20201202; t=1768588044;
+	bh=XaUJtlMPYF5HngWcYEwuheLzlEPLMGeAZCDJpOapo9M=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=IxZnTOJRg43nAr8UO4WKQhirSq00ECTnYsCtnCbr3xF5G9ZPLkH+teaKrrPQWjGL+
-	 IRr1lyOcoXMgNiLHFvdxuIk7S+Hrsh7TUuI96MFv7tTFFQIfHGejsAPDx484OaVY4n
-	 3/9+QXWbrmME2Wm6ZOGRnMZsNDudn25j5CrZNve3tQ9bFwwTA1loIEyHU6WgFB6prJ
-	 S+Kou4ZS2psoymsWpZrFLMd3FqsqPFgwWpYR2+HVHdRkpfv12VBh8I/K1NUzaNMbkK
-	 63QX9Ncf82G2YaI9kam8l6oSoH0AY+jfQ0qaei/yb/z0kw3L7uuvDM429BffnR7Yto
-	 JOObsOW5V/J8w==
-Date: Fri, 16 Jan 2026 18:03:41 +0000
+	b=P4CYF147pIXXYUJAjnzG0TQ7/puM685ScCoQXj7LgVuwnyV2a1Ea/gfX8zIrR9wSm
+	 96BlqAEbJCXFDnZs3uJ9yLhxYcrAC9Dk76rCPTPICxx5DBV+ZLJ+Idsz4K8UAZ4j9e
+	 G6vviJGukJnQ1xC3A9LiGEB/9CR8Zi0EI1HJENe7O/NfwRdC6XHhcSB/xKgq+bMeLy
+	 YRK3/u6phkoYjXcOcIY17K39z1GcmXGQshgipKOzeW68jDqOwRXgRNphbb0hPjLXJk
+	 9SFulxul+O+lBtsIKf71mOKlMZ8FDtyYGwd4C6pNeBchZoU/lu2yeuNHj48n5g5xhN
+	 bm5URfJQabk8A==
+Date: Fri, 16 Jan 2026 18:27:16 +0000
 From: Jonathan Cameron <jic23@kernel.org>
 To: Francesco Lavra <flavra@baylibre.com>
 Cc: Lorenzo Bianconi <lorenzo@kernel.org>, David Lechner
  <dlechner@baylibre.com>, Nuno =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>, Andy
  Shevchenko <andy@kernel.org>, linux-iio@vger.kernel.org,
  linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 1/3] iio: imu: st_lsm6dsx: set buffer sampling frequency
- for accelerometer only
-Message-ID: <20260116180341.6c0556cd@jic23-huawei>
-In-Reply-To: <2ba028f8a6239c821da80ff487b9df5536e58169.camel@baylibre.com>
+Subject: Re: [PATCH 3/3] iio: imu: st_lsm6dsx: add support for rotation
+ sensor
+Message-ID: <20260116182716.2ff8925f@jic23-huawei>
+In-Reply-To: <d09ca6f843f75be5c5726eeab95063ea0e7c99cc.camel@baylibre.com>
 References: <20260109181528.154127-1-flavra@baylibre.com>
-	<20260109181528.154127-2-flavra@baylibre.com>
-	<20260111161857.4f8b4c35@jic23-huawei>
-	<2ba028f8a6239c821da80ff487b9df5536e58169.camel@baylibre.com>
+	<20260109181528.154127-4-flavra@baylibre.com>
+	<20260111164651.56a0cf14@jic23-huawei>
+	<d09ca6f843f75be5c5726eeab95063ea0e7c99cc.camel@baylibre.com>
 X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -64,77 +64,63 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, 12 Jan 2026 18:10:32 +0100
-Francesco Lavra <flavra@baylibre.com> wrote:
 
-> On Sun, 2026-01-11 at 16:18 +0000, Jonathan Cameron wrote:
-> > On Fri,=C2=A0 9 Jan 2026 19:15:26 +0100
-> > Francesco Lavra <flavra@baylibre.com> wrote:
-> >  =20
-> > > The st_lsm6dsx_hwfifo_odr_store() function, which is called when
-> > > userspace
-> > > writes the buffer sampling frequency sysfs attribute, calls
-> > > st_lsm6dsx_check_odr(), which accesses the odr_table array at index
-> > > `sensor->id`; since this array is only 2 entries long, an access for
-> > > any
-> > > sensor type other than accelerometer or gyroscope is an out-of-bounds
-> > > access.
-> > >=20
-> > > To prevent userspace from triggering an out-of-bounds array access, a=
-nd
-> > > to
-> > > support the only use case for which FIFO sampling frequency values
-> > > different from the sensor sampling frequency may be needed (which is
-> > > for
-> > > keeping FIFO data rate low while sampling acceleration data at high
-> > > rates
-> > > for accurate event detection), do not create the buffer sampling
-> > > frequency
-> > > attribute for sensor types other than the accelerometer. =20
+>=20
+> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0const struct st_lsm6dsx_re=
+g *mux;
+> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0int err;
+> > > +
+> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0mux =3D &hw->settings->sf_=
+settings.page_mux; =20
 > >=20
-> > I'm not following why we need to drop this attribute for the gyroscope.
-> > Perhaps lay out what the combinations of controls are and the attributes
-> > we end up with. =20
+> > Just to check, can you use regmaps support for paging instead of doing
+> > this by hand?
+> > That would avoid future problems with enabling caching or similar =20
 >=20
-> It's not like we need to drop this attribute, it's just that I don't see a
-> need for it. The only reason I added this attribute was to be able to
-> control (e.g. lower) the rate of data coming from the sensor while
-> maintaining a high accuracy for event detection; and accurate event
-> detection requires a high sampling rate for the accelerometer.
+> No, the chip has multiple register sets with overlapping addresses, and
+> struct regmap_range_cfg is not usable here.
 
-Ok. So key here is for accelerations we are looking at impacts as a typical
-use case, whereas gyroscope tends to be slow orientation change stuff.
-That sounds a bit usecase specific. If someone is using these to detect sha=
-ft rotation
-issues they are going to care about sampling rates on the gyro as well,
-or is there something inherent in the gyroscope events (i.e. maybe there
-aren't any gyro events?) that makes this not relevant?
+Paged addressing always has overlapping addresses, so I'm not following.
+The trick this does is to map those higher pages to a fake set of addresses.
+An example is the ICM42600:
+https://invensense.tdk.com/wp-content/uploads/2020/04/ds-000347_icm-42688-p=
+-datasheet.pdf
+for a suitable datasheet (some of the newer parts have a much more complex =
+scheme)
 
-> So the
-> gyroscope is not involved here, and the attribute is only needed for the
-> accelerometer.
+I took a look at the datasheet and seems there are multiple types of paging
+going on and effectively ends up with two nested paging controls. So fair e=
+nough it
+doesn't fit here.
+
 >=20
-> Before this change, we have:
-> - accel IIO device with separate samp_freq and buffer/samp_freq
-> - gyro IIO device with separate samp_freq and buffer/samp_freq
-> - (optionally) external sensor IIO devices with separate samp_freq and
-> buffer/samp_freq (and trying to set buffer/samp_freq for these triggers an
-> out-of-bounds array access)
+> >  =20
+> > > +
+> > > +static
+> > > IIO_DEV_ATTR_SAMP_FREQ_AVAIL(st_lsm6dsx_sf_sampling_freq_avail);
+> > > +static struct attribute *st_lsm6dsx_sf_attributes[] =3D {
+> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0&iio_dev_attr_sampling_fre=
+quency_available.dev_attr.attr,
+> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0NULL, =20
+> >=20
+> > No comma as nothing should come after this.=C2=A0 Ideally would be repl=
+aced
+> > with
+> > code using the read_avail callback and appropriate bit set in the
+> > info mask avail bitmaps. =20
 >=20
-> After this change, we have the accel IIO device with separate samp_freq a=
+> The read_avail callback would require available values to be in an int
+> array, with one of the available IIO_VAL_* formats, but the driver uses a
+> table (similarly to other parts of the existing code) where frequency
+> values are expressed in mHz (which does not match any IIO_VAL_* format) a=
 nd
-> buffer/samp_freq, while the other IIO devices have only a single samp_freq
-> attribute.
->=20
-> > As you note in the cover letter we can change this now with ABI issues =
-as
-> > it is just in my tree, so I don't mind the change, just want to
-> > understand
-> > it a little better than I currently do! =20
->=20
-> It's not just in your tree, it has been pulled into Linus's tree for 6.19.
-Bit tight to get a fix in, though I gather we are going to rc8 this time
-so maybe.
+> are interleaved with corresponding hardware register values. So we can't
+> use the existing available frequency values in a read_avail callback.
+
+You would need to do some data mangling to create the relevant table in ord=
+er
+to use that callback. We can always do that later I suppose if we find
+that it matters for some inkernel consumer or other reason.
 
 Jonathan
 

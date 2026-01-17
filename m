@@ -1,76 +1,76 @@
-Return-Path: <linux-iio+bounces-27900-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-27901-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 307A8D3908A
-	for <lists+linux-iio@lfdr.de>; Sat, 17 Jan 2026 20:33:22 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id B6774D3909F
+	for <lists+linux-iio@lfdr.de>; Sat, 17 Jan 2026 20:43:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 7945B301F8FB
-	for <lists+linux-iio@lfdr.de>; Sat, 17 Jan 2026 19:33:12 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D97B330184DC
+	for <lists+linux-iio@lfdr.de>; Sat, 17 Jan 2026 19:43:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E1E492DEA93;
-	Sat, 17 Jan 2026 19:33:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D402D2DF128;
+	Sat, 17 Jan 2026 19:43:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="giw/Gp7r"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="U/gI5qRL"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ua1-f45.google.com (mail-ua1-f45.google.com [209.85.222.45])
+Received: from mail-vk1-f177.google.com (mail-vk1-f177.google.com [209.85.221.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62D8D2877CD
-	for <linux-iio@vger.kernel.org>; Sat, 17 Jan 2026 19:33:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 502B02DCBF3
+	for <linux-iio@vger.kernel.org>; Sat, 17 Jan 2026 19:42:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768678391; cv=none; b=CysgQYSELuv4NqtAErInXga6gaMnJ657sBFWyzHyVTpvUARjyLQVz02tC6ntkEFiSiphOPfyYRthW1O7tRdZg50Rw3WmNWtTnkcShIhNJCecXVJnLt78ZrnAGtmjNoDxlvLE4KRSYZPjVMMwi+mvZiNNOF64Y/0ZkbYzrHQUTSI=
+	t=1768678980; cv=none; b=lbx8MSmRGX0AD3QbIgqBGo+yNdbIc5CQvxMEVZA7vKfy6T9axo9RZEcsu8M4vzj/wBBhPbGBdnOuBG/cK3o49o4wSaTiZLvK05RuoimRg0dw0In1UJPbMVTP9F0EchhHKCKSJ1vN1Ehn1GuH00UfbdCAw2UugJKM5NN1yVypTVU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768678391; c=relaxed/simple;
-	bh=XA5Os3nG8Cu1wG7aVk4y/cruV4b/sDP00pOQjMtqfwU=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
-	 References:In-Reply-To; b=kz1Kj/Y+kj0MWrWvPWcCXst6hxI40irt7tdjZnQ+rW8CYA1qYQNl7laxsp2DfeUb9d+9sDaPi/2r6l+8XeSNW3DtP5b8tjRhm1T6yd9NBsJ6PVEx29ndaw3FCX5iI2l4X2CAX9GSm1dwQbUicF/AV+3dMDStqm7BI+VKCZ74OtQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=giw/Gp7r; arc=none smtp.client-ip=209.85.222.45
+	s=arc-20240116; t=1768678980; c=relaxed/simple;
+	bh=kyADtZzJjqa9S3qeCD1Nc9zebIgMdiyTsz6JgRZYFxM=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Subject:From:To:Cc:
+	 References:In-Reply-To; b=A2jFCXfGragxRf1MFCJbziNl7xqMGOz0T1DDeVGnYwrGb6jXxnQy9Kv1i9uQlBa+29YoLGm0NeAn7+hMagPe0FvW2vFiNf3S3f6ueapVqWnZ73QWH5v5LjJYJyky/yV88IZlhCgukSjfrlXVtt6oBpNsv/hB9Wr280qmSnq/MBY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=U/gI5qRL; arc=none smtp.client-ip=209.85.221.177
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ua1-f45.google.com with SMTP id a1e0cc1a2514c-93f542917eeso1018616241.2
-        for <linux-iio@vger.kernel.org>; Sat, 17 Jan 2026 11:33:09 -0800 (PST)
+Received: by mail-vk1-f177.google.com with SMTP id 71dfb90a1353d-5636470c344so2303276e0c.2
+        for <linux-iio@vger.kernel.org>; Sat, 17 Jan 2026 11:42:59 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1768678388; x=1769283188; darn=vger.kernel.org;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
+        d=gmail.com; s=20230601; t=1768678978; x=1769283778; darn=vger.kernel.org;
+        h=in-reply-to:references:cc:to:from:subject:message-id:date
          :content-transfer-encoding:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=B/QjNU03Un5xr+pOfz4kD/Wx3TW7UJG3zU+9aNTvu14=;
-        b=giw/Gp7rVeR8NaoPtQx120Y7Md6q70T3hlKZIqXa1Z0vgEtJb9nEROe4qDJdfZdgdP
-         m1UQ7o+bqB2mxYfDxJN9/Rt4u4EV5ifSfM3D7ZgkcJ/ZtoGr7QLGQcaa2dcXRoF2cLkM
-         Swr2cjy6GZPpcjAuHUsnbX8sopIVEGU1K1zdC0IZHGz0UZF9E2BpM5gAzO4DR9umkOp/
-         neB3sMJ+a36Ky8LV2BVay4Wl34Zs3+qCiF+OPzs6JGoS1NyCtA1bHtHPjZ4uclWeEbYt
-         OVPepibokkpmXTAUIkMFI/qt5ZQoeaK8rL/6nsd+y/iUeEaNAjgJD7Kg4buiF8Jb39EZ
-         /7nw==
+        bh=jX+S0Sb3/TORvv49jMJHt7cR5imR7FosT/IXWBB8ZKA=;
+        b=U/gI5qRLoIly0KT63JIlGIm+3DHlg4T+W/E0uiPXkgDD1oz6s3i+dpVigR/poR5Itr
+         CW78Jo3Hsg0BW74k+rhtAG4acQqzOlY4oJhwkvwWDND4JMULqP779pSYf7XYRZgJCh/Q
+         Nv1iIpZFzIRVdVWwjWq8dx/AlzgTL4FfV+7Mzd935hSdH7KG0Pouq1FEdxkDTT4Q+2G0
+         KBK6XWrfOFF6N1NvBAyutfzWljyuVnY7HXBCqNNcg/WYveHlDApOqd7W8AWWheyJOB2r
+         OQVKEc3S/BWjSKlaogVytsYHOF6+JChjB2z6sTkSxMlstFO5BcmLEUbQXNdTKW+GyGIL
+         esaA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768678388; x=1769283188;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
+        d=1e100.net; s=20230601; t=1768678978; x=1769283778;
+        h=in-reply-to:references:cc:to:from:subject:message-id:date
          :content-transfer-encoding:mime-version:x-gm-gg:x-gm-message-state
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=B/QjNU03Un5xr+pOfz4kD/Wx3TW7UJG3zU+9aNTvu14=;
-        b=tKwXpeDKeHkdNjY7lZiU5E0Z9PZ+V0Tcrxcet7oeGq6tB7+dmyUlgVKJ6InH2klobQ
-         lF9fmV+JFwioLtblLUUA5Q0IcFpmeQ6aqL3Z57pMzYZjcICe8Owa1wqbmTl4/mVHdbxm
-         HVH11Vh+gHYc+kZQuJ4HY9aRjps6oZb0Jnq/YhwZiQiUQ1zL6gCDPmAlvuvor6aL/0l0
-         0dOsllKz8yzTyb+rQRjyM225Q3aZ36fNBrPA44CVd/kVkTNWcBV5/pbpiEJIoucrzeN6
-         YODAMqmgMBYmbB48Tu+yshZmiGbhvixqtTy27pJBN3KoX0pgDhTZo3kUyJEUG+XaMN6c
-         3HIw==
-X-Forwarded-Encrypted: i=1; AJvYcCUrDf27zr3KYtmUMWPmLJQHR9mwmW60K3EyxAhtbUwjMZsCPJmLpggI89rlAzyCrE3CygTwD+ZWbCI=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwmvriR622BGgAgAmflPqLYoBQ9JANHdiXR5+R0PCFV8tXSgLYJ
-	yY+fh4lduYG2NpOMCCNPnCWls1z1+FyRjgEOat6TT1Kfn1oCGm+yPUWH
-X-Gm-Gg: AY/fxX4v+l+WY/DOBvya0zattiW2PHmrtYbjp5wWpT7oK8SeeCk+p9GxEGaLUuO9Hu0
-	r+r0CAjLFsjcs0ulUSOkmhzfCdGOeHVSnCDEDdxT/Kt8b/dxdgzu1WrjygKqQhEDNOafBEw4Kr7
-	swttrnJACc45tPPNSJahFx9CXpa057cH0YiRJEGs9qVPD/qZtrP39M8dGfFAgduA6Etgq3Aanzl
-	GmBQpsP7o0YJAOzAVlNFN+BQqASzKkscgG5LpnNhVd6ykE7rHVDurxtoNZvtxyT8w4TLNvGbNdn
-	yK+S1tgZi6IAiyzbepJtUWQXJ+fhpr5Sy1BQAOh0RN0BhC/ERPewuQRVyAKAEFdpjcvm8sIOl0a
-	2QPAIEjmHnet4KhokhQRlwBKIkCJJvOB2/OLzIvLEZwJfoLgahDvarYqLY4Y+eRUwAhjQeS5K4c
-	rw2w==
-X-Received: by 2002:a05:6122:3d48:b0:55b:74ac:72cf with SMTP id 71dfb90a1353d-563b738c487mr1679358e0c.17.1768678388225;
-        Sat, 17 Jan 2026 11:33:08 -0800 (PST)
+        bh=jX+S0Sb3/TORvv49jMJHt7cR5imR7FosT/IXWBB8ZKA=;
+        b=FiS3V1IN4mioMO7PyYr6ktxGoSWWZFzthTRSJmN5t4DH7bZ/4ctvSeMBxBLUy2KNbV
+         dt/k3M/+/ErX8ZbRP3g++eKMis5pcyEkf9nXM98SfBJhXFHfvtEsCfPaZ4ZePWjOiVdj
+         NktHvkF6UNsorRUs9KZ6AizwcF1yx18h+EG/KxXPMqrQBsJqVg8rDlbQMjMDRolCO/Uh
+         zpZPUzNlbbuEtgibwV9FmvjZIRbLb/Cb5Xi+S9ql/RbzAuCeQKmKEjaLhN79yXrNyzRz
+         7H2cJXctBdTZv2aM0a51n+/715jGufr5V2NpwlEBcUzZEl5mHquGvb0HoCUsmTM6VuuP
+         3giQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWK8T/P2JIqhLeBxUYsl03Q6gm/dA1hHPILw7iclyu4huKIG/WVTTmzLppLqECdG+i2JIWl+cV9fdg=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzuF3too2Zmo7OO/vhr4W/csfnx48ihNdsTI0KpO4878LdCTnBf
+	HsvbYS8+GEEhxCzIWrr3x9jZumYdjPGX8xNFQxEmdU97gpyETtOYxWop
+X-Gm-Gg: AY/fxX7kPyw+mJtaRlTYvmd9CCtWoQcQuIlVTJBE4Ccs5CjPeW4t4gzEWw9Ie7LTUL3
+	kKSU0pXf1VYjLX2Hyl4lXukVqbt1y19QuBD8r8cSAqHOTF8yNeNUhZZuBjhH5aX9YbZzDNUgY0E
+	zkzogPkvzrS2j1/08SBrkjJhBrf3xlUZEwfS2waL8ZKlySq6748L6J3DrTvsaR8NVs2iXPsTRH2
+	zL4htL8lLaoAdULiOaYuGZNvsTl+xmyWOuSVKcdMLyahwleOtLABaW+Ht6aoV6qaV0DlUuDRihk
+	j++FNH6GT3i3rAOThb1wEGWHqW61AsydPQXJOxbPVknhtfF9j383bAKYiRr8BP4fV7EYY2itHES
+	c/ngDeuNOgSZThUx25y+plcs2y2vcYMtScMGaIKGOKKVHH8GptpADMjDidjhXoGTal0JfNJVn/F
+	lVGA==
+X-Received: by 2002:a05:6122:1791:b0:557:ddc4:dea4 with SMTP id 71dfb90a1353d-563b5b8cfaamr2316062e0c.5.1768678978135;
+        Sat, 17 Jan 2026 11:42:58 -0800 (PST)
 Received: from localhost ([2800:bf0:82:11a2:7ac4:1f2:947b:2b6])
-        by smtp.gmail.com with ESMTPSA id 71dfb90a1353d-563b7123621sm1573049e0c.22.2026.01.17.11.33.05
+        by smtp.gmail.com with ESMTPSA id 71dfb90a1353d-563b71226a0sm1568589e0c.20.2026.01.17.11.42.55
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 17 Jan 2026 11:33:07 -0800 (PST)
+        Sat, 17 Jan 2026 11:42:57 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -79,8 +79,12 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Sat, 17 Jan 2026 14:32:59 -0500
-Message-Id: <DFR45QMTKRCN.2QC7P7DJDIDYD@gmail.com>
+Date: Sat, 17 Jan 2026 14:42:54 -0500
+Message-Id: <DFR4DC4NN16R.2365N6R1B6A9Z@gmail.com>
+Subject: Re: [PATCH v3 0/7] iio: core: Introduce cleanup.h support for mode
+ locks
+From: "Kurt Borja" <kuurtb@gmail.com>
+To: "Jonathan Cameron" <jic23@kernel.org>, "Kurt Borja" <kuurtb@gmail.com>
 Cc: "Andy Shevchenko" <andriy.shevchenko@intel.com>, "Lars-Peter Clausen"
  <lars@metafoo.de>, "Michael Hennerich" <Michael.Hennerich@analog.com>,
  "Benson Leung" <bleung@chromium.org>, "Antoniu Miclaus"
@@ -91,79 +95,73 @@ Cc: "Andy Shevchenko" <andriy.shevchenko@intel.com>, "Lars-Peter Clausen"
  <andy@kernel.org>, "Guenter Roeck" <groeck@chromium.org>, "Jonathan
  Cameron" <Jonathan.Cameron@huawei.com>, <linux-iio@vger.kernel.org>,
  <linux-kernel@vger.kernel.org>, <chrome-platform@lists.linux.dev>
-Subject: Re: [PATCH v3 1/7] iio: core: Add and export __iio_dev_mode_lock()
-From: "Kurt Borja" <kuurtb@gmail.com>
-To: "Jonathan Cameron" <jic23@kernel.org>, "Kurt Borja" <kuurtb@gmail.com>
 X-Mailer: aerc 0.21.0-0-g5549850facc2
 References: <20260106-lock-impr-v3-0-1db909b192c0@gmail.com>
- <20260106-lock-impr-v3-1-1db909b192c0@gmail.com>
- <20260116201847.3560a2e2@jic23-huawei>
-In-Reply-To: <20260116201847.3560a2e2@jic23-huawei>
+ <20260116203353.59a2a00e@jic23-huawei>
+In-Reply-To: <20260116203353.59a2a00e@jic23-huawei>
 
-On Fri Jan 16, 2026 at 3:18 PM -05, Jonathan Cameron wrote:
-> On Tue, 06 Jan 2026 03:06:56 -0500
+On Fri Jan 16, 2026 at 3:33 PM -05, Jonathan Cameron wrote:
+> On Tue, 06 Jan 2026 03:06:55 -0500
 > Kurt Borja <kuurtb@gmail.com> wrote:
 >
->> Add unconditional wrappers around the internal IIO mode lock.
+>> Hi,
 >>=20
->> As mentioned in the documentation, this is not meant to be used by
->> drivers, instead this will aid in the eventual addition of cleanup
->> classes around conditional locks.
+>> In a recent driver review discussion [1], Andy Shevchenko suggested we
+>> add cleanup.h support for the lock API:
 >>=20
->> Signed-off-by: Kurt Borja <kuurtb@gmail.com>
-> Hi Kurt,
+>> 	iio_device_claim_{direct,buffer_mode}().
+>>=20
+>> Which would allow some nice code simplification in many places. Some
+>> examples are given as patches, but the last two are the biggest
+>> differences.
+>>=20
+>> In this version I dropped the RFC tag, as the general feeling is to go
+>> through with this after some modifications. Main one is the addition of
+>> IIO_DEV_ACQUIRE_{BUFFER,CLAIM}_MODE() wrappers to avoid drivers using
+>> the guard classes directly. I also added comments on the forbidden ways
+>> to use this API but I definitely still take suggestions on this.
+>>=20
+>> For now I dropped iio_device_claim_buffer_mode() rename, as this point
+>> is still being discussed. My suggestion based on the RFC discussion is
+>> to do it, but in a separate patch (using coccinelle) and while we're at
+>> it rename the whole API like this:
+>>=20
+>> 	iio_dev_mode_lock()
+>> 	iio_dev_mode_direct_trylock()
+>> 	iio_dev_mode_buffer_trylock()
+>> 	iio_dev_mode_unlock()
 >
-> I'm being a bit conservative in looking to apply this so apologies
-> if it seems like I'm ignoring you! I wanted to give plenty of time
-> for others to take a look.
+> I'm not a huge fan of flag days though this is entirely in direct mode
+> so I can just do it at the start of a cycle.
+>
+> Anyhow, that's a job for another day where we can bikeshed the naming
+> yet again.
+>
+> I do like unifying the unlock though.
 
-Hi Jonathan,
+I can send the patch, gather some feedback and then send a rebased v2 at
+the start of the next cycle (or whenever seems best).
 
-Oh -- don't worry. It's understandable for API changes. Thanks for
-clarifying!
+Should be pretty trivial, after I learn a bit about semantic patches
+( famous last words? :) ).
+
+If you feel up to it, I'm up to it.
 
 >
-> A few comments, but if we go with this version I'll tweak the
-> punctuation if I remember whilst applying.
+> Patch 5 never made the list for some reason.
+> https://lore.kernel.org/all/20260106-lock-impr-v3-0-1db909b192c0@gmail.co=
+m/#r
+>
+> (I thought I'd accidentally deleted it!)
 
-I will fix the ones you mentioned here. Apologies if there is more.
+Yep, it seems it never reached. I'll make sure it does this time.
 
-...
-
->> diff --git a/include/linux/iio/iio.h b/include/linux/iio/iio.h
->> index 872ebdf0dd77..aecda887d833 100644
->> --- a/include/linux/iio/iio.h
->> +++ b/include/linux/iio/iio.h
->> @@ -661,6 +661,9 @@ void iio_device_unregister(struct iio_dev *indio_dev=
-);
->>  int __devm_iio_device_register(struct device *dev, struct iio_dev *indi=
-o_dev,
->>  			       struct module *this_mod);
->>  int iio_push_event(struct iio_dev *indio_dev, u64 ev_code, s64 timestam=
-p);
->> +
->> +void __iio_dev_mode_lock(struct iio_dev *indio_dev) __acquires(indio_de=
-v);
->> +void __iio_dev_mode_unlock(struct iio_dev *indio_dev) __releases(indio_=
-dev);
-> This is an interesting notation choice as there are several locks embedde=
-d
-> in iio_devs but I think it is the only one we want to expose so fair enou=
-gh
-> if we don't see any false warnings from this!
-
-The previous implementation also used __acquire(indio_dev) and I do
-believe is the best choice, for the reasons you mentioned. Also the
-mlock is inside iio_dev_opaque and we don't have access to that in
-iio.h.
-
+>
+> Thanks
 >
 > Jonathan
 >
->>  bool __iio_device_claim_direct(struct iio_dev *indio_dev);
->>  void __iio_device_release_direct(struct iio_dev *indio_dev);
->> =20
->>=20
+>
 
 
 --=20

@@ -1,50 +1,51 @@
-Return-Path: <linux-iio+bounces-27962-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-27964-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 810D5D3AD2D
-	for <lists+linux-iio@lfdr.de>; Mon, 19 Jan 2026 15:55:12 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 56F52D3AC88
+	for <lists+linux-iio@lfdr.de>; Mon, 19 Jan 2026 15:43:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id B1AFD3061A01
-	for <lists+linux-iio@lfdr.de>; Mon, 19 Jan 2026 14:37:39 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 896613054426
+	for <lists+linux-iio@lfdr.de>; Mon, 19 Jan 2026 14:37:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E5ED37E2F8;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A3C437F75E;
 	Mon, 19 Jan 2026 14:37:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EsqGTelL"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="efAt2KMr"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BB6F27E07E;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44120327783;
 	Mon, 19 Jan 2026 14:37:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768833450; cv=none; b=RGN60wtZ2lKitYqtcNzj/8gcyjWtmcn0e4FLmpYCSl2HvzXf4M5cOWkMFOPtafV7k3A29oZpWPSCDdl01mU49t8Zssx2s4E44y3zmYs8nn7bRtQStDYVg5bNXtIOtPlyZcqHHm1g0Qf+WKXfRrne1JZQbEZN0JZAclJzr/8cs8s=
+	t=1768833450; cv=none; b=CkSLJyNe4KZrnaKANbE8tzgm+RChCBOK+K+r0bB77QiZHXZcBIMkQ3OOf9ij4JOz4WVNJnQlaiULNuIq9b62GOABqpHp89CSwyi6jeKefBlMOomKdrdCEa1gEXtcK2dDb3PF5sxwDodNdBOXihV76eXj6jIDbSMgyREz7/zqRh4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1768833450; c=relaxed/simple;
-	bh=d/8RMpsl29Y8TYdguvIdcsQnNBPTICFlLMW095KZ3Uc=;
+	bh=xPOhEhJe2siRPjS/kJC/6NA/KZx23W+i1g4sCUKpoFY=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=SO6AXy0DpOetOUHShm7tfSp8BYPADUAZGqjpXzPXZzWjA4Ftk2O/XgNgMfrBrPGAKoya5pg5054JMTv3HyIQo301nuQq71DJvUzB7BGMIRj4iP+GXKokRy33VCUos+sFVPx+fjWuN8JB1l19zP55mOsG77mugnIgtc7cA0ax9d8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EsqGTelL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 0CE65C19423;
+	 In-Reply-To:To:Cc; b=qHr27tcNbssPPJNELuG13JEhSg+HBP27UZ/MJDdQzKDfSCG5ZOgWaMmbm/zMCJ1vo6xu+YTkEY+A1DbJSHGShvGWtgYW5QO/YH3GHrXSgSpPcWya2eNXtg3rrtIWaFYNQ1lAvLf3s2Db/UT9YH7Sb7Kasx5doTPfRdwUmYbp29A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=efAt2KMr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 1394FC2BC9E;
 	Mon, 19 Jan 2026 14:37:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1768833450;
-	bh=d/8RMpsl29Y8TYdguvIdcsQnNBPTICFlLMW095KZ3Uc=;
+	bh=xPOhEhJe2siRPjS/kJC/6NA/KZx23W+i1g4sCUKpoFY=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=EsqGTelLaLd7E5ajbh78dPbDs64COBrxc1rHcd4PvxMW3hOMD9PYprRKZpuXI3vJS
-	 IxX1bMJl+wFDvBPV2aGVl02Vrf/fxibUrlvTPGcdvaQejCq9nXQe17cXy8sNVmY62J
-	 1ykG7QQ0L9+huc5ljeWpePQ1i0oZKzbjw0fvJnhvBW3IVt0cnHcwDNyscGir+4eqk+
-	 sL73vzdbiaaLOoszEIMjCoOoWT9hP1Ui8AFpuMcocOI+6h3WqiP8Oec3K2qLXiVZ6s
-	 9Mn8K3PAOmUyMciEOBKBteAw0lgLq9Dut74ex42RaPNrO7apWunWgu+xXX/PUU26px
-	 rH9o7ZapYMeBw==
+	b=efAt2KMrMLppYw+4RUV62Ws4oUbimR8M1+HGWZZT0FMDaiHWxdH9R0nvd4qBDbwtm
+	 61xUCKOOWiaOE91qqRt9jLvg04PVIESJK+vNj2B24TE0ksPeNIRCpGta5cLRCZbGBb
+	 ITAAOm1ooevK5rPvaRBBs3MF+0oNpUeOR3U6HDeX1lP72DFRam545WxLAqjPzaIObo
+	 DZqKf0JWVzqcML0vIUkZzyRPMNB2kIirSsq0yDRhx5FVaNNwdjjZ15nGXiAW9+2eNs
+	 lCP9TUeaYG2c/NElbQemZ7l68FpcrJIfyL0MhWis6I+b/kpETlXzy+6RNT9qrPwdeb
+	 A6OhTq8QNDMvw==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id F260FD29C33;
-	Mon, 19 Jan 2026 14:37:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 0CC9CD29C30;
+	Mon, 19 Jan 2026 14:37:30 +0000 (UTC)
 From: Rodrigo Alencar via B4 Relay <devnull+rodrigo.alencar.analog.com@kernel.org>
-Date: Mon, 19 Jan 2026 14:36:56 +0000
-Subject: [PATCH 2/7] dt-bindings: iio: amplifiers: Add AD8366 support
+Date: Mon, 19 Jan 2026 14:36:57 +0000
+Subject: [PATCH 3/7] iio: amplifiers: ad8366: consume enable gpio for
+ applicable parts
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -53,7 +54,7 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260119-iio-ad8366-update-v1-2-8044e23e964a@analog.com>
+Message-Id: <20260119-iio-ad8366-update-v1-3-8044e23e964a@analog.com>
 References: <20260119-iio-ad8366-update-v1-0-8044e23e964a@analog.com>
 In-Reply-To: <20260119-iio-ad8366-update-v1-0-8044e23e964a@analog.com>
 To: linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org, 
@@ -65,11 +66,11 @@ Cc: Michael Hennerich <Michael.Hennerich@analog.com>,
  Conor Dooley <conor+dt@kernel.org>, 
  Rodrigo Alencar <rodrigo.alencar@analog.com>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1768833448; l=3034;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1768833448; l=1344;
  i=rodrigo.alencar@analog.com; s=default; h=from:subject:message-id;
- bh=MBEdUYu8R67rthes6ey0a6hT+KutZfNFQEm2s4twTzs=;
- b=2jvQufCxxYEUOOUxTv/fGM9g28FrsoPfcUranF/D1M2D1HEEl6yJ7XDkcUfc87aRU5Wuw3DGa
- 1E+Hw9QHvhoBCuMU/Xgtovg96uqeJsvqgRq7oLtfWfuQSXa7fV98So9
+ bh=72lAxpPNNVQiH2FXV5I3I6t6Jbf3Jb9inxis9HKayGg=;
+ b=ucKmp4HZErTKFi9sJh+JIsoCqsY/QGNLqSVg7QQSl32tUv5zhJtJfI4iCycjsyP6+xhAmBpXc
+ FiUEq/SJwoOCRtUjswdfirRTeW4ZDJdyst3bWb6gfYCsq7yFgtfS5bm
 X-Developer-Key: i=rodrigo.alencar@analog.com; a=ed25519;
  pk=ULeHbgU/OYh/PG/4anHDfLgldFItQHAhOktYRVLMFRo=
 X-Endpoint-Received: by B4 Relay for rodrigo.alencar@analog.com/default
@@ -79,119 +80,42 @@ Reply-To: rodrigo.alencar@analog.com
 
 From: Rodrigo Alencar <rodrigo.alencar@analog.com>
 
-Add device tree binding documentation for amplifiers and digital
-attenuators. This covers different device variants with similar
-SPI control.
+Some parts may consume enable GPIO to set serial mode (PS pin) or
+powerup the device (e.g. ADA4961's PWUP pin).
 
+Co-developed-by: Michael Hennerich <michael.hennerich@analog.com>
+Signed-off-by: Michael Hennerich <michael.hennerich@analog.com>
 Signed-off-by: Rodrigo Alencar <rodrigo.alencar@analog.com>
 ---
- .../bindings/iio/amplifiers/adi,ad8366.yaml        | 85 ++++++++++++++++++++++
- MAINTAINERS                                        |  1 +
- 2 files changed, 86 insertions(+)
+ drivers/iio/amplifiers/ad8366.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/Documentation/devicetree/bindings/iio/amplifiers/adi,ad8366.yaml b/Documentation/devicetree/bindings/iio/amplifiers/adi,ad8366.yaml
-new file mode 100644
-index 000000000000..7477bb9b5071
---- /dev/null
-+++ b/Documentation/devicetree/bindings/iio/amplifiers/adi,ad8366.yaml
-@@ -0,0 +1,85 @@
-+# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/iio/amplifiers/adi,ad8366.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
+diff --git a/drivers/iio/amplifiers/ad8366.c b/drivers/iio/amplifiers/ad8366.c
+index d06ac786501c..63bb9f0179eb 100644
+--- a/drivers/iio/amplifiers/ad8366.c
++++ b/drivers/iio/amplifiers/ad8366.c
+@@ -43,6 +43,7 @@ struct ad8366_state {
+ 	struct regulator	*reg;
+ 	struct mutex            lock; /* protect sensor state */
+ 	struct gpio_desc	*reset_gpio;
++	struct gpio_desc	*enable_gpio;
+ 	unsigned char		ch[2];
+ 	enum ad8366_type	type;
+ 	const struct ad8366_info *info;
+@@ -281,6 +282,13 @@ static int ad8366_probe(struct spi_device *spi)
+ 			ret = PTR_ERR(st->reset_gpio);
+ 			goto error_disable_reg;
+ 		}
 +
-+title: AD8366, similar Gain Amplifiers and Digital Attenuators
++		st->enable_gpio = devm_gpiod_get_optional(&spi->dev, "enable", GPIOD_OUT_HIGH);
++		if (IS_ERR(st->enable_gpio)) {
++			ret = PTR_ERR(st->enable_gpio);
++			goto error_disable_reg;
++		}
 +
-+maintainers:
-+  - Michael Hennerich <michael.hennerich@analog.com>
-+  - Rodrigo Alencar <rodrigo.alencar@analog.com>
-+
-+description: |
-+  Digital Variable Gain Amplifiers (VGAs) and Digital Attenuators with
-+  SPI interface.
-+
-+properties:
-+  compatible:
-+    enum:
-+      - adi,ad8366
-+      - adi,ada4961
-+      - adi,adl5240
-+      - adi,adrf5720
-+      - adi,adrf5730
-+      - adi,adrf5731
-+      - adi,hmc271a
-+      - adi,hmc792a
-+      - adi,hmc1018a
-+      - adi,hmc1019a
-+      - adi,hmc1119
-+
-+  reg:
-+    maxItems: 1
-+
-+  vcc-supply:
-+    description: Regulator that provides power to the device.
-+
-+  reset-gpios:
-+    maxItems: 1
-+    description:
-+      GPIO pin used to reset the device.
-+
-+  enable-gpios:
-+    maxItems: 1
-+    description:
-+      GPIO pin used to enable the device.
-+
-+required:
-+  - compatible
-+  - reg
-+  - vcc-supply
-+
-+allOf:
-+  - $ref: /schemas/spi/spi-peripheral-props.yaml#
-+
-+unevaluatedProperties: false
-+
-+examples:
-+  - |
-+    #include <dt-bindings/gpio/gpio.h>
-+    spi {
-+      #address-cells = <1>;
-+      #size-cells = <0>;
-+
-+      amplifier@0 {
-+        compatible = "adi,ad8366";
-+        reg = <0>;
-+        spi-max-frequency = <1000000>;
-+        vcc-supply = <&vcc_3v3>;
-+      };
-+    };
-+  - |
-+    #include <dt-bindings/gpio/gpio.h>
-+    spi {
-+      #address-cells = <1>;
-+      #size-cells = <0>;
-+
-+      attenuator@1 {
-+        compatible = "adi,adrf5730";
-+        reg = <1>;
-+        spi-max-frequency = <1000000>;
-+        vcc-supply = <&vcc_3v3>;
-+      };
-+    };
-+...
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 9c8e83470464..0bbeea028cc0 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -1589,6 +1589,7 @@ M:	Rodrigo Alencar <rodrigo.alencar@analog.com>
- L:	linux-iio@vger.kernel.org
- S:	Supported
- W:	https://ez.analog.com/linux-software-drivers
-+F:	Documentation/devicetree/bindings/iio/amplifiers/adi,ad8366.yaml
- F:	drivers/iio/amplifiers/ad8366.c
- 
- ANALOG DEVICES INC AD9467 DRIVER
+ 		indio_dev->channels = ada4961_channels;
+ 		indio_dev->num_channels = ARRAY_SIZE(ada4961_channels);
+ 		break;
 
 -- 
 2.43.0

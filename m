@@ -1,44 +1,44 @@
-Return-Path: <linux-iio+bounces-28017-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-28018-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C246D3B9D2
-	for <lists+linux-iio@lfdr.de>; Mon, 19 Jan 2026 22:26:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 48D41D3B9D3
+	for <lists+linux-iio@lfdr.de>; Mon, 19 Jan 2026 22:26:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 8D8FC3082ECA
-	for <lists+linux-iio@lfdr.de>; Mon, 19 Jan 2026 21:22:29 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 7F2F530837EB
+	for <lists+linux-iio@lfdr.de>; Mon, 19 Jan 2026 21:22:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D47522FFF82;
-	Mon, 19 Jan 2026 21:22:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 811392DF6F6;
+	Mon, 19 Jan 2026 21:22:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hjnPxnLr"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HV5dhI+g"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95DEA2FC009
-	for <linux-iio@vger.kernel.org>; Mon, 19 Jan 2026 21:22:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43E852E8B9F
+	for <linux-iio@vger.kernel.org>; Mon, 19 Jan 2026 21:22:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768857722; cv=none; b=nzrykOdXQ6Wc9i5Zgwb22+2t7EVfqQnEn1Vy+dJKH3sNd8GmewGDdI+Il3OT4c4Qzf/5ZyFGgObM+UXb6+6w4Et4kVgSwdyCMa6Bg6f3/XYfEwmNqrERzw3wr3EL6KJpWjv8IWcRs6/TdcnVWCOEb6XH2AnHbLcRMcZWsIkh9Io=
+	t=1768857726; cv=none; b=pAS4AUBUVxzVVjx9bJQw3Zlc47RZHSN/Wi6e3ydko20Pffw/ReDqENkTRCCuPwJt5EgaeTgssP1gbNKwDB3ukWwUzJLA6BfKahCwgsutnovAZfowxXrjRyKaFEJP2rSeLRYKmDuQ0OEcjiVSBzUsKSOPrF/jqzC5CXYqWJxli28=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768857722; c=relaxed/simple;
-	bh=d12t4z97iDhXKaRjUPouj4Z0ea+Ht3U8SBAHNSxm3fc=;
+	s=arc-20240116; t=1768857726; c=relaxed/simple;
+	bh=4lpDDwrcGvIkbEHaxw2T/PUYhL6QNu4em7Ce1o1c/OY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rjjvj05ERCZ8t2dKcSXl1iz9WUkRXwenDKYjMqicx/E4RY0e6Ns8F7rGKuT9Jwu6FGxmQz+pxvsy9TdP1QhgzeI6vn18/tGrYBz5FBdrekbWJknui0ItWM0Aj5D4j4EVkOVYooc6LfYht3D0GulpBjLsZWUsEjFn1fjthe48TdA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hjnPxnLr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7CE49C116C6;
-	Mon, 19 Jan 2026 21:21:58 +0000 (UTC)
+	 MIME-Version; b=H0DsgqBBQXiBZc4+WirbNd6mod+rlAZDQJuUQ63Vb+STX8iKgRvmsnLdXLY9IpmGWHu4r8eXbHAia+KWUgBek6XQ5ulsvYId8VhhECKkxgoLlzrfQjCushpFQEI/Kr0CDyQ0OKTRZ9B6ueQDd9lccAbJeLEV0kuyT37FOAoUirE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HV5dhI+g; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A22F1C19424;
+	Mon, 19 Jan 2026 21:22:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768857722;
-	bh=d12t4z97iDhXKaRjUPouj4Z0ea+Ht3U8SBAHNSxm3fc=;
+	s=k20201202; t=1768857725;
+	bh=4lpDDwrcGvIkbEHaxw2T/PUYhL6QNu4em7Ce1o1c/OY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hjnPxnLrk2zUox8R0g15J2P1P/LW7qeMrRyyzzIGUd81TKrCSKDd+GDNGTjyrhqjN
-	 qOSog8/JYTk4icx/ny2VewqI7a+Z5UQ4vIKh8ObBkZaE/WytlPTHNs9ljoVZg1Dl/W
-	 XQHuwUAfP1X62IJRjTKTRd+dsSVhirxpNu/9JFjBIlayFncrBsOWN9HWIQw5229F1b
-	 o7U/nIDmxaDl+LkMDq5VmZpWdOU8X9gKkilNLimbfBvzdPX4nulkHt/jR1hjDVGGQ/
-	 vZghZXRTvrTxqEcmkroHfUXMt+Uzj2BiBQL0l3jj2d97bau97dJDJkB45+G3zxqU7w
-	 URToCvGOEW/PQ==
+	b=HV5dhI+gIqfgtYf776ZVDKtm1eVBxcr1Cq3Kb4VUt6pvJcxYDSD/+ZWAKYfVvjKol
+	 JRYm5+EdxV6bbMpYesCUkbcctO3bAyt4RtBUmnCGZ2UwGh+2841V/pdqQch/tyjW0P
+	 bzzwFHLR791YGNQEg+BneMNLtrfLQFGsLdWfXZf4/y10+GXcS/dExSuMC8gUUa6wat
+	 qMjP8Ua5GsSCPH/rqE/l9DKvopi7FFxnK7G+zMF8BB0I1K9UIsKjUSvFufzuIVsCN1
+	 5cNZBxD6VakWrqEdmqOV2GnQok3NgEiGJ8/BnKN+F91Hm0NzVJL/oGKld9WzUlLtwl
+	 6h3eezlEqbDfQ==
 From: Jonathan Cameron <jic23@kernel.org>
 To: linux-iio@vger.kernel.org,
 	Andy Shevchenko <andy@kernel.org>
@@ -51,9 +51,9 @@ Cc: David Lechner <dlechner@baylibre.com>,
 	Cosmin Tanislav <cosmin.tanislav@analog.com>,
 	Alisa-Dariana Roman <alisadariana@gmail.com>,
 	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 08/11] iio: adc: ad7124: Improve include relevance
-Date: Mon, 19 Jan 2026 21:21:07 +0000
-Message-ID: <20260119212110.726941-9-jic23@kernel.org>
+Subject: [PATCH 09/11] iio: adc: ad7124: Replace device.h with more specific includes
+Date: Mon, 19 Jan 2026 21:21:08 +0000
+Message-ID: <20260119212110.726941-10-jic23@kernel.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260119212110.726941-1-jic23@kernel.org>
 References: <20260119212110.726941-1-jic23@kernel.org>
@@ -67,72 +67,46 @@ Content-Transfer-Encoding: 8bit
 
 From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-Drop unused linux/kfifo.h and linux/iio/sysfs.h.
-Replace kernel.h with more specific headers and add other missing
-headers that should be directly included to follow approximate include
-what you use principles.
-
-Justification for new headers from iwyu:
-  #include <linux/array_size.h>          // for ARRAY_SIZE
-  #include <linux/container_of.h>        // for container_of
-  #include <linux/kstrtox.h>             // for kstrtobool
-  #include <linux/limits.h>              // for U32_MAX
-  #include <linux/math.h>                // for DIV_ROUND_CLOSEST, abs
-  #include <linux/mutex.h>               // for class_mutex_constructor
-  #include <linux/slab.h>                // for __free_kfree
-  #include <linux/stddef.h>              // for true, NULL, false, struct_...
-  #include <linux/types.h>               // for bool, u32, u8, size_t, ssi...
+Separate patch to make this change more obvious.
+This driver makes no direct use of anything in device.h but
+uses both include/linux/device/devres.h and include/linux/dev_printk.h
+as well as needing a forwards def for struct device.
+So replace device.h with those headers and the struct device forwards
+definition.
 
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Cc: David Lechner <dlechner@baylibre.com>
 ---
- drivers/iio/adc/ad7124.c | 12 +++++++++---
- 1 file changed, 9 insertions(+), 3 deletions(-)
+I'm still tweaking my iwyu config, so currently it doesn't suggest this
+one automatically. I'm interested to hear opinions on whether it is a
+good way to go or not!
+---
+ drivers/iio/adc/ad7124.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
 diff --git a/drivers/iio/adc/ad7124.c b/drivers/iio/adc/ad7124.c
-index 5c1a8f886bcc..5d3be891fa7e 100644
+index 5d3be891fa7e..84da872fab6f 100644
 --- a/drivers/iio/adc/ad7124.c
 +++ b/drivers/iio/adc/ad7124.c
-@@ -5,30 +5,36 @@
-  * Copyright 2018 Analog Devices Inc.
-  * Copyright 2025 BayLibre, SAS
-  */
-+#include <linux/array_size.h>
- #include <linux/bitfield.h>
- #include <linux/bitops.h>
- #include <linux/cleanup.h>
- #include <linux/clk.h>
- #include <linux/clk-provider.h>
-+#include <linux/container_of.h>
+@@ -14,7 +14,8 @@
+ #include <linux/container_of.h>
  #include <linux/debugfs.h>
  #include <linux/delay.h>
- #include <linux/device.h>
+-#include <linux/device.h>
++#include <linux/dev_printk.h>
++#include <linux/device/devres.h>
  #include <linux/err.h>
  #include <linux/interrupt.h>
--#include <linux/kernel.h>
--#include <linux/kfifo.h>
-+#include <linux/kstrtox.h>
-+#include <linux/limits.h>
-+#include <linux/math.h>
- #include <linux/minmax.h>
- #include <linux/module.h>
- #include <linux/mod_devicetable.h>
-+#include <linux/mutex.h>
- #include <linux/property.h>
- #include <linux/regulator/consumer.h>
-+#include <linux/slab.h>
- #include <linux/spi/spi.h>
- #include <linux/sprintf.h>
-+#include <linux/stddef.h>
-+#include <linux/types.h>
- #include <linux/units.h>
- 
+ #include <linux/kstrtox.h>
+@@ -36,6 +37,8 @@
  #include <linux/iio/iio.h>
  #include <linux/iio/adc/ad_sigma_delta.h>
--#include <linux/iio/sysfs.h>
  
++struct device;
++
  /* AD7124 registers */
  #define AD7124_COMMS			0x00
+ #define AD7124_STATUS			0x00
 -- 
 2.52.0
 

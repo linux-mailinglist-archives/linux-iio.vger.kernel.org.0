@@ -1,224 +1,574 @@
-Return-Path: <linux-iio+bounces-27932-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-27933-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7276CD399C4
-	for <lists+linux-iio@lfdr.de>; Sun, 18 Jan 2026 21:33:29 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5ED57D39FDB
+	for <lists+linux-iio@lfdr.de>; Mon, 19 Jan 2026 08:31:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id DA7BE3007D91
-	for <lists+linux-iio@lfdr.de>; Sun, 18 Jan 2026 20:33:27 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 38C3F3044987
+	for <lists+linux-iio@lfdr.de>; Mon, 19 Jan 2026 07:31:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF04D2F533E;
-	Sun, 18 Jan 2026 20:33:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93127335BC0;
+	Mon, 19 Jan 2026 07:31:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="fyXTbG4s"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="MkFflOT7"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-oi1-f171.google.com (mail-oi1-f171.google.com [209.85.167.171])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 438D750096D
-	for <linux-iio@vger.kernel.org>; Sun, 18 Jan 2026 20:33:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F0F8264602;
+	Mon, 19 Jan 2026 07:31:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768768406; cv=none; b=Z24l9x1g8mzeuRMe4A6H2LJ8Uic7SckFkD4OIN83Is5Aj1n4cGBfDOBr+a8pzqNdEsLHZZ5TewRkVBKmRDgR7OjaiRQK5DVVtEzEC1B2aW1+hyc88C+oIKMh/vjJ5Ovc3QX9I2T+ZEFRMuSBvv8dpLFyrIyzn7Nrz/P4H8yeH1c=
+	t=1768807886; cv=none; b=e4+mUBPxPVwTkDJfLpAXJR7RZRhZnF1TOI46l1aw/e4Fhxj4LQubqofcWNEj/FAWOSz3PKvCsGKfPwDi6teoH42ZmW/3pSlqhArZ2sN5N61JqTFVWe+OshMauldczz8lRK6+0WDrfPeOzR/xYhT1xGHHC3tbECWkC/GlDnUMgOA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768768406; c=relaxed/simple;
-	bh=aEvzWJbMT8Ptmsy9HlfjCiHCeplMxGKJq9qtbbuYkM8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=k7LZgvrUqozcly7OLk3UKi/NZy+9hkYMNKEmVt2kYhq1uPOskWYPWSn7Y2Q9lrDRg2PBc+FRg+T3He7ESNx5j9VPw/duhkPk+smN8WHKeERmH0xhsKHX8PHd1Qb7DGGsliinTSH+iwLJkk691iIkfADX0Eyt/gF5S3yqmh3ZLiA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=fyXTbG4s; arc=none smtp.client-ip=209.85.167.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-oi1-f171.google.com with SMTP id 5614622812f47-45c87d82bd2so2597396b6e.1
-        for <linux-iio@vger.kernel.org>; Sun, 18 Jan 2026 12:33:23 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1768768402; x=1769373202; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=SPH+taeAKn5LL6n6jgYLFIek/YNyqbS4BtS3n56/e7A=;
-        b=fyXTbG4ss/qd0CNnnwFJ5XqRDgh5ad9bKQJ9Qiq/DILpyT44BBPEhD0oaqKv1+zAPu
-         F9248O5wsR+uoPI4CHkxBPWwjkTUvWC4Q/L98wRW3S+RuYBf3txRIt1QlGjPMMwPH7R4
-         WJwUaa+eduMeslbPkw3JCjc71qT1ICpw1bihro6YHNVEby8zVcFyKx09FhQuh+2QHEej
-         rPlI7sJrfKdthW+LDq2TBVZiCz8rPvrNCcjTf9csozg9DNecyFp/S1QdW/vLshfelyQu
-         8M+gefqwazsqVkgOstLTnUjmllhwDzunApiBxZSD6oMwobQaadzSoScUCYX5Ykzd4J9o
-         6IDA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768768402; x=1769373202;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=SPH+taeAKn5LL6n6jgYLFIek/YNyqbS4BtS3n56/e7A=;
-        b=e4GhX3GBlIJ41UOkMF1Ooy8iOVF9Gytv8MORh+rro6o3dVzUrbISsDl4MlNEJ0lEzk
-         9ZHaISyLZza7lIeqBiH//yFkKTVEMU08IiJR5vsgR6xfSSeysDBIAkXYw8zN2fgYBQFO
-         RKBYrYmfUprex2Y5w1Ol/UfoPZ9/HC404FJ+ps6pQ8rtSNwi/dl8Ub3N1B22gGeEH2E0
-         IaxCL/qJJpkrlHzUxTE0UlAzKyzGfdDM6x3KHz1kQCIyzLMdBydbuSOIFXFYXFKisuw7
-         aITvBQJN0G9CXgjveV18I86BZVxnJdw0fgeJ/5qSrRRtNZBbxGFg5y5qyixh3XjSr9L6
-         LWcA==
-X-Forwarded-Encrypted: i=1; AJvYcCUwt9yGRwf9R2pLb/3hGblVD2mB5+WqwZpSA3uklCaY9zypBj6D2AekqCfvV+x996MvXfHGT/ljTE4=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyGg8qqfUKgmlVwloX9tplBSH5ppOydEAV++SU+4Z+HEBUPWWEM
-	KQAsSc+mt9ZhCxPR8pC2vqWnyp0BPi3+TaSV5ZVZT3q3khV4vHO7ImmiB8Yk3mmIyt8=
-X-Gm-Gg: AY/fxX63w7CplEDMYZjaU4wBiW5f3YT2wbqkteYphRrvHCgyBxgvnWWvvzl9b4CwGz+
-	IVq9l4gKYWV/3yAf+hqdpx5+MKvPo2SXM1xpkU3u9V1G8ZmQaP1PBbeqcW0KSbabs2j6jQWn82R
-	3gw8pwKZquN/Uv3aFk88E5OtmENOg1zTRXuGopuRzGUynqEo8Lo9IdbsijszpINmP9ly34NFc4f
-	uBlskh0wyqPJEqEYzvll1tBrzA7dQsA4mnhAGOqho9blmo6EsspRlTPy+0fK68+WYL/dsfNTaji
-	Xa57Ei+biAE9OZIOJD3Wl/ujsyNQJEdM+bSNaT+sAKDwFdsE3B5c+WdU2K5ERZuNDVWX0Yq+EL1
-	RM6uGTueKM2Yh95ImbpuTf8YA0PXA88UjaBBkO83b7hFI5+e+YxlfSt9ErDx4cXt5k2PJNBPsuU
-	aJao+HSJgR4PG0R7Y2VTwM9T4pdgteGjNfxdD1t1Rh6fmersibDhM6SpAyusUln7C9IigNyHI=
-X-Received: by 2002:a05:6808:2447:b0:45a:8cdc:5f6b with SMTP id 5614622812f47-45c9bf8a60bmr4408710b6e.9.1768768402123;
-        Sun, 18 Jan 2026 12:33:22 -0800 (PST)
-Received: from ?IPV6:2600:8803:e7e4:500:d542:af69:64b6:f7df? ([2600:8803:e7e4:500:d542:af69:64b6:f7df])
-        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-4044bd5c64asm5752986fac.16.2026.01.18.12.33.18
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 18 Jan 2026 12:33:20 -0800 (PST)
-Message-ID: <4a04fa3f-c056-4443-a55a-e8622feb1c2a@baylibre.com>
-Date: Sun, 18 Jan 2026 14:33:18 -0600
+	s=arc-20240116; t=1768807886; c=relaxed/simple;
+	bh=M94l9HqI0Iz56gFKjcR/DnvFfzrFroQ7YgA3Yn5iLcQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=tVL2ZE6LUneKWNIZzYDdffVcsvslRUU/4XPhMavWFmDroZMEuz23LHtWcZkWKwEwkT9jmZPNGO5M+5N1J2sdRoAbYNkpSGCZ6L9r/riGIjT//aZUwC5L5JDEIYD8qwEXCuC9qffzsNlDVsanRK/9S2RZrm5X7pCy0BOVgPJQNus=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=MkFflOT7; arc=none smtp.client-ip=192.198.163.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1768807885; x=1800343885;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:content-transfer-encoding:in-reply-to;
+  bh=M94l9HqI0Iz56gFKjcR/DnvFfzrFroQ7YgA3Yn5iLcQ=;
+  b=MkFflOT7TL1pq3LenuByLJIgX7sGaNj0g5d75Is0x/rJyi80S4T8cQfc
+   KTcXyNEHBheMNDR3eZuSgkGpvXN8z++YZQFyvQP4okXCrN9GbFI/LRDXB
+   oJE1hhGZsVpvUD9mBvvwJJTbR2D44sL4AT7tv6urfIovTxn+abGv35Cv4
+   Mj1vjLUE8MrIFccudscbTlLkBr1bcJL++UmL0Scct5zykXYaDIMQLxomE
+   v/Glo5AZ1eQE01fhDug21ggSLtaDMPMzFuVZxoQwqJjcNLVkAwKhXxvQ9
+   392pIxFOLGYR7qUW8P/gOxqP5Ax9YyVR0eGEWIpcSQg3OoIR2ryHb9FAf
+   A==;
+X-CSE-ConnectionGUID: X/fHS5uMT5Gk3CJPojDPdg==
+X-CSE-MsgGUID: sf24WH0rTmCOlG2MHBVSsA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11675"; a="72604153"
+X-IronPort-AV: E=Sophos;i="6.21,237,1763452800"; 
+   d="scan'208";a="72604153"
+Received: from fmviesa007.fm.intel.com ([10.60.135.147])
+  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Jan 2026 23:31:24 -0800
+X-CSE-ConnectionGUID: dj46uFbzQd+Dv/dajzN5dg==
+X-CSE-MsgGUID: oariiDyPRgqSaSY4rqvQMQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,237,1763452800"; 
+   d="scan'208";a="205412637"
+Received: from egrumbac-mobl6.ger.corp.intel.com (HELO localhost) ([10.245.244.37])
+  by fmviesa007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Jan 2026 23:31:20 -0800
+Date: Mon, 19 Jan 2026 09:31:18 +0200
+From: Andy Shevchenko <andriy.shevchenko@intel.com>
+To: rodrigo.alencar@analog.com
+Cc: linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-doc@vger.kernel.org,
+	Jonathan Cameron <jic23@kernel.org>,
+	David Lechner <dlechner@baylibre.com>,
+	Andy Shevchenko <andy@kernel.org>,
+	Lars-Peter Clausen <lars@metafoo.de>,
+	Michael Hennerich <Michael.Hennerich@analog.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Jonathan Corbet <corbet@lwn.net>
+Subject: Re: [PATCH v4 3/7] iio: frequency: adf41513: driver implementation
+Message-ID: <aW3dxuelYDM67pqZ@smile.fi.intel.com>
+References: <20260116-adf41513-iio-driver-v4-0-dbb7d6782217@analog.com>
+ <20260116-adf41513-iio-driver-v4-3-dbb7d6782217@analog.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH v1 0/9] iio: Expand IIO event interface for real-world
- unit handling
-To: Marcelo Schmitt <marcelo.schmitt1@gmail.com>, linux-iio@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Cc: jic23@kernel.org, Jonathan.Cameron@huawei.com, nuno.sa@analog.com,
- andy@kernel.org
-References: <cover.1768759292.git.marcelo.schmitt1@gmail.com>
-Content-Language: en-US
-From: David Lechner <dlechner@baylibre.com>
-In-Reply-To: <cover.1768759292.git.marcelo.schmitt1@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20260116-adf41513-iio-driver-v4-3-dbb7d6782217@analog.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
+ krs, Bertel Jungin Aukio 5, 02600 Espoo
 
-On 1/18/26 12:18 PM, Marcelo Schmitt wrote:
-> This patch set adjusts and complements the IIO event ABI docs making them
-> coherent with the fact that not all threshold value attributes had a _raw/_input
-> indicator set in their names. In addition that, the latter patches on this
-> series update the IIO event infrastructure to actually enable drivers to provide
-> _input threshold value attributes.
+On Fri, Jan 16, 2026 at 02:32:22PM +0000, Rodrigo Alencar via B4 Relay wrote:
 
-I generally like the idea. There were a number of times recently when
-adding events where we had to do complex calculation to convert to/from
-raw units for the event value because it needed to match the in_..._raw
-scaling. In these cases it would have been much more convenient to be able
-to use SI units for the event value while keeping raw+scale for the actual
-sensor value.
+> The driver is based on existing PLL drivers in the IIO subsystem and
+> implements the following key features:
+> 
+> - Integer-N and fractional-N (fixed/variable modulus) synthesis modes
+> - High-resolution frequency calculations using microhertz (µHz) precision
+>   to handle sub-Hz resolution across multi-GHz frequency ranges
+> - IIO debugfs interface for direct register access
+> - FW property parsing from devicetree including charge pump settings,
+>   reference path configuration and muxout options
+> - Power management support with suspend/resume callbacks
+> - Lock detect GPIO monitoring
+> 
+> The driver uses 64-bit microhertz values throughout PLL calculations to
+> maintain precision when working with frequencies that exceed 32-bit Hz
+> representation while requiring fractional Hz resolution.
 
-> 
-> I'm actually proposing this set just for the sake of solving the event ABI
-> naming inconsistency. I recall the event ABI was a bit puzzling to understand
-> when I was having a closer look at that a while ago [1].
-> [1]: https://lore.kernel.org/linux-iio/cover.1703013352.git.marcelo.schmitt1@gmail.com/
-> 
-> Also, I'm doing this set entirely on my spare time and just because I wanted
-> to have the ABI naming inconsistency fixed. This is also a late reply to [2].
-> [2]: https://lore.kernel.org/linux-iio/20251109164312.781de64c@jic23-huawei/
-> 
-> I've tested this with ad7091r8 driver and result is:
-> 
-> Before event extension (current IIO teting branch):
-> root@localhost:~# ls /sys/bus/iio/devices/iio:device0/events
-> in_voltage0_thresh_either_hysteresis  in_voltage4_thresh_either_hysteresis
-> in_voltage0_thresh_falling_en         in_voltage4_thresh_falling_en
-> in_voltage0_thresh_falling_value      in_voltage4_thresh_falling_value
-> in_voltage0_thresh_rising_en          in_voltage4_thresh_rising_en
-> in_voltage0_thresh_rising_value       in_voltage4_thresh_rising_value
-> in_voltage1_thresh_either_hysteresis  in_voltage5_thresh_either_hysteresis
-> in_voltage1_thresh_falling_en         in_voltage5_thresh_falling_en
-> in_voltage1_thresh_falling_value      in_voltage5_thresh_falling_value
-> in_voltage1_thresh_rising_en          in_voltage5_thresh_rising_en
-> in_voltage1_thresh_rising_value       in_voltage5_thresh_rising_value
-> in_voltage2_thresh_either_hysteresis  in_voltage6_thresh_either_hysteresis
-> in_voltage2_thresh_falling_en         in_voltage6_thresh_falling_en
-> in_voltage2_thresh_falling_value      in_voltage6_thresh_falling_value
-> in_voltage2_thresh_rising_en          in_voltage6_thresh_rising_en
-> in_voltage2_thresh_rising_value       in_voltage6_thresh_rising_value
-> in_voltage3_thresh_either_hysteresis  in_voltage7_thresh_either_hysteresis
-> in_voltage3_thresh_falling_en         in_voltage7_thresh_falling_en
-> in_voltage3_thresh_falling_value      in_voltage7_thresh_falling_value
-> in_voltage3_thresh_rising_en          in_voltage7_thresh_rising_en
-> in_voltage3_thresh_rising_value       in_voltage7_thresh_rising_value
-> 
-> After event extension:
-> root@localhost:~# ls /sys/bus/iio/devices/iio:device0/events
-> in_voltage0_raw_thresh_either_hysteresis  in_voltage4_raw_thresh_either_hysteresis
-> in_voltage0_raw_thresh_falling_value      in_voltage4_raw_thresh_falling_value
-> in_voltage0_raw_thresh_rising_value       in_voltage4_raw_thresh_rising_value
-> in_voltage0_thresh_falling_en             in_voltage4_thresh_falling_en
-> in_voltage0_thresh_rising_en              in_voltage4_thresh_rising_en
-> in_voltage1_raw_thresh_either_hysteresis  in_voltage5_raw_thresh_either_hysteresis
-> in_voltage1_raw_thresh_falling_value      in_voltage5_raw_thresh_falling_value
-> in_voltage1_raw_thresh_rising_value       in_voltage5_raw_thresh_rising_value
-> in_voltage1_thresh_falling_en             in_voltage5_thresh_falling_en
-> in_voltage1_thresh_rising_en              in_voltage5_thresh_rising_en
-> in_voltage2_raw_thresh_either_hysteresis  in_voltage6_raw_thresh_either_hysteresis
-> in_voltage2_raw_thresh_falling_value      in_voltage6_raw_thresh_falling_value
-> in_voltage2_raw_thresh_rising_value       in_voltage6_raw_thresh_rising_value
-> in_voltage2_thresh_falling_en             in_voltage6_thresh_falling_en
-> in_voltage2_thresh_rising_en              in_voltage6_thresh_rising_en
-> in_voltage3_raw_thresh_either_hysteresis  in_voltage7_raw_thresh_either_hysteresis
-> in_voltage3_raw_thresh_falling_value      in_voltage7_raw_thresh_falling_value
-> in_voltage3_raw_thresh_rising_value       in_voltage7_raw_thresh_rising_value
-> in_voltage3_thresh_falling_en             in_voltage7_thresh_falling_en
-> in_voltage3_thresh_rising_en              in_voltage7_thresh_rising_en
+...
 
-We can't be breaking ABI like this. There are some alternatives though. We
-could register duplicate attributes with both the old and the new name (or can
-we make the old name a symlink to the new?). Or we could add a 3rd option to the
-unit of IIO_EV_UNIT_NONE and use that on existing drivers so that they don't
-change the attribute name.
+> +#define ADF41513_MAX_PFD_FREQ_INT_N_UHZ		(250ULL * MEGA * MICROHZ_PER_HZ)
+> +#define ADF41513_MAX_PFD_FREQ_FRAC_N_UHZ	(125ULL * MEGA * MICROHZ_PER_HZ)
+> +#define ADF41513_MAX_FREQ_RESOLUTION_UHZ	(100ULL * KILO * MICROHZ_PER_HZ)
 
-> 
-> The difference is the '_raw' element in thresh_(rising|falling|either) attributes.
-> 
-> Why posting it as an RFC?
-> 1) ABI changes a sensitive topic.
-> 2) There are 77 drivers that will go through collateral evolution with the event
-> interface update. A 77+ patch set is probably not a good idea? I recall the
-> claim_direct stuff was split into 2 or more patch sets. This might need a
-> similar approach (if accepted).
-> 3) My coccinelle semantic patch does a nice job in updating the vast majority
-> of the drivers but, it produces diffs longer than needed. E.g.
-> 
-> @@ -844,7 +844,8 @@ static int adxl313_read_event_value(stru
->  				    enum iio_event_type type,
->  				    enum iio_event_direction dir,
->  				    enum iio_event_info info,
-> -				    int *val, int *val2)
-> +				    enum iio_event_unit unit, int *val,
-> +				    int *val2)
-> 
-> could be
-> 
-> @@ -844,6 +844,7 @@ static int adxl313_read_event_value(struct iio_dev *indio_dev,
->  				    enum iio_event_type type,
->  				    enum iio_event_direction dir,
->  				    enum iio_event_info info,
-> +				    enum iio_event_unit unit,
->  				    int *val, int *val2)
-> 
-> I'll try to figure out how to make it generate smaller diffs, or do the changes
-> by hand if needed.
-> 
+Yep, thanks, looks much better now!
 
-Just throwing out an idea here without thinking about it too much...
+...
 
-Instead of adding a new field/parameter for units, could we extend
-enum iio_event_info to add IIO_EV_INFO_VALUE_RAW and IIO_EV_INFO_VALUE_INPUT
-(and same for HYSTERESIS). Really, the units only make sense for these
-two info types anyway.
+> +struct adf41513_chip_info {
+> +	bool has_prescaler_8_9;
+> +	u64 max_rf_freq_hz;
 
-This would work like my suggestion above that existing drivers would continue
-to use the old enum value, but we would encourage using the new enum values
-in new code. And it would eliminate the churn of having to touch every existing
-user.
+If you swap them, it might be a 4 bytes gain in some cases. Have you run
+`pahole`?
 
-And if someone really wants to take advantage of the new naming for a driver
-with existing events, we could do the duplicate attribute thing I mentioned
-above still.
+> +};
+
+...
+
+> +struct adf41513_pll_settings {
+> +	enum adf41513_pll_mode mode;
+
+Sounds to me like a room to improve the layout here,
+
+> +	/* reference path parameters */
+> +	u8 r_counter;
+> +	u8 ref_doubler;
+> +	u8 ref_div2;
+> +	u8 prescaler;
+> +
+> +	/* frequency parameters */
+> +	u64 target_frequency_uhz;
+> +	u64 actual_frequency_uhz;
+> +	u64 pfd_frequency_uhz;
+> +
+> +	/* pll parameters */
+> +	u16 int_value;
+> +	u32 frac1;
+> +	u32 frac2;
+> +	u32 mod2;
+> +};
+
+...
+
+> + * See iio_write_channel_info and __iio_str_to_fixpoint in
+
+Refer to function as func(), i.o.w. mind the parentheses.
+
+> + * drivers/iio/industrialio-core.c
+
+Missing period at the end.
+
+...
+
+> +static int adf41513_parse_uhz(const char *str, u64 *freq_uhz)
+> +{
+> +	u64 uhz = 0;
+> +	int f_count = ADF41513_HZ_DECIMAL_PRECISION;
+> +	bool frac_part = false;
+> +
+> +	if (str[0] == '+')
+> +		str++;
+> +
+> +	while (*str && f_count > 0) {
+> +		if ('0' <= *str && *str <= '9') {
+> +			uhz = uhz * 10 + *str - '0';
+> +			if (frac_part)
+> +				f_count--;
+> +		} else if (*str == '\n') {
+> +			if (*(str + 1) == '\0')
+> +				break;
+> +			return -EINVAL;
+
+> +		} else if (*str == '.' && !frac_part) {
+
+This can be found by strchr() / strrchr() (depending on the expectations of
+the input).
+
+> +			frac_part = true;
+> +		} else {
+> +			return -EINVAL;
+> +		}
+> +		str++;
+> +	}
+
+With the above the rest becomes just a couple of simple_strtoull() calls with
+a couple of int_pow(10) calls (and some validation on top).
+
+> +	for (; f_count > 0; f_count--)
+> +		uhz *= 10;
+
+This is int_pow(10).
+
+> +	*freq_uhz = uhz;
+> +
+> +	return 0;
+> +}
+
+...
+
+> +static int adf41513_uhz_to_str(u64 freq_uhz, char *buf)
+> +{
+> +	u32 frac_part;
+> +	u64 int_part = div_u64_rem(freq_uhz, MICRO, &frac_part);
+
+Perhaps MICROHZ_PER_HZ? This will be consistent with the int_value in
+_calc_*() below.
+
+> +	return sysfs_emit(buf, "%llu.%06u\n", int_part, frac_part);
+> +}
+
+...
+
+> +	cfg->pfd_frequency_uhz = div_u64(cfg->pfd_frequency_uhz,
+> +					 cfg->r_counter);
+
+Here 81 characters...
+
+> +	cfg->actual_frequency_uhz = (u64)cfg->int_value * cfg->pfd_frequency_uhz;
+
+...and here, but in one case the line is wrapped. I would unwrap the first one.
+
+
+...
+
+> +	result->ref_div2 = st->data.ref_div2_en ? 1 : 0;
+> +	result->ref_doubler = st->data.ref_doubler_en ? 1 : 0;
+
+Seems like "? 1 : 0" just redundant.
+
+...
+
+> +static int adf41513_calc_integer_n(struct adf41513_state *st,
+> +				   struct adf41513_pll_settings *result)
+> +{
+> +	u16 max_int = (st->chip_info->has_prescaler_8_9) ?
+
+Redundant parentheses.
+
+> +		      ADF41513_MAX_INT_8_9 : ADF41513_MAX_INT_4_5;
+> +	u64 freq_error_uhz;
+> +	u16 int_value = div64_u64_rem(result->target_frequency_uhz, result->pfd_frequency_uhz,
+> +				      &freq_error_uhz);
+
+> +	/* check if freq error is within a tolerance of 1/2 resolution */
+> +	if (freq_error_uhz > (result->pfd_frequency_uhz >> 1) && int_value < max_int) {
+> +		int_value++;
+> +		freq_error_uhz = result->pfd_frequency_uhz - freq_error_uhz;
+> +	}
+
+This and below the part for frac check seems very similar, I would consider
+adding a helper.
+
+> +	if (freq_error_uhz > st->data.freq_resolution_uhz)
+> +		return -ERANGE;
+> +
+> +	/* set prescaler */
+> +	if (st->chip_info->has_prescaler_8_9 && int_value >= ADF41513_MIN_INT_8_9 &&
+> +	    int_value <= ADF41513_MAX_INT_8_9)
+> +		result->prescaler = 1;
+> +	else if (int_value >= ADF41513_MIN_INT_4_5 && int_value <= ADF41513_MAX_INT_4_5)
+> +		result->prescaler = 0;
+> +	else
+> +		return -ERANGE;
+> +
+> +	result->actual_frequency_uhz = (u64)int_value * result->pfd_frequency_uhz;
+> +	result->mode = ADF41513_MODE_INTEGER_N;
+> +	result->int_value = int_value;
+> +	result->frac1 = 0;
+> +	result->frac2 = 0;
+> +	result->mod2 = 0;
+> +
+> +	return 0;
+> +}
+
+...
+
+> +static int adf41513_calc_variable_mod(struct adf41513_state *st,
+> +				      struct adf41513_pll_settings *result)
+> +{
+> +	u64 freq_error_uhz;
+> +	u32 frac1, frac2, mod2;
+> +	u16 int_value = div64_u64_rem(result->target_frequency_uhz,
+> +				      result->pfd_frequency_uhz,
+> +				      &freq_error_uhz);
+> +
+> +	if (st->chip_info->has_prescaler_8_9 && int_value >= ADF41513_MIN_INT_FRAC_8_9 &&
+> +	    int_value <= ADF41513_MAX_INT_8_9)
+> +		result->prescaler = 1;
+> +	else if (int_value >= ADF41513_MIN_INT_FRAC_4_5 && int_value <= ADF41513_MAX_INT_4_5)
+> +		result->prescaler = 0;
+> +	else
+> +		return -ERANGE;
+
+> +	/* calculate required mod2 based on target resolution / 2 */
+> +	mod2 = DIV64_U64_ROUND_CLOSEST(result->pfd_frequency_uhz << 1,
+> +				       st->data.freq_resolution_uhz * ADF41513_FIXED_MODULUS);
+
+This also seems familiar with the above mentioned check (for 50% tolerance).
+
+> +	/* ensure mod2 is at least 2 for meaningful operation */
+> +	mod2 = clamp(mod2, 2, ADF41513_MAX_MOD2);
+> +
+> +	/* calculate frac1 and frac2 */
+> +	frac1 = mul_u64_u64_div_u64(freq_error_uhz, ADF41513_FIXED_MODULUS,
+> +				    result->pfd_frequency_uhz);
+> +	freq_error_uhz -= mul_u64_u64_div_u64(frac1, result->pfd_frequency_uhz,
+> +					      ADF41513_FIXED_MODULUS);
+> +	frac2 = mul_u64_u64_div_u64(freq_error_uhz, (u64)mod2 * ADF41513_FIXED_MODULUS,
+
+I'm wondering why mod2 can't be defined as u64. This will allow to drop castings.
+
+> +				    result->pfd_frequency_uhz);
+> +
+> +	/* integer part */
+> +	result->actual_frequency_uhz = (u64)int_value * result->pfd_frequency_uhz;
+> +	/* fractional part */
+> +	result->actual_frequency_uhz += mul_u64_u64_div_u64((u64)frac1 * mod2 + frac2,
+> +							    result->pfd_frequency_uhz,
+> +							    (u64)mod2 * ADF41513_FIXED_MODULUS);
+> +	result->mode = ADF41513_MODE_VARIABLE_MODULUS;
+> +	result->int_value = int_value;
+> +	result->frac1 = frac1;
+> +	result->frac2 = frac2;
+> +	result->mod2 = mod2;
+> +
+> +	return 0;
+> +}
+
+...
+
+> +	/* apply computed results to pll settings */
+> +	memcpy(&st->settings, &result, sizeof(st->settings));
+
+Can't we simply use
+
+	st->settings = result;
+
+?
+
+...
+
+> +static ssize_t adf41513_read_powerdown(struct iio_dev *indio_dev,
+> +				       uintptr_t private,
+> +				       const struct iio_chan_spec *chan,
+> +				       char *buf)
+> +{
+> +	struct adf41513_state *st = iio_priv(indio_dev);
+> +	u32 val;
+> +
+> +	guard(mutex)(&st->lock);
+> +
+> +	switch ((u32)private) {
+
+Why casting? Ditto for similar cases.
+
+> +	case ADF41513_POWER_DOWN:
+> +		val = FIELD_GET(ADF41513_REG6_POWER_DOWN_MSK,
+> +				st->regs_hw[ADF41513_REG6]);
+> +		return sysfs_emit(buf, "%u\n", val);
+> +	default:
+> +		return -EINVAL;
+> +	}
+> +}
+
+...
+
+> +static ssize_t adf41513_write_uhz(struct iio_dev *indio_dev,
+> +				  uintptr_t private,
+> +				  const struct iio_chan_spec *chan,
+> +				  const char *buf, size_t len)
+> +{
+> +	struct adf41513_state *st = iio_priv(indio_dev);
+> +	u64 freq_uhz;
+> +	int ret;
+> +
+> +	ret = adf41513_parse_uhz(buf, &freq_uhz);
+> +	if (ret)
+> +		return ret;
+> +
+> +	guard(mutex)(&st->lock);
+> +
+> +	switch ((u32)private) {
+> +	case ADF41513_FREQ:
+> +		ret = adf41513_set_frequency(st, freq_uhz, ADF41513_SYNC_DIFF);
+> +		break;
+> +	case ADF41513_FREQ_RESOLUTION:
+> +		if (freq_uhz == 0 || freq_uhz > ADF41513_MAX_FREQ_RESOLUTION_UHZ)
+> +			return -EINVAL;
+> +		st->data.freq_resolution_uhz = freq_uhz;
+> +		break;
+> +	default:
+> +		return -EINVAL;
+> +	}
+
+> +	return ret ? ret : len;
+
+It can be Elvis operator:
+
+	return ret ?: len;
+
+Ditto for similar cases.
+
+> +}
+
+...
+
+> +static int adf41513_read_raw(struct iio_dev *indio_dev,
+> +			     struct iio_chan_spec const *chan,
+> +			     int *val, int *val2, long info)
+> +{
+> +	struct adf41513_state *st = iio_priv(indio_dev);
+> +	u64 phase_urad;
+> +	u16 phase_val;
+> +
+> +	guard(mutex)(&st->lock);
+> +
+> +	switch (info) {
+> +	case IIO_CHAN_INFO_PHASE:
+> +		phase_val = FIELD_GET(ADF41513_REG2_PHASE_VAL_MSK,
+> +				      st->regs_hw[ADF41513_REG2]);
+> +		phase_urad = (u64)phase_val * ADF41513_MAX_PHASE_MICRORAD;
+> +		phase_urad >>= 12;
+
+> +		*val = (u32)phase_urad / MICRO;
+> +		*val2 = (u32)phase_urad % MICRO;
+
+This needs a short comment explaining why castings are okay
+(i.o.w. why the 64-bit variable will contain 32-bit value).
+
+> +		return IIO_VAL_INT_PLUS_MICRO;
+> +	default:
+> +		return -EINVAL;
+> +	}
+> +}
+
+...
+
+> +static int adf41513_write_raw(struct iio_dev *indio_dev,
+> +			      struct iio_chan_spec const *chan,
+> +			      int val, int val2, long info)
+> +{
+> +	struct adf41513_state *st = iio_priv(indio_dev);
+> +	u64 phase_urad;
+> +	u16 phase_val;
+> +
+> +	guard(mutex)(&st->lock);
+> +
+> +	switch (info) {
+> +	case IIO_CHAN_INFO_PHASE:
+> +		phase_urad = (u64)val * MICRO + val2;
+> +		if (val < 0 || val2 < 0 || phase_urad >= ADF41513_MAX_PHASE_MICRORAD)
+> +			return -EINVAL;
+
+It's better to check val* before use them.
+
+> +		phase_val = DIV_U64_ROUND_CLOSEST(phase_urad << 12,
+> +						  ADF41513_MAX_PHASE_MICRORAD);
+> +		phase_val = min(phase_val, ADF41513_MAX_PHASE_VAL);
+> +		st->regs[ADF41513_REG2] |= ADF41513_REG2_PHASE_ADJ_MSK;
+> +		FIELD_MODIFY(ADF41513_REG2_PHASE_VAL_MSK,
+> +			     &st->regs[ADF41513_REG2], phase_val);
+> +		return adf41513_sync_config(st, ADF41513_SYNC_REG0);
+> +	default:
+> +		return -EINVAL;
+> +	}
+> +}
+
+...
+
+> +static void adf41513_power_down(void *data)
+> +{
+> +	struct adf41513_state *st = data;
+> +
+> +	adf41513_suspend(st);
+
+> +	if (st->chip_enable)
+
+Remove this dup check.
+
+> +		gpiod_set_value_cansleep(st->chip_enable, 0);
+> +}
+
+...
+
+> +static int adf41513_probe(struct spi_device *spi)
+> +{
+> +	struct iio_dev *indio_dev;
+> +	struct adf41513_state *st;
+> +	struct device *dev = &spi->dev;
+> +	int ret;
+
+Please, use reversed xmas tree ordering.
+
+> +	indio_dev = devm_iio_device_alloc(dev, sizeof(*st));
+> +	if (!indio_dev)
+> +		return -ENOMEM;
+> +
+> +	st = iio_priv(indio_dev);
+> +	st->spi = spi;
+> +	st->chip_info = spi_get_device_match_data(spi);
+> +	if (!st->chip_info)
+> +		return -EINVAL;
+> +
+> +	spi_set_drvdata(spi, st);
+> +
+> +	st->ref_clk = devm_clk_get_enabled(dev, NULL);
+> +	if (IS_ERR(st->ref_clk))
+> +		return PTR_ERR(st->ref_clk);
+> +
+> +	st->ref_freq_hz = clk_get_rate(st->ref_clk);
+> +	if (st->ref_freq_hz < ADF41513_MIN_REF_FREQ_HZ ||
+> +	    st->ref_freq_hz > ADF41513_MAX_REF_FREQ_HZ)
+> +		return dev_err_probe(dev, -ERANGE,
+> +				     "reference frequency %u Hz out of range\n",
+> +				     st->ref_freq_hz);
+> +
+> +	ret = adf41513_parse_fw(st);
+> +	if (ret)
+> +		return ret;
+> +
+> +	ret = devm_regulator_bulk_get_enable(dev,
+> +					     ARRAY_SIZE(adf41513_power_supplies),
+> +					     adf41513_power_supplies);
+> +	if (ret)
+> +		return dev_err_probe(dev, ret,
+> +				     "failed to get and enable regulators\n");
+> +
+> +	st->chip_enable = devm_gpiod_get_optional(dev, "enable", GPIOD_OUT_HIGH);
+> +	if (IS_ERR(st->chip_enable))
+> +		return dev_err_probe(dev, PTR_ERR(st->chip_enable),
+> +				     "fail to request chip enable GPIO\n");
+> +
+> +	st->lock_detect = devm_gpiod_get_optional(dev, "lock-detect", GPIOD_IN);
+> +	if (IS_ERR(st->lock_detect))
+> +		return dev_err_probe(dev, PTR_ERR(st->lock_detect),
+> +				     "fail to request lock detect GPIO\n");
+> +
+> +	ret = devm_mutex_init(dev, &st->lock);
+> +	if (ret)
+> +		return ret;
+> +
+> +	indio_dev->name = spi_get_device_id(spi)->name;
+> +	indio_dev->info = &adf41513_info;
+> +	indio_dev->modes = INDIO_DIRECT_MODE;
+> +	indio_dev->channels = &adf41513_chan;
+> +	indio_dev->num_channels = 1;
+> +
+> +	ret = adf41513_setup(st);
+> +	if (ret < 0)
+> +		return dev_err_probe(dev, ret, "failed to setup device\n");
+> +
+> +	ret = devm_add_action_or_reset(dev, adf41513_power_down, st);
+> +	if (ret)
+> +		return dev_err_probe(dev, ret, "Failed to add power down action\n");
+> +
+> +	return devm_iio_device_register(dev, indio_dev);
+> +}
+
+-- 
+With Best Regards,
+Andy Shevchenko
+
 
 

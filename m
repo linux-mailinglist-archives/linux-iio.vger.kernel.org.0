@@ -1,46 +1,46 @@
-Return-Path: <linux-iio+bounces-27970-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-27971-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 96478D3ACAD
-	for <lists+linux-iio@lfdr.de>; Mon, 19 Jan 2026 15:46:56 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C831D3ACC8
+	for <lists+linux-iio@lfdr.de>; Mon, 19 Jan 2026 15:50:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E60C230443C0
-	for <lists+linux-iio@lfdr.de>; Mon, 19 Jan 2026 14:43:13 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 3719B304D4B9
+	for <lists+linux-iio@lfdr.de>; Mon, 19 Jan 2026 14:45:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5EE2335E55A;
-	Mon, 19 Jan 2026 14:43:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01CB137E2F8;
+	Mon, 19 Jan 2026 14:45:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fKPPHkFQ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lhtBPEhu"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F0E5224B05;
-	Mon, 19 Jan 2026 14:43:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B417123D7E0;
+	Mon, 19 Jan 2026 14:45:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768833792; cv=none; b=icIvxWb53gn5r/pFVtTUBl7gslHhkDf/P7hWN/ok2KjKugvY9yFHh0SbTaFkBSdWZ82u0DCYSRgF3SNSmZfDzuLJk8QNdxKwpnm3JYI6dnJ3rrpRPcCjV+i2rl2m0P7Q09CC6ZkhuOdF6cByRgxq10sY6ztyJS3xsfZtnt3APl0=
+	t=1768833931; cv=none; b=WQYCXz8tVTiHXpGwrHjtJWrwLMn3fPyCdRXUaPOtyRMiYJ8eUnwqiX8XbpGEd5OXpBlpSmw8MBBbjHO9iT3t+xXz/fOFMScAPazdXqJDb6iHAdrd/pb0IeGML3fR+tZu9zAY0ucu7hZaQV+0bZCF8/UB1c9x2GHRuiwR62Jb9Sg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768833792; c=relaxed/simple;
-	bh=8dZfjVcZ0LwTUmNDd6H5EZN46d5QvXmHjkkUYnAz2iI=;
+	s=arc-20240116; t=1768833931; c=relaxed/simple;
+	bh=3GTGKDDnP7XCjEX+FxD5k5nZjD6jo9PGJKQU43xseE8=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=i0zVAf4e+SbXi7pJz2Glra9Ie/vhKaQuhNu5Njh5jGR2i7xob+PdwGrsWmyBcVU7ex4HrvIoMwrfv2YEOM83u8tkRgn5dcCBWKHCPa5wYPNyfFGe/upz75uJp/b7tT45TwnbIzDEgf0Nrx3e6zkmHiHf+YN2hEXNpfUPXGAYbRs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fKPPHkFQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28A2EC116C6;
-	Mon, 19 Jan 2026 14:43:08 +0000 (UTC)
+	 In-Reply-To:Content-Type; b=AX9BR5+yPKNRwcwOor2WWRjD0Hpq85Kx9JMU5SxbThbXAqaSolmEQjwNl/mBxxoUEpKhhP1zw6sv7O6eo7MvftVsIttCe8OxWw2pV81C4LNSUAq0r2z8If3GdY9asJD+6Ni516OmFh+QRgl2My/xLHlBPGfhqqTcxvohSD6JfVg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lhtBPEhu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93FC2C116C6;
+	Mon, 19 Jan 2026 14:45:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768833791;
-	bh=8dZfjVcZ0LwTUmNDd6H5EZN46d5QvXmHjkkUYnAz2iI=;
+	s=k20201202; t=1768833931;
+	bh=3GTGKDDnP7XCjEX+FxD5k5nZjD6jo9PGJKQU43xseE8=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=fKPPHkFQ7xKyUG49HsByunxNQktObDyxe6Ssbr6+p+kPf877wF7aSSwkdPfk0IRHi
-	 RP5CntD5CjZtcHCX52qAa1Wi8WuiZZjax1FaOkRMwQf2RvuEpi8cvwGeUB8Znl4Tkz
-	 vN0nL3JwYFaoK1EkaCbDokCcszeZUwmgAHyDMBtRbXLjntppgX/S8ZrYR28oIUUDBM
-	 J/A84B2iOso87cmB+isvAfTpsT4Gw377xtNeg+4NabxBfS5/KhRycB4hIykm6gjcP0
-	 eLQSjZVMrY0X249+dzpSFwackr0a0sgMkQ6GEGVFEAgn9xwc9bPiW5N901njbsZTpB
-	 a/SjJFFrayIDw==
-Message-ID: <e5b175ae-34d4-47f2-92a4-2788f680da36@kernel.org>
-Date: Mon, 19 Jan 2026 15:43:07 +0100
+	b=lhtBPEhuSJsFp9fSgiU/h4WliHmweyxFdhdAjBpZ5lwnq1b91TYgSxhSW7mK9aveM
+	 sNw6eRQjypQtyQMtiS9Od4a/8HLAZeD5wnXZWZntpMb7VxVVPhxGiY44sSp6+Ox/cm
+	 xPRcfVqxAMb73R80CrdQ4Fd/ILH1pukOtRipZlovvSUmde2SN/1T6xF4rUtWfZmvUC
+	 +bN3sSF/r3VactlLoXpq/U7MnNYMtMTtLBuSu8NT+UPgiFGQZz8cZdNRhBhp+2XUmw
+	 ns2c4eSWvjtLWeUBa3WGECYNn1zd9Mx9hED541ecNcnPUmWbkbcsLhrPwMO+UcUvmE
+	 bf9qDOAC7q0lg==
+Message-ID: <836b3f85-1ba3-4d49-b027-06990325fc4d@kernel.org>
+Date: Mon, 19 Jan 2026 15:45:26 +0100
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -48,7 +48,7 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 5/7] iio: amplifiers: ad8366: use cleanup.h mutex guard
+Subject: Re: [PATCH 6/7] iio: amplifiers: ad8366: simplify resource management
 To: rodrigo.alencar@analog.com, linux-kernel@vger.kernel.org,
  linux-iio@vger.kernel.org, devicetree@vger.kernel.org
 Cc: Michael Hennerich <Michael.Hennerich@analog.com>,
@@ -57,7 +57,7 @@ Cc: Michael Hennerich <Michael.Hennerich@analog.com>,
  Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
  Conor Dooley <conor+dt@kernel.org>
 References: <20260119-iio-ad8366-update-v1-0-8044e23e964a@analog.com>
- <20260119-iio-ad8366-update-v1-5-8044e23e964a@analog.com>
+ <20260119-iio-ad8366-update-v1-6-8044e23e964a@analog.com>
 From: Krzysztof Kozlowski <krzk@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=krzk@kernel.org; keydata=
@@ -103,100 +103,127 @@ Autocrypt: addr=krzk@kernel.org; keydata=
  jWt87ecuHlpL3uuQ0ZZNWqHgZoQLXoqC2ZV5KrtKWb/jyiFX/sxSrodALf0zf+tfHv0FZWT2
  zHjUqd0t4njD/UOsuIMOQn4Ig0SdivYPfZukb5cdasKJukG1NOpbW7yRNivaCnfZz6dTawXw
  XRIV/KDsHQiyVxKvN73bThKhONkcX2LWuD928tAR6XMM2G5ovxLe09vuOzzfTWQDsm++9UKF a/A=
-In-Reply-To: <20260119-iio-ad8366-update-v1-5-8044e23e964a@analog.com>
+In-Reply-To: <20260119-iio-ad8366-update-v1-6-8044e23e964a@analog.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 19/01/2026 15:36, Rodrigo Alencar via B4 Relay wrote:
+On 19/01/2026 15:37, Rodrigo Alencar via B4 Relay wrote:
 > From: Rodrigo Alencar <rodrigo.alencar@analog.com>
 > 
-> Changes related to mutex handling:
-> - use guard() from cleanup for mutex locking
-> - replace mutex_init() for devm_mutex_init()
+> Device resource managed simplified with:
 
-Why? We see all this from the diff but I do not see benefits.
+Use more readable style.
+https://elixir.bootlin.com/linux/v6.16/source/Documentation/process/submitting-patches.rst#L94
 
+> - voltage regulator managed internally by the device.
+> - IIO device registration handled with devm_iio_device_register().
+> - removal of goto's from the probe function.
+> - ad8366_remove() removed as it is not needed anymore.
+> 
+> Also, dev_err_probe() is used to report probe errors with created local
+> device pointer.
 > 
 > Signed-off-by: Rodrigo Alencar <rodrigo.alencar@analog.com>
 > ---
->  drivers/iio/amplifiers/ad8366.c | 14 +++++++++-----
->  1 file changed, 9 insertions(+), 5 deletions(-)
+>  drivers/iio/amplifiers/ad8366.c | 68 +++++++++++------------------------------
+>  1 file changed, 18 insertions(+), 50 deletions(-)
 > 
 > diff --git a/drivers/iio/amplifiers/ad8366.c b/drivers/iio/amplifiers/ad8366.c
-> index 160a8ab0c2ee..26856cb4216e 100644
+> index 26856cb4216e..d3fd8d44eae7 100644
 > --- a/drivers/iio/amplifiers/ad8366.c
 > +++ b/drivers/iio/amplifiers/ad8366.c
-> @@ -17,6 +17,7 @@
->   * Copyright 2012-2026 Analog Devices Inc.
->   */
+> @@ -53,7 +53,6 @@ struct ad8366_info {
 >  
-> +#include <linux/cleanup.h>
->  #include <linux/device.h>
->  #include <linux/kernel.h>
->  #include <linux/slab.h>
-> @@ -164,7 +165,8 @@ static int ad8366_read_raw(struct iio_dev *indio_dev,
+>  struct ad8366_state {
+>  	struct spi_device	*spi;
+> -	struct regulator	*reg;
+>  	struct mutex            lock; /* protect sensor state */
+>  	struct gpio_desc	*reset_gpio;
+>  	struct gpio_desc	*enable_gpio;
+> @@ -321,26 +320,22 @@ static int ad8366_probe(struct spi_device *spi)
+>  {
+>  	struct iio_dev *indio_dev;
+>  	struct ad8366_state *st;
+> +	struct device *dev = &spi->dev;
 >  	int ret;
->  	int code, gain = 0;
 >  
-> -	mutex_lock(&st->lock);
-> +	guard(mutex)(&st->lock);
-> +
->  	switch (m) {
->  	case IIO_CHAN_INFO_HARDWAREGAIN:
->  		code = st->ch[chan->channel];
-> @@ -210,7 +212,6 @@ static int ad8366_read_raw(struct iio_dev *indio_dev,
->  	default:
->  		ret = -EINVAL;
->  	}
-> -	mutex_unlock(&st->lock);
-
-This does not simplify code.
-
+> -	indio_dev = devm_iio_device_alloc(&spi->dev, sizeof(*st));
+> +	indio_dev = devm_iio_device_alloc(dev, sizeof(*st));
+>  	if (indio_dev == NULL)
+>  		return -ENOMEM;
 >  
->  	return ret;
->  };
-> @@ -267,7 +268,8 @@ static int ad8366_write_raw(struct iio_dev *indio_dev,
->  		break;
->  	}
->  
-> -	mutex_lock(&st->lock);
-> +	guard(mutex)(&st->lock);
-
-Neither this.
-
-> +
->  	switch (mask) {
->  	case IIO_CHAN_INFO_HARDWAREGAIN:
->  		st->ch[chan->channel] = code;
-> @@ -276,7 +278,6 @@ static int ad8366_write_raw(struct iio_dev *indio_dev,
->  	default:
->  		ret = -EINVAL;
->  	}
-> -	mutex_unlock(&st->lock);
->  
->  	return ret;
->  }
-> @@ -336,10 +337,13 @@ static int ad8366_probe(struct spi_device *spi)
->  	}
->  
->  	spi_set_drvdata(spi, indio_dev);
-> -	mutex_init(&st->lock);
+>  	st = iio_priv(indio_dev);
+> -
+> -	st->reg = devm_regulator_get(&spi->dev, "vcc");
+> -	if (!IS_ERR(st->reg)) {
+> -		ret = regulator_enable(st->reg);
+> -		if (ret)
+> -			return ret;
+> -	}
+> -
+> -	spi_set_drvdata(spi, indio_dev);
 >  	st->spi = spi;
 >  	st->type = spi_get_device_id(spi)->driver_data;
 >  
-> +	ret = devm_mutex_init(&spi->dev, &st->lock);
+> -	ret = devm_mutex_init(&spi->dev, &st->lock);
 
-And this one actually has impact - missing mutex_destroy...
+No need to change the line twice. Just use dev in previous commit. Or
+re-order commits.
 
+> +	ret = devm_regulator_get_enable(dev, "vcc");
 > +	if (ret)
-> +		return ret;
+> +		return dev_err_probe(dev, ret, "Failed to get regulator\n");
 > +
->  	switch (st->type) {
->  	case ID_AD8366:
->  		indio_dev->channels = ad8366_channels;
-> 
+> +	ret = devm_mutex_init(dev, &st->lock);
+>  	if (ret)
+>  		return ret;
+>  
+> @@ -359,25 +354,21 @@ static int ad8366_probe(struct spi_device *spi)
+>  	case ID_ADRF5731:
+>  	case ID_HMC1018:
+>  	case ID_HMC1019:
+> -		st->reset_gpio = devm_gpiod_get_optional(&spi->dev, "reset", GPIOD_OUT_HIGH);
+> -		if (IS_ERR(st->reset_gpio)) {
+> -			ret = PTR_ERR(st->reset_gpio);
+> -			goto error_disable_reg;
+> -		}
+> +		st->reset_gpio = devm_gpiod_get_optional(dev, "reset", GPIOD_OUT_HIGH);
+> +		if (IS_ERR(st->reset_gpio))
+> +			return dev_err_probe(dev, PTR_ERR(st->reset_gpio),
+> +					     "Failed to get reset GPIO\n");
+>  
+> -		st->enable_gpio = devm_gpiod_get_optional(&spi->dev, "enable", GPIOD_OUT_HIGH);
+> -		if (IS_ERR(st->enable_gpio)) {
+> -			ret = PTR_ERR(st->enable_gpio);
+> -			goto error_disable_reg;
+> -		}
+> +		st->enable_gpio = devm_gpiod_get_optional(dev, "enable", GPIOD_OUT_HIGH);
 
+You just added these lines before. Cleanups always go BEFORE new
+feature. Always.
 
+> +		if (IS_ERR(st->enable_gpio))
+> +			return dev_err_probe(dev, PTR_ERR(st->enable_gpio),
+> +					     "Failed to get enable GPIO\n");
+>  
+>  		indio_dev->channels = ada4961_channels;
+>  		indio_dev->num_channels = ARRAY_SIZE(ada4961_channels);
+>  		break;
+>  	default:
+> -		dev_err(&spi->dev, "Invalid device ID\n");
+> -		ret = -EINVAL;
+> -		goto error_disable_reg;
+> +		return dev_err_probe(dev, -EINVAL, "Invalid device ID\n");
+>  	}
+>  
+>  	st->info = &ad8366_infos[st->type];
+> @@ -387,31 +378,9 @@ static int ad8366_probe(struct spi_device *spi)
+>  
+>  	ret = ad8366_write(indio_dev, 0, 0);
+>  	if (ret < 0)
+> -		goto error_disable_reg;
+> +		return dev_err_probe(dev, ret, "failed to write initial gain\n");
+>  
 Best regards,
 Krzysztof
 

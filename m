@@ -1,29 +1,29 @@
-Return-Path: <linux-iio+bounces-27990-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-27989-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E4466D3B59C
-	for <lists+linux-iio@lfdr.de>; Mon, 19 Jan 2026 19:25:01 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2814BD3B5A3
+	for <lists+linux-iio@lfdr.de>; Mon, 19 Jan 2026 19:25:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 43F0B30022D7
-	for <lists+linux-iio@lfdr.de>; Mon, 19 Jan 2026 18:24:55 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id E2D26303B46C
+	for <lists+linux-iio@lfdr.de>; Mon, 19 Jan 2026 18:24:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 526012DEA67;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3272E38BF8D;
 	Mon, 19 Jan 2026 18:24:37 +0000 (UTC)
 X-Original-To: linux-iio@vger.kernel.org
 Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 563FB365A02
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 561BD35B13C
 	for <linux-iio@vger.kernel.org>; Mon, 19 Jan 2026 18:24:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768847077; cv=none; b=Ng3DbWGJxgRkvewvt9FbOJz0wdOAmSSw+80Ve98r66a+6PNsqW6QqkM4+Xa5ZaHFBu1YvOsKjj7O/BCRRib+hlJNCDZVEbuUC2+MddZ5rwMTxyNWpqeMjsWpl8dFML9LjA13b70caVu8424Sa6M/85lR3SGksovJ4X2y2zdfGRg=
+	t=1768847076; cv=none; b=QoTNP5fuTMvNhosF+tAj/c8HVbN4xL5gFVc6JqahAhi4aMPJeJ4WNjZhLhwU+b7wCYQt0Sa8Iua0tOyyf+VjJxTUaAyegsaIW4p0Omv7n3bh05tjOPZcURWBdBUWJMISjSBbfg572dUnujO6L2OfmoixzVEc+aoskKIm0bu8PQY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768847077; c=relaxed/simple;
-	bh=Vjn6/7sVL2PRX0fnsG7PEGcF6n99+IlYZKmpZI6Qq3g=;
+	s=arc-20240116; t=1768847076; c=relaxed/simple;
+	bh=Xfoi+lem2nLxE7UAyO/lJ6F52/txLPDbokgn0yZNdFs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KJzAiCMITDMAc1f9GC/q6K/uodoswkZVLw7rTV/PBRgV6L+1rdl+VkxA4aD9lQR1HibogXNdCEHLMKKCCoNtKfpalxhG7Jv8eruycpRFmp/M0VfLLI9iw8sMnu+tJurALh/ilP06noC9PA7tQu7U+R8DiXKaVye3oL/EnlrL6vw=
+	 MIME-Version; b=H6v9YYg9Zmafl8/ROyfP5oPjBDZN/mEWqa1+L6laXRXQaWyDUEsKyIumKRhuaHZIIVzz6tJT9vmG+RRUkCz5789zx34zrGTV65BSB217w+tIhHGNnSENp4sHor1TdL64zOPWr+fQqjiKIsF5B6DAv/4Ztowe2o650qAIjQa1dng=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
@@ -31,16 +31,16 @@ Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <ore@pengutronix.de>)
-	id 1vhtvO-0004SQ-7b; Mon, 19 Jan 2026 19:24:26 +0100
+	id 1vhtvO-0004SR-7d; Mon, 19 Jan 2026 19:24:26 +0100
 Received: from dude04.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::ac] helo=dude04)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <ore@pengutronix.de>)
-	id 1vhtvO-001SUn-1R;
+	id 1vhtvO-001SUp-1X;
 	Mon, 19 Jan 2026 19:24:25 +0100
 Received: from ore by dude04 with local (Exim 4.98.2)
 	(envelope-from <ore@pengutronix.de>)
-	id 1vhtvN-00000006y2J-2lo9;
+	id 1vhtvN-00000006y2U-2r3l;
 	Mon, 19 Jan 2026 19:24:25 +0100
 From: Oleksij Rempel <o.rempel@pengutronix.de>
 To: Jonathan Cameron <jic23@kernel.org>,
@@ -56,9 +56,9 @@ Cc: Oleksij Rempel <o.rempel@pengutronix.de>,
 	David Lechner <dlechner@baylibre.com>,
 	=?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
 	David Jander <david@protonic.nl>
-Subject: [PATCH v1 6/8] iio: dac: ds4424: clear outputs on probe
-Date: Mon, 19 Jan 2026 19:24:22 +0100
-Message-ID: <20260119182424.1660601-7-o.rempel@pengutronix.de>
+Subject: [PATCH v1 7/8] iio: dac: ds4424: ratelimit read errors and use device context
+Date: Mon, 19 Jan 2026 19:24:23 +0100
+Message-ID: <20260119182424.1660601-8-o.rempel@pengutronix.de>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260119182424.1660601-1-o.rempel@pengutronix.de>
 References: <20260119182424.1660601-1-o.rempel@pengutronix.de>
@@ -74,59 +74,32 @@ X-SA-Exim-Mail-From: ore@pengutronix.de
 X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
 X-PTX-Original-Recipient: linux-iio@vger.kernel.org
 
-The DS44xx devices have no reset pin or reset bit, so output registers
-may retain preconfigured values across reboot or warm reset.
+Replace pr_err() with dev_err_ratelimited() in the RAW read path to avoid
+log spam on repeated I2C failures and to include the device context.
 
-Also, the driver suspend/resume path restores from data->raw. When the
-device is first probed, data->raw is zero-initialized and may not match
-the actual hardware state. A later suspend/resume can therefore change an
-output from a preconfigured non-zero value to 0 mA.
-
-Initialize all channels to 0 output current during probe to ensure a
-deterministic baseline and consistent suspend/resume behavior.
+Use %pe to print errno names for faster debugging.
 
 Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
 ---
- drivers/iio/dac/ds4424.c | 19 +++++++++++++++++++
- 1 file changed, 19 insertions(+)
+ drivers/iio/dac/ds4424.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
 diff --git a/drivers/iio/dac/ds4424.c b/drivers/iio/dac/ds4424.c
-index a0c60eb89717..2d299a52cede 100644
+index 2d299a52cede..13acb427d43b 100644
 --- a/drivers/iio/dac/ds4424.c
 +++ b/drivers/iio/dac/ds4424.c
-@@ -220,6 +220,20 @@ static int ds4424_verify_chip(struct iio_dev *indio_dev)
- 	return ret;
- }
- 
-+static int ds4424_init(struct iio_dev *indio_dev)
-+{
-+	int i, ret;
-+
-+	/* Set all channels to 0 current. */
-+	for (i = 0; i < indio_dev->num_channels; i++) {
-+		ret = ds4424_set_value(indio_dev, 0, &indio_dev->channels[i]);
-+		if (ret < 0)
-+			return ret;
-+	}
-+
-+	return 0;
-+}
-+
- static int ds4424_setup_channels(struct i2c_client *client,
- 				 struct ds4424_data *data,
- 				 struct iio_dev *indio_dev)
-@@ -397,6 +411,11 @@ static int ds4424_probe(struct i2c_client *client)
- 	if (ret)
- 		goto fail;
- 
-+	/* No reset pin/bit: clear any preconfigured output on probe. */
-+	ret = ds4424_init(indio_dev);
-+	if (ret)
-+		goto fail;
-+
- 	indio_dev->modes = INDIO_DIRECT_MODE;
- 	indio_dev->info = &ds4424_iio_info;
- 
+@@ -148,8 +148,9 @@ static int ds4424_read_raw(struct iio_dev *indio_dev,
+ 	case IIO_CHAN_INFO_RAW:
+ 		ret = ds4424_get_value(indio_dev, val, chan->channel);
+ 		if (ret < 0) {
+-			pr_err("%s : ds4424_get_value returned %d\n",
+-							__func__, ret);
++			dev_err_ratelimited(&indio_dev->dev,
++					    "%s: ds4424_get_value failed %pe\n",
++					    __func__, ERR_PTR(ret));
+ 			return ret;
+ 		}
+ 		raw.bits = *val;
 -- 
 2.47.3
 

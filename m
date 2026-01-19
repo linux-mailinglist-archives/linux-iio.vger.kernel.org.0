@@ -1,44 +1,44 @@
-Return-Path: <linux-iio+bounces-28018-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-28019-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 48D41D3B9D3
-	for <lists+linux-iio@lfdr.de>; Mon, 19 Jan 2026 22:26:06 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 59EA0D3B99E
+	for <lists+linux-iio@lfdr.de>; Mon, 19 Jan 2026 22:22:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 7F2F530837EB
+	by sto.lore.kernel.org (Postfix) with ESMTP id D1230300AADF
 	for <lists+linux-iio@lfdr.de>; Mon, 19 Jan 2026 21:22:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 811392DF6F6;
-	Mon, 19 Jan 2026 21:22:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D1EC2FBE1F;
+	Mon, 19 Jan 2026 21:22:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HV5dhI+g"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="chr+nY0q"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43E852E8B9F
-	for <linux-iio@vger.kernel.org>; Mon, 19 Jan 2026 21:22:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60E3C2FB99D
+	for <linux-iio@vger.kernel.org>; Mon, 19 Jan 2026 21:22:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768857726; cv=none; b=pAS4AUBUVxzVVjx9bJQw3Zlc47RZHSN/Wi6e3ydko20Pffw/ReDqENkTRCCuPwJt5EgaeTgssP1gbNKwDB3ukWwUzJLA6BfKahCwgsutnovAZfowxXrjRyKaFEJP2rSeLRYKmDuQ0OEcjiVSBzUsKSOPrF/jqzC5CXYqWJxli28=
+	t=1768857731; cv=none; b=UrK3qJ9pM1S9o8V9c2m1rC5wgFhw6SXHyhfdxZ0rwTJpvXm+66RA5w1fXrtLzVtgSU9iw+HooL240K7mlKlIq0NBPRJ/1DzMcRbW+lm+gnBTex4UdioJzQX0os4NO5v/bOz/zJu1r0MYW68AsTYzQS9TTe1kDw7zx1n1MKoTaq4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768857726; c=relaxed/simple;
-	bh=4lpDDwrcGvIkbEHaxw2T/PUYhL6QNu4em7Ce1o1c/OY=;
+	s=arc-20240116; t=1768857731; c=relaxed/simple;
+	bh=7Mgkgaa5NIOMZ7w+Hcwht/DGKrK/hqUHZQsJGR9aXu4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=H0DsgqBBQXiBZc4+WirbNd6mod+rlAZDQJuUQ63Vb+STX8iKgRvmsnLdXLY9IpmGWHu4r8eXbHAia+KWUgBek6XQ5ulsvYId8VhhECKkxgoLlzrfQjCushpFQEI/Kr0CDyQ0OKTRZ9B6ueQDd9lccAbJeLEV0kuyT37FOAoUirE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HV5dhI+g; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A22F1C19424;
-	Mon, 19 Jan 2026 21:22:02 +0000 (UTC)
+	 MIME-Version; b=B6WnwC+ZDXf4PIGvKMhgU3RsJnt/saNg3ftPV9n/YR4CwkyFcdej8Y/4iOF7Mo3GZne3U3XEHjL0cdDR7RFj0jUWpQCbJzD/QMh2T4cNjmeJQDGLf0BMgtN6o3ctD8SN4BHEZSxtTSYvNnXzItdoKiUsX98jcd1jdkBjSK7r9z8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=chr+nY0q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93C46C19424;
+	Mon, 19 Jan 2026 21:22:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768857725;
-	bh=4lpDDwrcGvIkbEHaxw2T/PUYhL6QNu4em7Ce1o1c/OY=;
+	s=k20201202; t=1768857731;
+	bh=7Mgkgaa5NIOMZ7w+Hcwht/DGKrK/hqUHZQsJGR9aXu4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HV5dhI+gIqfgtYf776ZVDKtm1eVBxcr1Cq3Kb4VUt6pvJcxYDSD/+ZWAKYfVvjKol
-	 JRYm5+EdxV6bbMpYesCUkbcctO3bAyt4RtBUmnCGZ2UwGh+2841V/pdqQch/tyjW0P
-	 bzzwFHLR791YGNQEg+BneMNLtrfLQFGsLdWfXZf4/y10+GXcS/dExSuMC8gUUa6wat
-	 qMjP8Ua5GsSCPH/rqE/l9DKvopi7FFxnK7G+zMF8BB0I1K9UIsKjUSvFufzuIVsCN1
-	 5cNZBxD6VakWrqEdmqOV2GnQok3NgEiGJ8/BnKN+F91Hm0NzVJL/oGKld9WzUlLtwl
-	 6h3eezlEqbDfQ==
+	b=chr+nY0qtbrpJDzWI9DIh6HV2RuoQqUF0GauDv6OhbhV91Q1ozqzWq74F0zyiN3BF
+	 4nyGf88O+BUwg08tgW8SFNSYP/y1F5A6Nx9l8R5+iDiFNWziqTdYX8Kxn3IawgMHfm
+	 gSsIMfyYzaKvOdVRtKk5WA/DsMW0i1Izc24iv+xrp8DW9KPwCyTunhhTxJPK6zoWBM
+	 w2zJOG22QmhTQwzuxHdpscLDfB5gPZr1OIaNcvkAFxRJVSFhKpgUIy1XktfDjMOujU
+	 PakA6BdaLlxAMpgDg3Ae+arzdxMTpN5zZdFGHHcu6ldCTy2EUk8BWvZR/Oeao1ulBf
+	 8LE8JGwMTSpyw==
 From: Jonathan Cameron <jic23@kernel.org>
 To: linux-iio@vger.kernel.org,
 	Andy Shevchenko <andy@kernel.org>
@@ -51,9 +51,9 @@ Cc: David Lechner <dlechner@baylibre.com>,
 	Cosmin Tanislav <cosmin.tanislav@analog.com>,
 	Alisa-Dariana Roman <alisadariana@gmail.com>,
 	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 09/11] iio: adc: ad7124: Replace device.h with more specific includes
-Date: Mon, 19 Jan 2026 21:21:08 +0000
-Message-ID: <20260119212110.726941-10-jic23@kernel.org>
+Subject: [PATCH 10/11] iio: adc: ad7192: Put headers in alphabetical order
+Date: Mon, 19 Jan 2026 21:21:09 +0000
+Message-ID: <20260119212110.726941-11-jic23@kernel.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260119212110.726941-1-jic23@kernel.org>
 References: <20260119212110.726941-1-jic23@kernel.org>
@@ -67,46 +67,53 @@ Content-Transfer-Encoding: 8bit
 
 From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-Separate patch to make this change more obvious.
-This driver makes no direct use of anything in device.h but
-uses both include/linux/device/devres.h and include/linux/dev_printk.h
-as well as needing a forwards def for struct device.
-So replace device.h with those headers and the struct device forwards
-definition.
+Precusor to cleaning them up that makes it easier to see what
+is being done.  Leave the iio/ ones alone as many of those will be
+dropped.
 
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Cc: David Lechner <dlechner@baylibre.com>
+Cc: Alisa-Dariana Roman <alisadariana@gmail.com>
 ---
-I'm still tweaking my iwyu config, so currently it doesn't suggest this
-one automatically. I'm interested to hear opinions on whether it is a
-good way to go or not!
----
- drivers/iio/adc/ad7124.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/iio/adc/ad7192.c | 18 +++++++++---------
+ 1 file changed, 9 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/iio/adc/ad7124.c b/drivers/iio/adc/ad7124.c
-index 5d3be891fa7e..84da872fab6f 100644
---- a/drivers/iio/adc/ad7124.c
-+++ b/drivers/iio/adc/ad7124.c
-@@ -14,7 +14,8 @@
- #include <linux/container_of.h>
- #include <linux/debugfs.h>
- #include <linux/delay.h>
--#include <linux/device.h>
-+#include <linux/dev_printk.h>
-+#include <linux/device/devres.h>
- #include <linux/err.h>
- #include <linux/interrupt.h>
- #include <linux/kstrtox.h>
-@@ -36,6 +37,8 @@
- #include <linux/iio/iio.h>
- #include <linux/iio/adc/ad_sigma_delta.h>
+diff --git a/drivers/iio/adc/ad7192.c b/drivers/iio/adc/ad7192.c
+index 530e1d307860..6b48581d7606 100644
+--- a/drivers/iio/adc/ad7192.c
++++ b/drivers/iio/adc/ad7192.c
+@@ -5,23 +5,23 @@
+  * Copyright 2011-2015 Analog Devices Inc.
+  */
  
-+struct device;
-+
- /* AD7124 registers */
- #define AD7124_COMMS			0x00
- #define AD7124_STATUS			0x00
+-#include <linux/interrupt.h>
+ #include <linux/bitfield.h>
+ #include <linux/cleanup.h>
+ #include <linux/clk.h>
+ #include <linux/clk-provider.h>
++#include <linux/delay.h>
+ #include <linux/device.h>
+-#include <linux/kernel.h>
+-#include <linux/slab.h>
+-#include <linux/sysfs.h>
+-#include <linux/spi/spi.h>
+-#include <linux/regulator/consumer.h>
+ #include <linux/err.h>
+-#include <linux/sched.h>
+-#include <linux/delay.h>
+-#include <linux/module.h>
++#include <linux/interrupt.h>
++#include <linux/kernel.h>
+ #include <linux/mod_devicetable.h>
++#include <linux/module.h>
+ #include <linux/property.h>
++#include <linux/regulator/consumer.h>
++#include <linux/sched.h>
++#include <linux/slab.h>
++#include <linux/spi/spi.h>
++#include <linux/sysfs.h>
+ #include <linux/units.h>
+ 
+ #include <linux/iio/iio.h>
 -- 
 2.52.0
 

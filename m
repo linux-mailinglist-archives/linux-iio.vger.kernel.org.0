@@ -1,44 +1,44 @@
-Return-Path: <linux-iio+bounces-28013-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-28014-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C65ED3B999
-	for <lists+linux-iio@lfdr.de>; Mon, 19 Jan 2026 22:22:20 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 639DCD3B99C
+	for <lists+linux-iio@lfdr.de>; Mon, 19 Jan 2026 22:22:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 0D9A5300A53B
-	for <lists+linux-iio@lfdr.de>; Mon, 19 Jan 2026 21:22:20 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id D7BCB300A91C
+	for <lists+linux-iio@lfdr.de>; Mon, 19 Jan 2026 21:22:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8111630FC18;
-	Mon, 19 Jan 2026 21:21:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A86532E752;
+	Mon, 19 Jan 2026 21:21:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="azbqQFwm"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="P9X4VrMW"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 420FB3090F5
-	for <linux-iio@vger.kernel.org>; Mon, 19 Jan 2026 21:21:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E73831065B
+	for <linux-iio@vger.kernel.org>; Mon, 19 Jan 2026 21:21:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768857704; cv=none; b=KSy05SXx+mUq5yA2D6T8k+boI06etlPn828PvYcLmwrYPx2+QSZRfL3p3Oex7keIRu28KOncBeqx4L7rSIEeGWUPyX59/CvWA8LIQEa6aG6ycpyYFojl2PD8SXxmJ52VJ9SIfiSqDkEHwnsAT8cKdXjryDPtqBApt9H59hibqXw=
+	t=1768857708; cv=none; b=TOLKlWXrDbRL/xi1U6fI9RtLiLynY05wZhvi285YqJX3KYxHdkADMb5XKuZn0md8IlidjzRqnFhNYcEaODvClrr0kf+DhxFFZK8kMHc+y+81RffScyvk7ZfWcplfwBeXUfV47VZEt3b1nOvyCpjCAy2A6mJfgynEGhxFHMe2Ato=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768857704; c=relaxed/simple;
-	bh=nMfrjRZOAiBpPn+QojOpjVIOdjTq9jf6GfD5ViWXeOs=;
+	s=arc-20240116; t=1768857708; c=relaxed/simple;
+	bh=3XugZIoI+oppjdx9JrYyR++viWQCU8JCAPwzFxVt0GI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=myhPDY/8/xOY7S+dhDOwUGyC0rMbE5I732Sdj59sEVacHSwya2O5iSkV0amMjvIajR09E45U98W6u217lRA6EPeFZBcWFWu5UDwYhTELPOyrqSDXQP4sArv0p4HVJ2a9pzwRJoxpcvJe8jVkmc14ktSSehmZaDmWUGFDpDhgdc8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=azbqQFwm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 143A0C19425;
-	Mon, 19 Jan 2026 21:21:39 +0000 (UTC)
+	 MIME-Version; b=j2V8EUQmoD0D6NsKYqqDBzcf/SAUoFI7RUWPb745GGRe8juusCWuDPVFDee690cxtgf/hm0nByWtYi9DGyxaobjcFTzDWeXK0cqAg9uBMNQn8gVkEig5FGL1ugKXkyirvci6bgNiVq6g7hzlg1nbI4z93qtITuVK/120HG88a/Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=P9X4VrMW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F9C3C19424;
+	Mon, 19 Jan 2026 21:21:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768857703;
-	bh=nMfrjRZOAiBpPn+QojOpjVIOdjTq9jf6GfD5ViWXeOs=;
+	s=k20201202; t=1768857707;
+	bh=3XugZIoI+oppjdx9JrYyR++viWQCU8JCAPwzFxVt0GI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=azbqQFwm/G2RKmymPg4Av1TlIE8aZr3beCMIr9hsCbiBhAJ7UoE5fsNIWAyfZc72G
-	 BFN6LrVsFtxm9GIBvnkQjb6olx1Ec/KQDe8/XorAYsjuSZOCJzEGWX2k8eJ92EIwFW
-	 zzysDbzBBIUMJbGv0Vdq7H/Oz8oXbVNSdBreeIN7Dsgt9dE/bwPCWOoLX2VF/AFP68
-	 /59hJ1fJj7IVdOcNCbnGHmjyhWRfvq5IodiMpN6r1pG233oCNKPRxBHxeLZ0P2v6zt
-	 P/3hJpVym/oEoA34HiXcTIjdVpwdh6u8x8kfqBF6filxYj3wokkWpE0Czbcr8+51eP
-	 u406dTIK/mCfA==
+	b=P9X4VrMWW5rQ/gV+VR/FXXSc1VgDySS52wrdIqsp68SetqRBdrxTsS5MRHrnPnc7w
+	 pTFN3t1YkxKIgICz2Qt5SzDjNnYvW0XJdkjg8cYcyjnkSvBBofBjTXqH7qi0ORcIul
+	 kzUH0+9j6qECZUU4ommYRmO6wRBFe4aaFaooM7La7AmsCV2sQIeMHOlMDyRYH3GuL9
+	 Ba6A2hjoEmY/+NSaeno7kd2jLIcPWDd768vZdTkM5ZvvF7cFrsDlUX+ioOG+sFHUtM
+	 sGJKfPlGnBxbGbnjfzWrRsQon1xDtrvEeeTRmqFxXYl3Gf9Nz11nqT7SjBbUBJ2ptD
+	 VZOKzVUNfymDA==
 From: Jonathan Cameron <jic23@kernel.org>
 To: linux-iio@vger.kernel.org,
 	Andy Shevchenko <andy@kernel.org>
@@ -51,9 +51,9 @@ Cc: David Lechner <dlechner@baylibre.com>,
 	Cosmin Tanislav <cosmin.tanislav@analog.com>,
 	Alisa-Dariana Roman <alisadariana@gmail.com>,
 	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 04/11] iio: adc: max1027: Improve include relevance
-Date: Mon, 19 Jan 2026 21:21:03 +0000
-Message-ID: <20260119212110.726941-5-jic23@kernel.org>
+Subject: [PATCH 05/11] iio: adc: max11100: Improve include relevance
+Date: Mon, 19 Jan 2026 21:21:04 +0000
+Message-ID: <20260119212110.726941-6-jic23@kernel.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260119212110.726941-1-jic23@kernel.org>
 References: <20260119212110.726941-1-jic23@kernel.org>
@@ -67,75 +67,55 @@ Content-Transfer-Encoding: 8bit
 
 From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-Drop kernel.h in favor of more specific headers and add includes that were
-previously relying on other headers including them.
+Using the iwyu tool to help, drop kernel.h in favor of more specific
+headers.
+Also drop a delay.h and iio/driver.h as neither was used.
+Add other headers that were relying on indirect includes.
 
-Whether to include device.h or the relevant sub headers is non obvious.
-In this case, there is an access to struct device for
-spi->dev.driver->name which is used to name the irq.
-
-The justification from iwyu for the additional includes is:
-  #include <asm/byteorder.h>           // for be16_to_cpu
-  #include <linux/array_size.h>        // for ARRAY_SIZE
-  #include <linux/bitops.h>            // for BIT, GENMASK, fls, hweight32
-  #include <linux/cleanup.h>           // for guard
-  #include <linux/compiler.h>          // for __aligned
-  #include <linux/completion.h>        // for complete, init_completion
-  #include <linux/device.h>            // for dev_err, dev_name, devm_kmal. ..
-  #include <linux/errno.h>             // for ENOMEM, EINVAL, EBUSY, ETIME...
-  #include <linux/interrupt.h>         // for devm_request_irq, irqreturn
-  #include <linux/jiffies.h>           // for msecs_to_jiffies
-  #include <linux/minmax.h>            // for __cmp_op_max
-  #include <linux/mutex.h>             // for class_mutex_constructor, cla...
-  #include <linux/stddef.h>            // for NULL, false
-  #include <linux/types.h>             // for u8, bool, __be16
-
-stddef.h not directly included as few drivers do this.
+Justification for additions:
+  #include <linux/array_size.h>      // for ARRAY_SIZE
+  #include <linux/bits.h>            // for BIT
+  #include <linux/compiler.h>        // for __aligned
+  #include <linux/dev_printk.h>      // for dev_err
+  #include <linux/device/devres.h>   // for devm_add_action_or_reset
+  #include <linux/err.h>             // for EINVAL, IS_ERR, PTR_ERR, ENOMEM
+  #include <linux/minmax.h>          // for __cmp_op_max
+  #include <linux/types.h>           // for u8
 
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Cc: Miquel Raynal <miquel.raynal@bootlin.com>
 ---
- drivers/iio/adc/max1027.c | 16 +++++++++++++++-
- 1 file changed, 15 insertions(+), 1 deletion(-)
+ drivers/iio/adc/max11100.c | 11 ++++++++---
+ 1 file changed, 8 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/iio/adc/max1027.c b/drivers/iio/adc/max1027.c
-index 913665b52cea..22d90efc9ab6 100644
---- a/drivers/iio/adc/max1027.c
-+++ b/drivers/iio/adc/max1027.c
-@@ -12,11 +12,23 @@
-   * Partial support for max1027 and similar chips.
-   */
- 
-+#include <linux/array_size.h>
-+#include <linux/bitops.h>
-+#include <linux/cleanup.h>
-+#include <linux/compiler.h>
-+#include <linux/completion.h>
- #include <linux/delay.h>
+diff --git a/drivers/iio/adc/max11100.c b/drivers/iio/adc/max11100.c
+index 520e37f75aac..f5adf7dba700 100644
+--- a/drivers/iio/adc/max11100.c
++++ b/drivers/iio/adc/max11100.c
+@@ -6,16 +6,21 @@
+  * Copyright (C) 2016-17 Renesas Electronics Corporation
+  * Copyright (C) 2016-17 Jacopo Mondi
+  */
+-#include <linux/delay.h>
 -#include <linux/kernel.h>
-+#include <linux/device.h>
-+#include <linux/errno.h>
-+#include <linux/interrupt.h>
-+#include <linux/jiffies.h>
++#include <linux/array_size.h>
++#include <linux/bits.h>
++#include <linux/compiler.h>
++#include <linux/dev_printk.h>
++#include <linux/device/devres.h>
++#include <linux/err.h>
 +#include <linux/minmax.h>
- #include <linux/module.h>
  #include <linux/mod_devicetable.h>
-+#include <linux/mutex.h>
-+#include <linux/printk.h>
+ #include <linux/module.h>
+ #include <linux/regulator/consumer.h>
  #include <linux/spi/spi.h>
 +#include <linux/types.h>
+ #include <linux/unaligned.h>
  
  #include <linux/iio/iio.h>
- #include <linux/iio/buffer.h>
-@@ -24,6 +36,8 @@
- #include <linux/iio/trigger_consumer.h>
- #include <linux/iio/triggered_buffer.h>
+-#include <linux/iio/driver.h>
  
-+#include <asm/byteorder.h>
-+
- #define MAX1027_CONV_REG  BIT(7)
- #define MAX1027_SETUP_REG BIT(6)
- #define MAX1027_AVG_REG   BIT(5)
+ /*
+  * LSB is the ADC single digital step
 -- 
 2.52.0
 

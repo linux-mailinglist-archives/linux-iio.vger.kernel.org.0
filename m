@@ -1,52 +1,52 @@
-Return-Path: <linux-iio+bounces-27985-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-27986-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3E838D3B469
-	for <lists+linux-iio@lfdr.de>; Mon, 19 Jan 2026 18:33:32 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 10E04D3B493
+	for <lists+linux-iio@lfdr.de>; Mon, 19 Jan 2026 18:39:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 57296306AC5A
-	for <lists+linux-iio@lfdr.de>; Mon, 19 Jan 2026 17:33:28 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id E3A58303368E
+	for <lists+linux-iio@lfdr.de>; Mon, 19 Jan 2026 17:37:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C6F7329C52;
-	Mon, 19 Jan 2026 17:33:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9B6332B98C;
+	Mon, 19 Jan 2026 17:37:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b="HkrynRV2"
+	dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b="Cb2hE+hw"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from ixit.cz (ixit.cz [185.100.197.86])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BDB62DEA67;
-	Mon, 19 Jan 2026 17:33:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 414D732AAA1;
+	Mon, 19 Jan 2026 17:37:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.100.197.86
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768844007; cv=none; b=AbyWsHZfHme6KaqfC/D/fyu1JulNgBywirXNikttjNyQkp3cXVU1EiUxoGPzD5UeM02zTsIoJqCfkMS+OzldzDf9DfhEhOzvLoW982dES7nRilcSG7B3yz5Om+1pksZfj9Z4nkoSngp8spZcUt55ALUytgxwVOgZtr0yHXXg0Ck=
+	t=1768844266; cv=none; b=KXqdrAAcpLTkiA+Bs1Rsxse5rj7F8sRifmGDweMJBkSX4hedXGJ2hgMOhtqIYB7SY0kzdfvK0Dk6hkNCbwJ9Aqk0YCe/v37B33flz5sO8EZUOYG+qf+WiaV8hHHaO0lz//oSn8OAvuF5RPbUaLu3gc3M17OHhhIsHMDJQRmk59Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768844007; c=relaxed/simple;
-	bh=wv3iGVgADZfczhmEdP1XRF7qtuIrc52olJlqa3xFPk8=;
+	s=arc-20240116; t=1768844266; c=relaxed/simple;
+	bh=9URV1O+pIbJLn/NukGZEbU5dDr4E2v+0ynTfo2LQ6qw=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=dJDNug2y+cI4n+QbJMjwccSNYxO5u4Vf67hI5gSsuT0cTR8izkt2HGV9cvZyB6YC+qe103r7ZaeMAzBCXLwkUec/fwF+2AJnevMa2LVgW2gKBmUIE2COMYEYlS8tEmhE8e/Gh1UaRfWdIKTcyHTs0zWL0hpCqjcfjZqVklTb1rg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz; spf=pass smtp.mailfrom=ixit.cz; dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b=HkrynRV2; arc=none smtp.client-ip=185.100.197.86
+	 In-Reply-To:Content-Type; b=r9kdv8LSXOsEtBFleJ3shZt7zn7SE8Ra0IifKUiEcx42BBeW67XiWLOtjqgbEveNzNPTwbEipHwezifTeRhwLx/c98cm9/zDNgBnD7TaIlfMhweDHkytmW9Zzoqwk5WzQh8TGzukMavh1+Iz5+wXtuA43/bpBRcaHqkjYY+8Z0A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz; spf=pass smtp.mailfrom=ixit.cz; dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b=Cb2hE+hw; arc=none smtp.client-ip=185.100.197.86
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ixit.cz
 Received: from [10.0.0.200] (unknown [10.88.125.21])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange x25519)
+	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by ixit.cz (Postfix) with ESMTPSA id 2B7B6534326A;
-	Mon, 19 Jan 2026 18:33:21 +0100 (CET)
+	by ixit.cz (Postfix) with ESMTPSA id 4F0E953434E9;
+	Mon, 19 Jan 2026 18:37:37 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ixit.cz; s=dkim;
-	t=1768844001;
+	t=1768844257;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=qwSKq3FSr+ZsvZCd240HErUbHksnnk4TWi2yz+40qgo=;
-	b=HkrynRV2qGbhsPswcbE+EnvifCfc7rPmOE/M+zqFK2Lhm+rSv4oGAM38KgCA9nnOBW/+LG
-	GjMvUGz6qm4/UG8oOeCGHZ60TlHsERc38p6xN7A3yIymVah3gleHVvnTRtUXisqbQCrn8l
-	SRpK1rkKq0pEHMCLln3AgPWuksiBT8s=
-Message-ID: <b53a78cf-3c66-44ac-8f13-2925e3d9b9a2@ixit.cz>
-Date: Mon, 19 Jan 2026 18:33:20 +0100
+	bh=inyhwKJXRe4l3FCVAfrzWhq6DUAQ8u/KHdL8DG/CSyc=;
+	b=Cb2hE+hw8BGzV9CWM+qNCf2g1Mq8zBBq8eUQek0rdNk/BU0kQPpdutDOQGVy7EoyZPVGNs
+	NODGVCxy+Ymkl+VWRdMwccwQ9sDZg5mBl/pIHfOPyTkvPncr6Rtjg+jKWsJaJIT64tlm0T
+	k3eAHXZiuobbPjGMEfDwMX5hjuP3vYM=
+Message-ID: <c50104fb-5f09-4d59-883f-9e22e6146893@ixit.cz>
+Date: Mon, 19 Jan 2026 18:37:36 +0100
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -54,7 +54,8 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 3/3] sdm845: tama: Add AMS TCS3400 ambient light sensor
+Subject: Re: [PATCH 1/3] doc: add Device Tree binding for AMS TCS3400 light
+ sensor
 To: petr.hodina@protonmail.com, Jonathan Cameron <jic23@kernel.org>,
  David Lechner <dlechner@baylibre.com>, =?UTF-8?Q?Nuno_S=C3=A1?=
  <nuno.sa@analog.com>, Andy Shevchenko <andy@kernel.org>,
@@ -64,7 +65,7 @@ To: petr.hodina@protonmail.com, Jonathan Cameron <jic23@kernel.org>,
 Cc: linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
  linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org
 References: <20260119-tsc3400-v1-0-82a65c5417aa@protonmail.com>
- <20260119-tsc3400-v1-3-82a65c5417aa@protonmail.com>
+ <20260119-tsc3400-v1-1-82a65c5417aa@protonmail.com>
 Content-Language: en-US
 From: David Heidelberg <david@ixit.cz>
 Autocrypt: addr=david@ixit.cz; keydata=
@@ -110,86 +111,112 @@ Autocrypt: addr=david@ixit.cz; keydata=
  zRKcgRumz2Tc1ouHj6qINlzEe3a5ldctIn/dvR1l2Ko7GBTG+VGp9U5NOAEkGpxHG9yg6eeY
  fFYnMme51H/HKiyUlFiE3yd5LSmv8Dhbf+vsI4x6BOOOq4Iyop/Exavj1owGxW0hpdUGcCl1
  ovlwVPO/6l/XLAmSGwdnGqok5eGZQzSst0tj9RC9O0dXO1TZocOsf0tJ8dR2egX4kxM=
-In-Reply-To: <20260119-tsc3400-v1-3-82a65c5417aa@protonmail.com>
+In-Reply-To: <20260119-tsc3400-v1-1-82a65c5417aa@protonmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
 On 19/01/2026 18:19, Petr Hodina via B4 Relay wrote:
 > From: Petr Hodina <petr.hodina@protonmail.com>
 > 
-> Add device tree node for TCS3400 ambient light sensor with
-> power supplies, interrupt on GPIO11, and pinctrl states.
+> Adds a new YAML binding describing the AMS TCS3400 I2C light sensor,
+> including compatible string, registers, interrupts, power supply, and an
+> example node.
 > 
 > Signed-off-by: Petr Hodina <petr.hodina@protonmail.com>
 > ---
->   .../boot/dts/qcom/sdm845-sony-xperia-tama.dtsi     | 36 +++++++++++++++++++++-
->   1 file changed, 35 insertions(+), 1 deletion(-)
+>   .../devicetree/bindings/iio/light/ams,tcs3400.yaml | 54 ++++++++++++++++++++++
+>   MAINTAINERS                                        |  6 +++
+>   2 files changed, 60 insertions(+)
 > 
-> diff --git a/arch/arm64/boot/dts/qcom/sdm845-sony-xperia-tama.dtsi b/arch/arm64/boot/dts/qcom/sdm845-sony-xperia-tama.dtsi
-> index 7dc9349eedfd..15d56d6831c5 100644
-> --- a/arch/arm64/boot/dts/qcom/sdm845-sony-xperia-tama.dtsi
-> +++ b/arch/arm64/boot/dts/qcom/sdm845-sony-xperia-tama.dtsi
-> @@ -485,7 +485,23 @@ &i2c14 {
->   	clock-frequency = <400000>;
+> diff --git a/Documentation/devicetree/bindings/iio/light/ams,tcs3400.yaml b/Documentation/devicetree/bindings/iio/light/ams,tcs3400.yaml
+> new file mode 100644
+> index 000000000000..2c5a9295af1a
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/iio/light/ams,tcs3400.yaml
+> @@ -0,0 +1,54 @@
+> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+> +%YAML 1.2
+> +---
+> +$id: "http://devicetree.org/schemas/iio/light/ams,tcs3400.yaml#"
+> +$schema: "http://devicetree.org/meta-schemas/core.yaml#"
+> +
+> +title: AMS TCS3400 Color Light-to-Digital Converter
+> +
+> +maintainers:
+> +  - name: Petr Hodina
+> +    email: petr.hodina@protonmail.com
+
+  - name <email>
+
+> +
+> +description: |
+
+no need to use | or > here, please drop
+
+> +  The AMS TCS3400 is an I2C-connected color light sensor providing
+> +  RGBC or RGB-IR measurements with a programmable integration time
+> +  and gain.
+> +
+> +properties:
+> +  compatible:
+> +    const: ams,tcs3400
+> +
+> +  reg:
+> +    maxItems: 1
+> +
+> +  interrupts:
+> +    maxItems: 1
+> +    description:
+> +      Interrupt line signaling ALS data ready or threshold events.
+> +
+> +  vdd-supply:
+> +    description:
+> +      Regulator supplying the main sensor power.
+> +
+> +required:
+> +  - compatible
+> +  - reg
+> +  - vdd-supply
+> +
+> +additionalProperties: false
+> +
+> +examples:
+> +  - |
+> +    i2c {
+> +        #address-cells = <1>;
+> +        #size-cells = <0>;
+> +
+> +        light-sensor@39 {
+> +            compatible = "ams,tcs3400";
+> +            reg = <0x39>;
+> +            interrupt-parent = <&gpio1>;
+> +            interrupts = <5 IRQ_TYPE_EDGE_FALLING>;
+> +            vdd-supply = <&vdd_3v3>;
+> +        };
+> +    };
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index 14a06f856b81..ab5307a34180 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -22866,6 +22866,12 @@ S:	Supported
+>   F:	drivers/iio/adc/rohm-bd79112.c
+>   F:	drivers/iio/adc/rohm-bd79124.c
 >   
->   	/* SONY ToF sensor @ 52 */
-> -	/* AMS TCS3490 RGB+IR color sensor @ 72 */
-> +
+> +AMS TCS3400 AMBIENT LIGHT SENSOR DRIVER
+> +M:	Petr Hodina
+> +L:	Petr Hodina <petr.hodina@protonmail.com>
+> +S:	Petr Hodina <petr.hodina@protonmail.com>
 
-Nice! Few comments:
+M: Petr Hodina <petr.hodina@protonmail.com>
+S: Maintained
 
-You replacing sensor comment at 0x72 with one 0x39, could be there 
-different sensor model with different address? e.g. tcs3400 vs tcs3490?
+drop the L: (e.g. read the header of Maintainers file ;) )
 
-Also the node should go above ToF sensor as @39 < @52.
-
-> +	tcs3400_sensor: tcs3400_sensor@39 {
-> +		compatible = "ams,tcs3400";
-> +		reg = <0x39>;
+> +F:	Documentation/devicetree/bindings/iio/light/ams,tcs3400.yaml
 > +
-> +		interrupts-extended = <&tlmm 11 IRQ_TYPE_EDGE_FALLING>;
-> +
-> +		vdd-supply = <&vreg_l22a_2p8>;
-> +		vio-supply = <&cam_vio_vreg>;
-> +
-> +		pinctrl-0 = <&ams_sensor_default>;
-> +		pinctrl-1 = <&ams_sensor_sleep>;
-
-pinctrl-names missing
-
-> +
-> +		ams,rgbcir-vdd-supply = <1>;
-> +		ams,rgbcir-gpio-vdd = <0>;
-> +		ams,rgbcir-vio-supply = <1>;
-> +	};
->   };
->   
->   &ibb {
-> @@ -751,6 +767,24 @@ int-pins {
->   			bias-pull-down;
->   		};
->   	};
-> +
-> +	ams_sensor_default: ams-sensor-default-state {
-> +		int-pins {
-> +			pins = "gpio11";
-> +			function = "gpio";
-> +			drive-strength = <2>;
-> +			bias-pull-up;
-> +		};
-> +	};
-> +
-> +	ams_sensor_sleep: ams_sensor-sleep-state {
-> +		int-pins {
-> +			pins = "gpio11";
-> +			function = "gpio";
-> +			drive-strength = <2>;
-> +			bias-pull-down;
-> +		};
-> +	};
->   };
->   
->   &uart6 {
+>   ROHM BH1745 COLOUR SENSOR
+>   M:	Mudit Sharma <muditsharma.info@gmail.com>
+>   L:	linux-iio@vger.kernel.org
 > 
 
 -- 

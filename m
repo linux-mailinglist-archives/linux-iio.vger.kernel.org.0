@@ -1,125 +1,207 @@
-Return-Path: <linux-iio+bounces-27973-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-27974-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C95ACD3ADF4
-	for <lists+linux-iio@lfdr.de>; Mon, 19 Jan 2026 16:01:29 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7BC2CD3B2DB
+	for <lists+linux-iio@lfdr.de>; Mon, 19 Jan 2026 17:59:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 895D2300F566
-	for <lists+linux-iio@lfdr.de>; Mon, 19 Jan 2026 15:00:14 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id E9A553051960
+	for <lists+linux-iio@lfdr.de>; Mon, 19 Jan 2026 16:44:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 052103816F0;
-	Mon, 19 Jan 2026 15:00:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7CBD832D0F9;
+	Mon, 19 Jan 2026 16:37:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="0xB2+8Oz"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="D9cS99yg"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-oa1-f46.google.com (mail-oa1-f46.google.com [209.85.160.46])
+Received: from mail-qt1-f170.google.com (mail-qt1-f170.google.com [209.85.160.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E72E63815C8
-	for <linux-iio@vger.kernel.org>; Mon, 19 Jan 2026 15:00:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA72632C925
+	for <linux-iio@vger.kernel.org>; Mon, 19 Jan 2026 16:37:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768834811; cv=none; b=OLu1z+V4cgxClKrQJuqHYGeHP8uXxGHb54r482VbJXj0IQ/RJAN4QVt797+H7yKSne1D9GtWGB+vJwivReVzc4Owk0o4LInJCO/amDmrBfxFIp1sbMH/2dKzcTmNgre37v9g5lsBg/tXopigCmVoJOThIuX98G8B1mxXmBzfjUQ=
+	t=1768840643; cv=none; b=IvTWKvib4igZO4w/dOADYNzkguKSnNLCGHEsWJ9WZHTKatzSGKcqDGrQ6bE8gIG2SrKr0uX+ciyBnh0CT+5J/laHmVuPljXGtS69HUBv4TXINlOkDGvmL9RFuSSjeAwYwboCDhNZiqC+DOgq7D3GnX4KWH35witaB1gDeu/R+UI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768834811; c=relaxed/simple;
-	bh=cm0kBCrCagAmIwIfdqQivns34awEDM3DgQZ629eJSvM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=KdUu4K34CQFVBYst7Kg3D2MRaXNhAjqASGm5IVNXKgEnVNik3khhdJ4P45GP5s6BUW+aC1Vx5eQqZXjJdVieXl7T5UWxITaPw7jLOZA5rASwz0HcIQq3ERgJC0/dir9qc8cRGZ8UraRMoz8Z0lgAHcZqpGXdNyJKWK20xiaAy7I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=0xB2+8Oz; arc=none smtp.client-ip=209.85.160.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-oa1-f46.google.com with SMTP id 586e51a60fabf-4041c73ab4dso1540369fac.2
-        for <linux-iio@vger.kernel.org>; Mon, 19 Jan 2026 07:00:08 -0800 (PST)
+	s=arc-20240116; t=1768840643; c=relaxed/simple;
+	bh=EZrNpq9rChwQifuKMlIJR8/++2PQTZ9sdidJy9GUDCQ=;
+	h=From:Date:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=SkSvnWedwI0Y2rmqBNoayppjW7XfHdwxvmfwQBAO0PWTI0phoHbECLANeb1efyf+l59wvO4mCXZ62EuY02IOqVGDkPWc9bivaIxu3PSIvsU0on+KINNFksK6zD7v+Lis7umQv1rfGEHbHUNewmwjHEBjHzlwygbWX8WCvsdrfok=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=D9cS99yg; arc=none smtp.client-ip=209.85.160.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-qt1-f170.google.com with SMTP id d75a77b69052e-501469b598fso30800661cf.3
+        for <linux-iio@vger.kernel.org>; Mon, 19 Jan 2026 08:37:21 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1768834808; x=1769439608; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=C4+U9ZGKYVnrOMk8WBltvHJAB0HdENMPvpMm9u9ZXYU=;
-        b=0xB2+8OzBFiJoPPCweIGUvNIB9ZIbkaJ6OebkHuDTSGJJNH/Trg7jS96Oz+vqutLqh
-         xUCQScZVIt3+R5GpihO6DxjNDPONRtv6KbXM+aPzM5sBI5h5yusnFKGeey5YdDsMs4Aq
-         vYeJR00cdK/P3ZRr0O1nEEZ0rwGZFYhIgWjJv2DrRPg58twM+/mPTAYzTFeqWKM0IjJO
-         y5wkl24cdr2QmhFOuFZ3Z1D0BjPu2tNesWoQv3Q9qDOG+PyI4ZvIKXVrtzbTOPnKSm7J
-         CXzBvHI5qK3bjnoum4kjWsPRPHDumM+m5L6SZaeFnvsdz3vfIKyr3E21l+kn0KhoAsd/
-         kTTA==
+        d=gmail.com; s=20230601; t=1768840640; x=1769445440; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:date:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=yWa5GFU+0/3D3/qFeqSukARO3O554NFHrTD7tJlV5sE=;
+        b=D9cS99yg1VoDWp7dVzCSIAogNp7MVRfxu8/xvenT4fc9hEpPfxKtrHNRjfvroD7NoL
+         d9WLORGDWCtyRgNC09E/mwxenrfnd4MVwuxFzOMEmePgFbEpmx9k2CGTG2LcBN05OO7X
+         oJxOO//3kBx4XUlOsFYuWHkK6JrXqvET7wS1EWNfWwtB8eaLiy90qpqldcN+i0B+YB8x
+         O/qzra2Z1j19Vt1m0NOSyAoZI12u9GAJaXURpbGQtTYahe8D1cWfdzWRy8UDOeQGWM28
+         97SPY/TcmbHRciJamAIoZbNqJlPbo/iI1swmn1C+n7hOoQhXrHWQg9f+wBtYAH3A3C2Z
+         AXKA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768834808; x=1769439608;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=C4+U9ZGKYVnrOMk8WBltvHJAB0HdENMPvpMm9u9ZXYU=;
-        b=ofd/udVnR9s3FOsgD2St6KvaYLRMoSpAQyP7DV3W6zQi5zNtqBscZ6yTGljY9psqYL
-         YHqcPYWFGvACIku+WcydUarp63NQ+KRiU3keCUQkXQ7kfIcJmCCNMcd5OCYtbdERXMLs
-         Z3bNVQH7gA2is3A5iJUBMxVdT7sUwcOAUbuSezvhKG4g2urYEhMfeFkdy7Kn/EuVb1lx
-         pfVnjhKQwcJzSZ+V4lyd91OTPJOBJ9FJXhboX4U1ZNBbYgiQYhPVOYPEtiqjHj4+3Lve
-         z/0FCdr9h/hcAoDkxrPqLB5UKbQYtZ+kc+15QqAl/1vQ42+FReU5hTWE/+MVjtpGnDX0
-         hRjw==
-X-Gm-Message-State: AOJu0YzvSqg/Ih9YN4h7RAZHmLvlL3nNLkkD8hN0UmaVuXFltW8tUphH
-	7AMgFKjsUViVRISSIN2REOx1Qhst77izSWI1zZIpcGG3+A9mDzJuITfdyxtoPr/qoD0=
-X-Gm-Gg: AY/fxX6wdtTZdDUtHxwMto0KO74FYQ9XiMNPRf+IFnlsxaGxORcoRadOKUSD2Vfploa
-	ATgWEW8DT2ISEbipdDk/BwE3jAFZwk3YlVMNHbpMSIfM79q7ZFFxeH19/22wzSP6X4v6JZuQhyj
-	x2fXbsXuHTxMc7fbDMcJq0eVbX1ku0Q76ajukfElhrWmN2Cxe8ZDNJToia6kHsM93TO8e6bmzgi
-	B+70CmuzcWpzuyex1Bnfg27nZ1LdA8Zc4cYTvQgLnehp6BU8yqzaUOqUhKMFqnQYeQX+S+ZPQ1g
-	L9bqyN0sUQs1yH6415Kpc9cdvvZO8RIlOU8x/0opT7/xdwqlFBc6ZQJCMHEq+/qcxndjLEKPPWG
-	fOYe+yxDjlULXlTfgXbdz7P8aEduLbr0EzkYZJWdX1DwKr0CwTLS4mB6Qe1MzSMjLvjRdbRuZYj
-	Y5Uh0DKC0NurmPmSfliQlKcUSBRWRHfyWjcIv7cXbIJcEQJB+1rOhkK/Wqduw0
-X-Received: by 2002:a05:6820:984:b0:65f:72ce:5e38 with SMTP id 006d021491bc7-6611896c48bmr4616133eaf.57.1768834807830;
-        Mon, 19 Jan 2026 07:00:07 -0800 (PST)
-Received: from ?IPV6:2600:8803:e7e4:500:d51b:6660:8b0f:6002? ([2600:8803:e7e4:500:d51b:6660:8b0f:6002])
-        by smtp.gmail.com with ESMTPSA id 006d021491bc7-661186da6f4sm4457101eaf.7.2026.01.19.07.00.06
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 19 Jan 2026 07:00:07 -0800 (PST)
-Message-ID: <69c4bf5a-e081-4660-a4ef-a92e9b081b41@baylibre.com>
-Date: Mon, 19 Jan 2026 09:00:06 -0600
+        d=1e100.net; s=20230601; t=1768840640; x=1769445440;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:date:from:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=yWa5GFU+0/3D3/qFeqSukARO3O554NFHrTD7tJlV5sE=;
+        b=KKmvxHTq1H5cnpCgGK/kD24dlSGTqR432Po4OuOtkq5O8aRcUu/+XcSr6UFkOeezp/
+         KtUlIpPO0j9C2yPMdfkbQQkSYc+NaY2HfTwfYDekBj6uUJaWnJIwl2JxejIjmiB14uur
+         1L+ZPbfg/Is8NBY/3euNjF1saHDDo0TNS7uvm5Vk+QDHeOW9M6hR/JjhbeS4Ket1LH5y
+         DUTC/D0lR2QBnRem10FG7aNrrKwmD4LrGOwhL1SBPj+FA7fqX4ZpoAKBEvcBf2nrcIbv
+         YpjiTWEU0HgpzMTlCWCDMx4QvhLiknHGDlJEJtMDITjsFxmDNSTOxAvJo2qimOBJuD+/
+         KxHg==
+X-Forwarded-Encrypted: i=1; AJvYcCWnUKkDCd5+5seOikX2m323XDvScKgslSondmn0QJ8jY1HdjkvXzI3lRvkI81oVHOeuHq7w6pdQvLs=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyltggB+fH1p+zUSh+o2msbra76YuEMEMF8tZszFZTYhw1JhCDj
+	xC2SvK29VEC1lQTLaNM8MG51ZAi0P6tbnnSe4HGXRo2EPgW3SaKuVNuh
+X-Gm-Gg: AY/fxX6qCVf9/M8y3mHrIGEOOkbMP6Q4LgXTq/D+x/CT4r63K6uNDdYFB7NirATf6zO
+	yBEthM+xu9HQ0t0zjv7I1gCmbKIzijvM0tHANIOia+kfeQYgswOUe9DPQK2JIWRTrXRnszYbcFD
+	bkf7PWinJXzP1kykMNja8gp10TwEn4E+GAzNE46TtmsFTrUOP+7tDOuX9o+PqhD4p35LY6bJfLP
+	0Dk86hs7sIuJeTQora/OVXN0NtDxnZaBL38pMCoOwVnhQeb4/4NGZ+PhlxkGYzs6IF6pWg9B3Er
+	xfA+1X5Rgq76FFodHn5qQdkYwIjlxJMXLxGCBl/Bxj0WBnuj564SNuCdfqlh+zdWUj5sM4NWLGE
+	2Z+iEbyVb+8+IUh5wrmGVO934Lyh6GuBjitivBhDOvfyCmql1z6+plDDOa+/uGbRr41TbmwmmlJ
+	ygm/m+OPJ4DHXG9eH4Q+tgBtVXG/K2SUYKlwBDFqoC07vJDeDRYkz6d0y3VfLPw+/lIp8m4QTpq
+	+N+ldWkV/8Ap6M=
+X-Received: by 2002:ac8:7d4d:0:b0:4f1:b9e8:1d34 with SMTP id d75a77b69052e-502a1f303bamr165768011cf.61.1768840640429;
+        Mon, 19 Jan 2026 08:37:20 -0800 (PST)
+Received: from RDEALENC-L01.ad.analog.com ([24.206.116.131])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-502a1f1abb9sm73070231cf.30.2026.01.19.08.37.17
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 19 Jan 2026 08:37:19 -0800 (PST)
+From: Rodrigo Alencar <455.rodrigo.alencar@gmail.com>
+X-Google-Original-From: Rodrigo Alencar <rdealenc@rdealenc-l01.ad.analog.com>
+Date: Mon, 19 Jan 2026 16:37:09 +0000
+To: Andy Shevchenko <andriy.shevchenko@intel.com>, 
+	Rodrigo Alencar <455.rodrigo.alencar@gmail.com>
+Cc: rodrigo.alencar@analog.com, linux-kernel@vger.kernel.org, 
+	linux-iio@vger.kernel.org, devicetree@vger.kernel.org, linux-doc@vger.kernel.org, 
+	Jonathan Cameron <jic23@kernel.org>, David Lechner <dlechner@baylibre.com>, 
+	Andy Shevchenko <andy@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>, 
+	Michael Hennerich <Michael.Hennerich@analog.com>, Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Jonathan Corbet <corbet@lwn.net>
+Subject: Re: [PATCH v4 3/7] iio: frequency: adf41513: driver implementation
+Message-ID: <hgy3bcrqqsvt7pobhnzuvwzhb2taetpxltkaxpigmmlvmlirod@v6anhmrsvv2r>
+References: <20260116-adf41513-iio-driver-v4-0-dbb7d6782217@analog.com>
+ <20260116-adf41513-iio-driver-v4-3-dbb7d6782217@analog.com>
+ <aW3dxuelYDM67pqZ@smile.fi.intel.com>
+ <texwv5s2tvcy34bwr4iruj5xofmea663pwletmpqpuh66zulmv@m7qvjgqbhalv>
+ <aW40ylvMwVhqNQMw@smile.fi.intel.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 2/4] iio: industrialio-backend: support backend
- capabilities
-To: Tomas Melin <tomas.melin@vaisala.com>, =?UTF-8?Q?Nuno_S=C3=A1?=
- <noname.nuno@gmail.com>, Michael Hennerich <Michael.Hennerich@analog.com>,
- Nuno Sa <nuno.sa@analog.com>, Lars-Peter Clausen <lars@metafoo.de>,
- Jonathan Cameron <jic23@kernel.org>, Andy Shevchenko <andy@kernel.org>,
- Olivier Moysan <olivier.moysan@foss.st.com>
-Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20260114-b4-ad9467-optional-backend-v3-0-d2c84979d010@vaisala.com>
- <20260114-b4-ad9467-optional-backend-v3-2-d2c84979d010@vaisala.com>
- <fda7d715e2cab2545c9ecdeead22d8a58ae5032d.camel@gmail.com>
- <1f431375-f2cb-49a7-a0bd-6c00273a3c92@vaisala.com>
-Content-Language: en-US
-From: David Lechner <dlechner@baylibre.com>
-In-Reply-To: <1f431375-f2cb-49a7-a0bd-6c00273a3c92@vaisala.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aW40ylvMwVhqNQMw@smile.fi.intel.com>
 
-On 1/19/26 7:49 AM, Tomas Melin wrote:
+On 26/01/19 03:42PM, Andy Shevchenko wrote:
+> On Mon, Jan 19, 2026 at 11:21:59AM +0000, Rodrigo Alencar wrote:
+> > On 26/01/19 09:31AM, Andy Shevchenko wrote:
+> > > On Fri, Jan 16, 2026 at 02:32:22PM +0000, Rodrigo Alencar via B4 Relay wrote:
 
 ...
-
->>>  int iio_backend_chan_enable(struct iio_backend *back, unsigned int chan);
->>> @@ -235,6 +251,7 @@ int iio_backend_read_raw(struct iio_backend *back,
->>>  			 long mask);
->>>  int iio_backend_extend_chan_spec(struct iio_backend *back,
->>>  				 struct iio_chan_spec *chan);
->>> +int iio_backend_has_caps(struct iio_backend *back, u32 caps);
->>
->> Not what David suggested and I do agree with him FWIW.
-> AFAIU this was exactly what was suggested. Citing:
-
-Slight difference. Should return bool instead of int.
-
+> > > > +struct adf41513_pll_settings {
+> > > > +	enum adf41513_pll_mode mode;
+> > > 
+> > > Sounds to me like a room to improve the layout here,
+> > 
+> > I am targeting a 32-bit cpu, just moved in_value down:
+> > would this be fine? (pahole output):
 > 
->>> bool iio_backend_has_capabilities(struct iio_backend *back, u32 flags)
->>> (caps is fine too if we want to keep it short)
+> Likely.
 > 
-> Using the longer format is not very practical. Can we keep it as
-> iio_backend_has_caps ?
+> > struct adf41513_pll_settings {
+> >         enum adf41513_pll_mode     mode;                 /*     0     4 */
+> 
+> Wondering if this can be shorter if moved down...
+> 
+> >         u8                         r_counter;            /*     4     1 */
+> >         u8                         ref_doubler;          /*     5     1 */
+> >         u8                         ref_div2;             /*     6     1 */
+> >         u8                         prescaler;            /*     7     1 */
+> >         u64                        target_frequency_uhz; /*     8     8 */
+> >         u64                        actual_frequency_uhz; /*    16     8 */
+> >         u64                        pfd_frequency_uhz;    /*    24     8 */
+> >         u32                        frac1;                /*    32     4 */
+> >         u32                        frac2;                /*    36     4 */
+> >         u32                        mod2;                 /*    40     4 */
+> >         u16                        int_value;            /*    44     2 */
+> > 
+> >         /* size: 48, cachelines: 1, members: 12 */
+> >         /* padding: 2 */
+> >         /* last cacheline: 48 bytes */
+> > };
+> 
+> ...at least I have had in mind that "mode" should be moved to be near
+> to "int_value". But I think it will take 4 bytes still as we don't use
+> short enums compile wise.
+> 
 
-Yes, I said as much already. But I guess you are asking Nuno. ;-)
+As you mentioned without short-enums it does not make any difference.
+
+> > > > +static int adf41513_parse_uhz(const char *str, u64 *freq_uhz)
+> > > > +{
+> > > > +	u64 uhz = 0;
+> > > > +	int f_count = ADF41513_HZ_DECIMAL_PRECISION;
+> > > > +	bool frac_part = false;
+> > > > +
+> > > > +	if (str[0] == '+')
+> > > > +		str++;
+> > > > +
+> > > > +	while (*str && f_count > 0) {
+> > > > +		if ('0' <= *str && *str <= '9') {
+> > > > +			uhz = uhz * 10 + *str - '0';
+> > > > +			if (frac_part)
+> > > > +				f_count--;
+> > > > +		} else if (*str == '\n') {
+> > > > +			if (*(str + 1) == '\0')
+> > > > +				break;
+> > > > +			return -EINVAL;
+> > > 
+> > > > +		} else if (*str == '.' && !frac_part) {
+> > > 
+> > > This can be found by strchr() / strrchr() (depending on the expectations of
+> > > the input).
+> > > 
+> > > > +			frac_part = true;
+> > > > +		} else {
+> > > > +			return -EINVAL;
+> > > > +		}
+> > > > +		str++;
+> > > > +	}
+> > > 
+> > > With the above the rest becomes just a couple of simple_strtoull() calls with
+> > > a couple of int_pow(10) calls (and some validation on top).
+> > > 
+> > > > +	for (; f_count > 0; f_count--)
+> > > > +		uhz *= 10;
+> > > 
+> > > This is int_pow(10).
+> > > 
+> > > > +	*freq_uhz = uhz;
+> > > > +
+> > > > +	return 0;
+> > > > +}
+> > 
+> > The current implementation is kind of a stripped version of
+> > __iio_str_to_fixpoint(). Would you prefer something like this, then?:
+> 
+> Do they have most of the parts in common? If so, why can't we use
+> __iio_str_to_fixpoint() directly? Or why can't we slightly refactor
+> that to give us the results we need here?
+
+__iio_str_to_fixpoint() only parses "int" chunks, adf41513_parse_uhz
+was modified to accomodate the u64 parsing removing unnecessary stuff.
+I am preparing V5 to use simple_strtoull. Thanks for early review
+and suggestions.
+
+Kind regards,
+
+Rodrigo Alencar
 

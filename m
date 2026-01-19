@@ -1,62 +1,57 @@
-Return-Path: <linux-iio+bounces-28020-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-28021-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE0B3D3B9E8
-	for <lists+linux-iio@lfdr.de>; Mon, 19 Jan 2026 22:28:04 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7CD7FD3BA1F
+	for <lists+linux-iio@lfdr.de>; Mon, 19 Jan 2026 22:37:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 69B4F30B0979
-	for <lists+linux-iio@lfdr.de>; Mon, 19 Jan 2026 21:22:31 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 8C3503089FE7
+	for <lists+linux-iio@lfdr.de>; Mon, 19 Jan 2026 21:36:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C0E52FC011;
-	Mon, 19 Jan 2026 21:22:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 658512FB630;
+	Mon, 19 Jan 2026 21:36:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Z6fbeEZs"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uPl7die5"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F34782E8B9F
-	for <linux-iio@vger.kernel.org>; Mon, 19 Jan 2026 21:22:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 295332FB08C
+	for <linux-iio@vger.kernel.org>; Mon, 19 Jan 2026 21:36:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768857736; cv=none; b=jMn+BWxrYMdPK/La9Vu8GHtADABMJpL6g26TWtsfa3Rjp39aM/evPDc3aq5QL7cLxJf4/jz670K9xDiKpSRZl1iTX+fyv99kO8iFrYay3MeTecHxCctWnA63TmS0K9ycQvYQKyPn1Wb5VXN507RWdTPaPY+roc8XsZidEwo3U6A=
+	t=1768858587; cv=none; b=OL0n4GogAMp6PqgNzTsrrfGzE9oUFu2uSrVph/JtEG0xe0dqLMr7owM2RkC/GPYtXPPQwowGLyr0WnIq/uboMZBwPCGEvn7lEA6TfeDFrRTti0cuPbq/VaExVGU/o2cxrzrbISsx8bC5It0Aj6SPfRFTON5L8UpnVP3DKqKr29Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768857736; c=relaxed/simple;
-	bh=FQP3fQCOeGJI6rRlF8TZyHFJ8pX5So03MY79KVm4yDI=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eu+weYd5T4J6I4j9ExeYm29/oSEb2uQVIiPBUK0t+tOUSLHLk0pNBfXFh09ZmvwYyvyfbRsJcVkChiZRNnqxpwRtPLD5MmrGuWujbLOxI8/vJ4FLka1QUwc+qeYuqpVUD38z/nnsOFUS+AC0u3PnFvgTRHGZPsaPWBONJs7j/Ig=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Z6fbeEZs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96BA5C116C6;
-	Mon, 19 Jan 2026 21:22:11 +0000 (UTC)
+	s=arc-20240116; t=1768858587; c=relaxed/simple;
+	bh=H2jxAfeHTW+lbFGugdx7midKIdV7OFVO28lkfB77HE0=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=iLQ/RSW00tAdPyjrUVV9ysfRucbXmiDdMpwUOqPQrzjMbE0EtjlTsS7OQlk64WjmnJt2nH/LpTOk0RHtzC6Ue+7K7SJANgEPjSd5kH9bFw1LbVpkS2thQCDzVsBni4HYp0vk4k/S6vlUOTOvUP0RpAFinuM9+cRXRFzPcVi8GbI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uPl7die5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F925C19422;
+	Mon, 19 Jan 2026 21:36:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768857735;
-	bh=FQP3fQCOeGJI6rRlF8TZyHFJ8pX5So03MY79KVm4yDI=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Z6fbeEZsg9ZBJHoGVGjz8nU9Adf/HGqWkYODYYlAUJ03OtCpyAWHDKoLqVXGlz59B
-	 UvG61OzYYDDDzS6EX0mUQZN+lsimat/RXMaGFHA5I3ujBbvdSpEIgk8s9FRSjszIV4
-	 Mcqp00Daq8ebOGBy8VEkPfJM2U86naLrrfRERsaT4rbMkrcIz+5LfD1nA5eF+opJo/
-	 jrZcUmz/u7Lfgwc8CXXT/f/6q5KuAxz1UboI4uxGa9guckJBnSBgGnH4nF0OvkbAsP
-	 dMvNTyehMecUs7UaJt1+h3y9LOWt8hAgYB6ZlDAJ39K2gJE7s2/oItaz238qnEA4ll
-	 4MrhkuGPYeWmA==
+	s=k20201202; t=1768858586;
+	bh=H2jxAfeHTW+lbFGugdx7midKIdV7OFVO28lkfB77HE0=;
+	h=From:To:Cc:Subject:Date:From;
+	b=uPl7die5ioyOBgT+jxi8G604+NTWaVmw2n8AwlBxKav4DQMvQPU7aY6+FMbhlHhUC
+	 uanX4nNKPhDVVI7TUBh89w4vfPH39IGYKtEd4Q6hT7JWmTYg3Z1JBd2P8Z5cgz1nqU
+	 vYwz+C/8uybGFEKdMUUqV5lyevmsO4iQjtYTHLCaHqpahIHnMWM6OcHddbtVu0Gyp6
+	 eiz9Oip7ZiplLrAgF5U2ZYXgxS9vfL368W97xBxe88XU+A0sRID0+32GYxBPjzze7f
+	 yPXvHO43mc7txBWM1+TeOmZMKI9BAtHeEXNL54rtEzXnvUmSljNOnZMQCX6uPSyiqc
+	 YXYpf+SQbJ7Mg==
 From: Jonathan Cameron <jic23@kernel.org>
 To: linux-iio@vger.kernel.org,
-	Andy Shevchenko <andy@kernel.org>
+	Andy Shevchenko <andy@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
 Cc: David Lechner <dlechner@baylibre.com>,
 	=?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
-	Mike Looijmans <mike.looijmans@topic.nl>,
-	Liam Beguin <liambeguin@gmail.com>,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
-	Ibrahim Tilki <Ibrahim.Tilki@analog.com>,
-	Cosmin Tanislav <cosmin.tanislav@analog.com>,
-	Alisa-Dariana Roman <alisadariana@gmail.com>,
+	jorge.marques@analog.com,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	Frank Li <Frank.Li@nxp.com>,
 	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 11/11] iio: adc: ad7192: Improve include relevance
-Date: Mon, 19 Jan 2026 21:21:10 +0000
-Message-ID: <20260119212110.726941-12-jic23@kernel.org>
+Subject: [PATCH] iio: adc: ad4062: Switch from struct i3c_priv_xfer to struct i3c_xfer
+Date: Mon, 19 Jan 2026 21:36:17 +0000
+Message-ID: <20260119213617.745603-1-jic23@kernel.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260119212110.726941-1-jic23@kernel.org>
-References: <20260119212110.726941-1-jic23@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -67,86 +62,127 @@ Content-Transfer-Encoding: 8bit
 
 From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-Drop unused:
-  #include <linux/iio/buffer.h>  // lines 29-29
-  #include <linux/iio/trigger.h>  // lines 30-30
-  #include <linux/iio/trigger_consumer.h>  // lines 31-31
-  #include <linux/iio/triggered_buffer.h>  // lines 32-32
-  #include <linux/sched.h>  // lines 20-20
-  #include <linux/slab.h>  // lines 15-15
+commit 9904232ae30bc ("i3c: drop i3c_priv_xfer and i3c_device_do_priv_xfers()")
+currently in the i3c/for-next tree removes the deprecated
+struct i3c_priv_xfer and i3c_device_do_priv_xfers().
 
-Replace kernel.h with more specific headers and add missing headers.
+Switch to struct i3c_xfer and i3c_device_do_xfers(..., I3C_SDR)
+now rather causing a build issue when both trees are merged.
 
-Justification from iwyu for added headers:
-  #include <linux/array_size.h>          // for ARRAY_SIZE
-  #include <linux/bitmap.h>              // for for_each_set_bit
-  #include <linux/bits.h>                // for BIT, GENMASK
-  #include <linux/compiler.h>            // for inline
-  #include <linux/container_of.h>        // for container_of
-  #include <linux/kstrtox.h>             // for kstrtobool
-  #include <linux/limits.h>              // for U32_MAX
-  #include <linux/math.h>                // for DIV_ROUND_CLOSEST, DIV_ROU...
-  #include <linux/math64.h>              // for do_div
-  #include <linux/minmax.h>              // for in_range
-  #include <linux/mutex.h>               // for class_mutex_constructor
-  #include <linux/stddef.h>              // for true, NULL, false
-  #include <linux/types.h>               // for bool, u32, u8, ssize_t
-
+Suggested-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Cc: Alisa-Dariana Roman <alisadariana@gmail.com>
+Cc: jorge.marques@analog.com
 ---
- drivers/iio/adc/ad7192.c | 20 +++++++++++++-------
- 1 file changed, 13 insertions(+), 7 deletions(-)
+I'm already carrying this on my tree to resolve the issue in next
+but feedback still welcome!
+---
+ drivers/iio/adc/ad4062.c | 26 +++++++++++++-------------
+ 1 file changed, 13 insertions(+), 13 deletions(-)
 
-diff --git a/drivers/iio/adc/ad7192.c b/drivers/iio/adc/ad7192.c
-index 6b48581d7606..24e1fa796829 100644
---- a/drivers/iio/adc/ad7192.c
-+++ b/drivers/iio/adc/ad7192.c
-@@ -5,31 +5,37 @@
-  * Copyright 2011-2015 Analog Devices Inc.
-  */
+diff --git a/drivers/iio/adc/ad4062.c b/drivers/iio/adc/ad4062.c
+index a6b3ccc98acf..dd4ad32aa6f5 100644
+--- a/drivers/iio/adc/ad4062.c
++++ b/drivers/iio/adc/ad4062.c
+@@ -468,13 +468,13 @@ static int ad4062_set_operation_mode(struct ad4062_state *st,
  
-+#include <linux/array_size.h>
- #include <linux/bitfield.h>
-+#include <linux/bitmap.h>
-+#include <linux/bits.h>
- #include <linux/cleanup.h>
- #include <linux/clk.h>
- #include <linux/clk-provider.h>
-+#include <linux/compiler.h>
-+#include <linux/container_of.h>
- #include <linux/delay.h>
- #include <linux/device.h>
- #include <linux/err.h>
- #include <linux/interrupt.h>
--#include <linux/kernel.h>
-+#include <linux/kstrtox.h>
-+#include <linux/limits.h>
-+#include <linux/math.h>
-+#include <linux/math64.h>
-+#include <linux/minmax.h>
- #include <linux/mod_devicetable.h>
- #include <linux/module.h>
-+#include <linux/mutex.h>
- #include <linux/property.h>
- #include <linux/regulator/consumer.h>
--#include <linux/sched.h>
--#include <linux/slab.h>
- #include <linux/spi/spi.h>
- #include <linux/sysfs.h>
-+#include <linux/stddef.h>
-+#include <linux/types.h>
- #include <linux/units.h>
+ 	if (mode == AD4062_MONITOR_MODE) {
+ 		/* Change address pointer to enter monitor mode */
+-		struct i3c_priv_xfer xfer_trigger = {
++		struct i3c_xfer xfer_trigger = {
+ 			.data.out = &st->conv_addr,
+ 			.len = sizeof(st->conv_addr),
+ 			.rnw = false,
+ 		};
+ 		st->conv_addr = AD4062_REG_CONV_TRIGGER_32BITS;
+-		return i3c_device_do_priv_xfers(st->i3cdev, &xfer_trigger, 1);
++		return i3c_device_do_xfers(st->i3cdev, &xfer_trigger, 1, I3C_SDR);
+ 	}
  
- #include <linux/iio/iio.h>
- #include <linux/iio/sysfs.h>
--#include <linux/iio/buffer.h>
--#include <linux/iio/trigger.h>
--#include <linux/iio/trigger_consumer.h>
--#include <linux/iio/triggered_buffer.h>
- #include <linux/iio/adc/ad_sigma_delta.h>
+ 	return regmap_write(st->regmap, AD4062_REG_MODE_SET,
+@@ -607,18 +607,18 @@ static void ad4062_trigger_work(struct work_struct *work)
+ 	 * Read current conversion, if at reg CONV_READ, stop bit triggers
+ 	 * next sample and does not need writing the address.
+ 	 */
+-	struct i3c_priv_xfer xfer_sample = {
++	struct i3c_xfer xfer_sample = {
+ 		.data.in = &st->buf.be32,
+ 		.len = st->conv_sizeof,
+ 		.rnw = true,
+ 	};
+-	struct i3c_priv_xfer xfer_trigger = {
++	struct i3c_xfer xfer_trigger = {
+ 		.data.out = &st->conv_addr,
+ 		.len = sizeof(st->conv_addr),
+ 		.rnw = false,
+ 	};
  
- /* Registers */
+-	ret = i3c_device_do_priv_xfers(st->i3cdev, &xfer_sample, 1);
++	ret = i3c_device_do_xfers(st->i3cdev, &xfer_sample, 1, I3C_SDR);
+ 	if (ret)
+ 		return;
+ 
+@@ -627,7 +627,7 @@ static void ad4062_trigger_work(struct work_struct *work)
+ 	if (st->gpo_irq[1])
+ 		return;
+ 
+-	i3c_device_do_priv_xfers(st->i3cdev, &xfer_trigger, 1);
++	i3c_device_do_xfers(st->i3cdev, &xfer_trigger, 1, I3C_SDR);
+ }
+ 
+ static irqreturn_t ad4062_poll_handler(int irq, void *p)
+@@ -852,12 +852,12 @@ static int ad4062_set_chan_calibscale(struct ad4062_state *st, int gain_int,
+ static int ad4062_read_chan_raw(struct ad4062_state *st, int *val)
+ {
+ 	struct i3c_device *i3cdev = st->i3cdev;
+-	struct i3c_priv_xfer xfer_trigger = {
++	struct i3c_xfer xfer_trigger = {
+ 		.data.out = &st->conv_addr,
+ 		.len = sizeof(st->conv_addr),
+ 		.rnw = false,
+ 	};
+-	struct i3c_priv_xfer xfer_sample = {
++	struct i3c_xfer xfer_sample = {
+ 		.data.in = &st->buf.be32,
+ 		.len = sizeof(st->buf.be32),
+ 		.rnw = true,
+@@ -876,7 +876,7 @@ static int ad4062_read_chan_raw(struct ad4062_state *st, int *val)
+ 	reinit_completion(&st->completion);
+ 	/* Change address pointer to trigger conversion */
+ 	st->conv_addr = AD4062_REG_CONV_TRIGGER_32BITS;
+-	ret = i3c_device_do_priv_xfers(i3cdev, &xfer_trigger, 1);
++	ret = i3c_device_do_xfers(i3cdev, &xfer_trigger, 1, I3C_SDR);
+ 	if (ret)
+ 		return ret;
+ 	/*
+@@ -888,7 +888,7 @@ static int ad4062_read_chan_raw(struct ad4062_state *st, int *val)
+ 	if (!ret)
+ 		return -ETIMEDOUT;
+ 
+-	ret = i3c_device_do_priv_xfers(i3cdev, &xfer_sample, 1);
++	ret = i3c_device_do_xfers(i3cdev, &xfer_sample, 1, I3C_SDR);
+ 	if (ret)
+ 		return ret;
+ 	*val = be32_to_cpu(st->buf.be32);
+@@ -1236,7 +1236,7 @@ static int pm_ad4062_triggered_buffer_postenable(struct ad4062_state *st)
+ 	st->conv_sizeof = ad4062_sizeof_storagebits(st);
+ 	st->conv_addr = ad4062_get_conv_addr(st, st->conv_sizeof);
+ 	/* CONV_READ requires read to trigger first sample. */
+-	struct i3c_priv_xfer xfer_sample[2] = {
++	struct i3c_xfer xfer_sample[2] = {
+ 		{
+ 			.data.out = &st->conv_addr,
+ 			.len = sizeof(st->conv_addr),
+@@ -1249,8 +1249,8 @@ static int pm_ad4062_triggered_buffer_postenable(struct ad4062_state *st)
+ 		}
+ 	};
+ 
+-	return i3c_device_do_priv_xfers(st->i3cdev, xfer_sample,
+-					st->gpo_irq[1] ? 2 : 1);
++	return i3c_device_do_xfers(st->i3cdev, xfer_sample,
++				   st->gpo_irq[1] ? 2 : 1, I3C_SDR);
+ }
+ 
+ static int ad4062_triggered_buffer_postenable(struct iio_dev *indio_dev)
 -- 
 2.52.0
 

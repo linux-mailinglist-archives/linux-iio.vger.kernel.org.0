@@ -1,75 +1,75 @@
-Return-Path: <linux-iio+bounces-27949-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-27950-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D4B55D3A4DE
-	for <lists+linux-iio@lfdr.de>; Mon, 19 Jan 2026 11:23:43 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id EECD5D3A4E6
+	for <lists+linux-iio@lfdr.de>; Mon, 19 Jan 2026 11:24:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id D8AE8300A515
-	for <lists+linux-iio@lfdr.de>; Mon, 19 Jan 2026 10:23:27 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 19571300D916
+	for <lists+linux-iio@lfdr.de>; Mon, 19 Jan 2026 10:23:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75A552D060D;
-	Mon, 19 Jan 2026 10:23:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9043C3563E5;
+	Mon, 19 Jan 2026 10:23:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="IxEW5rUd"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="RuwU6LYG"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ej1-f47.google.com (mail-ej1-f47.google.com [209.85.218.47])
+Received: from mail-ed1-f43.google.com (mail-ed1-f43.google.com [209.85.208.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70D952FF641
-	for <linux-iio@vger.kernel.org>; Mon, 19 Jan 2026 10:23:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6856B2D838A
+	for <linux-iio@vger.kernel.org>; Mon, 19 Jan 2026 10:23:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768818203; cv=none; b=dSXubuzohHvoo+0CdVjKcKg4583zGeX0Khvy/UICzeijQG1PehYjN7wEnVi23UQDn6JLnzSwgnsy2sD4DOIkB8xvMuHLwPfp2VLhWIB6vqTJK5coXoky9Vnl6DHVggmWabWw/sVo0Tj6zpybKVtV4/5aXA8Qjv5/tqz32fH5pmQ=
+	t=1768818204; cv=none; b=uuV3cp9fnj+EoX6fFR3XEWXv4r0eKQSa9fkV188JpMUcbtWjga2AIsNf3fLWIcVQuypglnE1IcATWLiozElm6iGcLBSM9KkexPBOY1m5OQVGyi6TXJEhZFmDOxj93wAtBWw+s/N+ZR+mabzma4HvXHlfWorOZyP1T+Z/TjjBhTg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768818203; c=relaxed/simple;
-	bh=b+ZyQVIas6VPm4FBmMWpHOQTnZTRtHnI8+5I56aAQss=;
+	s=arc-20240116; t=1768818204; c=relaxed/simple;
+	bh=b6in0Ht1436ypEjKdmBzGtAzQIUtZlNjgIlaQ/Kz8dU=;
 	h=From:To:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=PbWwn2J7wM9GKM7VKnQgKgQM9ZiKvpPfVLONtT1NVoQCZkaeJ1ACLDJSJEIqxwEIugvBIb09omW2VqxFhffsXdtnaPssdeduTmDFgoy0x7K3WW4hfCkXBfzYqVb8AplOJsb7eApS/ZQCi85LdArlo42aXKAvsIXfECjtKatVPVY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=IxEW5rUd; arc=none smtp.client-ip=209.85.218.47
+	 MIME-Version; b=p7Y3QBffZnG7ngPm0LoSaKnUA5LjDpecEavMl1MM5U7lRiyHbVFs2VNxBxtzWE9USeHOKh3epDwR8tVH2zNdiIhLm/1gWDFvTARUi4T98TXrMsrot7JKpRVH2pkuEXhtJHJJGPe+7Ep3CWFjY+dKGemvJvi4R1A9czosGy5c4Zc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=RuwU6LYG; arc=none smtp.client-ip=209.85.208.43
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-ej1-f47.google.com with SMTP id a640c23a62f3a-b8719aeebc8so723441266b.3
-        for <linux-iio@vger.kernel.org>; Mon, 19 Jan 2026 02:23:21 -0800 (PST)
+Received: by mail-ed1-f43.google.com with SMTP id 4fb4d7f45d1cf-652fdd043f9so7680550a12.1
+        for <linux-iio@vger.kernel.org>; Mon, 19 Jan 2026 02:23:22 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1768818200; x=1769423000; darn=vger.kernel.org;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1768818201; x=1769423001; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=/UYrTfACvfmfQSbbftCysBpcWH9BbAOUZt1KkI0uOVU=;
-        b=IxEW5rUddT0KGrVF9mmpjuF9qhPqFe7NAqQWMekNUl2/z1ywKFc/opFqexvFpOK/uq
-         uSLXOcyB9G+NZSCmYq+KqFqhpzp5r0ewZXVFgjRtT7RwPAmkB3N4O2DboxYXfri0mEEM
-         LfxjcJwF33PZ2m8iAoBLy4f8OvLSao+xcEG1sYfFHsO/8a9a0VgS1Ew5WxAGSeee+yIE
-         Vdcp4vWeEl5JIOoD1rwUCtfTeYcAyve4K4XDspmzRS8I7R36NeLrgIayjdp4VECT9juQ
-         45J3AnAd0SxKnqw+WeiKrH+8RyQ6g0b82OB8yszWOQF/SqIR8P2jvBj41dWBUvBnzw/9
-         uFPQ==
+        bh=D7eVDtNz1S15iD4VZqEhzSlov8EZT29gxIYBEknUL5A=;
+        b=RuwU6LYGs2JWIeZN8UKH1hE5GWjyRdcsC/OQe81Yx0SFmsGquHNfC1FCEsZPgAM9T6
+         R5BWPggVy3GYZabY1ezPczMiIQR2qehV8nswgVW8+CXC9fkexd0xlG//j6mddROC5QWQ
+         3TxUUxRbig9eM0Gx3hydgLL2S21vBGXYlvaHL4h+OYjIhB0oVSrGDWLtUByoUdEL6tj5
+         sYwwNCdOSa5YryvUdoNbg/aodB1d35MjnK6JE/94Ud1/S0mqnwATV2S+Jor1YAnaArD9
+         G+dDUIZpBYflA2QMErFedHuXdBC59eti9cfmoZORZSKFxYl7wpScCAqlsuxTKx8/QtLB
+         DZVw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768818200; x=1769423000;
+        d=1e100.net; s=20230601; t=1768818201; x=1769423001;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:to:from:x-gm-gg:x-gm-message-state:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=/UYrTfACvfmfQSbbftCysBpcWH9BbAOUZt1KkI0uOVU=;
-        b=GZVF4ki0lfqtmNvOll+C+DP7tsqqf5bzSzTfY14pyWvfhZ4rMHAXYkLtDnW53krx0q
-         /HuqAJporuOFcYZkj0E61GrXZWlFI4YorulfuGI6WZd8OYAKUKSZUMPbRWKjRfErS9d7
-         TmJwYd3+4O1Z/LyVs32NXUNWdf8XZiJYw1VI7SIxdzo3hLU82ex7YkUsopyzhE8gWAQ7
-         syXRB733vYSEnh42+4vMrWUb32Uj6sEGc7hUQZlZ486Eyvgu2Y43poJ3VAPQWREMkw9d
-         FbmRq0mdEjLa9JY3FZJWp6HPh4tvEWZikFxft+e83R7yZoTZp5yDmpSmByiA/nhCHBRv
-         B7gg==
-X-Forwarded-Encrypted: i=1; AJvYcCWhszVOP6lD3aJC0qOPdMDZJ50Nlfo19JUQg/msoYA1yr9Gak0eTIXDGkPfb2R3ZPKtQ0jW1HX7Vr8=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyX6Fxac+MfvJHoxmb3eE5P98gcP2tpngbESXr3mn6wo6nXlh+q
-	poWWlNxpQRMeA37xF3s/FbYHjH4IPWN7nhKu4QDgMy0ENkAYYVgCyp/84uHeqxiz1E4=
-X-Gm-Gg: AY/fxX5658N/Uiepyo4BHHSgGMcLX8Qu8+UvTtCFl2dc+aVekU6y6U+lfXNJKLIM9+2
-	4TDWhDX/h/tJI1/uSdSb/j0hxXp/MimGxp3yb0sFDmAn7QPuVSdfWBBpDLBgVuO4S01jC6JHih8
-	ACkXliU2b7wTITURriZtLehGpRutdcwaW15O1jjOcaOeJo2xIcBKPCV+2swDP4VGapR8gHNgR7j
-	RLYq2rBMAxOTKM8gBfJsWo58RafBUB1r9RsLZ1omvqULc6VUc8hgISkoIMg0F472IaBlU5/xpBK
-	8m8Lt2yqQczOcFo8RdwgwMGkOprS0wauj1RvIr58wWFvaFFVbXgJzn/CTrNXZVKWXKmBrrMtPMO
-	IK1c7V0ertv36NXO94W1hvw+evUXdOAMP9w+dsJhZkKOuAJX9yFECeew=
-X-Received: by 2002:a17:907:3e04:b0:b83:a6b6:ed74 with SMTP id a640c23a62f3a-b8792d59928mr807261666b.19.1768818199643;
-        Mon, 19 Jan 2026 02:23:19 -0800 (PST)
+        bh=D7eVDtNz1S15iD4VZqEhzSlov8EZT29gxIYBEknUL5A=;
+        b=lZ8JwdVCBG+mgJbEmZG8R9+HiMnfHk/Eb8MhKItkpN4ws+0MeIvQZw3w5lOjMyiZUM
+         q22GUjeI4Bie9afmd2QXydfRRUmvNuXZGfAW96KCcJ9qxxsU0gIxmUNp2BD21B2cGM/j
+         gxTvc1JwU9dyTtGCstvcuyYKMB93w364vU/uIkPcIuhmQJH1ez+0GNQuSFATkV4dzNHn
+         BdUs52yoCfadIQ+LShPC1DwqmaINZbpq3EzcRrVcD2Rqv/gD9SByyWyFHYfuWNCOLnim
+         xgyYjPTc/AvfvPhIkKovB+N4eVHq8+gdGBfWL1PNybZRgZlAlJEkyw2mEN54y23YlZB0
+         jZtQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXO1AtCJYXDmFVq08JJi3Gv7oZ4K47yGMhXud0YD9W4O8LF1LMGmEWHTbs1h7JH8B70rk/RxWk9mxQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx8koPH0Lcy06hxumkZQUQ2NWZuPCd9VEUKeaXBMdb8E88cbUpC
+	fGKyr4xI3nKCPhf8s6fZtP5/JOii+yA1ZrwkhdBWEpQiDgEazsI+vVYJycspDuijU4Y=
+X-Gm-Gg: AY/fxX79N/tsEplfu2xh7zTFHe0EsnVAk9hJbSc9vn03BLm2LhL3vnpIFeoWNBYRKS3
+	osB1uTFoyuhQ0oWHEqBDJXWn0i4+pxSUzbDmFy35MTB+ysV0b/anxiYxwiLDf251MeM0A9eJUDC
+	bHVLEIjjejVah0TvU8zHjZjBqEQhPPfJMfH/IPa+ZAu7WXf3mJ016VbHtija4iciwgS6USiV1gH
+	PyNTNVRTK5WGZ2cHcyb1T1QmS3OI744ovZK4E8TzSdUjW4hHsH/LyIOHCwg+65vKD82cpGlMhzK
+	JXeh4K+QlJ2JfmqstpbtuBZI6/DpYCQrlwYqAgPiLwSKUFzYXNLV1dRsp0tdksLySlLALS0P0xF
+	q2deUUdrhtzN/24TSIU3LFVAb3fTg/EFksH/UucenNuvWdNJp/fx//t0=
+X-Received: by 2002:a17:907:702:b0:b87:2cf8:f7b2 with SMTP id a640c23a62f3a-b879324c7c0mr1047597666b.56.1768818200709;
+        Mon, 19 Jan 2026 02:23:20 -0800 (PST)
 Received: from localhost ([151.37.196.5])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b879513e72asm1082041366b.11.2026.01.19.02.23.19
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b87959fb973sm1041021866b.53.2026.01.19.02.23.20
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 19 Jan 2026 02:23:19 -0800 (PST)
+        Mon, 19 Jan 2026 02:23:20 -0800 (PST)
 From: Francesco Lavra <flavra@baylibre.com>
 To: Ramona Gradinariu <ramona.gradinariu@analog.com>,
 	Antoniu Miclaus <antoniu.miclaus@analog.com>,
@@ -81,9 +81,9 @@ To: Ramona Gradinariu <ramona.gradinariu@analog.com>,
 	Andy Shevchenko <andy@kernel.org>,
 	linux-iio@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH v2 1/2] iio: accel: adxl380: Avoid reading more entries than present in FIFO
-Date: Mon, 19 Jan 2026 11:23:16 +0100
-Message-Id: <20260119102317.1565417-2-flavra@baylibre.com>
+Subject: [PATCH v2 2/2] iio: accel: adxl380: Optimize reading of FIFO entries in interrupt handler
+Date: Mon, 19 Jan 2026 11:23:17 +0100
+Message-Id: <20260119102317.1565417-3-flavra@baylibre.com>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20260119102317.1565417-1-flavra@baylibre.com>
 References: <20260119102317.1565417-1-flavra@baylibre.com>
@@ -93,39 +93,45 @@ List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1303; i=flavra@baylibre.com; h=from:subject; bh=b+ZyQVIas6VPm4FBmMWpHOQTnZTRtHnI8+5I56aAQss=; b=owEB7QES/pANAwAKAe3xO3POlDZfAcsmYgBpbgX9FkVZqlUNrnX4LtIpXBVJHXRIcY3Uiw5dN 8fSd/u8y3qJAbMEAAEKAB0WIQSGV4VPlTvcox7DFObt8TtzzpQ2XwUCaW4F/QAKCRDt8TtzzpQ2 X+qUC/9y8t4H8mzP+QWp13I8lR987Hrsa798RRcpruf8SdBOhpYnpwHp8ZHvqIT3kCe+dMcoEeN r3nOuzyCWtfyuKqR4eQgEwm+xPDqSJvuVYKEwCpS7sPEPSGP1bnHIp+dVwpldR1MxLkAvR36/40 SE0ZLge0hQo/H9fhtUtI/HXCRCXXyp6NLzuH37FDy8+tgjwwEm93nIvwc13dyiEPsAgN6MSiRUh aPRXqgH+Wly6X7RKt3wA+Wp0Mkyp12U04dYT/u49zgrnnASeo5tmPPVW06DcD1Kadgzpqs2a2CN L5rB5hCdkIhBVfOpoFNZbzic561Mg9cMIDUxE9PJ9dvp4nJHqdzkRPWZCGmtZnzwmy4QSpZwHkw Yr+/FJJitoE+jYuRHvEqHepkwZV/Nv4dRg5IvO8aGjvW6EczKEpXcVGsal5s7jIKejzb6M55kx+ ZHZV3/2LKQmS3tcU/yTCa3CSoBg43yWBLh7ncp5bOZyLZvGSGYMUclGxrNWrOwXVnOtHU=
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1332; i=flavra@baylibre.com; h=from:subject; bh=b6in0Ht1436ypEjKdmBzGtAzQIUtZlNjgIlaQ/Kz8dU=; b=owEB7QES/pANAwAKAe3xO3POlDZfAcsmYgBpbgX+f/Fu5JWFdXqfTUi8b0UQeUZZQLtzByfcW hGTcFBhIdSJAbMEAAEKAB0WIQSGV4VPlTvcox7DFObt8TtzzpQ2XwUCaW4F/gAKCRDt8TtzzpQ2 X9BDC/9LBzlxQ8Y54d/g5Wr06Tf4A6RQi5kePBMrUK06u/lYJXHr9CRhXr9756L6TgzJ9Y7amPU bzu57EKr+1UFpfCF9dMyf8eaxFT/0d8VDxVkPI7vWyf23yV3ygQlis6qtdevQwnR0KE8RP/oVvL DjJg+6CmsCn/b6KEapQ4JUwhM3X+kAEsG1fNFVDnSsugoO3DahMuM3I2DHHUUIUBn+gqr54LVBW k0rhiANhXbLAC8XCbdomvl80DAYxqpiRhUOv84R1QT+Zsf5d+Z5TBpKmuQKNZLJnq0P6Sl0CJ7S EpGv2et7KDAXiyZcYPVYq8ABLsQGCBya9twScFoXT3xcOowcV+L7SI2LKdh05W98uKFzu677Ilv RHFjjzio58IieEtUT8bDJGWYykYeiW5YOdoj2n527pR7xEryEciCgMzQa7GDY08jvExxRFm/JxB i4DSDtH2WW7tDxn3xju5fBLlZmY48Bz4JbyCoyxFiBwal2/fRquuFXVrysTUb9KJKtntc=
 X-Developer-Key: i=flavra@baylibre.com; a=openpgp; fpr=8657854F953BDCA31EC314E6EDF13B73CE94365F
 Content-Transfer-Encoding: 8bit
 
-The interrupt handler reads FIFO entries in batches of N samples, where N
-is the number of scan elements that have been enabled. However, the sensor
-fills the FIFO one sample at a time, even when more than one channel is
-enabled. Therefore,the number of entries reported by the FIFO status
-registers may not be a multiple of N; if this number is not a multiple, the
-number of entries read from the FIFO may exceed the number of entries
-actually present.
+In order to minimize the time required for transferring FIFO data from the
+sensor to the host machine, perform the read from the FIFO in a single call
+to regmap_bulk_read().
+This allows reading acceleration data for all 3 axes at 16 kHz
+sampling frequency using a 1MHz I2C bus frequency.
 
-To fix the above issue, round down the number of FIFO entries read from the
-status registers so that it is always a multiple of N.
-
-Fixes: df36de13677a ("iio: accel: add ADXL380 driver")
 Signed-off-by: Francesco Lavra <flavra@baylibre.com>
 ---
- drivers/iio/accel/adxl380.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/iio/accel/adxl380.c | 12 +++++-------
+ 1 file changed, 5 insertions(+), 7 deletions(-)
 
 diff --git a/drivers/iio/accel/adxl380.c b/drivers/iio/accel/adxl380.c
-index ac20fcfd4e22..650cdbffd4a7 100644
+index 650cdbffd4a7..e3e6b182eb3d 100644
 --- a/drivers/iio/accel/adxl380.c
 +++ b/drivers/iio/accel/adxl380.c
-@@ -964,6 +964,7 @@ static irqreturn_t adxl380_irq_handler(int irq, void  *p)
- 	if (ret)
+@@ -965,14 +965,12 @@ static irqreturn_t adxl380_irq_handler(int irq, void  *p)
  		return IRQ_HANDLED;
  
-+	fifo_entries = rounddown(fifo_entries, st->fifo_set_size);
- 	for (i = 0; i < fifo_entries; i += st->fifo_set_size) {
- 		ret = regmap_noinc_read(st->regmap, ADXL380_FIFO_DATA,
- 					&st->fifo_buf[i],
+ 	fifo_entries = rounddown(fifo_entries, st->fifo_set_size);
+-	for (i = 0; i < fifo_entries; i += st->fifo_set_size) {
+-		ret = regmap_noinc_read(st->regmap, ADXL380_FIFO_DATA,
+-					&st->fifo_buf[i],
+-					2 * st->fifo_set_size);
+-		if (ret)
+-			return IRQ_HANDLED;
++	ret = regmap_noinc_read(st->regmap, ADXL380_FIFO_DATA, &st->fifo_buf,
++				sizeof(*st->fifo_buf) * fifo_entries);
++	if (ret)
++		return IRQ_HANDLED;
++	for (i = 0; i < fifo_entries; i += st->fifo_set_size)
+ 		iio_push_to_buffers(indio_dev, &st->fifo_buf[i]);
+-	}
+ 
+ 	return IRQ_HANDLED;
+ }
 -- 
 2.39.5
 

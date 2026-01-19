@@ -1,101 +1,93 @@
-Return-Path: <linux-iio+bounces-28022-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-28023-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF563D3BA22
-	for <lists+linux-iio@lfdr.de>; Mon, 19 Jan 2026 22:38:54 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 04179D3BAAA
+	for <lists+linux-iio@lfdr.de>; Mon, 19 Jan 2026 23:17:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 59F4E300B9C9
-	for <lists+linux-iio@lfdr.de>; Mon, 19 Jan 2026 21:38:54 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id F31FE302759B
+	for <lists+linux-iio@lfdr.de>; Mon, 19 Jan 2026 22:17:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 191EF2FBE12;
-	Mon, 19 Jan 2026 21:38:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3FFD42F9D85;
+	Mon, 19 Jan 2026 22:17:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HDJiW44V"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZrTYOEsf"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCCFD26B0B3;
-	Mon, 19 Jan 2026 21:38:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02AFF28489B
+	for <linux-iio@vger.kernel.org>; Mon, 19 Jan 2026 22:17:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768858728; cv=none; b=XTZWfAeBoSQxXH4s8DV48SXj5WMpXGAFZoKDOAv0wqkpu7EUNJtAF9epEUKdwB8iT1ymKUxeDDUtkqYZJZqGeY0JjL55o8rZa5raMcGlynbk5dDCf90dBu8HEM/JAX7qWu8UN7K8SMnqtD+JMuPxsfHjQURUP6XFyMzVxwunAQw=
+	t=1768861067; cv=none; b=GB2A52qfzKMmCw8tltYcnjKVwXbMh9a6BCDXw+T0o8dQ5eCZ6k9bZWJXNmvEe/RtR9zMrZ59OuX8OSlU23MmntWZgte9KTECAm53E20uv2oCSn9tKjHU4HWkQLAz6LBJgHSGuNx4RHcAFQBjGDqb4Cv1+SZCdrlJ1x5fuj5zEh4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768858728; c=relaxed/simple;
-	bh=cy7xeGkEN05Ai4z5AEgtdJWUp33QkqeTsicL5QHQwM8=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Dn+E+y2xyakp+4fWbH9KcOch23DnvrjcldM8Ddl5+rG+l83rKkMSnGdKjmsXqBHRK8WALIcoi6TXhUFpqzNL5nklmoTsDK3hkGMpaHaWQYYXhD6vuX4Lai9RUOsMM6zFyaW5uP1Fazz4pnVnmfcX8wW1L/7BCyl4h1ssdXPG/zY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HDJiW44V; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9275AC116C6;
-	Mon, 19 Jan 2026 21:38:41 +0000 (UTC)
+	s=arc-20240116; t=1768861067; c=relaxed/simple;
+	bh=RyEaN2R3QaXDzRUPf0OJ6yeRAULAMy+6gbcs5oXh5IY=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=QBuONaUciVDUcI4Q6yyI0bfnrk84d/wQc3ZM0xCmwaOBGQALTbOUfuAsojBrgBpwoCle4Y4gAHNjkTL/7fLCH7bTNRQy91J47pRORXZbsiXElUGPhXLhOwvfjo3gNTihzJC4uh7Z4QaHQeNrje3+5nCgarGlRgtAhYVOb58Thwo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZrTYOEsf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EBEFAC116C6;
+	Mon, 19 Jan 2026 22:17:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768858728;
-	bh=cy7xeGkEN05Ai4z5AEgtdJWUp33QkqeTsicL5QHQwM8=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=HDJiW44VRLmL1Npyk+++l/QzMXAN9TmDT6b1MkWUHBTzulg9wCuJtFEaHIijb3m3a
-	 TpgDRJLOeLoNCPgWfTi5+0fWIJHc5SelrFoIuAuEyIFtu5mJqYvhmty1DLWWMLQo3k
-	 Dc0I+1IHUMjmLDoxgHaSOXk1M6eSPAtPtbj8hvyJxgHfEk17XlCa6+27JSSRBMuF0O
-	 Anfgm62XTCQEXm0k1AdaTwGvTQK6u8RIOnh6DMAVLjmUeLhf4VekEVwuRP1CdBQje1
-	 dEyWAC5TSsha8I4Vp6Q+LP9/4+x7uAo2FNypFsCVPMEd0l46SErS24mojRwNRfXP23
-	 tvCGLQUs1uAog==
-Date: Mon, 19 Jan 2026 21:38:36 +0000
+	s=k20201202; t=1768861066;
+	bh=RyEaN2R3QaXDzRUPf0OJ6yeRAULAMy+6gbcs5oXh5IY=;
+	h=From:To:Cc:Subject:Date:From;
+	b=ZrTYOEsftzsAZjpi+v3wlUKy8XdJlg+J7p4WT5ERlxKA4sK+DoQ4k8dJy4FifR617
+	 IAqSrzEWDmoILzJwCPIXSoiNffiNkbmJYwaKOS/V2agKWkgplDV4t8D/UuEsS9EqfB
+	 5EiPSQOEDRj78NXV0fgfTi0x9Ef9vHl5KqNQ9PFDUKcFFriXUN9DhOTz+V6W7Ypy+I
+	 B6PyYStlcynmeE6ipqncIL9z1c0dMkqGkDzDzhPgy+RXNdZKb0TJgGGyLGqJxqjFqG
+	 +B4va/jOLbUusnR1ROVT6Tt9WKqzHxGxYdCUuSi34oylJSlTsF35CnrUZhvTwm47HL
+	 n9CNcNNKXQSqA==
 From: Jonathan Cameron <jic23@kernel.org>
-To: Sasha Levin <sashal@kernel.org>
-Cc: Michael.Hennerich@analog.com, andy@kernel.org, brgl@bgdev.pl,
- conor+dt@kernel.org, corbet@lwn.net, devicetree@vger.kernel.org,
- dlechner@baylibre.com, jorge.marques@analog.com, krzk+dt@kernel.org,
- lars@metafoo.de, linus.walleij@linaro.org, linusw@kernel.org,
- linux-doc@vger.kernel.org, linux-gpio@vger.kernel.org,
- linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
- nuno.sa@analog.com, robh@kernel.org
-Subject: Re: [PATCH v4 0/9] Add support for AD4062 device family
-Message-ID: <20260119213836.52a641fe@jic23-huawei>
-In-Reply-To: <20260117151232.215213-1-sashal@kernel.org>
-References: <20251227163506.2fb90815@jic23-huawei>
-	<20260117151232.215213-1-sashal@kernel.org>
-X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-pc-linux-gnu)
+To: linux-iio@vger.kernel.org
+Cc: Andy Shevchenko <andy@kernel.org>,
+	David Lechner <dlechner@baylibre.com>,
+	=?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	Frank Li <Frank.Li@nxp.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 0/2] iio: magn: mmc5633: Fix two build issues
+Date: Mon, 19 Jan 2026 22:17:34 +0000
+Message-ID: <20260119221736.804825-1-jic23@kernel.org>
+X-Mailer: git-send-email 2.52.0
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On Sat, 17 Jan 2026 10:12:32 -0500
-Sasha Levin <sashal@kernel.org> wrote:
+From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-> Hi Jonathan, Jorge,
-> 
-> Heads up: the AD4062 driver uses the deprecated I3C API which was
-> removed in commit 9904232ae30bc ("i3c: drop i3c_priv_xfer and
-> i3c_device_do_priv_xfers()"). This causes build failures when
-> merged with trees containing that commit:
-> 
->   drivers/iio/adc/ad4062.c:471:24: error: variable 'xfer_trigger' has initializer but incomplete type
->     471 |                 struct i3c_priv_xfer xfer_trigger = {
->         |                        ^~~~~~~~~~~~~
->   drivers/iio/adc/ad4062.c:472:26: error: 'struct i3c_priv_xfer' has no member named 'data'
->   ...
-> 
-> The fix is straightforward - migrate to the new API:
-> 
->   - struct i3c_priv_xfer -> struct i3c_xfer
->   - i3c_device_do_priv_xfers(dev, xfers, n) -> i3c_device_do_xfers(dev, xfers, n, I3C_SDR)
-> 
-> The struct fields are identical (i3c_priv_xfer was just a #define
-> alias), and I3C_SDR is what the old wrapper used internally.
-> 
-Thanks for the heads up! Given this driver was quite a way back in my tree and I'd
-rather avoid a rebase, I've sent out a patch on top that makes the changes
-you suggest. I'll carry it on the iio/togreg tree now just to avoid causing
-build mess in linux-next and just rebase the top the tree if any issues
-turn up in review (or to add tags)
+The Kconfig  issue was one I came across whilst testing the second fix
+which has been being reported by the bots for some time. Frank posted the
+full fix for the undefined symbols a while back, but it is merged in
+the middle i3c/for-next making it hard to merge into IIO as well.
+So work around this to get the build issue resolved.
 
-Cheers
+That workaround can be reverted next cycle.
+
+I'll queue these up now but they can have brief 0-day exposure
+before I push them out on the togreg branch to be picked up by
+linux-next. Even after that comments on these ones welcome.
+
+Thanks,
+
 Jonathan
 
+
+Jonathan Cameron (2):
+  iio: magn: mmc5633: Ensure REGMAP_I2C / I3C not build if I2C / I3C is
+    not.
+  iio: magn: mmc5633: Add some ifdef / __maybe_unused until stubs
+    available
+
+ drivers/iio/magnetometer/Kconfig   |  4 ++--
+ drivers/iio/magnetometer/mmc5633.c | 25 +++++++++++++++++++++----
+ 2 files changed, 23 insertions(+), 6 deletions(-)
+
+-- 
+2.52.0
 
 

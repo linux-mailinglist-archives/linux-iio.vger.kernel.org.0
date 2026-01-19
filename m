@@ -1,46 +1,46 @@
-Return-Path: <linux-iio+bounces-27971-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-27972-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C831D3ACC8
-	for <lists+linux-iio@lfdr.de>; Mon, 19 Jan 2026 15:50:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 351A3D3ACF7
+	for <lists+linux-iio@lfdr.de>; Mon, 19 Jan 2026 15:52:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 3719B304D4B9
-	for <lists+linux-iio@lfdr.de>; Mon, 19 Jan 2026 14:45:33 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D187F306383A
+	for <lists+linux-iio@lfdr.de>; Mon, 19 Jan 2026 14:47:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01CB137E2F8;
-	Mon, 19 Jan 2026 14:45:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DCFC735BDB1;
+	Mon, 19 Jan 2026 14:47:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lhtBPEhu"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GTXdXfLg"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B417123D7E0;
-	Mon, 19 Jan 2026 14:45:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7819F20E03F;
+	Mon, 19 Jan 2026 14:47:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768833931; cv=none; b=WQYCXz8tVTiHXpGwrHjtJWrwLMn3fPyCdRXUaPOtyRMiYJ8eUnwqiX8XbpGEd5OXpBlpSmw8MBBbjHO9iT3t+xXz/fOFMScAPazdXqJDb6iHAdrd/pb0IeGML3fR+tZu9zAY0ucu7hZaQV+0bZCF8/UB1c9x2GHRuiwR62Jb9Sg=
+	t=1768834071; cv=none; b=DSICc9cMVxyq7GHb4M0Ti8jOq4w6vSmCGb1DPAOXClS14e8CJ7Ep7GKYKqemW1yZeVJMA2B/HMzIYNCjKvGKbUX67CrzzPeBp+29GsTVpPgfX2iYsvZBr+odRiXGYT0TQDWIx4FRUkgGttFpY+JlSjHL9twYQn61O4WL7G0u86s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768833931; c=relaxed/simple;
-	bh=3GTGKDDnP7XCjEX+FxD5k5nZjD6jo9PGJKQU43xseE8=;
+	s=arc-20240116; t=1768834071; c=relaxed/simple;
+	bh=Xo3gOIZ7kLpKviSrENhrFvY6EGTgLB2FDYJiXN8Qg8c=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=AX9BR5+yPKNRwcwOor2WWRjD0Hpq85Kx9JMU5SxbThbXAqaSolmEQjwNl/mBxxoUEpKhhP1zw6sv7O6eo7MvftVsIttCe8OxWw2pV81C4LNSUAq0r2z8If3GdY9asJD+6Ni516OmFh+QRgl2My/xLHlBPGfhqqTcxvohSD6JfVg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lhtBPEhu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93FC2C116C6;
-	Mon, 19 Jan 2026 14:45:28 +0000 (UTC)
+	 In-Reply-To:Content-Type; b=SxEoE6B4cpYozd2YrRzpdEIXSkSLIOlYtgCO/7cKsH+QOfS7I6T/oT42PIdInuiJ5Y53JHha+zGS36D5bjaqetyUMuIDmlkHcT+yh+6ThEhICGYMKrCKh3r9VZJpor7OTQ8e9BkU6pE3lyqEs+AYZoatpimYmdnGW6rv1wLRSeA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GTXdXfLg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65FA6C116C6;
+	Mon, 19 Jan 2026 14:47:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768833931;
-	bh=3GTGKDDnP7XCjEX+FxD5k5nZjD6jo9PGJKQU43xseE8=;
+	s=k20201202; t=1768834071;
+	bh=Xo3gOIZ7kLpKviSrENhrFvY6EGTgLB2FDYJiXN8Qg8c=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=lhtBPEhuSJsFp9fSgiU/h4WliHmweyxFdhdAjBpZ5lwnq1b91TYgSxhSW7mK9aveM
-	 sNw6eRQjypQtyQMtiS9Od4a/8HLAZeD5wnXZWZntpMb7VxVVPhxGiY44sSp6+Ox/cm
-	 xPRcfVqxAMb73R80CrdQ4Fd/ILH1pukOtRipZlovvSUmde2SN/1T6xF4rUtWfZmvUC
-	 +bN3sSF/r3VactlLoXpq/U7MnNYMtMTtLBuSu8NT+UPgiFGQZz8cZdNRhBhp+2XUmw
-	 ns2c4eSWvjtLWeUBa3WGECYNn1zd9Mx9hED541ecNcnPUmWbkbcsLhrPwMO+UcUvmE
-	 bf9qDOAC7q0lg==
-Message-ID: <836b3f85-1ba3-4d49-b027-06990325fc4d@kernel.org>
-Date: Mon, 19 Jan 2026 15:45:26 +0100
+	b=GTXdXfLgAZ77mL1j0A3tm3FvLe01w/JdTnCKi7OoHIIExrM/7uNX/Yf6CpkQ5KH8w
+	 R6q7Ici8q1RWhk8jMQNprTOC0BYzXzFiz+0Pmn8OsLteSdPNq9oovQLCWb3NTtRsLj
+	 cHjP3aDH16dvCltYsOOBMvhG7DKbyCHVmZGMHGD7Mdf45DElP1qXh5t0BuZR1C9Uvi
+	 xbbW1uLAsrTwNUM5MCB1n7vnOYiQ34cMQgsTWzUCuls7Lj2+XUK6EMkmU8WOrwqysB
+	 LAZZmDr/AunDuSJAzsJB8OO2T1qDcg8F1R4qt1Puud1+eZOaSdMzf1ssCulm59D07z
+	 pM6lw1+5fHa1A==
+Message-ID: <1ae2f7de-f1f9-4f45-b38f-b68089fc017c@kernel.org>
+Date: Mon, 19 Jan 2026 15:47:46 +0100
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -48,7 +48,7 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6/7] iio: amplifiers: ad8366: simplify resource management
+Subject: Re: [PATCH 7/7] iio: amplifiers: ad8366: add device tree support
 To: rodrigo.alencar@analog.com, linux-kernel@vger.kernel.org,
  linux-iio@vger.kernel.org, devicetree@vger.kernel.org
 Cc: Michael Hennerich <Michael.Hennerich@analog.com>,
@@ -57,7 +57,7 @@ Cc: Michael Hennerich <Michael.Hennerich@analog.com>,
  Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
  Conor Dooley <conor+dt@kernel.org>
 References: <20260119-iio-ad8366-update-v1-0-8044e23e964a@analog.com>
- <20260119-iio-ad8366-update-v1-6-8044e23e964a@analog.com>
+ <20260119-iio-ad8366-update-v1-7-8044e23e964a@analog.com>
 From: Krzysztof Kozlowski <krzk@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=krzk@kernel.org; keydata=
@@ -103,127 +103,58 @@ Autocrypt: addr=krzk@kernel.org; keydata=
  jWt87ecuHlpL3uuQ0ZZNWqHgZoQLXoqC2ZV5KrtKWb/jyiFX/sxSrodALf0zf+tfHv0FZWT2
  zHjUqd0t4njD/UOsuIMOQn4Ig0SdivYPfZukb5cdasKJukG1NOpbW7yRNivaCnfZz6dTawXw
  XRIV/KDsHQiyVxKvN73bThKhONkcX2LWuD928tAR6XMM2G5ovxLe09vuOzzfTWQDsm++9UKF a/A=
-In-Reply-To: <20260119-iio-ad8366-update-v1-6-8044e23e964a@analog.com>
+In-Reply-To: <20260119-iio-ad8366-update-v1-7-8044e23e964a@analog.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
 On 19/01/2026 15:37, Rodrigo Alencar via B4 Relay wrote:
-> From: Rodrigo Alencar <rodrigo.alencar@analog.com>
-> 
-> Device resource managed simplified with:
+> +	st->reset_gpio = devm_gpiod_get_optional(dev, "reset", GPIOD_OUT_HIGH);
+> +	if (IS_ERR(st->reset_gpio))
+> +		return dev_err_probe(dev, PTR_ERR(st->reset_gpio),
+> +				     "Failed to get reset GPIO\n");
+>  
+> -		st->enable_gpio = devm_gpiod_get_optional(dev, "enable", GPIOD_OUT_HIGH);
+> -		if (IS_ERR(st->enable_gpio))
+> -			return dev_err_probe(dev, PTR_ERR(st->enable_gpio),
+> -					     "Failed to get enable GPIO\n");
+> +	st->enable_gpio = devm_gpiod_get_optional(dev, "enable", GPIOD_OUT_HIGH);
 
-Use more readable style.
-https://elixir.bootlin.com/linux/v6.16/source/Documentation/process/submitting-patches.rst#L94
+No, you are changing the same line *third* time. you need to organize
+your patchset in logical way but also in a readable. You do not add
+incorrect code just to change it later.
 
-> - voltage regulator managed internally by the device.
-> - IIO device registration handled with devm_iio_device_register().
-> - removal of goto's from the probe function.
-> - ad8366_remove() removed as it is not needed anymore.
-> 
-> Also, dev_err_probe() is used to report probe errors with created local
-> device pointer.
-> 
-> Signed-off-by: Rodrigo Alencar <rodrigo.alencar@analog.com>
-> ---
->  drivers/iio/amplifiers/ad8366.c | 68 +++++++++++------------------------------
->  1 file changed, 18 insertions(+), 50 deletions(-)
-> 
-> diff --git a/drivers/iio/amplifiers/ad8366.c b/drivers/iio/amplifiers/ad8366.c
-> index 26856cb4216e..d3fd8d44eae7 100644
-> --- a/drivers/iio/amplifiers/ad8366.c
-> +++ b/drivers/iio/amplifiers/ad8366.c
-> @@ -53,7 +53,6 @@ struct ad8366_info {
+I do not see the reason behind removal of switch case. It's really
+independent change of OF support which must come with its own
+justification of affecting other platforms.
+
+
+> +	if (IS_ERR(st->enable_gpio))
+> +		return dev_err_probe(dev, PTR_ERR(st->enable_gpio),
+> +				     "Failed to get enable GPIO\n");
 >  
->  struct ad8366_state {
->  	struct spi_device	*spi;
-> -	struct regulator	*reg;
->  	struct mutex            lock; /* protect sensor state */
->  	struct gpio_desc	*reset_gpio;
->  	struct gpio_desc	*enable_gpio;
-> @@ -321,26 +320,22 @@ static int ad8366_probe(struct spi_device *spi)
->  {
->  	struct iio_dev *indio_dev;
->  	struct ad8366_state *st;
-> +	struct device *dev = &spi->dev;
->  	int ret;
->  
-> -	indio_dev = devm_iio_device_alloc(&spi->dev, sizeof(*st));
-> +	indio_dev = devm_iio_device_alloc(dev, sizeof(*st));
->  	if (indio_dev == NULL)
->  		return -ENOMEM;
->  
->  	st = iio_priv(indio_dev);
-> -
-> -	st->reg = devm_regulator_get(&spi->dev, "vcc");
-> -	if (!IS_ERR(st->reg)) {
-> -		ret = regulator_enable(st->reg);
-> -		if (ret)
-> -			return ret;
+> -		indio_dev->channels = ada4961_channels;
+> -		indio_dev->num_channels = ARRAY_SIZE(ada4961_channels);
+> -		break;
+> -	default:
+> -		return dev_err_probe(dev, -EINVAL, "Invalid device ID\n");
 > -	}
 > -
-> -	spi_set_drvdata(spi, indio_dev);
->  	st->spi = spi;
->  	st->type = spi_get_device_id(spi)->driver_data;
+> -	st->info = &ad8366_infos[st->type];
+>  	indio_dev->name = spi_get_device_id(spi)->name;
+>  	indio_dev->info = &ad8366_info;
+> +	indio_dev->channels = ad8366_channels;
+> +	indio_dev->num_channels = st->info->num_channels;
+>  	indio_dev->modes = INDIO_DIRECT_MODE;
 >  
-> -	ret = devm_mutex_init(&spi->dev, &st->lock);
-
-No need to change the line twice. Just use dev in previous commit. Or
-re-order commits.
-
-> +	ret = devm_regulator_get_enable(dev, "vcc");
-> +	if (ret)
-> +		return dev_err_probe(dev, ret, "Failed to get regulator\n");
-> +
-> +	ret = devm_mutex_init(dev, &st->lock);
->  	if (ret)
->  		return ret;
->  
-> @@ -359,25 +354,21 @@ static int ad8366_probe(struct spi_device *spi)
->  	case ID_ADRF5731:
->  	case ID_HMC1018:
->  	case ID_HMC1019:
-> -		st->reset_gpio = devm_gpiod_get_optional(&spi->dev, "reset", GPIOD_OUT_HIGH);
-> -		if (IS_ERR(st->reset_gpio)) {
-> -			ret = PTR_ERR(st->reset_gpio);
-> -			goto error_disable_reg;
-> -		}
-> +		st->reset_gpio = devm_gpiod_get_optional(dev, "reset", GPIOD_OUT_HIGH);
-> +		if (IS_ERR(st->reset_gpio))
-> +			return dev_err_probe(dev, PTR_ERR(st->reset_gpio),
-> +					     "Failed to get reset GPIO\n");
->  
-> -		st->enable_gpio = devm_gpiod_get_optional(&spi->dev, "enable", GPIOD_OUT_HIGH);
-> -		if (IS_ERR(st->enable_gpio)) {
-> -			ret = PTR_ERR(st->enable_gpio);
-> -			goto error_disable_reg;
-> -		}
-> +		st->enable_gpio = devm_gpiod_get_optional(dev, "enable", GPIOD_OUT_HIGH);
-
-You just added these lines before. Cleanups always go BEFORE new
-feature. Always.
-
-> +		if (IS_ERR(st->enable_gpio))
-> +			return dev_err_probe(dev, PTR_ERR(st->enable_gpio),
-> +					     "Failed to get enable GPIO\n");
->  
->  		indio_dev->channels = ada4961_channels;
->  		indio_dev->num_channels = ARRAY_SIZE(ada4961_channels);
->  		break;
->  	default:
-> -		dev_err(&spi->dev, "Invalid device ID\n");
-> -		ret = -EINVAL;
-> -		goto error_disable_reg;
-> +		return dev_err_probe(dev, -EINVAL, "Invalid device ID\n");
->  	}
->  
->  	st->info = &ad8366_infos[st->type];
-> @@ -387,31 +378,9 @@ static int ad8366_probe(struct spi_device *spi)
->  
->  	ret = ad8366_write(indio_dev, 0, 0);
+> -	ret = ad8366_write(indio_dev, 0, 0);
+> +	ret = ad8366_write_code(st);
 >  	if (ret < 0)
-> -		goto error_disable_reg;
-> +		return dev_err_probe(dev, ret, "failed to write initial gain\n");
+>  		return dev_err_probe(dev, ret, "failed to write initial gain\n");
 >  
+> @@ -384,24 +322,41 @@ static int ad8366_probe(struct spi_device *spi)
+>  }
+
+
 Best regards,
 Krzysztof
 

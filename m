@@ -1,64 +1,64 @@
-Return-Path: <linux-iio+bounces-28043-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-28044-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8897ED3C14B
-	for <lists+linux-iio@lfdr.de>; Tue, 20 Jan 2026 09:02:48 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5EF55D3C190
+	for <lists+linux-iio@lfdr.de>; Tue, 20 Jan 2026 09:14:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id F3052387D13
-	for <lists+linux-iio@lfdr.de>; Tue, 20 Jan 2026 07:58:53 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id EB398504090
+	for <lists+linux-iio@lfdr.de>; Tue, 20 Jan 2026 08:01:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D89563AE706;
-	Tue, 20 Jan 2026 07:57:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 289233BC4C5;
+	Tue, 20 Jan 2026 07:58:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="VTAFo3tk"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="mmVZCUJL"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA0DA3AEF22
-	for <linux-iio@vger.kernel.org>; Tue, 20 Jan 2026 07:57:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 767E93BBA10
+	for <linux-iio@vger.kernel.org>; Tue, 20 Jan 2026 07:58:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768895826; cv=none; b=WvgfzQ9qF2bxvRGe5Zk2o94g3VPdkU7k5Iwx/P28cEhVCUcgvr0IzJD/erY2rSAJTEi+lfXuarrxKZJef9uUxu4u2aK4ubIi4Y+pf0RttIoDyc80VpRsyGLfaotEBZcyhRXeQLOaXlj4nl0UKV8KtzvcLtdAE8+o9hm1Wdr+JKU=
+	t=1768895938; cv=none; b=YvZ+QHJ9IHTizoqADFGARzF0cVkE6D3VVTiTSy6CWAL9MA5zzFavy0Y3HqErhdHWno72IiydHPidquUP1mE05aOur48Z2DDAaE4DXGltzVVVk6r/6zFA5iC5i5/AY7mwRRB+jKJ6eFYydRcnrg6xsZs9OFi+uRSnHZo5XxtAgbU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768895826; c=relaxed/simple;
-	bh=O4/K+wwfeELiRKhAeY449RKzArG8vJku2FPHldMd/7A=;
+	s=arc-20240116; t=1768895938; c=relaxed/simple;
+	bh=zyf5OurWtwa02A6696+SjYrOMCtyt0rnCh6InYCsdaI=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=OAhNDlDwMF4adEJVQqLkEOy+MLbBlMnFwWwExqNwivWZHNXMfEpY0uPgFptMG66Qx8QMd7Tj3n3ftu8qLbNwSuxhtge/5TBAcQKSw/IqMx6zSZGU9YaOyuwa8GdVD74CxxA5joGEv4ERwwOkhADEgWaRUHuRcOHAq18bzFsVmjA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=VTAFo3tk; arc=none smtp.client-ip=192.198.163.12
+	 Content-Type:Content-Disposition:In-Reply-To; b=CJhBvv1x2T07FT0k+zXc8eCItZAqqjlYGu9+uByH5ePp/PO4CeC4vamSv+xT870X3N8fo/U0zXflJdsAPYvdMC20MDsb7sszgLQlgefIzX5fo4E+K3Ap8QoW2S324hRcLzxqn3ABxNtOVsFVZvg+PJaCR6fIqVWoUgamruWfxks=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=mmVZCUJL; arc=none smtp.client-ip=198.175.65.13
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1768895825; x=1800431825;
+  t=1768895938; x=1800431938;
   h=date:from:to:cc:subject:message-id:references:
    mime-version:in-reply-to;
-  bh=O4/K+wwfeELiRKhAeY449RKzArG8vJku2FPHldMd/7A=;
-  b=VTAFo3tknp3NgBIC6j3PRer8DDB1zYSBRjnOTvRReLP8Vbp6pPcpTSdn
-   CIclXHSbN/KSLXk5qaCz2ThqkvqN+BgdR5CLf5I4HK5+e28r6tMzfchPW
-   +zejqJ/i2Y4s+QWyw8KJVQQe/EqaF0v7RBprE+jd3orkxDY4DJTw6Vz+V
-   dLACTCuiChummBQsoKqqaesc+XeGzzuOJogfkxhuy/RVYuWZ8WJaRC8Ix
-   kfzbTNWeVFdJ3RETEksUC03MnKlpM6563L3WVV5ngpuHMZMpOL+vHwLts
-   OqmeNlruEHaUqWZPbbNrU1z+pz2xj8YBH/wztAJRe3mdjG4O6nfDuTEEq
+  bh=zyf5OurWtwa02A6696+SjYrOMCtyt0rnCh6InYCsdaI=;
+  b=mmVZCUJL6JQhWQTuAPWD08HE3oH9blr4NMxBtlYP9ioVuA7oJX0aO3bE
+   fPGDGW/7XmtouMHQRKz50GDuVAb5sbZ/Y5Vc70khksnQR1VNgkvXVoCC9
+   ZBRcuZPXKF0Q4nF64Q47EUTPBQPbTo7/OI/na+RzErVsirwhNS/G5NFUk
+   AFr4OvwZLDzdcsjzpIfD85T7am3U504GKLu6Xw+1I8MC1ABUXtSqwU8Zm
+   P91KeafUd00UsC7PEk0WVloFZhSHhWsCg117NaIRy4S8Mx8PJwK+WdD7r
+   9Np6rlBx1RbY+kqSXJ/FrFwJtwUkqyG3JMOQB4w1hO9YUBxAUHQYg5HP/
    w==;
-X-CSE-ConnectionGUID: pwSQX44iQLObSz7uM4apXQ==
-X-CSE-MsgGUID: J7/AzpqhSrug+CgkCtIqMw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11676"; a="73963598"
+X-CSE-ConnectionGUID: zFAazWi9QQ2BMpNZknn4sg==
+X-CSE-MsgGUID: 4OT5hF/vTBqAvyfSilcYxg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11676"; a="81207316"
 X-IronPort-AV: E=Sophos;i="6.21,240,1763452800"; 
-   d="scan'208";a="73963598"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
-  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Jan 2026 23:57:04 -0800
-X-CSE-ConnectionGUID: +byG7AbCRRWx/zcxYtlZXg==
-X-CSE-MsgGUID: slwZ8Sw2Qy2vVlMUqHMXuw==
+   d="scan'208";a="81207316"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Jan 2026 23:58:57 -0800
+X-CSE-ConnectionGUID: Oy/owHJYTVyehrYJGd/Tpg==
+X-CSE-MsgGUID: xRcXbG+rRGmnsnF+Dl86fQ==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.21,240,1763452800"; 
-   d="scan'208";a="205681298"
+   d="scan'208";a="206401355"
 Received: from dalessan-mobl3.ger.corp.intel.com (HELO localhost) ([10.245.244.179])
-  by fmviesa007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Jan 2026 23:57:02 -0800
-Date: Tue, 20 Jan 2026 09:56:59 +0200
+  by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Jan 2026 23:58:54 -0800
+Date: Tue, 20 Jan 2026 09:58:52 +0200
 From: Andy Shevchenko <andriy.shevchenko@intel.com>
 To: Jonathan Cameron <jic23@kernel.org>
 Cc: linux-iio@vger.kernel.org, Andy Shevchenko <andy@kernel.org>,
@@ -71,10 +71,9 @@ Cc: linux-iio@vger.kernel.org, Andy Shevchenko <andy@kernel.org>,
 	Cosmin Tanislav <cosmin.tanislav@analog.com>,
 	Alisa-Dariana Roman <alisadariana@gmail.com>,
 	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: Re: [PATCH 04/11] iio: adc: max1027: Improve include relevance
-Message-ID: <aW81S3XcVBnuYI71@smile.fi.intel.com>
+Subject: Re: [PATCH 00/11] iio: adc: Improve include relevance for some ADCs.
+Message-ID: <aW81vM2hglzIOVF-@smile.fi.intel.com>
 References: <20260119212110.726941-1-jic23@kernel.org>
- <20260119212110.726941-5-jic23@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -83,84 +82,37 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260119212110.726941-5-jic23@kernel.org>
+In-Reply-To: <20260119212110.726941-1-jic23@kernel.org>
 Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
  krs, Bertel Jungin Aukio 5, 02600 Espoo
 
-On Mon, Jan 19, 2026 at 09:21:03PM +0000, Jonathan Cameron wrote:
+On Mon, Jan 19, 2026 at 09:20:59PM +0000, Jonathan Cameron wrote:
 
-> Drop kernel.h in favor of more specific headers and add includes that were
-> previously relying on other headers including them.
+> So this is a continuation of experimenting with IWYU to ensure that we
+> follow what I consider best practice in driver by including all
+> headers that are used (subject to some slightly fuzzy rules for some
+> of them standard kernel headers).
 > 
-> Whether to include device.h or the relevant sub headers is non obvious.
-> In this case, there is an access to struct device for
-> spi->dev.driver->name which is used to name the irq.
+> I was focusing on cases where kernel.h was included and moving from that
+> to the more specific headers. That partly explains why there were so
+> many headers to add. However, it is also clear that many standard
+> headers (mutex.h for example) were missing from these drivers.
 > 
-> The justification from iwyu for the additional includes is:
->   #include <asm/byteorder.h>           // for be16_to_cpu
->   #include <linux/array_size.h>        // for ARRAY_SIZE
->   #include <linux/bitops.h>            // for BIT, GENMASK, fls, hweight32
->   #include <linux/cleanup.h>           // for guard
->   #include <linux/compiler.h>          // for __aligned
->   #include <linux/completion.h>        // for complete, init_completion
+> There are a few notes and questions in the individual patch descriptions,
+> typically where I have either decided to ignore a recommendation or
+> conversely have broken things down more finely than IWYU was doing with
+> my config files.
+> 
+> All comments welcome.  Whilst I don't consider this particular high
+> priority (much of it was done in a train where I couldn't access my
+> email)m I would like to provide more examples in tree of what I consider
 
->   #include <linux/device.h>            // for dev_err, dev_name, devm_kmal. ..
+"m"? Bump on the rail that makes your finger slip over keyboard? :-)
 
-Not good, we also should treat device.h as "include everything" and try to
-avoid that, above comment hints like
+> to the right way to do things!
 
-dev_printk.h
-device/devres.h
-
->   #include <linux/errno.h>             // for ENOMEM, EINVAL, EBUSY, ETIME...
->   #include <linux/interrupt.h>         // for devm_request_irq, irqreturn
->   #include <linux/jiffies.h>           // for msecs_to_jiffies
->   #include <linux/minmax.h>            // for __cmp_op_max
->   #include <linux/mutex.h>             // for class_mutex_constructor, cla...
->   #include <linux/stddef.h>            // for NULL, false
->   #include <linux/types.h>             // for u8, bool, __be16
-
-> stddef.h not directly included as few drivers do this.
-
-Yes, we assume that types guarantees stddef.h to be provided.
-
-> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> Cc: Miquel Raynal <miquel.raynal@bootlin.com>
-> ---
-
-Cc here...
-
->  drivers/iio/adc/max1027.c | 16 +++++++++++++++-
->  1 file changed, 15 insertions(+), 1 deletion(-)
-
-...
-
-> +#include <linux/array_size.h>
-> +#include <linux/bitops.h>
-> +#include <linux/cleanup.h>
-
-> +#include <linux/compiler.h>
-
-Same as stddef. types.h will bring this.
-
-> +#include <linux/completion.h>
->  #include <linux/delay.h>
-> -#include <linux/kernel.h>
-
-> +#include <linux/device.h>
-
-See above.
-
-> +#include <linux/errno.h>
-> +#include <linux/interrupt.h>
-> +#include <linux/jiffies.h>
-> +#include <linux/minmax.h>
->  #include <linux/module.h>
->  #include <linux/mod_devicetable.h>
-> +#include <linux/mutex.h>
-> +#include <linux/printk.h>
->  #include <linux/spi/spi.h>
-> +#include <linux/types.h>
+I commented 4 patches, but seems the set of issues I found is repetitive,
+So, please address those in all patches and I will look into v2.
 
 -- 
 With Best Regards,

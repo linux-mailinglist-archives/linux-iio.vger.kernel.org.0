@@ -1,54 +1,58 @@
-Return-Path: <linux-iio+bounces-28047-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-28048-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 63ECED3C589
-	for <lists+linux-iio@lfdr.de>; Tue, 20 Jan 2026 11:39:06 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id C0649D3C48F
+	for <lists+linux-iio@lfdr.de>; Tue, 20 Jan 2026 11:06:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 28C3A7079D2
-	for <lists+linux-iio@lfdr.de>; Tue, 20 Jan 2026 09:50:57 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id C2438547B73
+	for <lists+linux-iio@lfdr.de>; Tue, 20 Jan 2026 09:52:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 257B13D2FE5;
-	Tue, 20 Jan 2026 09:47:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E38843A89A7;
+	Tue, 20 Jan 2026 09:50:50 +0000 (UTC)
 X-Original-To: linux-iio@vger.kernel.org
 Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F7213C1FD1;
-	Tue, 20 Jan 2026 09:47:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5B582AD35
+	for <linux-iio@vger.kernel.org>; Tue, 20 Jan 2026 09:50:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768902460; cv=none; b=KR796aXjDO714T48BGgb8WpYnVaGunK+2zRTtXf9VEZmoUcK4JkMoIrDHjU+Xd9dTz9+cFZmSh0hoOeu1KtST2EfpjBrRIarDiAyQUzFotUrI0T3XGvfUDa1LR37vpqRdy+fEGJs0RFubh2WEFVd8W4j5T8tqK3sw5EwB6zU+VY=
+	t=1768902650; cv=none; b=cUkZlc6U1OS3uFeVUwu5BVHzyn9GSMw1jYLYylNuh2vesegeE2BYR2wtYaX+ddyu2SxBaUdqgPgGYV2V/5Mk/UlBa3KIjr2QUI+PCd4WCajCQ3i7pYhnEdUYHKQV6zJ6Gx0xH/X7EaWAKpC0rRJtSE/eGtfk74vjCRQCfQbxEs0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768902460; c=relaxed/simple;
-	bh=8h628bA49V/gtfQ+WE7IDpVvvMuRfgkzaZLm45T7r+k=;
+	s=arc-20240116; t=1768902650; c=relaxed/simple;
+	bh=ZA0s/tuoPW1D6wPLszUGgUM7+dx8qfSGeQ7YYwW5zJU=;
 	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=FC8Fh9qW/EVt7qkUB0LB3ZoQvFBac77B5kkYpf+X/5fwXdCNIRiUILhci1UcDJDBd5sh3oUEXgOZ3JyhJV1kqRtecnJnnCsugo0L/EtAtFrQZMhuX8BW+1swSoO57/iy2UAnx0l7fPa5odZcljA6jnseqXHZYTH5Pk3tzoEUfeo=
+	 MIME-Version:Content-Type; b=FwS5MGM1A+1uZ0FHkp3mOfURuJkyBnOniMtGBsHeNNSzrFxYVdtaAYiY0LHiF6NT7rMcR0CDHASw+MSA0WTOB9G0/vvNdQ4Qw3PwFr1yGkdEPnxB8eQ/LnKxGXAOyABSxV3ozRyVvU6VEGHv5NL+qCH4CfwIMybSJ8s/9Rzht2k=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.18.224.150])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTPS id 4dwMtQ1GPlzJ46fv;
-	Tue, 20 Jan 2026 17:47:10 +0800 (CST)
+Received: from mail.maildlp.com (unknown [172.18.224.83])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTPS id 4dwMxx4GHPzHnGd6;
+	Tue, 20 Jan 2026 17:50:13 +0800 (CST)
 Received: from dubpeml500005.china.huawei.com (unknown [7.214.145.207])
-	by mail.maildlp.com (Postfix) with ESMTPS id 6BACF40539;
-	Tue, 20 Jan 2026 17:47:34 +0800 (CST)
+	by mail.maildlp.com (Postfix) with ESMTPS id 1F19540569;
+	Tue, 20 Jan 2026 17:50:45 +0800 (CST)
 Received: from localhost (10.203.177.15) by dubpeml500005.china.huawei.com
  (7.214.145.207) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Tue, 20 Jan
- 2026 09:47:33 +0000
-Date: Tue, 20 Jan 2026 09:47:32 +0000
+ 2026 09:50:44 +0000
+Date: Tue, 20 Jan 2026 09:50:41 +0000
 From: Jonathan Cameron <jonathan.cameron@huawei.com>
-To: Mark Brown <broonie@kernel.org>
-CC: Jorge Marques <jorge.marques@analog.com>, Linux Kernel Mailing List
-	<linux-kernel@vger.kernel.org>, Linux Next Mailing List
-	<linux-next@vger.kernel.org>, <linux-iio@vger.kernel.org>
-Subject: Re: linux-next: build failure after merge of the iio tree
-Message-ID: <20260120094732.00006a84@huawei.com>
-In-Reply-To: <aW6EGSEYxm2iTXXD@sirena.org.uk>
-References: <aW6EGSEYxm2iTXXD@sirena.org.uk>
+To: Andy Shevchenko <andriy.shevchenko@intel.com>
+CC: Jonathan Cameron <jic23@kernel.org>, <linux-iio@vger.kernel.org>, "Andy
+ Shevchenko" <andy@kernel.org>, Sasha Levin <sashal@kernel.org>, "David
+ Lechner" <dlechner@baylibre.com>, Nuno =?ISO-8859-1?Q?S=E1?=
+	<nuno.sa@analog.com>, <jorge.marques@analog.com>, Alexandre Belloni
+	<alexandre.belloni@bootlin.com>, Frank Li <Frank.Li@nxp.com>
+Subject: Re: [PATCH] iio: adc: ad4062: Switch from struct i3c_priv_xfer to
+ struct i3c_xfer
+Message-ID: <20260120095041.0000705f@huawei.com>
+In-Reply-To: <aW8sk9mD-dOHeJZg@smile.fi.intel.com>
+References: <20260119213617.745603-1-jic23@kernel.org>
+	<aW8sk9mD-dOHeJZg@smile.fi.intel.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -61,199 +65,52 @@ Content-Transfer-Encoding: 7bit
 X-ClientProxiedBy: lhrpeml500010.china.huawei.com (7.191.174.240) To
  dubpeml500005.china.huawei.com (7.214.145.207)
 
-On Mon, 19 Jan 2026 19:20:57 +0000
-Mark Brown <broonie@kernel.org> wrote:
+On Tue, 20 Jan 2026 09:19:47 +0200
+Andy Shevchenko <andriy.shevchenko@intel.com> wrote:
 
-> Hi all,
+> On Mon, Jan 19, 2026 at 09:36:17PM +0000, Jonathan Cameron wrote:
 > 
-> After merging the iio tree, today's linux-next build (x86_64
-> allmodconfig) failed like this:
-Hi Mark,
+> > commit 9904232ae30bc ("i3c: drop i3c_priv_xfer and i3c_device_do_priv_xfers()")  
+> 
+> Commit ?
+> The commit ?
+> 
+> > currently in the i3c/for-next tree removes the deprecated
+> > struct i3c_priv_xfer and i3c_device_do_priv_xfers().
+> > 
+> > Switch to struct i3c_xfer and i3c_device_do_xfers(..., I3C_SDR)
+> > now rather causing a build issue when both trees are merged.  
+> 
+> Not sure if we need a Fixes tag.
 
-Seems we raced last night. I pushed the fix about 5 minutes after
-you sent this :)
-
-https://git.kernel.org/pub/scm/linux/kernel/git/jic23/iio.git/commit/?h=togreg&id=a1e5b99bc7c6b6a1c3c3b79a8fba1dc16ea160fa
-
-Sasha gave a heads up that this was coming yesterday.
-
-There are a couple more i3c related fixes but the more significant of those
-issues probably doesn't turn up in next builds because the real fix
-is in the i3c tree and I'm just papering over being unable to cleanly
-pull that into IIO tree.
-
-https://lore.kernel.org/all/20260119221736.804825-1-jic23@kernel.org/
-
-Jonathan
+I was lazy. Both this and the original patch will go in together
+so low risk, but indeed it should have a fixes tag.
 
 > 
-> /tmp/next/build/drivers/iio/adc/ad4062.c: In function 'ad4062_set_operation_mode':
-> /tmp/next/build/drivers/iio/adc/ad4062.c:471:24: error: variable 'xfer_trigger' has initializer but incomplete type
->   471 |                 struct i3c_priv_xfer xfer_trigger = {
->       |                        ^~~~~~~~~~~~~
-> /tmp/next/build/drivers/iio/adc/ad4062.c:472:26: error: 'struct i3c_priv_xfer' has no member named 'data'
->   472 |                         .data.out = &st->conv_addr,
->       |                          ^~~~
-> /tmp/next/build/drivers/iio/adc/ad4062.c:472:37: error: excess elements in struct initializer [-Werror]
->   472 |                         .data.out = &st->conv_addr,
->       |                                     ^
-> /tmp/next/build/drivers/iio/adc/ad4062.c:472:37: note: (near initialization for 'xfer_trigger')
-> /tmp/next/build/drivers/iio/adc/ad4062.c:473:26: error: 'struct i3c_priv_xfer' has no member named 'len'
->   473 |                         .len = sizeof(st->conv_addr),
->       |                          ^~~
-> /tmp/next/build/drivers/iio/adc/ad4062.c:473:32: error: excess elements in struct initializer [-Werror]
->   473 |                         .len = sizeof(st->conv_addr),
->       |                                ^~~~~~
-> /tmp/next/build/drivers/iio/adc/ad4062.c:473:32: note: (near initialization for 'xfer_trigger')
-> /tmp/next/build/drivers/iio/adc/ad4062.c:474:26: error: 'struct i3c_priv_xfer' has no member named 'rnw'
->   474 |                         .rnw = false,
->       |                          ^~~
-> /tmp/next/build/drivers/iio/adc/ad4062.c:474:32: error: excess elements in struct initializer [-Werror]
->   474 |                         .rnw = false,
->       |                                ^~~~~
-> /tmp/next/build/drivers/iio/adc/ad4062.c:474:32: note: (near initialization for 'xfer_trigger')
-> /tmp/next/build/drivers/iio/adc/ad4062.c:471:38: error: storage size of 'xfer_trigger' isn't known
->   471 |                 struct i3c_priv_xfer xfer_trigger = {
->       |                                      ^~~~~~~~~~~~
-> /tmp/next/build/drivers/iio/adc/ad4062.c:477:24: error: implicit declaration of function 'i3c_device_do_priv_xfers'; did you mean 'i3c_device_do_xfers'? [-Wimplicit-function-declaration]
->   477 |                 return i3c_device_do_priv_xfers(st->i3cdev, &xfer_trigger, 1);
->       |                        ^~~~~~~~~~~~~~~~~~~~~~~~
->       |                        i3c_device_do_xfers
-> /tmp/next/build/drivers/iio/adc/ad4062.c:471:38: error: unused variable 'xfer_trigger' [-Werror=unused-variable]
->   471 |                 struct i3c_priv_xfer xfer_trigger = {
->       |                                      ^~~~~~~~~~~~
-> /tmp/next/build/drivers/iio/adc/ad4062.c: In function 'ad4062_trigger_work':
-> /tmp/next/build/drivers/iio/adc/ad4062.c:610:16: error: variable 'xfer_sample' has initializer but incomplete type
->   610 |         struct i3c_priv_xfer xfer_sample = {
->       |                ^~~~~~~~~~~~~
-> /tmp/next/build/drivers/iio/adc/ad4062.c:611:18: error: 'struct i3c_priv_xfer' has no member named 'data'
->   611 |                 .data.in = &st->buf.be32,
->       |                  ^~~~
-> /tmp/next/build/drivers/iio/adc/ad4062.c:611:28: error: excess elements in struct initializer [-Werror]
->   611 |                 .data.in = &st->buf.be32,
->       |                            ^
-> /tmp/next/build/drivers/iio/adc/ad4062.c:611:28: note: (near initialization for 'xfer_sample')
-> /tmp/next/build/drivers/iio/adc/ad4062.c:612:18: error: 'struct i3c_priv_xfer' has no member named 'len'
->   612 |                 .len = st->conv_sizeof,
->       |                  ^~~
-> /tmp/next/build/drivers/iio/adc/ad4062.c:612:24: error: excess elements in struct initializer [-Werror]
->   612 |                 .len = st->conv_sizeof,
->       |                        ^~
-> /tmp/next/build/drivers/iio/adc/ad4062.c:612:24: note: (near initialization for 'xfer_sample')
-> /tmp/next/build/drivers/iio/adc/ad4062.c:613:18: error: 'struct i3c_priv_xfer' has no member named 'rnw'
->   613 |                 .rnw = true,
->       |                  ^~~
-> /tmp/next/build/drivers/iio/adc/ad4062.c:613:24: error: excess elements in struct initializer [-Werror]
->   613 |                 .rnw = true,
->       |                        ^~~~
-> /tmp/next/build/drivers/iio/adc/ad4062.c:613:24: note: (near initialization for 'xfer_sample')
-> /tmp/next/build/drivers/iio/adc/ad4062.c:610:30: error: storage size of 'xfer_sample' isn't known
->   610 |         struct i3c_priv_xfer xfer_sample = {
->       |                              ^~~~~~~~~~~
-> /tmp/next/build/drivers/iio/adc/ad4062.c:615:16: error: variable 'xfer_trigger' has initializer but incomplete type
->   615 |         struct i3c_priv_xfer xfer_trigger = {
->       |                ^~~~~~~~~~~~~
-> /tmp/next/build/drivers/iio/adc/ad4062.c:616:18: error: 'struct i3c_priv_xfer' has no member named 'data'
->   616 |                 .data.out = &st->conv_addr,
->       |                  ^~~~
-> /tmp/next/build/drivers/iio/adc/ad4062.c:616:29: error: excess elements in struct initializer [-Werror]
->   616 |                 .data.out = &st->conv_addr,
->       |                             ^
-> /tmp/next/build/drivers/iio/adc/ad4062.c:616:29: note: (near initialization for 'xfer_trigger')
-> /tmp/next/build/drivers/iio/adc/ad4062.c:617:18: error: 'struct i3c_priv_xfer' has no member named 'len'
->   617 |                 .len = sizeof(st->conv_addr),
->       |                  ^~~
-> /tmp/next/build/drivers/iio/adc/ad4062.c:617:24: error: excess elements in struct initializer [-Werror]
->   617 |                 .len = sizeof(st->conv_addr),
->       |                        ^~~~~~
-> /tmp/next/build/drivers/iio/adc/ad4062.c:617:24: note: (near initialization for 'xfer_trigger')
-> /tmp/next/build/drivers/iio/adc/ad4062.c:618:18: error: 'struct i3c_priv_xfer' has no member named 'rnw'
->   618 |                 .rnw = false,
->       |                  ^~~
-> /tmp/next/build/drivers/iio/adc/ad4062.c:618:24: error: excess elements in struct initializer [-Werror]
->   618 |                 .rnw = false,
->       |                        ^~~~~
-> /tmp/next/build/drivers/iio/adc/ad4062.c:618:24: note: (near initialization for 'xfer_trigger')
-> /tmp/next/build/drivers/iio/adc/ad4062.c:615:30: error: storage size of 'xfer_trigger' isn't known
->   615 |         struct i3c_priv_xfer xfer_trigger = {
->       |                              ^~~~~~~~~~~~
-> /tmp/next/build/drivers/iio/adc/ad4062.c:615:30: error: unused variable 'xfer_trigger' [-Werror=unused-variable]
-> /tmp/next/build/drivers/iio/adc/ad4062.c:610:30: error: unused variable 'xfer_sample' [-Werror=unused-variable]
->   610 |         struct i3c_priv_xfer xfer_sample = {
->       |                              ^~~~~~~~~~~
-> /tmp/next/build/drivers/iio/adc/ad4062.c: In function 'ad4062_read_chan_raw':
-> /tmp/next/build/drivers/iio/adc/ad4062.c:855:16: error: variable 'xfer_trigger' has initializer but incomplete type
->   855 |         struct i3c_priv_xfer xfer_trigger = {
->       |                ^~~~~~~~~~~~~
-> /tmp/next/build/drivers/iio/adc/ad4062.c:856:18: error: 'struct i3c_priv_xfer' has no member named 'data'
->   856 |                 .data.out = &st->conv_addr,
->       |                  ^~~~
-> /tmp/next/build/drivers/iio/adc/ad4062.c:856:29: error: excess elements in struct initializer [-Werror]
->   856 |                 .data.out = &st->conv_addr,
->       |                             ^
-> /tmp/next/build/drivers/iio/adc/ad4062.c:856:29: note: (near initialization for 'xfer_trigger')
-> /tmp/next/build/drivers/iio/adc/ad4062.c:857:18: error: 'struct i3c_priv_xfer' has no member named 'len'
->   857 |                 .len = sizeof(st->conv_addr),
->       |                  ^~~
-> /tmp/next/build/drivers/iio/adc/ad4062.c:857:24: error: excess elements in struct initializer [-Werror]
->   857 |                 .len = sizeof(st->conv_addr),
->       |                        ^~~~~~
-> /tmp/next/build/drivers/iio/adc/ad4062.c:857:24: note: (near initialization for 'xfer_trigger')
-> /tmp/next/build/drivers/iio/adc/ad4062.c:858:18: error: 'struct i3c_priv_xfer' has no member named 'rnw'
->   858 |                 .rnw = false,
->       |                  ^~~
-> /tmp/next/build/drivers/iio/adc/ad4062.c:858:24: error: excess elements in struct initializer [-Werror]
->   858 |                 .rnw = false,
->       |                        ^~~~~
-> /tmp/next/build/drivers/iio/adc/ad4062.c:858:24: note: (near initialization for 'xfer_trigger')
-> /tmp/next/build/drivers/iio/adc/ad4062.c:855:30: error: storage size of 'xfer_trigger' isn't known
->   855 |         struct i3c_priv_xfer xfer_trigger = {
->       |                              ^~~~~~~~~~~~
-> /tmp/next/build/drivers/iio/adc/ad4062.c:860:16: error: variable 'xfer_sample' has initializer but incomplete type
->   860 |         struct i3c_priv_xfer xfer_sample = {
->       |                ^~~~~~~~~~~~~
-> /tmp/next/build/drivers/iio/adc/ad4062.c:861:18: error: 'struct i3c_priv_xfer' has no member named 'data'
->   861 |                 .data.in = &st->buf.be32,
->       |                  ^~~~
-> /tmp/next/build/drivers/iio/adc/ad4062.c:861:28: error: excess elements in struct initializer [-Werror]
->   861 |                 .data.in = &st->buf.be32,
->       |                            ^
-> /tmp/next/build/drivers/iio/adc/ad4062.c:861:28: note: (near initialization for 'xfer_sample')
-> /tmp/next/build/drivers/iio/adc/ad4062.c:862:18: error: 'struct i3c_priv_xfer' has no member named 'len'
->   862 |                 .len = sizeof(st->buf.be32),
->       |                  ^~~
-> /tmp/next/build/drivers/iio/adc/ad4062.c:862:24: error: excess elements in struct initializer [-Werror]
->   862 |                 .len = sizeof(st->buf.be32),
->       |                        ^~~~~~
-> /tmp/next/build/drivers/iio/adc/ad4062.c:862:24: note: (near initialization for 'xfer_sample')
-> /tmp/next/build/drivers/iio/adc/ad4062.c:863:18: error: 'struct i3c_priv_xfer' has no member named 'rnw'
->   863 |                 .rnw = true,
->       |                  ^~~
-> /tmp/next/build/drivers/iio/adc/ad4062.c:863:24: error: excess elements in struct initializer [-Werror]
->   863 |                 .rnw = true,
->       |                        ^~~~
-> /tmp/next/build/drivers/iio/adc/ad4062.c:863:24: note: (near initialization for 'xfer_sample')
-> /tmp/next/build/drivers/iio/adc/ad4062.c:860:30: error: storage size of 'xfer_sample' isn't known
->   860 |         struct i3c_priv_xfer xfer_sample = {
->       |                              ^~~~~~~~~~~
-> /tmp/next/build/drivers/iio/adc/ad4062.c:860:30: error: unused variable 'xfer_sample' [-Werror=unused-variable]
-> /tmp/next/build/drivers/iio/adc/ad4062.c:855:30: error: unused variable 'xfer_trigger' [-Werror=unused-variable]
->   855 |         struct i3c_priv_xfer xfer_trigger = {
->       |                              ^~~~~~~~~~~~
-> /tmp/next/build/drivers/iio/adc/ad4062.c: In function 'pm_ad4062_triggered_buffer_postenable':
-> /tmp/next/build/drivers/iio/adc/ad4062.c:1239:30: error: array type has incomplete element type 'struct i3c_priv_xfer'
->  1239 |         struct i3c_priv_xfer xfer_sample[2] = {
->       |                              ^~~~~~~~~~~
-> /tmp/next/build/drivers/iio/adc/ad4062.c:1239:30: error: unused variable 'xfer_sample' [-Werror=unused-variable]
-> /tmp/next/build/drivers/iio/adc/ad4062.c:1254:1: error: control reaches end of non-void function [-Werror=return-type]
->  1254 | }
->       | ^
+> > Suggested-by: Sasha Levin <sashal@kernel.org>
+> > Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>  
 > 
-> Caused by commit
+> > Cc: jorge.marques@analog.com  
 > 
->     d5284402d28f3 (iio: adc: Add support for ad4062)
+> Can we move this to be after the '---' cutter line?
+
+When I really want someone to review / test I tend to put them above the ---
+so that I remember to poke them if they don't and I want them to be
+included in any follow on threads. 
+
+More FYI type +CC below the line. Mostly I just add them to the send
+list however rather than having a Cc at all.
+
 > 
-> I have used the version from 20260116 instead.
+> > ---
+> > I'm already carrying this on my tree to resolve the issue in next
+> > but feedback still welcome!  
+> 
+> The rest is fine to me.
+> Reviewed-by: Andy Shevchenko <andriy.shevchenko@intel.com>
+Thanks for the quick response!
+
+J
 > 
 
 

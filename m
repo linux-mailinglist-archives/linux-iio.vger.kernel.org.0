@@ -1,81 +1,81 @@
-Return-Path: <linux-iio+bounces-28029-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-28030-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 33DBED3BF13
-	for <lists+linux-iio@lfdr.de>; Tue, 20 Jan 2026 07:23:08 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 10AEED3BF15
+	for <lists+linux-iio@lfdr.de>; Tue, 20 Jan 2026 07:23:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id DAE1C4F127D
-	for <lists+linux-iio@lfdr.de>; Tue, 20 Jan 2026 06:22:15 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 33E03363388
+	for <lists+linux-iio@lfdr.de>; Tue, 20 Jan 2026 06:22:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5607374180;
-	Tue, 20 Jan 2026 06:21:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8276B37996C;
+	Tue, 20 Jan 2026 06:21:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="WsZOHxUh"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="lbTaHZcG"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-vs1-f53.google.com (mail-vs1-f53.google.com [209.85.217.53])
+Received: from mail-vs1-f41.google.com (mail-vs1-f41.google.com [209.85.217.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A543374177
-	for <linux-iio@vger.kernel.org>; Tue, 20 Jan 2026 06:21:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.217.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBAF3378D64
+	for <linux-iio@vger.kernel.org>; Tue, 20 Jan 2026 06:21:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.217.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768890078; cv=none; b=AsByjVoNDqQSc6wwMcnru9yn3+IEuf4Y//SH+LlbqUBUOcPZVTxqMbiVcT4Hk0YNJU7FZAhMUdOq8RnpsuCkvzvKkbmxVcrzcyox5bsLBSR5twGcEX1uyAmP6m7Z3lWtLHvGMp+w/DGoKQnbQBNmGRZKBWi6RlIOrtZV+d5x83Q=
+	t=1768890082; cv=none; b=QoGbtidizI0l7i70SGN/qA3dfniVjRmN0IyS4DgLZkJb/nJt8IOa/2gSLHUHVoZej3rDJKINJiL7lmKEM44wA6VQugE4J9nKAoq4zo/fekwMJ6YLmHbaefY7JBsXEAyT6TevG7gCz7ztkJntY2ea2DTJr7V5KmCRkWjphjppE58=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768890078; c=relaxed/simple;
-	bh=vf6b08yM9ZBa2hmugn0zaME77U5lLecJX0FGGC0bIPo=;
+	s=arc-20240116; t=1768890082; c=relaxed/simple;
+	bh=JrWulgb5grSFMVK1z6odZB7wWOSYuUBdIJG44+bjR30=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=RuK+JLRUwUEeEsWukv/Rj9xJ4RSQzRFnSEIENSmGivOtJXd/fcZ0564uvzokIcVoLwXKN+QZf1cMq1njK+RXBK3ZO5IT34p8kzewtK0RYiwgz3nx1FO8HP//sUK4FYhYbwJ1+yqqS7yNX2lm3d/JsnNRuYjLJcZpxhVvjidFuMw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=WsZOHxUh; arc=none smtp.client-ip=209.85.217.53
+	 In-Reply-To:To:Cc; b=I2eyICsv1IwR4dZjx61/Osuk2d9Gg0dWDj7HqqOkfb2lu90eex2N+vjOZbyFvC+pVnwWJbJ5+QwIcmn71gXWXwUhuJmL8Bd3nhcSAMmJDuKcOWbNV0L3l9sS9PJPTdgOZwx4xHxBfTSynXKDz/QCIhfeI2eNYXPeg4OJvvhx3r4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=lbTaHZcG; arc=none smtp.client-ip=209.85.217.41
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-vs1-f53.google.com with SMTP id ada2fe7eead31-5eea6f90d7fso3533429137.3
-        for <linux-iio@vger.kernel.org>; Mon, 19 Jan 2026 22:21:16 -0800 (PST)
+Received: by mail-vs1-f41.google.com with SMTP id ada2fe7eead31-5f16fbbdf98so1619272137.3
+        for <linux-iio@vger.kernel.org>; Mon, 19 Jan 2026 22:21:18 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1768890075; x=1769494875; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1768890078; x=1769494878; darn=vger.kernel.org;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=UKZCOUdlyM96S2jf/HyAYyFcxZYAitp5mesgIJsfK4E=;
-        b=WsZOHxUhnXFH2GwCloPOTOSdNG2QYdQB7NzZOt5fJpnvA3Jy4BmYcPIm5nhCzdqUPx
-         sfmD6LZitwZccev2CJZEKtxee+MJLiD6CxPXoBuosl3dsiozzpI2z7JKxunMETxoJN4V
-         yQsHPs5LmiUlZRP1pHlSjpyh6YZvtb8Gq7BluhSqknA7Xgq9mVjLQVQEsZWMmOW+9SbD
-         r+nP/+aVBLO3yicSmG2I4btYEVQyh1QYvNMU4gFgOsL7TSXYurzpFTFntGtqTKVG9ixn
-         rXVMr4h6MxalFzKy3mScxSHJ/e1R72PQhGZJuZ6F8a7XjpC944dxAsx5DalmD1p/QAPK
-         lJ0g==
+        bh=NLMTng3flPO+eq1heKg9qmQSNnEZhgCKKq6nL/z8Gzc=;
+        b=lbTaHZcGqpwjVCmsEuka2Wq/nJP1T/ppzvUgHmpavU0X2r9b5AK2degoxw8XvB3/jx
+         xwIcB3KMFdekMU7VO2sXoZJr7gGh1OmbIDfXp8MM9KfLe4fRfC8o4VWDHUvycYoUOzpX
+         E8iX+CdAoUaC05ORn4FMM+UnaEmkfYy7KrIGVyKSPUWTz5oRmPooaktQb8Vgg+wzhMF8
+         M5zb2T+rEwAyKZrW5+oa0HJ4oF1/bpFYlNKLcn9hxnEmZ+wh08JyzH2vOjZHch+pWfAP
+         B2osWhKc2KzGYVol5Up2qFWEynViwF5t839ms12nNFnRZTo8yxJxdvqAhPOW/+qNWgXx
+         lvTQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768890075; x=1769494875;
+        d=1e100.net; s=20230601; t=1768890078; x=1769494878;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=UKZCOUdlyM96S2jf/HyAYyFcxZYAitp5mesgIJsfK4E=;
-        b=UORweXiDLjyfd4TaI/OumStJxdLO46kXl1PSVYQG1SqRalPOGHozexKkK8jif0sEPG
-         o9o8xVL5+kjVbTHXevBmjY54h4HwiukQrJCcSpUi2SZrSKzuEyfwaFtVPM2HXGU1Jsnc
-         CAq4neFtBiMTjBIT4E49BnRBtItOk0niJtWGgm9VtFDrgX0ZqhzcxFxW9++B/BCAFH18
-         LrjZh8SQKVY+eoo5kDMS7DjxHaBHIbLoGzHIrZkwJR2faAKW2YcSOgonH7p7Iw4ROHrJ
-         fxiUsk6kJ3cXf0fYmQdehoBtQ/k29Cl5pv1ogSq9G27aQKw9/5YsOhmJKhnPB1hu/9kA
-         Uq0Q==
-X-Forwarded-Encrypted: i=1; AJvYcCV5wFndxlajdRAEN04kIjo1xCcZ0nevmJOdwG2hkzNBwfONmkL6v7aFloMdPLlugHkfztvbv94bkQI=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxDlott1jt1QVwYN9KRk/Wnz//uxoOvWkx3wT6xcxkmZCjA2eOt
-	/CU0Rn/Rk4lyteWqnedtvVC8Db6N5ppaLQDhQ0uE6JOpw2spiVfjhJnD
-X-Gm-Gg: AZuq6aJ5Fy5V7Dgz289XcKxDmJ6WVdn17kHwLpFClq8h8Wb1k6BYBcEVmDPlyCtwr/J
-	iL3vG9XvCPR9xQTLtW5fW26+wru/cTtb2pvKb5gGSUBXeO9sbKwll4Md2pVveZoaiPj+HoL+YdW
-	4kPB2sZloujZwQ73UwaGi1TG4oG6WQFtpiSBKusULtnX4WFK5WU8L8q9r+nhSB4AqibcaHcugjB
-	KWEH8OUiQnZNJat/QpoOE8Gq1jcZXHX0N1sloWdBajanKzLf3N+m+WV9x27wGbPcmvsIVtP3RwO
-	uwU/b+iVzlXiBDf/cN/OMUIE9hGC9nUaRaT56gP4t0luMf7SUxZRZ8ujwET5BquhM/CWxwM1LsT
-	ca3X5iu/Zaja/lry6la5VyAIFkGcTwZxIVDwOtb7/q+frIpvrWJT9RQhmGlbwKWiwIOsFeom2Oa
-	PR5ZHpKUNc+Sd4
-X-Received: by 2002:a05:6102:d8a:b0:5ef:a67d:e957 with SMTP id ada2fe7eead31-5f1a53b38c0mr4505673137.17.1768890075189;
-        Mon, 19 Jan 2026 22:21:15 -0800 (PST)
+        bh=NLMTng3flPO+eq1heKg9qmQSNnEZhgCKKq6nL/z8Gzc=;
+        b=bYJIOJtbIGhqsk1laHMWAYNZ+ncZolClMSu+MbN5rv2EKOI9bvreaC9RZ6XBxRsRaV
+         F2CxVh1LWKZAVR+59uC1fEtk4aG24wMrWyeEayAOZykPs14fEfLlQLfi59kyr9YECN7G
+         EyeMUeza7iVktoAQy3WkVyOR0ZZyho7YmU1M7rm6laAYWteWf2Rr7yMIf6YV8KXfKM/Y
+         qFUMYaRtJKmlrJ+dQKhIXaTXqkt+QgUlyOc60Eb/biYiThdSRNcX9i15QiPwcyJqmohC
+         THIN96vqkBmpKcrd8JfedU3x6148rMx2AacPBLz3WCA/YpYW0vaMSvxQ3gtGJ8cocOk9
+         unXQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWcrML99w54slRMtKGdbOKi0IkkU7CVL1GJT85mUrXHmKkCFipM+aDftUpGfYNbz2xWIYu5+lmkXVE=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyuzXHgRm4mAq6S2zCL2RwN+zvTfD/07KHsFtBPd4hrHHYjnS2k
+	EsaOOWXYk4Qc5eyOCw8Cy4g/opcWpVTZzgq8Wl23h1Vat1iVlURf0hdu
+X-Gm-Gg: AZuq6aLhLDk5grPd+q7ow1ZLvlAL2QMgY3AHJDMuJML5XoGv/rOzziW7oaXBLaTbadM
+	742FkVCuGbQ2U4GNI2nJBxbLvP8QO/DJm/W5nvn1HGfbylwo9E3HXp2qtBrJd42xMHkfCECuOGW
+	18NO1KKGRb2e//0NWpl+OET66UnSBQOZ+lQ32be0HtvXA7jS36k7zjqkAXpA5GckmERPF2+yFmS
+	ZQEL61hYN7R+3aRcxYCX5O6E6KhyrOocFAtENkrUxARXcGg47uiuGUKAGodrnFGHaB3C+2kT0jF
+	UfBX68GUOcB0NLG/5jQ3yH9ibr//NDOOW7iZEJUuazmrfJRHnVmA9pfPJF35oi6VJp+AqYpl6yr
+	StwUNhXUr4nItVellHbH2H65psWg5r6/4BFxW+/gFM2kQSTBXEJkqm+jtJrjIwjKOAIU1nWpV7d
+	haBsW4qbIjC2l8
+X-Received: by 2002:a05:6102:d92:b0:5ef:6709:4738 with SMTP id ada2fe7eead31-5f50ae44e0bmr212536137.30.1768890077616;
+        Mon, 19 Jan 2026 22:21:17 -0800 (PST)
 Received: from [192.168.100.253] ([2800:bf0:82:11a2:7ac4:1f2:947b:2b6])
-        by smtp.gmail.com with ESMTPSA id ada2fe7eead31-5f1a6900c1esm4057944137.3.2026.01.19.22.21.13
+        by smtp.gmail.com with ESMTPSA id ada2fe7eead31-5f1a6900c1esm4057944137.3.2026.01.19.22.21.15
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 19 Jan 2026 22:21:14 -0800 (PST)
+        Mon, 19 Jan 2026 22:21:17 -0800 (PST)
 From: Kurt Borja <kuurtb@gmail.com>
-Date: Tue, 20 Jan 2026 01:20:42 -0500
-Subject: [PATCH v5 2/7] iio: core: Refactor iio_device_claim_direct()
+Date: Tue, 20 Jan 2026 01:20:43 -0500
+Subject: [PATCH v5 3/7] iio: core: Match iio_device_claim_*() semantics and
  implementation
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -85,7 +85,7 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Message-Id: <20260120-lock-impr-v5-2-d4d22347041f@gmail.com>
+Message-Id: <20260120-lock-impr-v5-3-d4d22347041f@gmail.com>
 References: <20260120-lock-impr-v5-0-d4d22347041f@gmail.com>
 In-Reply-To: <20260120-lock-impr-v5-0-d4d22347041f@gmail.com>
 To: Andy Shevchenko <andriy.shevchenko@intel.com>, 
@@ -103,146 +103,219 @@ Cc: David Lechner <dlechner@baylibre.com>,
  linux-kernel@vger.kernel.org, chrome-platform@lists.linux.dev, 
  Kurt Borja <kuurtb@gmail.com>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=4538; i=kuurtb@gmail.com;
- h=from:subject:message-id; bh=vf6b08yM9ZBa2hmugn0zaME77U5lLecJX0FGGC0bIPo=;
- b=owGbwMvMwCUmluBs8WX+lTTG02pJDJn5cpf5LG6/EohJOP3nqa3Td73uF36+G0KMD15gvxJ8+
- csh01lbO0pZGMS4GGTFFFnaExZ9exSV99bvQOh9mDmsTCBDGLg4BWAi91MYGe5Onsm47XqjXF9l
- xaefDEfazxfP+84wKevVtQmG/Ptq3kxj+MM5y0bhrKqgoPmVx/JSklkXvVvOczI0r3o+ce7yRwE
- /WBkB
+X-Developer-Signature: v=1; a=openpgp-sha256; l=7973; i=kuurtb@gmail.com;
+ h=from:subject:message-id; bh=JrWulgb5grSFMVK1z6odZB7wWOSYuUBdIJG44+bjR30=;
+ b=owGbwMvMwCUmluBs8WX+lTTG02pJDJn5cpfPF6fGflh4ZLVF60+WZ0d2JFe53Lj1jWlKoURQz
+ LpXv123dZSyMIhxMciKKbK0Jyz69igq763fgdD7MHNYmUCGMHBxCsBE/KMY/kqxM92esy1mUmah
+ uxXHfyaLprqCRbEpS/13PkzU6VY+UcbI0Ho1fGXLnYMb30+9qVVv+G2iBUtwYGTh5v4uFwbHK/8
+ MWAA=
 X-Developer-Key: i=kuurtb@gmail.com; a=openpgp;
  fpr=54D3BE170AEF777983C3C63B57E3B6585920A69A
 
-In order to eventually unify the locking API, implement
-iio_device_claim_direct() fully inline, with the use of
+Implement iio_device_claim_buffer_mode() fully inline with the use of
 __iio_dev_mode_lock(), which takes care of sparse annotations.
+
+To completely match iio_device_claim_direct() semantics, we need to
+also change iio_device_claim_buffer_mode() return semantics to usual
+true/false conditional lock semantics.
+
+Additionally, to avoid silently breaking out-of-tree drivers, rename
+iio_device_claim_buffer_mode() to iio_device_claim_try_buffer_mode().
 
 Reviewed-by: David Lechner <dlechner@baylibre.com>
 Reviewed-by: Nuno Sá <nuno.sa@analog.com>
 Signed-off-by: Kurt Borja <kuurtb@gmail.com>
 ---
- drivers/iio/industrialio-core.c | 44 -----------------------------------------
- include/linux/iio/iio.h         | 40 ++++++++++++++++++++++++++-----------
- 2 files changed, 28 insertions(+), 56 deletions(-)
+ drivers/iio/adc/ade9000.c                          |  2 +-
+ .../common/cros_ec_sensors/cros_ec_sensors_core.c  |  5 +--
+ drivers/iio/health/max30100.c                      |  8 +----
+ drivers/iio/health/max30102.c                      |  2 +-
+ drivers/iio/industrialio-core.c                    | 42 +---------------------
+ drivers/iio/light/opt4060.c                        |  2 +-
+ include/linux/iio/iio.h                            | 35 ++++++++++++++++--
+ 7 files changed, 39 insertions(+), 57 deletions(-)
 
+diff --git a/drivers/iio/adc/ade9000.c b/drivers/iio/adc/ade9000.c
+index 2de8a718d62a..db085dc5e526 100644
+--- a/drivers/iio/adc/ade9000.c
++++ b/drivers/iio/adc/ade9000.c
+@@ -964,7 +964,7 @@ static irqreturn_t ade9000_dready_thread(int irq, void *data)
+ 	struct iio_dev *indio_dev = data;
+ 
+ 	/* Handle data ready interrupt from C4/EVENT/DREADY pin */
+-	if (!iio_device_claim_buffer_mode(indio_dev)) {
++	if (iio_device_try_claim_buffer_mode(indio_dev)) {
+ 		ade9000_iio_push_buffer(indio_dev);
+ 		iio_device_release_buffer_mode(indio_dev);
+ 	}
+diff --git a/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c b/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c
+index 9ac80e4b7d75..ef53066b1735 100644
+--- a/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c
++++ b/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c
+@@ -188,11 +188,8 @@ int cros_ec_sensors_push_data(struct iio_dev *indio_dev,
+ 	/*
+ 	 * Ignore samples if the buffer is not set: it is needed if the ODR is
+ 	 * set but the buffer is not enabled yet.
+-	 *
+-	 * Note: iio_device_claim_buffer_mode() returns -EBUSY if the buffer
+-	 * is not enabled.
+ 	 */
+-	if (iio_device_claim_buffer_mode(indio_dev) < 0)
++	if (!iio_device_try_claim_buffer_mode(indio_dev))
+ 		return 0;
+ 
+ 	out = (s16 *)st->samples;
+diff --git a/drivers/iio/health/max30100.c b/drivers/iio/health/max30100.c
+index 3d441013893c..7dfdb5eb305e 100644
+--- a/drivers/iio/health/max30100.c
++++ b/drivers/iio/health/max30100.c
+@@ -417,13 +417,7 @@ static int max30100_read_raw(struct iio_dev *indio_dev,
+ 		 * Temperature reading can only be acquired while engine
+ 		 * is running
+ 		 */
+-		if (iio_device_claim_buffer_mode(indio_dev)) {
+-			/*
+-			 * Replacing -EBUSY or other error code
+-			 * returned by iio_device_claim_buffer_mode()
+-			 * because user space may rely on the current
+-			 * one.
+-			 */
++		if (!iio_device_try_claim_buffer_mode(indio_dev)) {
+ 			ret = -EAGAIN;
+ 		} else {
+ 			ret = max30100_get_temp(data, val);
+diff --git a/drivers/iio/health/max30102.c b/drivers/iio/health/max30102.c
+index a48c0881a4c7..6918fcb5de2b 100644
+--- a/drivers/iio/health/max30102.c
++++ b/drivers/iio/health/max30102.c
+@@ -476,7 +476,7 @@ static int max30102_read_raw(struct iio_dev *indio_dev,
+ 		 * shutdown; leave shutdown briefly when buffer not running
+ 		 */
+ any_mode_retry:
+-		if (iio_device_claim_buffer_mode(indio_dev)) {
++		if (!iio_device_try_claim_buffer_mode(indio_dev)) {
+ 			/*
+ 			 * This one is a *bit* hacky. If we cannot claim buffer
+ 			 * mode, then try direct mode so that we make sure
 diff --git a/drivers/iio/industrialio-core.c b/drivers/iio/industrialio-core.c
-index db803267df6e..0f8e3aa98b72 100644
+index 0f8e3aa98b72..3115d59c1372 100644
 --- a/drivers/iio/industrialio-core.c
 +++ b/drivers/iio/industrialio-core.c
-@@ -2201,50 +2201,6 @@ void __iio_dev_mode_unlock(struct iio_dev *indio_dev)
+@@ -2183,7 +2183,7 @@ EXPORT_SYMBOL_GPL(__devm_iio_device_register);
+  *
+  * There are very few cases where a driver actually needs to lock the current
+  * mode unconditionally. It's recommended to use iio_device_claim_direct() or
+- * iio_device_claim_buffer_mode() pairs or related helpers instead.
++ * iio_device_try_claim_buffer_mode() pairs or related helpers instead.
+  */
+ void __iio_dev_mode_lock(struct iio_dev *indio_dev)
+ {
+@@ -2201,46 +2201,6 @@ void __iio_dev_mode_unlock(struct iio_dev *indio_dev)
  }
  EXPORT_SYMBOL_GPL(__iio_dev_mode_unlock);
  
 -/**
-- * __iio_device_claim_direct - Keep device in direct mode
+- * iio_device_claim_buffer_mode - Keep device in buffer mode
 - * @indio_dev:	the iio_dev associated with the device
 - *
-- * If the device is in direct mode it is guaranteed to stay
-- * that way until __iio_device_release_direct() is called.
+- * If the device is in buffer mode it is guaranteed to stay
+- * that way until iio_device_release_buffer_mode() is called.
 - *
-- * Use with __iio_device_release_direct().
+- * Use with iio_device_release_buffer_mode().
 - *
-- * Drivers should only call iio_device_claim_direct().
-- *
-- * Returns: true on success, false on failure.
+- * Returns: 0 on success, -EBUSY on failure.
 - */
--bool __iio_device_claim_direct(struct iio_dev *indio_dev)
+-int iio_device_claim_buffer_mode(struct iio_dev *indio_dev)
 -{
 -	struct iio_dev_opaque *iio_dev_opaque = to_iio_dev_opaque(indio_dev);
 -
 -	mutex_lock(&iio_dev_opaque->mlock);
 -
--	if (iio_buffer_enabled(indio_dev)) {
--		mutex_unlock(&iio_dev_opaque->mlock);
--		return false;
--	}
--	return true;
+-	if (iio_buffer_enabled(indio_dev))
+-		return 0;
+-
+-	mutex_unlock(&iio_dev_opaque->mlock);
+-	return -EBUSY;
 -}
--EXPORT_SYMBOL_GPL(__iio_device_claim_direct);
+-EXPORT_SYMBOL_GPL(iio_device_claim_buffer_mode);
 -
 -/**
-- * __iio_device_release_direct - releases claim on direct mode
+- * iio_device_release_buffer_mode - releases claim on buffer mode
 - * @indio_dev:	the iio_dev associated with the device
 - *
 - * Release the claim. Device is no longer guaranteed to stay
-- * in direct mode.
+- * in buffer mode.
 - *
-- * Drivers should only call iio_device_release_direct().
-- *
-- * Use with __iio_device_claim_direct()
+- * Use with iio_device_claim_buffer_mode().
 - */
--void __iio_device_release_direct(struct iio_dev *indio_dev)
+-void iio_device_release_buffer_mode(struct iio_dev *indio_dev)
 -{
 -	mutex_unlock(&to_iio_dev_opaque(indio_dev)->mlock);
 -}
--EXPORT_SYMBOL_GPL(__iio_device_release_direct);
+-EXPORT_SYMBOL_GPL(iio_device_release_buffer_mode);
 -
  /**
-  * iio_device_claim_buffer_mode - Keep device in buffer mode
-  * @indio_dev:	the iio_dev associated with the device
+  * iio_device_get_current_mode() - helper function providing read-only access to
+  *				   the opaque @currentmode variable
+diff --git a/drivers/iio/light/opt4060.c b/drivers/iio/light/opt4060.c
+index 981c704e7df5..8c4a1f562a83 100644
+--- a/drivers/iio/light/opt4060.c
++++ b/drivers/iio/light/opt4060.c
+@@ -304,7 +304,7 @@ static int opt4060_set_driver_state(struct iio_dev *indio_dev,
+ 	struct opt4060_chip *chip = iio_priv(indio_dev);
+ 	int ret = 0;
+ any_mode_retry:
+-	if (iio_device_claim_buffer_mode(indio_dev)) {
++	if (!iio_device_try_claim_buffer_mode(indio_dev)) {
+ 		/*
+ 		 * This one is a *bit* hacky. If we cannot claim buffer mode,
+ 		 * then try direct mode so that we make sure things cannot
 diff --git a/include/linux/iio/iio.h b/include/linux/iio/iio.h
-index aecda887d833..e263ab5eeccf 100644
+index e263ab5eeccf..36bd14e93a75 100644
 --- a/include/linux/iio/iio.h
 +++ b/include/linux/iio/iio.h
-@@ -664,31 +664,47 @@ int iio_push_event(struct iio_dev *indio_dev, u64 ev_code, s64 timestamp);
+@@ -706,8 +706,39 @@ static inline bool iio_device_claim_direct(struct iio_dev *indio_dev)
+  */
+ #define iio_device_release_direct(indio_dev) __iio_dev_mode_unlock(indio_dev)
  
- void __iio_dev_mode_lock(struct iio_dev *indio_dev) __acquires(indio_dev);
- void __iio_dev_mode_unlock(struct iio_dev *indio_dev) __releases(indio_dev);
--bool __iio_device_claim_direct(struct iio_dev *indio_dev);
--void __iio_device_release_direct(struct iio_dev *indio_dev);
- 
- /*
-  * Helper functions that allow claim and release of direct mode
-  * in a fashion that doesn't generate many false positives from sparse.
-  * Note this must remain static inline in the header so that sparse
-- * can see the __acquire() marking. Revisit when sparse supports
-- * __cond_acquires()
-+ * can see the __acquires() and __releases() annotations.
-+ */
-+
+-int iio_device_claim_buffer_mode(struct iio_dev *indio_dev);
+-void iio_device_release_buffer_mode(struct iio_dev *indio_dev);
 +/**
-+ * iio_device_claim_direct() - Keep device in direct mode
++ * iio_device_try_claim_buffer_mode() - Keep device in buffer mode
 + * @indio_dev:	the iio_dev associated with the device
 + *
-+ * If the device is in direct mode it is guaranteed to stay
-+ * that way until iio_device_release_direct() is called.
++ * If the device is in buffer mode it is guaranteed to stay
++ * that way until iio_device_release_buffer_mode() is called.
 + *
-+ * Use with iio_device_release_direct().
++ * Use with iio_device_release_buffer_mode().
 + *
 + * Returns: true on success, false on failure.
-  */
- static inline bool iio_device_claim_direct(struct iio_dev *indio_dev)
- {
--	if (!__iio_device_claim_direct(indio_dev))
--		return false;
++ */
++static inline bool iio_device_try_claim_buffer_mode(struct iio_dev *indio_dev)
++{
 +	__iio_dev_mode_lock(indio_dev);
- 
--	__acquire(iio_dev);
-+	if (iio_buffer_enabled(indio_dev)) {
++
++	if (!iio_buffer_enabled(indio_dev)) {
 +		__iio_dev_mode_unlock(indio_dev);
 +		return false;
 +	}
- 
- 	return true;
- }
- 
--static inline void iio_device_release_direct(struct iio_dev *indio_dev)
--{
--	__iio_device_release_direct(indio_dev);
--	__release(indio_dev);
--}
++
++	return true;
++}
++
 +/**
-+ * iio_device_release_direct() - Releases claim on direct mode
++ * iio_device_release_buffer_mode() - releases claim on buffer mode
 + * @indio_dev:	the iio_dev associated with the device
 + *
 + * Release the claim. Device is no longer guaranteed to stay
-+ * in direct mode.
++ * in buffer mode.
 + *
-+ * Use with iio_device_claim_direct().
++ * Use with iio_device_try_claim_buffer_mode().
 + */
-+#define iio_device_release_direct(indio_dev) __iio_dev_mode_unlock(indio_dev)
++#define iio_device_release_buffer_mode(indio_dev) __iio_dev_mode_unlock(indio_dev)
  
- int iio_device_claim_buffer_mode(struct iio_dev *indio_dev);
- void iio_device_release_buffer_mode(struct iio_dev *indio_dev);
+ extern const struct bus_type iio_bus_type;
+ 
 
 -- 
 2.52.0

@@ -1,197 +1,264 @@
-Return-Path: <linux-iio+bounces-28026-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-28027-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6493BD3BB1D
-	for <lists+linux-iio@lfdr.de>; Tue, 20 Jan 2026 00:00:48 +0100 (CET)
-Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 20F453042FEE
-	for <lists+linux-iio@lfdr.de>; Mon, 19 Jan 2026 23:00:47 +0000 (UTC)
-Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D2021AF0AF;
-	Mon, 19 Jan 2026 23:00:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="SxMuCmWo"
-X-Original-To: linux-iio@vger.kernel.org
-Received: from AM0PR83CU005.outbound.protection.outlook.com (mail-westeuropeazon11010011.outbound.protection.outlook.com [52.101.69.11])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id 58FD9D3BF0E
+	for <lists+linux-iio@lfdr.de>; Tue, 20 Jan 2026 07:22:19 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C46D26FC3
-	for <linux-iio@vger.kernel.org>; Mon, 19 Jan 2026 23:00:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.69.11
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768863646; cv=fail; b=MOvPxFu4j1vL3ErNsWuHCoTLeVxoqkOetczcVrP+8t5OhGXlCuPhyRX/rZBCL/kQPNJ5VjkZbf6kM29DlE6E/DEdmGEqcqGrT3orY/14yshkh4KL9N14aJDFTfqK4Dnp3qT0H/YwEPcTJdGYhbpN9+reeFkZl7/I90cBoLmzHRI=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768863646; c=relaxed/simple;
-	bh=KYzZ9fMwK2gwhSmOYyF9sVBoifNyG8nMefDITcal1AI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=aqqZC++cspIEtgjFTKK7x8lbtw20xdGqhUZ2Fj8XmB3QMoI6TzOJDLVJR6vG/tCB8/Wmv88SOo+qrd6KAGvon7W2kZpvdwXNVdFVpgJCNuAvM+n91Fiu1j6cVTIK6DXB5j22JTomIucKGX0mqfxu+zFQagGfetELg0HIdK9nSAM=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=SxMuCmWo; arc=fail smtp.client-ip=52.101.69.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=USwO3Ddalr+SSn3EtcYJVmVrCZII9lJGAWmDK9JXgA7GsuCsgwI53p/I9YVMe/J4GnkNjeflb/yHBUBx3xC2htUW4VXggECYBGeyNUNMu5lNqq5uGCeN5xztbx8bTJawtYdSFRa4KT5tidXWDXUcW8I5H6uCknDNrXjjPB29gENEnHQUvQ5zrFh7BLlcSxZQVujZCWwiBnH2bSpDqRS8QysRdRjoj+4tBx26KZE/V0RAkUCOcig+M200J07IZE6njQD40UBRQYkyCFN0tCRJM4SiRz5nwQSASv13t/xAczlla/1nWzeW/KxcGhY2Qfj2Z5bDdFBhfCad2owxQg/jOA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=jfw/HP/ZF2QUYEcZcrlh2+1HopdRgf2W6g8IZsLFJng=;
- b=X0/j++IPsHK/VxMY4yyF5OcAwRvaldkewQLs2NTji+xTrqyfNWPWX+3VBc+215QKSgVf5YNJms7KD1BxGOOHsnLIVW2X5okJ3ZDTfxc9rp2b075xESda4TRAqqMFJqTLDmhAHsZhWcaqEUbKFJUC7muWxZxJ3wxgY0OneIy+JFLT2DweSMKYQLdndldTiaEUlbCeRowBh6TanV8AXjDy5SVupRsawg/WvZFbQ6phSwbcTLFLphz+GNU0T6WTiJAOIJhscj3xCc+33rT9uDErGwpG/W0RC0yasPRiGluKnYFFUit234vAY0ByOKJaOKEce9CDHOHRgg0567AqeSAvbA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=jfw/HP/ZF2QUYEcZcrlh2+1HopdRgf2W6g8IZsLFJng=;
- b=SxMuCmWoNrG5yb0WXIZnWc8zQEWsMMFP+WfafQ0dgLEQU9sP6VLLUJ7DGKOnd9ZTkFeXTcJKzWWhBGA5hlcAkNr8/tegyLJNx3UtjAymOFjSzX7Bn6Buw89Spp3FcSzANkUisc6QJQFlHLSeDCmdrtvOs3WjYSJORu+NVnaqusLXryY1gSi/in8OQ6IUGZWo/2XBoJ3/R2Aow3BNiqeDQFJ0+1f4MH7wUuxTvS539VUYBSMIgRDGWhr4NU+7STHaEi3trKG3WoJoCZGH1RTShcDWN5yfYULXaDn1BL36rY+fXjllKgm6hLqwBuRkU9jXORyghRYqXXyHQ5pJnukDdw==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from PRASPRMB0004.eurprd04.prod.outlook.com (2603:10a6:102:29b::6)
- by PA1PR04MB11381.eurprd04.prod.outlook.com (2603:10a6:102:4f0::8) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9520.12; Mon, 19 Jan
- 2026 23:00:41 +0000
-Received: from PRASPRMB0004.eurprd04.prod.outlook.com
- ([fe80::6ab3:f427:606a:1ecd]) by PRASPRMB0004.eurprd04.prod.outlook.com
- ([fe80::6ab3:f427:606a:1ecd%4]) with mapi id 15.20.9520.009; Mon, 19 Jan 2026
- 23:00:40 +0000
-Date: Mon, 19 Jan 2026 18:00:34 -0500
-From: Frank Li <Frank.li@nxp.com>
-To: Jonathan Cameron <jic23@kernel.org>
-Cc: linux-iio@vger.kernel.org, Andy Shevchenko <andy@kernel.org>,
-	David Lechner <dlechner@baylibre.com>,
-	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: Re: [PATCH 0/2] iio: magn: mmc5633: Fix two build issues
-Message-ID: <aW63ku5ucSq/cXMZ@lizhi-Precision-Tower-5810>
-References: <20260119221736.804825-1-jic23@kernel.org>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260119221736.804825-1-jic23@kernel.org>
-X-ClientProxiedBy: PH7PR13CA0021.namprd13.prod.outlook.com
- (2603:10b6:510:174::29) To PRASPRMB0004.eurprd04.prod.outlook.com
- (2603:10a6:102:29b::6)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 2A35C3622C6
+	for <lists+linux-iio@lfdr.de>; Tue, 20 Jan 2026 06:21:55 +0000 (UTC)
+Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 053E836C5B7;
+	Tue, 20 Jan 2026 06:21:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="OPfKlgtk"
+X-Original-To: linux-iio@vger.kernel.org
+Received: from mail-vs1-f48.google.com (mail-vs1-f48.google.com [209.85.217.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D73F636BCE7
+	for <linux-iio@vger.kernel.org>; Tue, 20 Jan 2026 06:21:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.217.48
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1768890074; cv=none; b=b6KQuaAQtMrXQFkR3bAIMcUQS9mk6naNUVMDupF3wx9lOGyrGl5HfkfJOpifpH/8Wm5mjf79w10S15UAF6bYkhFWj3amWrpSSt4Z7hF/IICyQZLYOHkywm6AIRBJL3KEkFxPvNd5aTaCR7hIhMQqsGgHQ4lzOxUsmvLqArANOHk=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1768890074; c=relaxed/simple;
+	bh=8ACIUTMxM/zKXo7x/eO1abUeDEvW7CEDgGcDZxCz8g4=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=KI+vcl4ZYNkZUPStLDpUS72s6y2Uuu09V2c9B9SBezizF2z+UG85A8fWSobkBsXs70eiM8L8whOFXfC9fOUPTrnr4IihxgwujaeQw3GUV2CGDM6hUezjxyXIAgfQEyqnarHRsOx0OKRoc8NyYgHCIAAOSgQua6Niclb50gewBJs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=OPfKlgtk; arc=none smtp.client-ip=209.85.217.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-vs1-f48.google.com with SMTP id ada2fe7eead31-5eeaae02888so1391950137.1
+        for <linux-iio@vger.kernel.org>; Mon, 19 Jan 2026 22:21:11 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1768890071; x=1769494871; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=b/He2bNX5Xacc5gQDOXo1/F0LSaAQyrezJ+tls86n2g=;
+        b=OPfKlgtkS2FT3t4XLKDCEPku4R+P/3RYyjvvielTspwhgQIScXL4W4hMbC/Il+8y3z
+         IMoQdOVRM12Tc0rptmrjND9exuCzJvqWp1IgguaTRFytut6OaPOqnljN3CTmd5CEuyIw
+         ytPWmQfNyiH7YUyQViazdLN0voldkaUlBHeEFO5MXw6xwWZNl5E7hKkCdlK22sP/Z2TB
+         7fppHYKRH1yFvG22g71YATFpTLJsj6JcOkuce97ZQdTJ/5md6yytTrmlW8hnBCeG4ePJ
+         HkR8kL42O4ouIXP+3g2HWoIUzqWwHxI8tEW3bDXnBz65MVNfenHzByEsoeRRvfobJKEy
+         Nskg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1768890071; x=1769494871;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=b/He2bNX5Xacc5gQDOXo1/F0LSaAQyrezJ+tls86n2g=;
+        b=OckrbJ713bA1MkDipAEPEQoO/sxmS+Ue4MlEEO03OQZha1L3ZmEKqOGC2+cg2aPiCE
+         P3J48FadVeaaQWYXfAK/XZw56iHvgz2Kne2R/aqiT2Bs3uTu1f7iKa9ejTGAFW0fyn17
+         LHrl4ZNzVsxbURln1hS7nGtAChNOzNR+8BuOCO1SEyLafyqgX3BEba8Khe4gaG7pampi
+         0DMEF5XKoNSWhtouzvKH/j2gzEW2J6F9Xdvu/0YVBa98NuzvDARiBFKaTdr2m/SwdrF9
+         pK5VXVnyBRYEKcI/AbQcHKtjkN3n5UkNW/CMjU9yY+PG+8pk3WKNCaZOlbvfC6uVt5UK
+         jRlw==
+X-Forwarded-Encrypted: i=1; AJvYcCWEqCRwiBshEGO4W2YzFSvN+y3oOc3v/h8WV04jAUZgm1K1dy/aAzJqE1sUDSahJLSpOiuSFtcZO2Y=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yygfy7iydcktRoZPw/vcjoMXnp2zOao26CQVkKX9ka4ZrIejJvH
+	n0FIz5kQ+CCToxgY1z0WFjsKJLgunfG4sHK4qLY8aHUMMu5ECy8SIfjj
+X-Gm-Gg: AZuq6aIgR/bwsUDwCmihHOkZMgDz31Yt2scd8/aeiFbE6RIZd39hamUAlvIfEDIVn9p
+	zr4kYXBjWlbdeX0lc0BLmTkH3633Mq28TkzjcEzvweH/oteVTObLyQuUcffW2DAhQjJeO4ZTH4V
+	DUu6uxTaB3YU5ufkC4GUpwrA0BxqGjNtRxrr9xEZLnfs5Urbd+gkDH0Z8Nlysr60Sik/nBf+VzW
+	eu23jSWQAM9hWHYcn1YyFK9g1sB5yB8hrtZQrra6iTxmacX4/GjcUqBUhEuaP/XItZcYSgdIs0C
+	RzxH7GScIilWuyvfjd25dARkD0vezL1CbO0EooRnwepmu0e78qdyIYQrbAtMhpcDBM5PBvwkXBM
+	d+CGMTGzcHah89MevCbM7N1GZBIEyPxlRzecNMK4Xast5eBgjfZThBckJ9YQMgRKL51zljRnW+U
+	WwFxHX7kDUT6AMoTGCnb+Vs7E=
+X-Received: by 2002:a05:6102:54a2:b0:5f1:555e:a0b4 with SMTP id ada2fe7eead31-5f1a557be80mr4122229137.32.1768890070503;
+        Mon, 19 Jan 2026 22:21:10 -0800 (PST)
+Received: from [192.168.100.253] ([2800:bf0:82:11a2:7ac4:1f2:947b:2b6])
+        by smtp.gmail.com with ESMTPSA id ada2fe7eead31-5f1a6900c1esm4057944137.3.2026.01.19.22.21.08
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 19 Jan 2026 22:21:10 -0800 (PST)
+From: Kurt Borja <kuurtb@gmail.com>
+Subject: [PATCH v5 0/7] iio: core: Introduce cleanup.h support for mode
+ locks
+Date: Tue, 20 Jan 2026 01:20:40 -0500
+Message-Id: <20260120-lock-impr-v5-0-d4d22347041f@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PRASPRMB0004:EE_|PA1PR04MB11381:EE_
-X-MS-Office365-Filtering-Correlation-Id: fb1a67d6-4e6d-4081-090d-08de57ae915d
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|19092799006|52116014|376014|366016|38350700014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?3AYvDsCOr+peudMxjK3tJ/14MDxKt+9UJyK+NM+c+qtxjWaCsGXTLNYcBNNv?=
- =?us-ascii?Q?7p1uX6626mBofwos/7XWcxRV8IXQQnE6mmVo9TrqgaqnlOeajchIG8iLdXWM?=
- =?us-ascii?Q?H5KNKt8a+b/hvBADaWLuru1jSw+BaA2bRJCm4uBMWVbcQmWdvH6dxHJv+/SM?=
- =?us-ascii?Q?Kgi53+Lpfi5o4kVz6si7sMME62/extcJeBIECF1RESHp8IX82QtcnKohNwLN?=
- =?us-ascii?Q?ek4kH0w0Uwu1ooQBVkNeklFi418Y1mHjbXO5skjBvt+3i5i2MHLPBTkBi6if?=
- =?us-ascii?Q?NaJJ2Q1IrnxAd01R9ydnwBdBAMA6G5eQnrPlvbWiJ9wMiHKNA/SA4lva6sVS?=
- =?us-ascii?Q?brYWWaeOjgiygbJSpDLcKqe+xhgfHBkzo/33tLeISJuEvfigQ3hHWx6Skk9O?=
- =?us-ascii?Q?C2m9th565KXA0CCi6zUKkzGR07Zv6X1fOeO7oOrnzB80cMhnzSVIe1orMVIj?=
- =?us-ascii?Q?wwzuD3BJBRGUzvPtxDr+ShtMa3XkvQKCboK9NAL854fd+WjwRLurO4+yra0F?=
- =?us-ascii?Q?5+7QjvplsS5SdEEykXypnJ5dsAMnoLPo3RL5j1dhElWXtIqEzdX/N+Ubwity?=
- =?us-ascii?Q?WOnBc7qek42xS9yD/FyfyIORqzl9s2JJRgs24YxDs7x7kvFTsItjbObcGFU0?=
- =?us-ascii?Q?HoUnCOKwdSLRIv0ENylp0hrkdObA9/ug+wW9wJuOvdhMYsV1BWQAaQBcSOrf?=
- =?us-ascii?Q?cpIn2KT5oYSKgZBpugx4TOfAPV/lcl7An6pQ8PPmA4B1oDtFrAscvURT70jn?=
- =?us-ascii?Q?rbULSjuafqBs6UcskN/B94mGILCiO8+uxj/a/ZjWeHSqDSwplvBgibfvbb9w?=
- =?us-ascii?Q?8Jq5orXwP4MScMT4LH2nVTARkIeh96ZmINhgyHu+zuHweUxoT/90X9dyP8iq?=
- =?us-ascii?Q?+7VjOjC2aaJRuBxvDARpsUNk7ogGXt2XMGtA8LGJYFO25/sOu120If/4YfWh?=
- =?us-ascii?Q?My0WyP3cJqTAZC3lHSaQ2SNxYZOQV4MtbDzM92jPXJvtYLRmkE7n0I2suXAi?=
- =?us-ascii?Q?shHD9g1eqJCdASuJx3NMZCHq1t6pSEeCoWnWnl3qYBBlrjkzZ+ymHGZZmGfZ?=
- =?us-ascii?Q?DHu9QUDJzmmMktoBcnV2w8WEpi9djyIA3ItRUIDfO8KrzM7QOrz5qQS6yGsN?=
- =?us-ascii?Q?xjfX1IxjGo8+grNzyBL+hovvM6qrW5imdJfoy1o3CTo45soGBZ8UxgFMSTXS?=
- =?us-ascii?Q?lLrPTcjs2bpCWvEF3pWZ5tDj/IhLXvdGHhCka2LgQVh6ZxWwoD+1IkTKsr9I?=
- =?us-ascii?Q?WyjT/HJKN7rurK37g1Fq8A2xWGrvTcB3QxrXoLJMzJCClIgNNTo/V5LDC2o6?=
- =?us-ascii?Q?vEbXEk7C2dqtMrsu/Qtxe9/a5fZ/OQchB50CKn6ulINnOCZ7qKXTkAsObDN+?=
- =?us-ascii?Q?FgmOC+WtLPHFTTF4fCzce11G+TQzI2Dek3ZTpXALcuXub/UO0mS4FC42C3RA?=
- =?us-ascii?Q?cY9S+Q7ClhkbUwXL6MhBVBqUx1H8t/xBC+KH9msBmRaMYwbT/RYWZRWiuCaK?=
- =?us-ascii?Q?gMqYx92qdRvMhKHXkuuDKVviU/ogQU++UYZklk6aIZVnLBG2C8jmthxY32uI?=
- =?us-ascii?Q?pl+wJ6vrH/XKtM1vxdZV35helm/1Ajy9NPKCeMMdKNrQ47iITVY6K+OVNRUo?=
- =?us-ascii?Q?GYZrIkH0AhNREcqxQEVN4o4=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PRASPRMB0004.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(19092799006)(52116014)(376014)(366016)(38350700014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?W3hN+Ma9QUAX90lBx+Hx0iN/pRpIFEni7c2+wvI4JG2TdEiVeRxmw2IpB7+3?=
- =?us-ascii?Q?OI8E30FCC3y6XWIc8/FsW9Oyi5kHZpnZjHFdcblkwjDKeofLNMx/wQVWXYFc?=
- =?us-ascii?Q?RHAuoP7+wS+RBcy9nLbrFuj/pzlC044KwiyO0trAmxinZkI2N6z/sCMUVAIF?=
- =?us-ascii?Q?Ruwhf5QmCDstHNX34v4dgaKl2b1HgetdRWpa7+/1GuqGZCTGJZ7FK20CX6JU?=
- =?us-ascii?Q?SRKhMj8ZdUiPfiRWthamYm4ohkXBAjZRiIVjlf2M1QLmGHRBWvovq37hi7az?=
- =?us-ascii?Q?lbIbXgwbLxuzt6jy/LeGlAIF9cjiC0uaiRyaZu6jGE5zJT4u9X9fd+jToQ63?=
- =?us-ascii?Q?VGPAMEUYZEFiFGN+xFp9NbT2QUjXKdhZuFEhpMlXLiRMNz3iLstcJyEJ8JJP?=
- =?us-ascii?Q?vW3vi52pP9cXACJVf77ZvBQIgPBEDc1OhZhykrqepN3Hf5dpwThFpr/rLuM9?=
- =?us-ascii?Q?JvMCwZr7VnIw//ZOr6FCr7WPekyS0y1xhsVZ66cbhAC+nFXd4DMGowVGaTQ3?=
- =?us-ascii?Q?ZU/pnqoukOtlWVgl7E2It1wzH66ph9KQxkIeGUUVJBO0qj8Trnu0gaakk0/E?=
- =?us-ascii?Q?0BPIL4ULCxtMDG3zg/bVR6wPzb1By7VbZAAVyaseHI/0jlcpd2QgR5JIiuVQ?=
- =?us-ascii?Q?aKzcqaSRCoCsLzsANFzQMmJ2M76RhO47ttbCvUehWRC+CfsRcbmcZirYZAnE?=
- =?us-ascii?Q?p5s+gZqvEl8OboQB1q7WUHnvJ88puodY9tIsBl8I4oDgSwO+V6keGmzG9LF4?=
- =?us-ascii?Q?WDLT5X/XZdmFFsOy24cRDX+alXCvxwP+SgMrZoGuUA/X9PuWklOm/UtSTuDx?=
- =?us-ascii?Q?pwCTQd7JnWYwmgWJ+tV5FVz/6fmYJiQ46afd+eEXKfd5j3FuabHvnaFmYQMt?=
- =?us-ascii?Q?LDdcfq9CgFMyCkFiYuc66Xxm78Zocnq8p/ed+LwZnOYKCaicNEUujdor+QaS?=
- =?us-ascii?Q?BfNra2Ffxj0/tHM0dxqsVOIQ50QrUiByOe+REl4HEia1+ia2XVovByzZhQDy?=
- =?us-ascii?Q?Ve5aJka2riapijR6+96OMjVf54upGdPHEti4hCwOURO4I7KcgbVsGrNr0d6H?=
- =?us-ascii?Q?PeA0znUegDduIf2uj7lFW88kzrAVj/nYrVHzbtUAFLH6GPXj4N+AzL5lYN4p?=
- =?us-ascii?Q?CSYiXoXWll6Z07njBCa3EYUITrzqd7YQg/nbpzaLpWwdXUaEXERs60CCMc6n?=
- =?us-ascii?Q?ffwK5WxX1hxr6evKRQb0I1HXYfzSTd6MsC8hLOc8gF66Q7FINiQ8Rf7LRPJ4?=
- =?us-ascii?Q?koZ3RlE/ZWbNcJwqNR2cz7NMSNQQqQxNxkh4xBBC5s+B9UHlVJ8uybRhYC+z?=
- =?us-ascii?Q?v88YsE319azJi0jtGc/zHFb94IQ4cZdeUSjSnrmqWDa0hwRL101oQ7QGfm6E?=
- =?us-ascii?Q?6xva0K8ZiDUfDVmRzKOIeVgbd5WmXr+anSf0EEdp2Ve1mBtR7tPypl0sOZ7g?=
- =?us-ascii?Q?43mQyQma7qTAKyP7nKcuYFv0q9ZEsSGXxcPTC3fEtnyyySqwbNhozN7jVm/a?=
- =?us-ascii?Q?x2v9esuG5W1hPzE0l0EE89WoDvxnjGb8CwJ2dJ2rQdK3Lv24auQk7Oz84v2v?=
- =?us-ascii?Q?79tzrY2X0WLSiCVwoVUDM0X4HvBCwI+Ed1Okdlkqj0rKlChkAEH8+G5fr8tW?=
- =?us-ascii?Q?+sRHDAy8pc7mWWjXXCRfPrQn6kaHvS5o9i6Jb/sTIAoLKepWxpAvV2F2Hd7j?=
- =?us-ascii?Q?u9UuSMF1UYhjnFhZoa2Pehds+DC2rVpQkc4kWPkVOx41VH+C?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: fb1a67d6-4e6d-4081-090d-08de57ae915d
-X-MS-Exchange-CrossTenant-AuthSource: PRASPRMB0004.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Jan 2026 23:00:40.9037
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: +52Q7XBB05k9Sv4VKdleMggUaIHENXus7rkn55D5ja2t/A9otdXVcPNOfrLv9rOapX99OuX7HCrbZmhFQVpB6w==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PA1PR04MB11381
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/13N3YrCMBCG4VuRHG9kZpLG1CPvQ/YgPxMNa62kU
+ lyk976pixA8/IY8b55i4pJ5EvvNUxSe85THax3d10aEs7ueWOZYtyCgDlGBvIzhR+bhVqRJRDt
+ tA3ZsRX1/K5zy49U6ftd9ztN9LL+v9Izr9b9CoJrKjBKk1w5TNKrXpA6nweXLNoyDWCszNRKxl
+ VSlSV7vfHQukf6U6i0NIJhWqiox+h56jz0F+JS6kWhbqdc/g43gmC1HauWyLH8gbIziUAEAAA=
+ =
+X-Change-ID: 20251130-lock-impr-6f22748c15e8
+To: Andy Shevchenko <andriy.shevchenko@intel.com>, 
+ Lars-Peter Clausen <lars@metafoo.de>, 
+ Michael Hennerich <Michael.Hennerich@analog.com>, 
+ Jonathan Cameron <jic23@kernel.org>, Benson Leung <bleung@chromium.org>, 
+ Antoniu Miclaus <antoniu.miclaus@analog.com>, 
+ Gwendal Grignou <gwendal@chromium.org>, 
+ Shrikant Raskar <raskar.shree97@gmail.com>, 
+ Per-Daniel Olsson <perdaniel.olsson@axis.com>
+Cc: David Lechner <dlechner@baylibre.com>, 
+ =?utf-8?q?Nuno_S=C3=A1?= <nuno.sa@analog.com>, 
+ Andy Shevchenko <andy@kernel.org>, Guenter Roeck <groeck@chromium.org>, 
+ Jonathan Cameron <Jonathan.Cameron@huawei.com>, linux-iio@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, chrome-platform@lists.linux.dev, 
+ Kurt Borja <kuurtb@gmail.com>
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=openpgp-sha256; l=5359; i=kuurtb@gmail.com;
+ h=from:subject:message-id; bh=8ACIUTMxM/zKXo7x/eO1abUeDEvW7CEDgGcDZxCz8g4=;
+ b=owGbwMvMwCUmluBs8WX+lTTG02pJDJn5cod0J6aIdx5/dN+NVfVqrafgcbNel3P9xk1nFLzeT
+ 1x9OjOjo5SFQYyLQVZMkaU9YdG3R1F5b/0OhN6HmcPKBDKEgYtTACayay3DP5Uk72ZOiRtVGrud
+ D7adSX7z7uLB/dtnBSzb4+80nynjyidGhmPqtyNLWAxzHl/WZ7Rc/9+J5fBpmy27fpjHJ82/PkN
+ wEjcA
+X-Developer-Key: i=kuurtb@gmail.com; a=openpgp;
+ fpr=54D3BE170AEF777983C3C63B57E3B6585920A69A
 
-On Mon, Jan 19, 2026 at 10:17:34PM +0000, Jonathan Cameron wrote:
-> From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
->
-> The Kconfig  issue was one I came across whilst testing the second fix
-> which has been being reported by the bots for some time. Frank posted the
-> full fix for the undefined symbols a while back, but it is merged in
-> the middle i3c/for-next making it hard to merge into IIO as well.
-> So work around this to get the build issue resolved.
->
-> That workaround can be reverted next cycle.
->
-> I'll queue these up now but they can have brief 0-day exposure
-> before I push them out on the togreg branch to be picked up by
-> linux-next. Even after that comments on these ones welcome.
->
-> Thanks,
->
-> Jonathan
->
+Hi,
 
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
+In a recent driver review discussion [1], Andy Shevchenko suggested we
+add cleanup.h support for the lock API:
 
->
-> Jonathan Cameron (2):
->   iio: magn: mmc5633: Ensure REGMAP_I2C / I3C not build if I2C / I3C is
->     not.
->   iio: magn: mmc5633: Add some ifdef / __maybe_unused until stubs
->     available
->
->  drivers/iio/magnetometer/Kconfig   |  4 ++--
->  drivers/iio/magnetometer/mmc5633.c | 25 +++++++++++++++++++++----
->  2 files changed, 23 insertions(+), 6 deletions(-)
->
-> --
-> 2.52.0
->
+	iio_device_claim_{direct,buffer_mode}().
+
+Which would allow some nice code simplification in many places. Some
+examples are given as patches, but the last two are the biggest
+differences.
+
+In this version I dropped the RFC tag, as the general feeling is to go
+through with this after some modifications. Main one is the addition of
+IIO_DEV_ACQUIRE_{BUFFER,CLAIM}_MODE() wrappers to avoid drivers using
+the guard classes directly. I also added comments on the forbidden ways
+to use this API but I definitely still take suggestions on this.
+
+For now I dropped iio_device_claim_buffer_mode() rename, as this point
+is still being discussed. My suggestion based on the RFC discussion is
+to do it, but in a separate patch (using coccinelle) and while we're at
+it rename the whole API like this:
+
+	iio_dev_mode_lock()
+	iio_dev_mode_direct_trylock()
+	iio_dev_mode_buffer_trylock()
+	iio_dev_mode_unlock()
+
+Let me know what you think and thanks for taking a look!
+
+Signed-off-by: Kurt Borja <kuurtb@gmail.com>
+---
+v5:
+
+  - Fix all function/macro names in kernel-doc
+
+v4: https://lore.kernel.org/r/20260118-lock-impr-v4-0-6c8d0aee8ed2@gmail.com
+
+  - Replace "," with ";" in __iio_dev_mode_lock() docs.
+
+  - Fix "bellow" -> "below" typo.
+
+  - Drop first example in IIO_DEV_ACQUIRE_DIRECT_MODE() docs.
+
+  - Match variable names in kernel-doc and definitions.
+
+  - Replace "markings" with "annotations" in the "static inline" remark
+
+  - Replace "claim_ptr" with "claim" in IIO_DEV_ACQUIRE_FAILED() and get
+    the pointer inside.
+
+v3: https://lore.kernel.org/r/20260106-lock-impr-v3-0-1db909b192c0@gmail.com
+
+  - Reword commit message of patch 1: infallible -> unconditional.
+
+  - Drop "*strongly*" in __iio_dev_mode_lock() kernel-doc and be a bit
+    more clear on the function's intention.
+
+  - Keep comment about inline functions and sparse markings, but drop
+    the __cond_acquires() part, as the new implementation makes it
+    unnecessary.
+
+  - Implement iio_device_release_*() as macros around
+    __iio_dev_mode_unlock().
+
+  - Rename iio_device_claim_buffer_mode() ->
+    iio_device_try_claim_buffer_mode() to avoid silently breaking
+    out-of-tree drivers.
+
+  - Drop the `_` argument prefix in new macros, as there are no name
+    conflicts.
+
+  - Drop "dummy" from IIO_DEV_ACQUIRE_DIRECT_MODE kernel-doc, as the
+    `claim` variable does store the error value.
+
+  - Drop IIO_DEV_ACQUIRE_BUFFER_MODE() until a driver actually needs it.
+
+  - Rename IIO_DEV_ACQUIRE_ERR() -> IIO_DEV_ACQUIRE_FAILED() to make the
+    name more clear.
+
+  - Rename IIO_DEV_GUARD_ANY_MODE() -> IIO_DEV_GUARD_CURRENT_MODE() to
+    make the name more clear.
+
+  - Add missing . in iio_device_release_direct() kernel-doc.
+
+  NOTE: Andy suggested __iio_dev_mode_*() be exported into the IIO_CORE
+        namespace. However, this cannot be done because these functions
+	need to be called inline, so Sparse can see the __acquires() and
+	__releases() tags.
+
+  Happy new year to everyone :)
+
+v2: https://lore.kernel.org/r/20251211-lock-impr-v2-0-6fb47bdaaf24@gmail.com
+
+  - Add __iio_dev_mode_lock() (formerly iio_device_claim()) in the first
+    patch.
+
+  - Added comments to make sure __iio_dev_mode_lock() is not used by
+    drivers to protect internal state, or in general.
+
+  - Add patch which re-implements iio_device_claim_direct() using
+    __iio_dev_mode_lock().
+
+  - Match iio_device_claim_buffer_mode() semantics by reimplementing it
+    in the same way as iio_device_claim_direct().
+
+  - Guard classes now are prefixed with __priv__ to make sure drivers
+    don't use them directly.
+
+  - Add IIO_DEV_ACQUIRE_{BUFFER,DIRECT}_MODE() documented wrappers
+
+  - Avoid any function renames (for now).
+
+  - Rename dummy variable `claim` instead of `busy` on vcnl4000 patch.
+
+  - Avoid scoped guard in max30102.
+
+  - Keep using iio_trigger_validate_own_device() insted of
+    iio_trigger_using_own() in opt4060.
+
+v1: https://lore.kernel.org/r/20251203-lock-impr-v1-0-b4a1fd639423@gmail.com
+
+---
+Kurt Borja (7):
+      iio: core: Add and export __iio_dev_mode_lock()
+      iio: core: Refactor iio_device_claim_direct() implementation
+      iio: core: Match iio_device_claim_*() semantics and implementation
+      iio: core: Add cleanup.h support for iio_device_claim_*()
+      iio: light: vcnl4000: Use IIO cleanup helpers
+      iio: health: max30102: Use IIO cleanup helpers
+      iio: light: opt4060: Use IIO cleanup helpers
+
+ drivers/iio/adc/ade9000.c                          |   2 +-
+ .../common/cros_ec_sensors/cros_ec_sensors_core.c  |   5 +-
+ drivers/iio/health/max30100.c                      |   8 +-
+ drivers/iio/health/max30102.c                      |  33 ++---
+ drivers/iio/industrialio-core.c                    |  86 +++----------
+ drivers/iio/light/opt4060.c                        |  52 +++-----
+ drivers/iio/light/vcnl4000.c                       |  49 +++-----
+ include/linux/iio/iio.h                            | 139 +++++++++++++++++++--
+ 8 files changed, 190 insertions(+), 184 deletions(-)
+---
+base-commit: eab91f819af428173f7e0aa1c80b3e561c3707bb
+change-id: 20251130-lock-impr-6f22748c15e8
+
+-- 
+ ~ Kurt
+
 
